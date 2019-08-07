@@ -30,8 +30,7 @@
 		"start": "node ./script/serve/serve.js",
 		"dist": "npm run clean && npm run generate-global-bundle",
 		"clean": "rimraf ./client/global-bundle && rimraf coverage",
-		"reinstall": "npm run clean && rimraf node_modules && npm install",
-		"deploy": "npm run dist && git push heroku master"
+		"reinstall": "npm run clean && rimraf node_modules && npm install"
 	},
 	"engines": {
 		"node": "8.x"

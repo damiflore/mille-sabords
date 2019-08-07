@@ -5,4 +5,5 @@ startExploringServer({
   projectPath,
   port: 3456,
   forcePort: true,
+  livereloading: true,
 })
