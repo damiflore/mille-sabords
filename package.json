@@ -28,11 +28,17 @@
 		"upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
 		"generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
 		"dist": "npm run clean && npm run generate-global-bundle",
+		"start": "node ./script/serve/serve.js",
 		"clean": "rimraf dist && rimraf coverage",
 		"reinstall": "npm run clean && rimraf node_modules && npm install",
 		"prepublishOnly": "npm run dist"
 	},
-	"dependencies": {},
+	"engines": {
+		"node": "8.x"
+	},
+	"dependencies": {
+		"@dmail/server": "1.3.0"
+	},
 	"devDependencies": {
 		"@jsenv/exploring-server": "1.15.0",
 		"@jsenv/testing": "1.21.0",
