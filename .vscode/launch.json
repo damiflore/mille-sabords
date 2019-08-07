@@ -1,0 +1,60 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "node",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${file}",
+      "autoAttachChildProcesses": true,
+      "sourceMaps": false,
+      "sourceMapPathOverrides": {
+        "/*": "${workspaceRoot}/*"
+      },
+      "smartStep": true,
+      "skipFiles": [
+        // force-multiline
+        // "node_modules/**",
+        "node_modules/@babel/template/**",
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "name": "jsenv-node",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceFolder}/script/run-node/run-node.js",
+      "args": ["${relativeFile}"],
+      "autoAttachChildProcesses": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/*": "${workspaceRoot}/*"
+      },
+      "smartStep": true,
+      "skipFiles": [
+        // force-multiline
+        "node_modules/**",
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "name": "jsenv-chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:3456/${relativeFile}",
+      "runtimeArgs": ["--allow-file-access-from-files", "--disable-web-security"],
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/*": "${workspaceRoot}/*"
+      },
+      "smartStep": true,
+      "skipFiles": [
+        // force-multiline
+        "node_modules/**",
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
+}
