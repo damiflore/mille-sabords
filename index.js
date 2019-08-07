@@ -1,1 +1,3 @@
-document.write("Hello world")
+import { text } from "./src/content.js"
+
+document.write(text)

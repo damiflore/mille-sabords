@@ -27,12 +27,11 @@
 		"generate-coverage": "node ./script/generate-coverage/generate-coverage.js",
 		"upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
 		"generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
-		"dist": "npm run clean && npm run generate-global-bundle",
-		"deploy": "npm run dist && git push heroku master",
 		"start": "node ./script/serve/serve.js",
-		"clean": "rimraf dist && rimraf coverage",
+		"dist": "npm run clean && npm run generate-global-bundle",
+		"clean": "rimraf ./client/global-bundle && rimraf coverage",
 		"reinstall": "npm run clean && rimraf node_modules && npm install",
-		"prepublishOnly": "npm run dist"
+		"deploy": "npm run dist && git push heroku master"
 	},
 	"engines": {
 		"node": "8.x"

@@ -37,6 +37,7 @@
     globalObject.globalThis = globalObject;
   }
 
-  document.write("Hello world");
+  var text = "Hello world";
+  document.write(text);
 })();
 //# sourceMappingURL=./main.js.map

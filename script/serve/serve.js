@@ -7,9 +7,13 @@ startServer({
   protocol: "http",
   ip: "",
   port: process.env.PORT || 0,
-  requestToResponse: ({ ressource, method, headers }) =>
-    serveFile(`${projectPath}${ressource}`, {
+  requestToResponse: ({ ressource, method, headers }) => {
+    if (ressource === "/") {
+      ressource = "/index.html"
+    }
+    return serveFile(`${projectPath}${ressource}`, {
       method,
       headers,
-    }),
+    })
+  },
 })
