@@ -1,3 +1,1 @@
-import { text } from "./src/content.js"
-
-document.write(text)
+import "./src/content.jsx"

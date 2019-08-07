@@ -7,5 +7,15 @@ config.settings["import/resolver"] = {
     projectPath: __dirname,
   },
 }
+config.parserOptions.ecmaFeatures.jsx = true
+config.plugins.push("react")
+config.settings.react = {
+  pragma: "createElement",
+}
+config.extends = ["plugin:react/recommended"]
+Object.assign(config.rules, {
+  "react/prop-types": ["off"],
+  "react/jsx-no-target-blank": ["off"],
+})
 
 module.exports = config

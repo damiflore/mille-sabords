@@ -1,5 +1,6 @@
 const { resolve } = require("path")
 const { startServer, serveFile } = require("@dmail/server")
+const { operatingSystemPathToPathname } = require("@jsenv/operating-system-path")
 
 const projectPath = resolve(__dirname, "../../")
 
@@ -11,7 +12,7 @@ startServer({
     if (ressource === "/") {
       ressource = "/index.html"
     }
-    return serveFile(`${projectPath}${ressource}`, {
+    return serveFile(`${operatingSystemPathToPathname(projectPath)}${ressource}`, {
       method,
       headers,
     })
