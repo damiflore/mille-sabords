@@ -1,5 +1,7 @@
+const { resolve } = require("path")
 const { startServer, serveFile } = require("@dmail/server")
-const { projectPath } = require("../../jsenv.config.js")
+
+const projectPath = resolve(__dirname, "../../")
 
 startServer({
   protocol: "http",
