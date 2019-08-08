@@ -52,16 +52,12 @@
 		"@jsenv/core": "5.122.0",
 		"@jsenv/bundling": "1.12.0",
 		"@jsenv/codecov-upload": "1.6.0",
-		"@jsenv/eslint-config": "8.0.0",
-		"@jsenv/eslint-import-resolver": "4.7.0",
+		"@jsenv/eslint-config": "9.2.0",
 		"@jsenv/prettier-config": "1.0.0",
 		"@jsenv/prettier-check-project": "3.1.0",
 		"@jsenv/node-module-import-map": "3.0.0",
-		"babel-eslint": "11.0.0-beta.0",
 		"prettier": "1.18.2",
 		"eslint": "5.1.0",
-		"eslint-plugin-import": "2.6.0",
-		"eslint-plugin-react": "7.14.0",
 		"rimraf": "2.6.2"
 	}
 }
