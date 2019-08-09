@@ -1,4 +1,4 @@
-const { cover } = require("@jsenv/testing")
+const { cover, jsenvCoverDescription } = require("@jsenv/testing")
 const {
   projectPath,
   babelPluginMap,
@@ -14,6 +14,10 @@ const run = async () => {
     babelPluginMap,
     convertMap,
     executeDescription: testDescription,
+    coverDescription: {
+      ...jsenvCoverDescription,
+      "/src/**/*.jsx": true,
+    },
     logCoverageTable: true,
     writeCoverageHtmlFolder: true,
   })
