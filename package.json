@@ -27,7 +27,7 @@
 		"generate-coverage": "node ./script/generate-coverage/generate-coverage.js",
 		"upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
 		"generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
-		"start": "node ./script/serve/serve.js",
+		"start": "node ./script/start/start.js",
 		"dist": "npm run clean && npm run generate-global-bundle",
 		"clean": "rimraf ./client/global-bundle && rimraf coverage",
 		"reinstall": "npm run clean && rimraf node_modules && npm install"
@@ -42,6 +42,7 @@
 		"react-dom": "16.8.6"
 	},
 	"devDependencies": {
+		"@dmail/assert": "3.13.0",
 		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
 		"@jsenv/exploring-server": "2.0.0",
