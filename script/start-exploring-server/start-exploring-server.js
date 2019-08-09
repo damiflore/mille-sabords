@@ -1,9 +1,11 @@
 const { startExploringServer } = require("@jsenv/exploring-server")
-const { projectPath, babelPluginMap } = require("../../jsenv.config.js")
+const { projectPath, babelPluginMap, convertMap } = require("../../jsenv.config.js")
 
 startExploringServer({
   projectPath,
+  HTMLTemplateRelativePath: "/index.dev.html",
   babelPluginMap,
+  convertMap,
   watchDescription: {
     "/**/*": false,
     "/index.js": true,

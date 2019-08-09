@@ -10,7 +10,7 @@ startServer({
   port: process.env.PORT || 0,
   requestToResponse: ({ ressource, method, headers }) => {
     if (ressource === "/") {
-      ressource = "/index.html"
+      ressource = "/index.prod.html"
     }
     return serveFile(`${operatingSystemPathToPathname(projectPath)}${ressource}`, {
       method,

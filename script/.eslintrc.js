@@ -1,5 +1,5 @@
 const { createConfig } = require("@jsenv/eslint-config")
 
-const config = createConfig({ importPluginEnabled: false })
+const config = createConfig({ importResolutionMethod: "node" })
 
 module.exports = config

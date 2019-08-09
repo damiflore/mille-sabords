@@ -18,7 +18,6 @@
 		"/dist/"
 	],
 	"scripts": {
-		"convert-commonjs-dependencies": "node ./script/convert-commonjs-dependencies/convert-commonjs-dependencies.js",
 		"generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
 		"start-exploring-server": "node ./script/start-exploring-server/start-exploring-server.js",
 		"start-continuous-testing": "node ./script/start-continuous-testing/start-continuous-testing.js",
@@ -45,14 +44,13 @@
 	"devDependencies": {
 		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
-		"@jsenv/commonjs-converter": "1.8.0",
-		"@jsenv/exploring-server": "1.15.0",
-		"@jsenv/testing": "1.21.0",
-		"@jsenv/chromium-launcher": "1.14.0",
-		"@jsenv/core": "5.122.0",
-		"@jsenv/bundling": "1.12.0",
+		"@jsenv/exploring-server": "2.0.0",
+		"@jsenv/testing": "1.22.0",
+		"@jsenv/chromium-launcher": "2.0.0",
+		"@jsenv/core": "5.126.0",
+		"@jsenv/bundling": "1.13.0",
 		"@jsenv/codecov-upload": "1.6.0",
-		"@jsenv/eslint-config": "9.3.0",
+		"@jsenv/eslint-config": "9.7.0",
 		"@jsenv/prettier-config": "1.0.0",
 		"@jsenv/prettier-check-project": "3.1.0",
 		"@jsenv/node-module-import-map": "3.0.0",
