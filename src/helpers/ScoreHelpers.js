@@ -1,22 +1,4 @@
-const diceNumberToSymbol = {
-    1: 'coin',
-    2: 'diamond',
-    3: 'sword',
-    4: 'parrot',
-    5: 'monkey',
-    6: 'skull',
-};
-
-const getRandomDiceNumber = () => Math.floor(Math.random() * 6) + 1;
-
-const getRollDiceResults = (diceNumber) => {
-    const resultArray = [];
-    for (let i = 0; i < diceNumber; i++) {
-        const diceNumber = getRandomDiceNumber();
-        resultArray.push(diceNumberToSymbol[diceNumber]);
-    }
-    return resultArray;
-}
+import { getRollDiceResults } from './DiceHelpers';
 
 const countSymbolsOccurences = arr => {
     const count = arr =>
@@ -28,21 +10,21 @@ const countSymbolsOccurences = arr => {
     return count(arr);
 }
 
-const computeScore = diceRoll => {
-    console.log('diceRoll', diceRoll);
+const computeScore = rollDice => {
+    console.log('rollDice', rollDice);
     let score = 0;
 
     // remove skulls
-    const diceRollWithoutSkulls = diceRoll.filter(symbol => symbol !== 'skull');
-    console.log('diceRollWithoutSkulls', diceRollWithoutSkulls);
+    const rollDiceWithoutSkulls = rollDice.filter(symbol => symbol !== 'skull');
+    console.log('rollDiceWithoutSkulls', rollDiceWithoutSkulls);
 
     // add 1 point for each coin and diamond
-    diceRollWithoutSkulls.forEach(symbol => {
+    rollDiceWithoutSkulls.forEach(symbol => {
         if (symbol === 'diamond' || symbol === 'coin') score += 100;
     })
 
     // add points for dice combinaisons
-    const occurencesArray = countSymbolsOccurences(diceRollWithoutSkulls);
+    const occurencesArray = countSymbolsOccurences(rollDiceWithoutSkulls);
     Object.values(occurencesArray).forEach(occurences => {
         if (occurences === 3) score += 100;
         if (occurences === 4) score += 200;
