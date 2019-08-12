@@ -8,7 +8,7 @@ startExploringServer({
   convertMap,
   watchDescription: {
     "/**/*": false,
-    "/index.js": true,
+    "/*": true,
     "/src/**/*": true,
   },
   port: 3456,
