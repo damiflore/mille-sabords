@@ -4,7 +4,7 @@ import { rollDice, removeFromArray } from "./helpers/DiceHelpers.js"
 import { computeScore, keepSkulls } from "./helpers/ScoreHelpers"
 import { setStorageArray, getStorageArray, clearStorageArray } from "./helpers/LocalStorage"
 
-const GameBoard = () => {
+export const MilleSabordGameBoard = () => {
   // const [diceResult, setDiceResult] = React.useState([])
 
   return (
@@ -80,21 +80,3 @@ const GameBoard = () => {
     </div>
   )
 }
-
-export default GameBoard
-
-// import React from "react"
-
-// function GameBoard() {
-//   // Declare a new state variable, which we'll call "count"
-//   const [count, setCount] = React.useState(0)
-
-//   return (
-//     <div>
-//       <p>You clicked {count} times</p>
-//       <button onClick={() => setCount(count + 1)}>Click me</button>
-//     </div>
-//   )
-// }
-
-// export default GameBoard

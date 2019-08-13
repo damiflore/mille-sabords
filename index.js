@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { MilleSabords } from "./src/MilleSabords.jsx"
+// import { MilleSabords } from "./src/MilleSabords.jsx"
+import { MilleSabordGameBoard } from "./src/MilleSabordGameBoard.js"
 
-ReactDOM.render(<MilleSabords />, document.body)
+ReactDOM.render(<MilleSabordGameBoard />, document.body)
