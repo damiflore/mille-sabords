@@ -17,6 +17,7 @@
         // force-multiline
         // "node_modules/**",
         "node_modules/@babel/template/**",
+        "node_modules/rollup-plugin-node-resolve/**",
         "<node_internals>/**/*.js"
       ]
     },
