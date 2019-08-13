@@ -8,7 +8,10 @@ exports.projectPath = projectPath
 
 const babelPluginMap = {
   ...jsenvBabelPluginMap,
-  "transform-react-jsx": [transformReactJSX, { pragma: "React.createElement" }],
+  "transform-react-jsx": [
+    transformReactJSX,
+    { pragma: "React.createElement", pragmaFrag: "React.Fragment" },
+  ],
 }
 exports.babelPluginMap = babelPluginMap
 
