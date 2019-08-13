@@ -30,6 +30,11 @@ const generateTestDescription = async () => {
   })
 
   const testDescription = {
+    "/src/**/*.test.js": {
+      browser: {
+        launch: launchChromiumTab,
+      },
+    },
     "/test/**/*.test.js": {
       browser: {
         launch: launchChromiumTab,
