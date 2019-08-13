@@ -13,13 +13,11 @@ const countSymbolsOccurences = (diceResultArray) => {
   return symbolCountMap
 }
 
-const computeScore = (rollDice) => {
-  console.log("rollDice", rollDice)
+export const computeScore = (rollDice) => {
   let score = 0
 
   // remove skulls
   const rollDiceWithoutSkulls = rollDice.filter((symbol) => symbol !== "skull")
-  console.log("rollDiceWithoutSkulls", rollDiceWithoutSkulls)
 
   // add 1 point for each coin and diamond
   rollDiceWithoutSkulls.forEach((symbol) => {
@@ -37,7 +35,7 @@ const computeScore = (rollDice) => {
     if (occurences === 8) score += 4000
   })
 
-  console.log("score", score)
+  return score
 }
 
 computeScore(getRollDiceResults(8))
