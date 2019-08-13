@@ -32,7 +32,9 @@ const swapTwoCards = (deck) => {
   const index1 = randomIndex(deck.length)
   const index2 = randomIndex(deck.length)
   // swap cards at these indexes
-  ;[deck[index1], deck[index2]] = [deck[index2], deck[index1]]
+  const temp = deck[index1]
+  deck[index1] = deck[index2]
+  deck[index2] = temp
   return deck
 }
 

@@ -18,16 +18,15 @@ export const computeScore = (rollDice) => {
   let score = 0
 
   // remove skulls
-  // const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
-  // useless ?
+  const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
 
   // add 1 point for each coin and diamond
-  rollDice.forEach((symbol) => {
+  rollDiceWithoutSkulls.forEach((symbol) => {
     if (symbol === "diamond" || symbol === "coin") score += 100
   })
 
   // add points for dice combinaisons
-  const occurencesArray = countSymbolsOccurences(rollDice)
+  const occurencesArray = countSymbolsOccurences(rollDiceWithoutSkulls)
   Object.values(occurencesArray).forEach((occurences) => {
     if (occurences === 3) score += 100
     if (occurences === 4) score += 200
