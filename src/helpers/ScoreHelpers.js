@@ -1,10 +1,16 @@
 import { getRollDiceResults } from "./DiceHelpers"
 
-const countSymbolsOccurences = (arr) => {
-  const count = (arr) => arr.reduce((a, b) => ({ ...a, [b]: (a[b] || 0) + 1 }), {})
-
-  console.log("occurences", count(arr))
-  return count(arr)
+const countSymbolsOccurences = (diceResultArray) => {
+  const symbolCountMap = {}
+  diceResultArray.forEach((diceResult) => {
+    if (symbolCountMap.hasOwnProperty(diceResult)) {
+      symbolCountMap[diceResult]++
+    } else {
+      symbolCountMap[diceResult] = 1
+    }
+  })
+  console.log("symbolCountMap", symbolCountMap)
+  return symbolCountMap
 }
 
 const computeScore = (rollDice) => {
