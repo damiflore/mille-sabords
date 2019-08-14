@@ -1,5 +1,3 @@
-import { setStorageArray, getStorageArray } from "./LocalStorage"
-
 export const countSymbolsOccurences = (diceResultArray) => {
   const symbolCountMap = {}
   diceResultArray.forEach((diceResult) => {
@@ -12,12 +10,19 @@ export const countSymbolsOccurences = (diceResultArray) => {
   return symbolCountMap
 }
 
-const removeSkullsFromArray = (rollDice) => rollDice.filter((symbol) => symbol !== "skull")
+export const removeSkullsFromArray = (rollDice) => rollDice.filter((symbol) => symbol !== "skull")
+
+export const isGameOver = (rollDice) => {
+  return countSymbolsOccurences(rollDice).skull > 2
+}
 
 export const computeScore = (rollDice) => {
   let score = 0
 
-  // remove skulls
+  // If 3 skulls : game is over !
+  if (isGameOver(rollDice)) return "You loose!"
+
+  // If not, remove skulls to calculate the score
   const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
 
   // add 1 point for each coin and diamond
@@ -36,19 +41,4 @@ export const computeScore = (rollDice) => {
     if (occurences === 8) score += 4000
   })
   return score
-}
-
-export const keepSkulls = () => {
-  const rollDice = getStorageArray("roll")
-
-  const numberOfSkulls = countSymbolsOccurences(rollDice).skull
-
-  // if the roll contain some skulls, remove them from the current roll, add them to the kept dice
-  if (numberOfSkulls) {
-    const diceKept = getStorageArray("diceKept")
-    for (var i = 0; i < numberOfSkulls; i++) diceKept.push("skull")
-    setStorageArray("diceKept", diceKept)
-    const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
-    setStorageArray("roll", rollDiceWithoutSkulls)
-  }
 }

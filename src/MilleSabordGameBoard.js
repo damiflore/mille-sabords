@@ -1,82 +1,94 @@
 import React from "react"
 
+import { DiceSet } from "./DiceSet"
 import { rollDice, removeFromArray } from "./helpers/DiceHelpers.js"
-import { computeScore, keepSkulls } from "./helpers/ScoreHelpers"
-import { setStorageArray, getStorageArray, clearStorageArray } from "./helpers/LocalStorage"
+import {
+  computeScore,
+  removeSkullsFromArray,
+  countSymbolsOccurences,
+  isGameOver,
+} from "./helpers/ScoreHelpers"
 
 export const MilleSabordGameBoard = () => {
-  // const [diceResult, setDiceResult] = React.useState([])
+  const [diceRolled, setDiceRolled] = React.useState([])
+  const [diceKept, setDiceKept] = React.useState([])
+  const [roundStarted, setRoundStarted] = React.useState(false)
+  const [roundFinished, setRoundFinished] = React.useState(false)
+
+  const clearDiceSet = () => {
+    setDiceRolled([])
+    setDiceKept([])
+    setRoundStarted(false)
+    setRoundFinished(false)
+  }
+
+  const rollTheDice = () => {
+    const numberOfDice = diceRolled.length
+    const roll = rollDice(numberOfDice > 0 ? numberOfDice : 8)
+
+    // if the roll contain some skulls, remove them from the current roll, add them to the kept dice
+    const numberOfSkulls = countSymbolsOccurences(roll).skull
+    if (numberOfSkulls) {
+      for (var i = 0; i < numberOfSkulls; i++) diceKept.push("skull")
+      // note : here it's important to set a copy of the array in order for the view to be updated.
+      setDiceKept([...diceKept])
+      const rollDiceWithoutSkulls = removeSkullsFromArray(roll)
+      setDiceRolled([...rollDiceWithoutSkulls])
+    } else {
+      setDiceRolled(roll)
+    }
+    if (!roundStarted) setRoundStarted(true)
+    if (isGameOver(diceKept)) setRoundFinished(true)
+  }
+
+  const keepOneDice = (dice) => {
+    const newArray = removeFromArray(diceRolled, dice)
+    setDiceRolled([...newArray])
+    const keptArray = diceKept
+    keptArray.push(dice)
+    setDiceKept([...keptArray])
+  }
+
+  const removeOneDice = (dice) => {
+    const newArray = removeFromArray(diceKept, dice)
+    setDiceKept([...newArray])
+    const rollArray = diceRolled
+    rollArray.push(dice)
+    setDiceRolled([...rollArray])
+  }
+
+  const cannotRollDice = roundStarted && diceRolled.length < 2
 
   return (
-    <div>
-      <button
-        type="button"
-        onClick={() => {
-          const numberOfDice = getStorageArray("roll").length
-          clearStorageArray("roll")
-          setStorageArray("roll", rollDice(numberOfDice > 0 ? numberOfDice : 8))
-          keepSkulls()
-        }}
-      >
-        Roll the dice
-      </button>
-
-      {getStorageArray("roll").length > 0 && (
-        <div>
-          <h2> Roll dice: </h2>
-          {getStorageArray("roll").map((dice, index) => (
-            <div key={index}>
-              <button
-                style={{
-                  marginRight: "20px",
-                }}
-                type="button"
-                onClick={() => {
-                  const newArray = removeFromArray(getStorageArray("roll"), dice)
-                  setStorageArray("roll", newArray)
-                  const keptArray = getStorageArray("diceKept")
-                  keptArray.push(dice)
-                  setStorageArray("diceKept", keptArray)
-                }}
-              >
-                Keep
-              </button>
-              {dice}
-            </div>
-          ))}
-        </div>
+    <>
+      {!roundFinished && (
+        <>
+          <button onClick={() => rollTheDice()} disabled={cannotRollDice}>
+            Roll!
+          </button>
+          {cannotRollDice && <span> (You must roll at least 2 dice)</span>}
+        </>
       )}
-
-      {getStorageArray("diceKept").length > 0 && (
-        <div>
-          <h2> Dice kept: </h2>
-          {getStorageArray("diceKept").map((dice, index) => (
-            <div key={index}>
-              {dice !== "skull" && (
-                <button
-                  style={{
-                    marginRight: "20px",
-                  }}
-                  type="button"
-                  onClick={() => {
-                    const newArray = removeFromArray(getStorageArray("diceKept"), dice)
-                    setStorageArray("diceKept", newArray)
-                    const rollArray = getStorageArray("roll")
-                    rollArray.push(dice)
-                    setStorageArray("roll", rollArray)
-                  }}
-                >
-                  Remove
-                </button>
-              )}
-              {dice}
-            </div>
-          ))}
-
+      {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
+      <DiceSet
+        title="Roll dice:"
+        diceArray={diceRolled}
+        actionText="Keep"
+        actionFunction={(dice) => keepOneDice(dice)}
+      />
+      <DiceSet
+        title="Dice kept:"
+        diceArray={diceKept}
+        actionText="Remove"
+        actionFunction={(dice) => removeOneDice(dice)}
+        displayActionCondition={(dice) => dice !== "skull"}
+      />
+      {diceKept.length > 0 && (
+        <>
           <h2> Score: </h2>
-          <span>{computeScore(getStorageArray("diceKept"))}</span>
-        </div>
+          <span>{computeScore(diceKept)}</span>
+        </>
       )}
-    </div>
+    </>
   )
 }
