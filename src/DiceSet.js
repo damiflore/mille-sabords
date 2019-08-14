@@ -9,7 +9,7 @@ export const DiceSet = ({
 }) => (
   <>
     {diceArray.length > 0 && (
-      <>
+      <div className="diceSet">
         <h2>{title}</h2>
         {diceArray.map((dice, index) => (
           <div key={index}>
@@ -19,7 +19,7 @@ export const DiceSet = ({
             <span style={{ marginLeft: "20px" }}>{dice}</span>
           </div>
         ))}
-      </>
+      </div>
     )}
   </>
 )

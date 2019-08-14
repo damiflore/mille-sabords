@@ -12,6 +12,8 @@ import {
 export const MilleSabordGameBoard = () => {
   const [diceRolled, setDiceRolled] = React.useState([])
   const [diceKept, setDiceKept] = React.useState([])
+  const [totalScore, setTotalScore] = React.useState(0)
+
   const [roundStarted, setRoundStarted] = React.useState(false)
   const [roundFinished, setRoundFinished] = React.useState(false)
 
@@ -57,38 +59,55 @@ export const MilleSabordGameBoard = () => {
     setDiceRolled([...rollArray])
   }
 
+  const markScore = () => {
+    setTotalScore(totalScore + computeScore(diceKept))
+    setRoundFinished(true)
+  }
+
   const cannotRollDice = roundStarted && diceRolled.length < 2
 
   return (
     <>
       {!roundFinished && (
-        <>
+        <div>
           <button onClick={() => rollTheDice()} disabled={cannotRollDice}>
             Roll!
           </button>
           {cannotRollDice && <span> (You must roll at least 2 dice)</span>}
-        </>
+        </div>
       )}
-      {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
+      {roundFinished && (
+        <div>
+          <button onClick={() => clearDiceSet()}>Restart</button>
+        </div>
+      )}
       <DiceSet
         title="Roll dice:"
         diceArray={diceRolled}
         actionText="Keep"
         actionFunction={(dice) => keepOneDice(dice)}
+        displayActionCondition={() => !roundFinished}
       />
       <DiceSet
         title="Dice kept:"
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => removeOneDice(dice)}
-        displayActionCondition={(dice) => dice !== "skull"}
+        displayActionCondition={(dice) => !roundFinished && dice !== "skull"}
       />
       {diceKept.length > 0 && (
-        <>
-          <h2> Score: </h2>
+        <div>
+          <span className="subtitle"> Current round score: </span>
           <span>{computeScore(diceKept)}</span>
-        </>
+          {!roundFinished && (
+            <button onClick={() => markScore()} style={{ marginLeft: "20px" }}>
+              Mark this score
+            </button>
+          )}
+        </div>
       )}
+      <span className="subtitle"> Total score: </span>
+      <span>{totalScore}</span>
     </>
   )
 }

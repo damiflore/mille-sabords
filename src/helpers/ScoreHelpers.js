@@ -20,7 +20,7 @@ export const computeScore = (rollDice) => {
   let score = 0
 
   // If 3 skulls : game is over !
-  if (isGameOver(rollDice)) return "You loose!"
+  if (isGameOver(rollDice)) return "You lose!"
 
   // If not, remove skulls to calculate the score
   const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
