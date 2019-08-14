@@ -1,12 +1,12 @@
-const initialDeck = [
-  { name: "pirate", numberOfCards: 4, label: "Pirate" },
+export const initialDeck = [
+  { name: "pirate", numberOfCards: 4, label: "Pirate" }, // card effect done
   { name: "witch", numberOfCards: 4, label: "Witch" },
   { name: "chest", numberOfCards: 4, label: "Treasure chest" },
   { name: "animals", numberOfCards: 4, label: "Parrot = monkey" },
-  { name: "diamond", numberOfCards: 4, label: "Diamond" },
-  { name: "coin", numberOfCards: 3, label: "Coin" },
-  { name: "skull", numberOfCards: 3, label: "Skull" },
-  { name: "2skulls", numberOfCards: 2, label: "2 skulls" },
+  { name: "diamond", numberOfCards: 4, label: "Diamond" }, // card effect done
+  { name: "coin", numberOfCards: 3, label: "Coin" }, // card effect done
+  { name: "skull", numberOfCards: 3, label: "Skull" }, // card effect done
+  { name: "2skulls", numberOfCards: 2, label: "2 skulls" }, // card effect done
   { name: "2swords", numberOfCards: 2, label: "2 sword challenge" },
   { name: "3swords", numberOfCards: 3, label: "3 sword challenge" },
   { name: "4swords", numberOfCards: 2, label: "4 sword challenge" },
@@ -40,7 +40,14 @@ const swapTwoCards = (deck) => {
 
 const mixCards = (deck) => {
   for (var i = 0; i < 100; i++) swapTwoCards(deck)
-  console.log("mixed deck", deck)
+  return deck
 }
 
-mixCards(createInitialDeck())
+export const getMixedDeck = () => {
+  return mixCards(createInitialDeck())
+}
+
+export const getCardName = (currentCard) => {
+  const card = initialDeck.find((card) => card.name === currentCard)
+  return card ? card.label : "?"
+}

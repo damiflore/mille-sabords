@@ -12,15 +12,18 @@ export const countSymbolsOccurences = (diceResultArray) => {
 
 export const removeSkullsFromArray = (rollDice) => rollDice.filter((symbol) => symbol !== "skull")
 
-export const isGameOver = (rollDice) => {
-  return countSymbolsOccurences(rollDice).skull > 2
+export const isGameOver = (rollDice, card) => {
+  let numerOfSkulls = countSymbolsOccurences(rollDice).skull
+  if (card === "skull") numerOfSkulls++
+  if (card === "2skulls") numerOfSkulls += 2
+  return numerOfSkulls > 2
 }
 
-export const computeScore = (rollDice) => {
+export const computeScore = (rollDice, card) => {
   let score = 0
 
   // If 3 skulls : game is over !
-  if (isGameOver(rollDice)) return "You lose!"
+  if (isGameOver(rollDice, card)) return "You lose!"
 
   // If not, remove skulls to calculate the score
   const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
@@ -40,5 +43,9 @@ export const computeScore = (rollDice) => {
     if (occurences === 7) score += 2000
     if (occurences === 8) score += 4000
   })
+
+  // add points related to the drawn card
+  if (card === "diamond" || card === "coin") score += 100
+  if (card === "pirate") score *= 2
   return score
 }
