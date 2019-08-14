@@ -68,28 +68,26 @@ export const MilleSabordGameBoard = () => {
 
   return (
     <>
-      {!roundFinished && (
-        <div>
-          <button onClick={() => rollTheDice()} disabled={cannotRollDice}>
-            Roll!
-          </button>
-          {cannotRollDice && <span> (You must roll at least 2 dice)</span>}
-        </div>
-      )}
-      {roundFinished && (
-        <div>
-          <button onClick={() => clearDiceSet()}>Restart</button>
-        </div>
-      )}
+      <div>
+        {!roundFinished && (
+          <>
+            <button onClick={() => rollTheDice()} disabled={cannotRollDice}>
+              Roll!
+            </button>
+            {cannotRollDice && <span> (You must roll at least 2 dice)</span>}
+          </>
+        )}
+        {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
+      </div>
       <DiceSet
-        title="Roll dice:"
+        title="Roll dice"
         diceArray={diceRolled}
         actionText="Keep"
         actionFunction={(dice) => keepOneDice(dice)}
         displayActionCondition={() => !roundFinished}
       />
       <DiceSet
-        title="Dice kept:"
+        title="Dice kept"
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => removeOneDice(dice)}
@@ -106,8 +104,10 @@ export const MilleSabordGameBoard = () => {
           )}
         </div>
       )}
-      <span className="subtitle"> Total score: </span>
-      <span>{totalScore}</span>
+      <div>
+        <span className="subtitle"> Total score: </span>
+        <span className="totalScore">{totalScore}</span>
+      </div>
     </>
   )
 }
