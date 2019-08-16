@@ -13,9 +13,9 @@
 	"browser": "dist/global/main.js",
 	"main": "dist/commonjs/main.js",
 	"files": [
-		"/index.js",
+		"/dist/",
 		"/src/",
-		"/dist/"
+		"/index.js"
 	],
 	"scripts": {
 		"start-exploring-server": "node ./script/start-exploring-server/start-exploring-server.js",
@@ -38,7 +38,7 @@
 		"node": "8.x"
 	},
 	"dependencies": {
-		"@dmail/server": "1.3.0",
+		"@dmail/server": "2.3.0",
 		"@jsenv/operating-system-path": "2.2.0",
 		"react": "16.8.6",
 		"react-dom": "16.8.6"
@@ -47,16 +47,16 @@
 		"@dmail/assert": "3.13.0",
 		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
-		"@jsenv/exploring-server": "2.8.0",
-		"@jsenv/testing": "1.22.0",
-		"@jsenv/chromium-launcher": "2.0.0",
-		"@jsenv/core": "5.128.0",
+		"@jsenv/exploring-server": "2.13.0",
+		"@jsenv/testing": "1.24.0",
+		"@jsenv/chromium-launcher": "2.2.0",
+		"@jsenv/core": "5.131.0",
 		"@jsenv/bundling": "1.13.0",
 		"@jsenv/codecov-upload": "1.6.0",
 		"@jsenv/eslint-config": "9.7.0",
 		"@jsenv/prettier-config": "1.0.0",
-		"@jsenv/prettier-check-project": "3.1.0",
-		"@jsenv/node-module-import-map": "3.1.0",
+		"@jsenv/prettier-check-project": "3.2.0",
+		"@jsenv/node-module-import-map": "3.2.0",
 		"prettier": "1.18.2",
 		"eslint": "5.1.0",
 		"rimraf": "2.6.2"

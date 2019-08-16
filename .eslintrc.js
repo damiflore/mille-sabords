@@ -8,4 +8,3 @@ const config = createConfig({
 })
 
 module.exports = config
-
