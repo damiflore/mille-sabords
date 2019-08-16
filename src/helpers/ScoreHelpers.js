@@ -1,6 +1,4 @@
-import { getRollDiceResults } from "./DiceHelpers"
-
-const countSymbolsOccurences = (diceResultArray) => {
+export const countSymbolsOccurences = (diceResultArray) => {
   const symbolCountMap = {}
   diceResultArray.forEach((diceResult) => {
     if (symbolCountMap.hasOwnProperty(diceResult)) {
@@ -9,15 +7,23 @@ const countSymbolsOccurences = (diceResultArray) => {
       symbolCountMap[diceResult] = 1
     }
   })
-  console.log("symbolCountMap", symbolCountMap)
   return symbolCountMap
+}
+
+export const removeSkullsFromArray = (rollDice) => rollDice.filter((symbol) => symbol !== "skull")
+
+export const isGameOver = (rollDice, card) => {
+  let numerOfSkulls = countSymbolsOccurences(rollDice).skull
+  if (card === "skull") numerOfSkulls++
+  if (card === "2skulls") numerOfSkulls += 2
+  return numerOfSkulls > 2
 }
 
 export const computeScore = (rollDice) => {
   let score = 0
 
-  // remove skulls
-  const rollDiceWithoutSkulls = rollDice.filter((symbol) => symbol !== "skull")
+  // If not, remove skulls to calculate the score
+  const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
 
   // add 1 point for each coin and diamond
   rollDiceWithoutSkulls.forEach((symbol) => {
@@ -37,5 +43,3 @@ export const computeScore = (rollDice) => {
 
   return score
 }
-
-computeScore(getRollDiceResults(8))
