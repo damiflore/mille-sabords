@@ -47,7 +47,7 @@
 		"@dmail/assert": "3.13.0",
 		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
-		"@jsenv/exploring-server": "2.13.0",
+		"@jsenv/exploring-server": "2.14.0",
 		"@jsenv/testing": "1.24.0",
 		"@jsenv/chromium-launcher": "2.2.0",
 		"@jsenv/core": "5.131.0",
