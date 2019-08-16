@@ -1,8 +1,8 @@
 import { assert } from "@dmail/assert"
-import { computeScore } from "./ScoreHelpers.js"
+import { computeSymbolsScore } from "../Score/ScoreHelpers.js"
 
 {
-  const actual = computeScore([
+  const actual = computeSymbolsScore([
     "coin",
     "coin",
     "coin",
@@ -17,7 +17,7 @@ import { computeScore } from "./ScoreHelpers.js"
 }
 
 {
-  const actual = computeScore([
+  const actual = computeSymbolsScore([
     "coin",
     "coin",
     "coin",

@@ -1,14 +1,20 @@
 import React from "react"
 
-import { DiceSet } from "./DiceSet"
-import { rollDice, removeFromArray } from "./helpers/DiceHelpers.js"
-import { getMixedDeck } from "./helpers/CardsHelpers"
+import { DiceSet } from "./Dice/DiceSet.js"
+import { ButtonRoll } from "./Dice/ButtonRoll.js"
+import { CurrentRoundScore } from "./Score/CurrentRoundScore.js"
+import { TotalScore } from "./Score/TotalScore.js"
+import { CardArea } from "./Cards/CardArea.js"
+import { ButtonRestart } from "./ButtonRestart.js"
+
+import { rollDice, removeFromArray } from "./Dice/DiceHelpers.js"
+import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import {
   computeScore,
   removeSkullsFromArray,
   countSymbolsOccurences,
   isGameOver,
-} from "./helpers/ScoreHelpers"
+} from "./Score/ScoreHelpers"
 
 export const MilleSabordGameBoard = () => {
   const [diceRolled, setDiceRolled] = React.useState([])
@@ -46,7 +52,7 @@ export const MilleSabordGameBoard = () => {
       setDiceRolled(roll)
     }
     if (!roundStarted) setRoundStarted(true)
-    if (isGameOver(diceKept, currentCard.name)) {
+    if (isGameOver(diceKept, currentCard)) {
       setRoundFinished(true)
       setCardDrawn(false)
     }
@@ -58,7 +64,7 @@ export const MilleSabordGameBoard = () => {
     const keptArray = diceKept
     keptArray.push(dice)
     setDiceKept([...keptArray])
-    if (currentCard.name === "witch" && dice === "skull") currentCard.effectUsed = false
+    if (currentCard.type === "witch" && dice === "skull") currentCard.effectUsed = false
   }
 
   const removeOneDice = (dice) => {
@@ -67,11 +73,11 @@ export const MilleSabordGameBoard = () => {
     const rollArray = diceRolled
     rollArray.push(dice)
     setDiceRolled([...rollArray])
-    if (currentCard.name === "witch" && dice === "skull") currentCard.effectUsed = true
+    if (currentCard.type === "witch" && dice === "skull") currentCard.effectUsed = true
   }
 
   const markScore = () => {
-    setTotalScore(totalScore + cardsAndDiceScore())
+    setTotalScore(totalScore + computeScore(currentCard, diceKept))
     setRoundFinished(true)
     setCardDrawn(false)
   }
@@ -86,21 +92,16 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const cardsAndDiceScore = () => {
-    // add effects related to the drawn card
-    if (currentCard.name === "diamond" || currentCard.name === "coin")
-      return computeScore([...diceKept, currentCard.name])
-    if (currentCard.name === "animals")
-      return computeScore(diceKept.map((symbol) => (symbol === "parrot" ? "monkey" : symbol)))
-    if (currentCard.name === "pirate") return computeScore(diceKept) * 2
-
-    return computeScore(diceKept)
-  }
-
-  const canRemoveSkull = currentCard.name === "witch" && !currentCard.effectUsed
+  const canRemoveSkull = currentCard.type === "witch" && !currentCard.effectUsed
 
   return (
     <>
+      <CardArea
+        cardDeck={cardDeck}
+        cardDrawn={cardDrawn}
+        drawCard={drawCard}
+        currentCard={currentCard}
+      />
       <div>
         <ButtonRoll
           roundFinished={roundFinished}
@@ -109,7 +110,7 @@ export const MilleSabordGameBoard = () => {
           diceRolled={diceRolled}
           onClick={rollTheDice}
         />
-        {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
+        <ButtonRestart roundFinished={roundFinished} clearDiceSet={clearDiceSet} />
       </div>
       <DiceSet
         title="Roll dice"
@@ -125,60 +126,13 @@ export const MilleSabordGameBoard = () => {
         actionFunction={(dice) => removeOneDice(dice)}
         displayActionCondition={(dice) => !roundFinished && (dice !== "skull" || canRemoveSkull)}
       />
-      {diceKept.length > 0 && (
-        <div>
-          <span className="subtitle"> Current round score: </span>
-          {!roundFinished && (
-            <>
-              <span>{cardsAndDiceScore()}</span>
-              <button onClick={() => markScore()} style={{ marginLeft: "20px" }}>
-                Mark this score
-              </button>
-            </>
-          )}
-          {roundFinished && <span>You lose!</span>}
-        </div>
-      )}
-      <div>
-        <span className="subtitle"> Total score: </span>
-        <span className="totalScore">{totalScore}</span>
-      </div>
-
-      <div>
-        {!cardDrawn && (
-          <button onClick={() => drawCard()} style={{ marginTop: "20px" }}>
-            {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
-          </button>
-        )}
-        <div style={{ marginTop: "10px" }}>Remaining cards: {cardDeck.length}</div>
-        <span className="card">{currentCard.label}</span>
-      </div>
+      <CurrentRoundScore
+        roundFinished={roundFinished}
+        diceKept={diceKept}
+        currentCard={currentCard}
+        markScore={markScore}
+      />
+      <TotalScore totalScore={totalScore} />
     </>
   )
-}
-
-const ButtonRoll = ({ roundFinished, cardDrawn, roundStarted, diceRolled, onClick }) => {
-  if (roundFinished) {
-    return null
-  }
-
-  if (!cardDrawn) {
-    return (
-      <>
-        <button disabled={true}>Roll!</button>
-        <span> (You must draw a card)</span>
-      </>
-    )
-  }
-
-  if (roundStarted && diceRolled.length < 2) {
-    return (
-      <>
-        <button disabled={true}>Roll!</button>
-        <span> (You must roll at least 2 dice)</span>
-      </>
-    )
-  }
-
-  return <button onClick={onClick}>Roll!</button>
 }
