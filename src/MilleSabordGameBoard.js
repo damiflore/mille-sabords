@@ -97,20 +97,18 @@ export const MilleSabordGameBoard = () => {
     return computeScore(diceKept)
   }
 
-  const canRollDice = !(roundStarted && diceRolled.length < 2) && cardDrawn
   const canRemoveSkull = currentCard.name === "witch" && !currentCard.effectUsed
 
   return (
     <>
       <div>
-        {!roundFinished && (
-          <>
-            <button onClick={() => rollTheDice()} disabled={!canRollDice}>
-              Roll!
-            </button>
-            {!canRollDice && <span> (You must roll at least 2 dice)</span>}
-          </>
-        )}
+        <ButtonRoll
+          roundFinished={roundFinished}
+          roundStarted={roundStarted}
+          cardDrawn={cardDrawn}
+          diceRolled={diceRolled}
+          onClick={rollTheDice}
+        />
         {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
       </div>
       <DiceSet
@@ -157,4 +155,30 @@ export const MilleSabordGameBoard = () => {
       </div>
     </>
   )
+}
+
+const ButtonRoll = ({ roundFinished, cardDrawn, roundStarted, diceRolled, onClick }) => {
+  if (roundFinished) {
+    return null
+  }
+
+  if (!cardDrawn) {
+    return (
+      <>
+        <button disabled={true}>Roll!</button>
+        <span> (You must draw a card)</span>
+      </>
+    )
+  }
+
+  if (roundStarted && diceRolled.length < 2) {
+    return (
+      <>
+        <button disabled={true}>Roll!</button>
+        <span> (You must roll at least 2 dice)</span>
+      </>
+    )
+  }
+
+  return <button onClick={onClick}>Roll!</button>
 }
