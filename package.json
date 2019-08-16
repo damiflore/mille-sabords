@@ -29,7 +29,7 @@
 		"generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
 		"build": "npm run dist",
 		"start": "node ./script/start/start.js",
-		"postinstall": "node ./script/postinstall/postinstall.js",
+		"postinstall": "npm run generate-import-map",
 		"dist": "npm run clean && npm run generate-global-bundle",
 		"clean": "rimraf ./client/global-bundle && rimraf coverage",
 		"reinstall": "npm run clean && rimraf node_modules && npm install"
