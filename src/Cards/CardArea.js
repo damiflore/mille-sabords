@@ -1,6 +1,6 @@
 import React from "react"
 
-export const CardArea = (cardDeck, cardDrawn, drawCard, currentCard) => {
+export const CardArea = ({ cardDeck, cardDrawn, drawCard, currentCard }) => {
   return (
     <div>
       {!cardDrawn && (

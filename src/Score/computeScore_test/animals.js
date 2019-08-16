@@ -1,6 +1,5 @@
 import { assert } from "@dmail/assert"
-
-const computeScore = () => {}
+import { computeScore } from "../ScoreHelpers.js"
 
 // with 1 coin and 1 damond
 {

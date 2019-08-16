@@ -1,6 +1,5 @@
 import { assert } from "@dmail/assert"
-
-const computeScore = () => {}
+import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {
@@ -16,7 +15,7 @@ const computeScore = () => {}
 {
   const actual = computeScore({
     currentCard: { type: "coin" },
-    diceKept: ["coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "parrot"],
+    diceKept: ["coin", "coin", "coin", "coin", "coin", "coin", "coin", "parrot"],
   })
   // 4000 from "8 identic symbols"
   // 800 from "coin = 100"

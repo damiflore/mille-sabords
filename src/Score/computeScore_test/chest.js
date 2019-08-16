@@ -1,6 +1,5 @@
 import { assert } from "@dmail/assert"
-
-const computeScore = () => {}
+import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {

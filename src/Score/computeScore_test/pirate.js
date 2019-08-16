@@ -1,6 +1,5 @@
 import { assert } from "@dmail/assert"
-
-const computeScore = () => {}
+import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {
@@ -31,8 +30,9 @@ const computeScore = () => {}
   // 300 from 3 coins
   // 100 from 3 coins
   // 500 from 5 swords
+  // 500 from "perfect" rule
   // x2 from pirate
-  // -> 1600
-  const expected = 1600
+  // -> 2800
+  const expected = 2800
   assert({ actual, expected })
 }

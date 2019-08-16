@@ -1,6 +1,6 @@
 import React from "react"
 
-import { isGameOver, computeScore } from "./ScoreHelpers"
+import { isGameOver, computeScore } from "./ScoreHelpers.js"
 
 export const CurrentRoundScore = ({ roundFinished, diceKept, currentCard, markScore }) => {
   if (diceKept.length < 1) {
@@ -29,7 +29,7 @@ const ScoreDisplay = ({ roundFinished, currentCard, diceKept, markScore }) => {
 
   return (
     <>
-      <span>{computeScore(currentCard, diceKept)}</span>
+      <span>{computeScore({ currentCard, diceKept })}</span>
       {roundFinished ? null : <MarkScoreButton onClick={markScore} />}
     </>
   )

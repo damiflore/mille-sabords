@@ -20,17 +20,10 @@ export const isGameOver = (rollDice, card) => {
 
 const computeSymbolsScore = (symbolsArray) => {
   let score = 0
-
-  // If it's not done, remove skulls before calculate the score
-  const symbolsArrayWithoutSkulls = removeSkullsFromArray(symbolsArray)
-
-  // add 1 point for each coin and diamond
-  symbolsArrayWithoutSkulls.forEach((symbol) => {
-    if (symbol === "diamond" || symbol === "coin") score += 100
-  })
+  let usefullSymbol = 0
 
   // add points for dice combinaisons
-  const occurencesArray = countSymbolsOccurences(symbolsArrayWithoutSkulls)
+  const occurencesArray = countSymbolsOccurences(symbolsArray)
   Object.values(occurencesArray).forEach((occurences) => {
     if (occurences === 3) score += 100
     if (occurences === 4) score += 200
@@ -38,12 +31,27 @@ const computeSymbolsScore = (symbolsArray) => {
     if (occurences === 6) score += 1000
     if (occurences === 7) score += 2000
     if (occurences === 8) score += 4000
+    if (occurences > 2) usefullSymbol += occurences
   })
+
+  // add 1 point for each coin and diamond
+  symbolsArray.forEach((symbol) => {
+    if (symbol === "diamond") {
+      score += 100
+      if (occurencesArray.diamond < 3) usefullSymbol += 1
+    }
+    if (symbol === "coin") {
+      score += 100
+      if (occurencesArray.coin < 3) usefullSymbol += 1
+    }
+  })
+
+  if (usefullSymbol >= symbolsArray.length) score += 500
 
   return score
 }
 
-export const computeScore = (currentCard, diceKept) => {
+export const computeScore = ({ currentCard, diceKept }) => {
   // add effects related to the drawn card
   if (currentCard.type === "diamond" || currentCard.type === "coin")
     return computeSymbolsScore([...diceKept, currentCard.type])

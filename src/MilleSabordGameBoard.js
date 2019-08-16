@@ -2,8 +2,8 @@ import React from "react"
 
 import { DiceSet } from "./Dice/DiceSet.js"
 import { ButtonRoll } from "./Dice/ButtonRoll.js"
-import { CurrentRoundScore } from "./Score/CurrentRoundScore.js"
-import { TotalScore } from "./Score/TotalScore.js"
+import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
+import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
 import { ButtonRestart } from "./ButtonRestart.js"
 
@@ -14,7 +14,7 @@ import {
   removeSkullsFromArray,
   countSymbolsOccurences,
   isGameOver,
-} from "./Score/ScoreHelpers"
+} from "./Score/ScoreHelpers.js"
 
 export const MilleSabordGameBoard = () => {
   const [diceRolled, setDiceRolled] = React.useState([])
@@ -77,7 +77,7 @@ export const MilleSabordGameBoard = () => {
   }
 
   const markScore = () => {
-    setTotalScore(totalScore + computeScore(currentCard, diceKept))
+    setTotalScore(totalScore + computeScore({ currentCard, diceKept }))
     setRoundFinished(true)
     setCardDrawn(false)
   }
