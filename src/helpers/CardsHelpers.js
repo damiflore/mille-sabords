@@ -1,26 +1,26 @@
 export const initialDeck = [
-  { name: "pirate", numberOfCards: 4, label: "Pirate" }, // card effect done
+  { name: "pirate", numberOfCards: 4, label: "Pirate" },
   { name: "witch", numberOfCards: 4, label: "Witch" },
-  { name: "chest", numberOfCards: 4, label: "Treasure chest" },
+  { name: "chest", numberOfCards: 4, label: "Treasure chest" }, // card effect TODO
   { name: "animals", numberOfCards: 4, label: "Parrot = monkey" },
-  { name: "diamond", numberOfCards: 4, label: "Diamond" }, // card effect done
-  { name: "coin", numberOfCards: 3, label: "Coin" }, // card effect done
-  { name: "skull", numberOfCards: 3, label: "Skull" }, // card effect done
-  { name: "2skulls", numberOfCards: 2, label: "2 skulls" }, // card effect done
-  { name: "2swords", numberOfCards: 2, label: "2 sword challenge" },
-  { name: "3swords", numberOfCards: 3, label: "3 sword challenge" },
-  { name: "4swords", numberOfCards: 2, label: "4 sword challenge" },
+  { name: "diamond", numberOfCards: 4, label: "Diamond" },
+  { name: "coin", numberOfCards: 3, label: "Coin" },
+  { name: "skull", numberOfCards: 3, label: "Skull" },
+  { name: "2skulls", numberOfCards: 2, label: "2 skulls" },
+  { name: "2swords", numberOfCards: 2, label: "2 sword challenge" }, // card effect TODO
+  { name: "3swords", numberOfCards: 3, label: "3 sword challenge" }, // card effect TODO
+  { name: "4swords", numberOfCards: 2, label: "4 sword challenge" }, // card effect TODO
 ]
 
-const addCopiesOf = (arr, card, numerOfCopies) => {
-  for (var i = 0; i < numerOfCopies; i++) arr.push(card)
+const addCopiesOf = (arr, card) => {
+  for (var i = 0; i < card.numberOfCards; i++) arr.push(card)
   return arr
 }
 
 const createInitialDeck = () => {
   let cardDeck = []
   initialDeck.forEach((card) => {
-    cardDeck = addCopiesOf(cardDeck, card.name, card.numberOfCards)
+    cardDeck = addCopiesOf(cardDeck, card)
   })
   return cardDeck
 }
@@ -45,9 +45,4 @@ const mixCards = (deck) => {
 
 export const getMixedDeck = () => {
   return mixCards(createInitialDeck())
-}
-
-export const getCardName = (currentCard) => {
-  const card = initialDeck.find((card) => card.name === currentCard)
-  return card ? card.label : "?"
 }

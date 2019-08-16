@@ -2,7 +2,7 @@ import React from "react"
 
 import { DiceSet } from "./DiceSet"
 import { rollDice, removeFromArray } from "./helpers/DiceHelpers.js"
-import { getMixedDeck, getCardName } from "./helpers/CardsHelpers"
+import { getMixedDeck } from "./helpers/CardsHelpers"
 import {
   computeScore,
   removeSkullsFromArray,
@@ -17,7 +17,7 @@ export const MilleSabordGameBoard = () => {
   const [totalScore, setTotalScore] = React.useState(0)
 
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
-  const [currentCard, setCurrentCard] = React.useState("")
+  const [currentCard, setCurrentCard] = React.useState({})
 
   const [roundStarted, setRoundStarted] = React.useState(false)
   const [roundFinished, setRoundFinished] = React.useState(false)
@@ -45,7 +45,7 @@ export const MilleSabordGameBoard = () => {
       setDiceRolled(roll)
     }
     if (!roundStarted) setRoundStarted(true)
-    if (isGameOver(diceKept, currentCard)) setRoundFinished(true)
+    if (isGameOver(diceKept, currentCard.name)) setRoundFinished(true)
   }
 
   const keepOneDice = (dice) => {
@@ -54,6 +54,7 @@ export const MilleSabordGameBoard = () => {
     const keptArray = diceKept
     keptArray.push(dice)
     setDiceKept([...keptArray])
+    if (currentCard.name === "witch" && dice === "skull") currentCard.effectUsed = false
   }
 
   const removeOneDice = (dice) => {
@@ -62,10 +63,11 @@ export const MilleSabordGameBoard = () => {
     const rollArray = diceRolled
     rollArray.push(dice)
     setDiceRolled([...rollArray])
+    if (currentCard.name === "witch" && dice === "skull") currentCard.effectUsed = true
   }
 
   const markScore = () => {
-    setTotalScore(totalScore + computeScore(diceKept, currentCard))
+    setTotalScore(totalScore + cardsAndDiceScore())
     setRoundFinished(true)
   }
 
@@ -78,7 +80,19 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
+  const cardsAndDiceScore = () => {
+    // add effects related to the drawn card
+    if (currentCard.name === "diamond" || currentCard.name === "coin")
+      return computeScore([...diceKept, currentCard.name])
+    if (currentCard.name === "animals")
+      return computeScore(diceKept.map((symbol) => (symbol === "parrot" ? "monkey" : symbol)))
+    if (currentCard.name === "pirate") return computeScore(diceKept) * 2
+
+    return computeScore(diceKept)
+  }
+
   const cannotRollDice = roundStarted && diceRolled.length < 2
+  const canRemoveSkull = currentCard.name === "witch" && !currentCard.effectUsed
 
   return (
     <>
@@ -105,17 +119,20 @@ export const MilleSabordGameBoard = () => {
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => removeOneDice(dice)}
-        displayActionCondition={(dice) => !roundFinished && dice !== "skull"}
+        displayActionCondition={(dice) => !roundFinished && (dice !== "skull" || canRemoveSkull)}
       />
       {diceKept.length > 0 && (
         <div>
           <span className="subtitle"> Current round score: </span>
-          <span>{computeScore(diceKept, currentCard)}</span>
           {!roundFinished && (
-            <button onClick={() => markScore()} style={{ marginLeft: "20px" }}>
-              Mark this score
-            </button>
+            <>
+              <span>{cardsAndDiceScore()}</span>
+              <button onClick={() => markScore()} style={{ marginLeft: "20px" }}>
+                Mark this score
+              </button>
+            </>
           )}
+          {roundFinished && <span>You lose!</span>}
         </div>
       )}
       <div>
@@ -128,7 +145,7 @@ export const MilleSabordGameBoard = () => {
           {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
         </button>
         <div style={{ marginTop: "10px" }}>Remaining cards: {cardDeck.length}</div>
-        <span className="card">{getCardName(currentCard)}</span>
+        <span className="card">{currentCard.label}</span>
       </div>
     </>
   )

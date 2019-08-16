@@ -19,11 +19,8 @@ export const isGameOver = (rollDice, card) => {
   return numerOfSkulls > 2
 }
 
-export const computeScore = (rollDice, card) => {
+export const computeScore = (rollDice) => {
   let score = 0
-
-  // If 3 skulls : game is over !
-  if (isGameOver(rollDice, card)) return "You lose!"
 
   // If not, remove skulls to calculate the score
   const rollDiceWithoutSkulls = removeSkullsFromArray(rollDice)
@@ -44,8 +41,5 @@ export const computeScore = (rollDice, card) => {
     if (occurences === 8) score += 4000
   })
 
-  // add points related to the drawn card
-  if (card === "diamond" || card === "coin") score += 100
-  if (card === "pirate") score *= 2
   return score
 }
