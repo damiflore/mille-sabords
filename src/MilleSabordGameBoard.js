@@ -21,6 +21,7 @@ export const MilleSabordGameBoard = () => {
 
   const [roundStarted, setRoundStarted] = React.useState(false)
   const [roundFinished, setRoundFinished] = React.useState(false)
+  const [cardDrawn, setCardDrawn] = React.useState(false)
 
   const clearDiceSet = () => {
     setDiceRolled([])
@@ -45,7 +46,10 @@ export const MilleSabordGameBoard = () => {
       setDiceRolled(roll)
     }
     if (!roundStarted) setRoundStarted(true)
-    if (isGameOver(diceKept, currentCard.name)) setRoundFinished(true)
+    if (isGameOver(diceKept, currentCard.name)) {
+      setRoundFinished(true)
+      setCardDrawn(false)
+    }
   }
 
   const keepOneDice = (dice) => {
@@ -69,12 +73,14 @@ export const MilleSabordGameBoard = () => {
   const markScore = () => {
     setTotalScore(totalScore + cardsAndDiceScore())
     setRoundFinished(true)
+    setCardDrawn(false)
   }
 
   const drawCard = () => {
     if (cardDeck.length > 0) {
       setCurrentCard(cardDeck.pop())
       setCardDeck(cardDeck)
+      setCardDrawn(true)
     } else {
       setCardDeck(getMixedDeck())
     }
@@ -91,7 +97,7 @@ export const MilleSabordGameBoard = () => {
     return computeScore(diceKept)
   }
 
-  const cannotRollDice = roundStarted && diceRolled.length < 2
+  const canRollDice = !(roundStarted && diceRolled.length < 2) && cardDrawn
   const canRemoveSkull = currentCard.name === "witch" && !currentCard.effectUsed
 
   return (
@@ -99,10 +105,10 @@ export const MilleSabordGameBoard = () => {
       <div>
         {!roundFinished && (
           <>
-            <button onClick={() => rollTheDice()} disabled={cannotRollDice}>
+            <button onClick={() => rollTheDice()} disabled={!canRollDice}>
               Roll!
             </button>
-            {cannotRollDice && <span> (You must roll at least 2 dice)</span>}
+            {!canRollDice && <span> (You must roll at least 2 dice)</span>}
           </>
         )}
         {roundFinished && <button onClick={() => clearDiceSet()}>Restart</button>}
@@ -141,9 +147,11 @@ export const MilleSabordGameBoard = () => {
       </div>
 
       <div>
-        <button onClick={() => drawCard()} style={{ marginTop: "20px" }}>
-          {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
-        </button>
+        {!cardDrawn && (
+          <button onClick={() => drawCard()} style={{ marginTop: "20px" }}>
+            {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
+          </button>
+        )}
         <div style={{ marginTop: "10px" }}>Remaining cards: {cardDeck.length}</div>
         <span className="card">{currentCard.label}</span>
       </div>
