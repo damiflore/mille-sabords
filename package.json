@@ -38,7 +38,7 @@
 		"node": "8.x"
 	},
 	"dependencies": {
-		"@dmail/server": "2.3.0",
+		"@dmail/server": "2.4.0",
 		"@jsenv/operating-system-path": "2.2.0",
 		"react": "16.8.6",
 		"react-dom": "16.8.6"
@@ -49,7 +49,7 @@
 		"@jsenv/babel-plugin-map": "1.0.0",
 		"@jsenv/exploring-server": "2.14.0",
 		"@jsenv/testing": "1.24.0",
-		"@jsenv/chromium-launcher": "2.2.0",
+		"@jsenv/chromium-launcher": "2.3.0",
 		"@jsenv/core": "5.131.0",
 		"@jsenv/bundling": "1.13.0",
 		"@jsenv/codecov-upload": "1.6.0",
