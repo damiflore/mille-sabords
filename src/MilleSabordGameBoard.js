@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { DiceSet } from "./Dice/DiceSet.js"
@@ -15,6 +16,9 @@ import {
   countSymbolsOccurences,
   isGameOver,
 } from "./Score/ScoreHelpers.js"
+
+import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
+import { CARD_WITCH } from "src/Cards/card-types.js"
 
 export const MilleSabordGameBoard = () => {
   const [diceRolled, setDiceRolled] = React.useState([])
@@ -41,9 +45,9 @@ export const MilleSabordGameBoard = () => {
     const roll = rollDice(numberOfDice > 0 ? numberOfDice : 8)
 
     // if the roll contain some skulls, remove them from the current roll, add them to the kept dice
-    const numberOfSkulls = countSymbolsOccurences(roll).skull
+    const numberOfSkulls = countSymbolsOccurences(roll)[SYMBOL_SKULL]
     if (numberOfSkulls) {
-      for (var i = 0; i < numberOfSkulls; i++) diceKept.push("skull")
+      for (var i = 0; i < numberOfSkulls; i++) diceKept.push(SYMBOL_SKULL)
       // note : here it's important to set a copy of the array in order for the view to be updated.
       setDiceKept([...diceKept])
       const rollDiceWithoutSkulls = removeSkullsFromArray(roll)
@@ -64,7 +68,7 @@ export const MilleSabordGameBoard = () => {
     const keptArray = diceKept
     keptArray.push(dice)
     setDiceKept([...keptArray])
-    if (currentCard.type === "witch" && dice === "skull") currentCard.effectUsed = false
+    if (currentCard.type === CARD_WITCH && dice === SYMBOL_SKULL) currentCard.effectUsed = false
   }
 
   const removeOneDice = (dice) => {
@@ -73,7 +77,7 @@ export const MilleSabordGameBoard = () => {
     const rollArray = diceRolled
     rollArray.push(dice)
     setDiceRolled([...rollArray])
-    if (currentCard.type === "witch" && dice === "skull") currentCard.effectUsed = true
+    if (currentCard.type === CARD_WITCH && dice === SYMBOL_SKULL) currentCard.effectUsed = true
   }
 
   const markScore = () => {
@@ -92,7 +96,7 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const canRemoveSkull = currentCard.type === "witch" && !currentCard.effectUsed
+  const canRemoveSkull = currentCard.type === CARD_WITCH && !currentCard.effectUsed
 
   return (
     <>
@@ -124,7 +128,9 @@ export const MilleSabordGameBoard = () => {
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => removeOneDice(dice)}
-        displayActionCondition={(dice) => !roundFinished && (dice !== "skull" || canRemoveSkull)}
+        displayActionCondition={(dice) =>
+          !roundFinished && (dice !== SYMBOL_SKULL || canRemoveSkull)
+        }
       />
       <CurrentRoundScore
         roundFinished={roundFinished}

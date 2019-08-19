@@ -1,11 +1,28 @@
 import { assert } from "@dmail/assert"
+import {
+  SYMBOL_PARROT,
+  SYMBOL_MONKEY,
+  SYMBOL_SWORD,
+  SYMBOL_SKULL,
+  SYMBOL_COIN,
+} from "/src/symbols/symbol-types.js"
+import { CARD_PIRATE } from "src/Cards/card-types.js"
 import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {
   const actual = computeScore({
-    currentCard: { type: "pirate" },
-    diceKept: ["sword", "sword", "parrot", "parrot", "monkey", "monkey", "skull", "skull"],
+    currentCard: { type: CARD_PIRATE },
+    diceKept: [
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SKULL,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 0
   assert({ actual, expected })
@@ -14,8 +31,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 coin
 {
   const actual = computeScore({
-    currentCard: { type: "pirate" },
-    diceKept: ["coin", "coin", "coin", "monkey", "monkey", "parrot", "parrot", "skull"],
+    currentCard: { type: CARD_PIRATE },
+    diceKept: [
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 800
   assert({ actual, expected })
@@ -24,8 +50,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 coin + 5 sword
 {
   const actual = computeScore({
-    currentCard: { type: "pirate" },
-    diceKept: ["coin", "coin", "coin", "sword", "sword", "sword", "sword", "sword"],
+    currentCard: { type: CARD_PIRATE },
+    diceKept: [
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+    ],
   })
   // 300 from 3 coins
   // 100 from 3 coins

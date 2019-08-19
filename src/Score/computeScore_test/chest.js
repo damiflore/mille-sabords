@@ -1,11 +1,29 @@
 import { assert } from "@dmail/assert"
+import {
+  SYMBOL_PARROT,
+  SYMBOL_MONKEY,
+  SYMBOL_SWORD,
+  SYMBOL_SKULL,
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+} from "/src/symbols/symbol-types.js"
+import { CARD_CHEST } from "src/Cards/card-types.js"
 import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "monkey", "monkey", "sword", "sword", "skull", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SKULL,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 0
   assert({ actual, expected })
@@ -14,8 +32,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "monkey", "monkey", "sword", "sword", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 100
   assert({ actual, expected })
@@ -24,8 +51,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 4 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "parrot", "monkey", "monkey", "sword", "sword"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+    ],
   })
   const expected = 200
   assert({ actual, expected })
@@ -34,8 +70,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 5 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "parrot", "parrot", "monkey", "monkey", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 500
   assert({ actual, expected })
@@ -44,8 +89,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 6 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "parrot", "parrot", "parrot", "monkey", "monkey"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+    ],
   })
   const expected = 1000
   assert({ actual, expected })
@@ -54,8 +108,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 7 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "parrot", "parrot", "parrot", "parrot", "monkey"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+    ],
   })
   const expected = 2000
   assert({ actual, expected })
@@ -64,8 +127,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 8 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "parrot", "parrot", "parrot", "parrot", "parrot"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+    ],
   })
   // 4000 from "8 identic symbols"
   // 500 from "perfect" rule
@@ -77,8 +149,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 1 coin
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["coin", "parrot", "parrot", "monkey", "monkey", "sword", "sword", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_COIN,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 100
   assert({ actual, expected })
@@ -87,8 +168,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 1 diamond
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["diamond", "parrot", "parrot", "monkey", "monkey", "sword", "sword", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_DIAMOND,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 100
   assert({ actual, expected })
@@ -97,8 +187,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 coin
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["coin", "coin", "coin", "parrot", "parrot", "sword", "sword", "skull"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_SKULL,
+    ],
   })
   // 100 from 3 identic coin
   // 300 from 3 coin
@@ -110,8 +209,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 parrot and 3 diamond
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "diamond", "diamond", "diamond", "sword", "sword"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_DIAMOND,
+      SYMBOL_DIAMOND,
+      SYMBOL_DIAMOND,
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+    ],
   })
   // 100 from 3 identic parrot
   // 100 from 3 identic diamond
@@ -124,8 +232,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 3 parrot and 3 monkey and 2 coin
 {
   const actual = computeScore({
-    currentCard: { type: "chest" },
-    diceKept: ["parrot", "parrot", "parrot", "monkey", "monkey", "monkey", "coin", "coin"],
+    currentCard: { type: CARD_CHEST },
+    diceKept: [
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+    ],
   })
   // 100 from 3 identic parrot
   // 100 from 3 identic monkey

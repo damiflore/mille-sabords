@@ -1,10 +1,19 @@
+import {
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+  SYMBOL_SWORD,
+  SYMBOL_PARROT,
+  SYMBOL_MONKEY,
+  SYMBOL_SKULL,
+} from "/src/symbols/symbol-types.js"
+
 const diceNumberToSymbol = {
-  1: "coin",
-  2: "diamond",
-  3: "sword",
-  4: "parrot",
-  5: "monkey",
-  6: "skull",
+  1: SYMBOL_COIN,
+  2: SYMBOL_DIAMOND,
+  3: SYMBOL_SWORD,
+  4: SYMBOL_PARROT,
+  5: SYMBOL_MONKEY,
+  6: SYMBOL_SKULL,
 }
 
 const getRandomDiceNumber = () => Math.floor(Math.random() * 6) + 1

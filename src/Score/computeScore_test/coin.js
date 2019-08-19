@@ -1,11 +1,28 @@
 import { assert } from "@dmail/assert"
+import {
+  SYMBOL_PARROT,
+  SYMBOL_MONKEY,
+  SYMBOL_SWORD,
+  SYMBOL_SKULL,
+  SYMBOL_COIN,
+} from "/src/symbols/symbol-types.js"
+import { CARD_COIN } from "src/Cards/card-types.js"
 import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing
 {
   const actual = computeScore({
-    currentCard: { type: "coin" },
-    diceKept: ["sword", "sword", "parrot", "parrot", "monkey", "monkey", "skull", "skull"],
+    currentCard: { type: CARD_COIN },
+    diceKept: [
+      SYMBOL_SWORD,
+      SYMBOL_SWORD,
+      SYMBOL_PARROT,
+      SYMBOL_PARROT,
+      SYMBOL_MONKEY,
+      SYMBOL_MONKEY,
+      SYMBOL_SKULL,
+      SYMBOL_SKULL,
+    ],
   })
   const expected = 100
   assert({ actual, expected })
@@ -14,8 +31,17 @@ import { computeScore } from "../ScoreHelpers.js"
 // with 7 coin + 1 parrot
 {
   const actual = computeScore({
-    currentCard: { type: "coin" },
-    diceKept: ["coin", "coin", "coin", "coin", "coin", "coin", "coin", "parrot"],
+    currentCard: { type: CARD_COIN },
+    diceKept: [
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_PARROT,
+    ],
   })
   // 4000 from "8 identic symbols"
   // 800 from "coin = 100"
