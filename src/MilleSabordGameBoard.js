@@ -7,7 +7,6 @@ import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
 import { ButtonRestart } from "./ButtonRestart.js"
-
 import { rollDice, removeFromArray } from "./Dice/DiceHelpers.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import {
@@ -16,12 +15,11 @@ import {
   countSymbolsOccurences,
   isGameOver,
 } from "./Score/ScoreHelpers.js"
-
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH } from "src/Cards/card-types.js"
 
 export const MilleSabordGameBoard = () => {
-  const [diceRolled, setDiceRolled] = React.useState([])
+  const [diceOnGoing, setDiceRolled] = React.useState([])
   const [diceKept, setDiceKept] = React.useState([])
 
   const [totalScore, setTotalScore] = React.useState(0)
@@ -29,19 +27,19 @@ export const MilleSabordGameBoard = () => {
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
   const [currentCard, setCurrentCard] = React.useState({})
 
-  const [roundStarted, setRoundStarted] = React.useState(false)
+  const [diceRolledOnce, setDiceRolledOnce] = React.useState(false)
   const [roundFinished, setRoundFinished] = React.useState(false)
   const [cardDrawn, setCardDrawn] = React.useState(false)
 
   const clearDiceSet = () => {
     setDiceRolled([])
     setDiceKept([])
-    setRoundStarted(false)
+    setDiceRolledOnce(false)
     setRoundFinished(false)
   }
 
   const rollTheDice = () => {
-    const numberOfDice = diceRolled.length
+    const numberOfDice = diceOnGoing.length
     const roll = rollDice(numberOfDice > 0 ? numberOfDice : 8)
 
     // if the roll contain some skulls, remove them from the current roll, add them to the kept dice
@@ -55,7 +53,7 @@ export const MilleSabordGameBoard = () => {
     } else {
       setDiceRolled(roll)
     }
-    if (!roundStarted) setRoundStarted(true)
+    if (!diceRolledOnce) setDiceRolledOnce(true)
     if (isGameOver(diceKept, currentCard)) {
       setRoundFinished(true)
       setCardDrawn(false)
@@ -63,7 +61,7 @@ export const MilleSabordGameBoard = () => {
   }
 
   const keepOneDice = (dice) => {
-    const newArray = removeFromArray(diceRolled, dice)
+    const newArray = removeFromArray(diceOnGoing, dice)
     setDiceRolled([...newArray])
     const keptArray = diceKept
     keptArray.push(dice)
@@ -74,7 +72,7 @@ export const MilleSabordGameBoard = () => {
   const removeOneDice = (dice) => {
     const newArray = removeFromArray(diceKept, dice)
     setDiceKept([...newArray])
-    const rollArray = diceRolled
+    const rollArray = diceOnGoing
     rollArray.push(dice)
     setDiceRolled([...rollArray])
     if (currentCard.type === CARD_WITCH && dice === SYMBOL_SKULL) currentCard.effectUsed = true
@@ -109,16 +107,16 @@ export const MilleSabordGameBoard = () => {
       <div>
         <ButtonRoll
           roundFinished={roundFinished}
-          roundStarted={roundStarted}
+          diceRolledOnce={diceRolledOnce}
           cardDrawn={cardDrawn}
-          diceRolled={diceRolled}
+          diceOnGoing={diceOnGoing}
           onClick={rollTheDice}
         />
         <ButtonRestart roundFinished={roundFinished} clearDiceSet={clearDiceSet} />
       </div>
       <DiceSet
         title="Roll dice"
-        diceArray={diceRolled}
+        diceArray={diceOnGoing}
         actionText="Keep"
         actionFunction={(dice) => keepOneDice(dice)}
         displayActionCondition={() => !roundFinished}
@@ -133,6 +131,7 @@ export const MilleSabordGameBoard = () => {
         }
       />
       <CurrentRoundScore
+        diceRolledOnce={diceRolledOnce}
         roundFinished={roundFinished}
         diceKept={diceKept}
         currentCard={currentCard}

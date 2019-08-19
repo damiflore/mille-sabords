@@ -1,6 +1,6 @@
 import React from "react"
 
-export const ButtonRoll = ({ roundFinished, cardDrawn, roundStarted, diceRolled, onClick }) => {
+export const ButtonRoll = ({ roundFinished, cardDrawn, diceRolledOnce, diceOnGoing, onClick }) => {
   if (roundFinished) {
     return null
   }
@@ -14,7 +14,7 @@ export const ButtonRoll = ({ roundFinished, cardDrawn, roundStarted, diceRolled,
     )
   }
 
-  if (roundStarted && diceRolled.length < 2) {
+  if (diceRolledOnce && diceOnGoing.length < 2) {
     return (
       <>
         <button disabled={true}>Roll!</button>

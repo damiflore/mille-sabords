@@ -34,7 +34,7 @@ export const isGameOver = (rollDice, card) => {
   return numerOfSkulls > 2
 }
 
-const computeSymbolsScore = (symbolsArray) => {
+const computeSymbolsScore = (symbolsArray, { perfectEnabled }) => {
   let score = 0
   let usefullSymbol = 0
 
@@ -62,26 +62,33 @@ const computeSymbolsScore = (symbolsArray) => {
     }
   })
 
-  if (usefullSymbol >= symbolsArray.length) score += 500
+  if (perfectEnabled && usefullSymbol >= symbolsArray.length) score += 500
 
   return score
 }
 
 export const computeScore = ({ currentCard, diceKept }) => {
+  if (diceKept.length === 0) {
+    return 0
+  }
+
+  const perfectEnabled = diceKept.length === 8
+
   // add effects related to the drawn card
   if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {
-    return computeSymbolsScore([...diceKept, currentCard.type])
+    return computeSymbolsScore([...diceKept, currentCard.type], { perfectEnabled })
   }
 
   if (currentCard.type === CARD_ANIMALS) {
     return computeSymbolsScore(
       diceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
+      { perfectEnabled },
     )
   }
 
   if (currentCard.type === CARD_PIRATE) {
-    return computeSymbolsScore(diceKept) * 2
+    return computeSymbolsScore(diceKept, { perfectEnabled }) * 2
   }
 
-  return computeSymbolsScore(diceKept)
+  return computeSymbolsScore(diceKept, { perfectEnabled })
 }

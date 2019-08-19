@@ -2,8 +2,14 @@ import React from "react"
 
 import { isGameOver, computeScore } from "./ScoreHelpers.js"
 
-export const CurrentRoundScore = ({ roundFinished, diceKept, currentCard, markScore }) => {
-  if (diceKept.length < 1) {
+export const CurrentRoundScore = ({
+  diceRolledOnce,
+  roundFinished,
+  diceKept,
+  currentCard,
+  markScore,
+}) => {
+  if (!diceRolledOnce) {
     return null
   }
 
