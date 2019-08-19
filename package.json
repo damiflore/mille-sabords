@@ -27,7 +27,7 @@
 		"upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
 		"generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
 		"generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
-		"log-lighthouse-score": "node ./script/lighthouse-score/log-lighthouse-score.js",
+		"log-lighthouse-score": "node ./script/postdeploy/log-lighthouse-score.js",
 		"build": "npm run dist",
 		"start": "node ./script/start/start.js",
 		"postdeploy": "node ./script/postdeploy/postdeploy.js",

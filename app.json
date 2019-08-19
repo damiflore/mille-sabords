@@ -2,6 +2,11 @@
   "name": "Mille sabords",
   "description": "Web version of Mille sabords game",
   "repository": "https://github.com/damiflore/mille-sabords",
+  "env": {
+    "LIGHTHOUSE_GITHUB_TOKEN": {
+      "required": true
+    }
+  },
   "scripts": {
     "postdeploy": "npm run postdeploy"
   }

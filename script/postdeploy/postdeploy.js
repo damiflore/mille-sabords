@@ -1,8 +1,37 @@
-// here we could run lighthouse report
-// but there is no way to point it back to the github request
-// or something valuable.
-// we could enable heroku CI but it's 10$/month
-// and I would still have to create a bot to write
-// lighthouse report diff
+const { commentGithubPullRequest } = require("./commentGithubPullRequest.js")
+const { generateLighthouseScoreMap } = require("./generateLighthouseScoreMap.js")
 
-console.log("process.env.HEROKU_APP_NAME", process.env.HEROKU_APP_NAME)
+const run = async () => {
+  const herokuAppName = process.env.HEROKU_APP_NAME
+  console.log("process.env.HEROKU_APP_NAME", herokuAppName)
+  if (true) {
+    throw new Error(herokuAppName)
+  }
+
+  const prIndex = herokuAppName.lastIndexOf("-pr-")
+  // run this only for review app
+  if (prIndex === -1) return
+
+  const pullRequestNumber = Number(herokuAppName.slice(prIndex + `-pr-`.length))
+
+  const scoreMap = await generateLighthouseScoreMap()
+  const commentBody = scoreMapToGithubPullRequestComment(scoreMap)
+
+  await commentGithubPullRequest({
+    repoOwner: "damiflore",
+    repoName: "mille-sabords",
+    issueNumber: pullRequestNumber,
+    commentBody,
+  })
+}
+
+const scoreMapToGithubPullRequestComment = (scoreMap) => {
+  return `lighthouse score
+
+Category | Score
+-------- | -------
+${Object.keys(scoreMap).map((category) => `${category} | ${scoreMap[category]}`).join(`
+`)}`
+}
+
+run()
