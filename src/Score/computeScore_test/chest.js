@@ -14,7 +14,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_MONKEY,
@@ -33,7 +33,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -52,7 +52,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -71,7 +71,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -90,7 +90,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -109,7 +109,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -128,7 +128,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -150,7 +150,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_COIN,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -169,7 +169,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_DIAMOND,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -188,7 +188,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_COIN,
       SYMBOL_COIN,
       SYMBOL_COIN,
@@ -210,7 +210,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,
@@ -233,7 +233,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_CHEST },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_PARROT,
       SYMBOL_PARROT,

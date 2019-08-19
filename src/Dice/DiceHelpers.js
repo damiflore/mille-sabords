@@ -33,6 +33,10 @@ export const rollOnGoingDices = (onGoingDices) => {
   })
 }
 
+export const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
+
+const diceToSymbol = (dice) => dice.symbol
+
 const rollDice = (dice) => {
   dice.symbol = getDiceRandomSymbol()
 }

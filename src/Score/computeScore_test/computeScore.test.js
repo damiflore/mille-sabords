@@ -1,5 +1,5 @@
 /**
- * computeScore { currentCard, diceKept }
+ * computeScore { currentCard, symbolArrayFromDiceKept }
  * currentCard is the current card that can affect the score
  * diceKept is an array of 8 symbols.
  * computeScore returns a number representing the score according to diceKept and currentCard.

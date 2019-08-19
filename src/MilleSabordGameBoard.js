@@ -9,7 +9,7 @@ import { CardArea } from "./Cards/CardArea.js"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import { computeScore, isGameOver } from "./Score/ScoreHelpers.js"
-import { DICE_ARRAY, rollOnGoingDices } from "/src/Dice/DiceHelpers.js"
+import { DICE_ARRAY, rollOnGoingDices, diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH } from "src/Cards/card-types.js"
 
@@ -82,7 +82,10 @@ export const MilleSabordGameBoard = () => {
   }
 
   const markScore = () => {
-    setTotalScore(totalScore + computeScore({ currentCard, diceKept }))
+    setTotalScore(
+      totalScore +
+        computeScore({ currentCard, symbolArrayFromDiceKept: diceArrayToSymbolArray(diceKept) }),
+    )
     setRoundFinished(true)
     setCardDrawn(false)
   }

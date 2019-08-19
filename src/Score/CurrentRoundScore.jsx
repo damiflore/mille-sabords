@@ -1,5 +1,6 @@
 import React from "react"
 
+import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 import { isGameOver, computeScore } from "./ScoreHelpers.js"
 
 export const CurrentRoundScore = ({
@@ -35,7 +36,9 @@ const ScoreDisplay = ({ roundFinished, currentCard, diceKept, markScore }) => {
 
   return (
     <>
-      <span>{computeScore({ currentCard, diceKept })}</span>
+      <span>
+        {computeScore({ currentCard, symbolArrayFromDiceKept: diceArrayToSymbolArray(diceKept) })}
+      </span>
       {roundFinished ? null : <MarkScoreButton onClick={markScore} />}
     </>
   )

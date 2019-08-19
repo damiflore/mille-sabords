@@ -1,3 +1,4 @@
+import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 import {
   CARD_PIRATE,
   CARD_ANIMALS,
@@ -26,7 +27,7 @@ export const countSymbolsOccurences = (symbolArray) => {
 }
 
 export const isGameOver = (diceArray, card) => {
-  let numerOfSkulls = countSymbolsOccurences(diceArray.map((dice) => dice.symbol))[SYMBOL_SKULL]
+  let numerOfSkulls = countSymbolsOccurences(diceArrayToSymbolArray(diceArray))[SYMBOL_SKULL]
   if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
   return numerOfSkulls > 2
 }
@@ -82,13 +83,12 @@ const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
  *   score: Number
  * }
  */
-export const computeScore = ({ currentCard, diceKept }) => {
-  if (diceKept.length === 0) {
+export const computeScore = ({ currentCard, symbolArrayFromDiceKept }) => {
+  if (symbolArrayFromDiceKept.length === 0) {
     return 0
   }
 
-  const perfectEnabled = diceKept.length === 8
-  const symbolArrayFromDiceKept = diceKept.map((dice) => dice.symbol)
+  const perfectEnabled = symbolArrayFromDiceKept.length === 8
 
   // add effects related to the drawn card
   if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {

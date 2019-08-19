@@ -14,7 +14,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_ANIMALS },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
       SYMBOL_MONKEY,
       SYMBOL_SWORD,
@@ -33,7 +33,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_ANIMALS },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_MONKEY,
       SYMBOL_MONKEY,
       SYMBOL_MONKEY,

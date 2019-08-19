@@ -13,7 +13,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_COIN,
       SYMBOL_COIN,
       SYMBOL_COIN,
@@ -32,7 +32,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_SWORD,
       SYMBOL_SWORD,
       SYMBOL_MONKEY,
@@ -51,7 +51,7 @@ import { computeScore } from "../ScoreHelpers.js"
 {
   const actual = computeScore({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    diceKept: [
+    symbolArrayFromDiceKept: [
       SYMBOL_SWORD,
       SYMBOL_SWORD,
       SYMBOL_SWORD,
