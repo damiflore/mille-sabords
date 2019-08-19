@@ -13,33 +13,30 @@ import {
   SYMBOL_MONKEY,
 } from "/src/symbols/symbol-types.js"
 
-export const countSymbolsOccurences = (diceResultArray) => {
+export const countSymbolsOccurences = (symbolArray) => {
   const symbolCountMap = {}
-  diceResultArray.forEach((diceResult) => {
-    if (symbolCountMap.hasOwnProperty(diceResult)) {
-      symbolCountMap[diceResult]++
+  symbolArray.forEach((symbol) => {
+    if (symbolCountMap.hasOwnProperty(symbol)) {
+      symbolCountMap[symbol]++
     } else {
-      symbolCountMap[diceResult] = 1
+      symbolCountMap[symbol] = 1
     }
   })
   return symbolCountMap
 }
 
-export const removeSkullsFromArray = (rollDice) =>
-  rollDice.filter((symbol) => symbol !== SYMBOL_SKULL)
-
-export const isGameOver = (rollDice, card) => {
-  let numerOfSkulls = countSymbolsOccurences(rollDice)[SYMBOL_SKULL]
+export const isGameOver = (diceArray, card) => {
+  let numerOfSkulls = countSymbolsOccurences(diceArray.map((dice) => dice.symbol))[SYMBOL_SKULL]
   if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
   return numerOfSkulls > 2
 }
 
-const computeSymbolsScore = (symbolsArray, { perfectEnabled }) => {
+const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
   let score = 0
   let usefullSymbol = 0
 
   // add points for dice combinaisons
-  const symbolCountMap = countSymbolsOccurences(symbolsArray)
+  const symbolCountMap = countSymbolsOccurences(symbolArray)
   Object.values(symbolCountMap).forEach((symbolCount) => {
     if (symbolCount === 3) score += 100
     if (symbolCount === 4) score += 200
@@ -51,7 +48,7 @@ const computeSymbolsScore = (symbolsArray, { perfectEnabled }) => {
   })
 
   // add 1 point for each coin and diamond
-  symbolsArray.forEach((symbol) => {
+  symbolArray.forEach((symbol) => {
     if (symbol === SYMBOL_DIAMOND) {
       score += 100
       if (symbolCountMap[SYMBOL_DIAMOND] < 3) usefullSymbol += 1
@@ -62,7 +59,7 @@ const computeSymbolsScore = (symbolsArray, { perfectEnabled }) => {
     }
   })
 
-  if (perfectEnabled && usefullSymbol >= symbolsArray.length) score += 500
+  if (perfectEnabled && usefullSymbol >= symbolArray.length) score += 500
 
   return score
 }
@@ -91,22 +88,23 @@ export const computeScore = ({ currentCard, diceKept }) => {
   }
 
   const perfectEnabled = diceKept.length === 8
+  const symbolArrayFromDiceKept = diceKept.map((dice) => dice.symbol)
 
   // add effects related to the drawn card
   if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {
-    return computeSymbolsScore([...diceKept, currentCard.type], { perfectEnabled })
+    return computeSymbolsScore([...symbolArrayFromDiceKept, currentCard.type], { perfectEnabled })
   }
 
   if (currentCard.type === CARD_ANIMALS) {
     return computeSymbolsScore(
-      diceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
+      symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
       { perfectEnabled },
     )
   }
 
   if (currentCard.type === CARD_PIRATE) {
-    return computeSymbolsScore(diceKept, { perfectEnabled }) * 2
+    return computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled }) * 2
   }
 
-  return computeSymbolsScore(diceKept, { perfectEnabled })
+  return computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled })
 }

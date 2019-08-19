@@ -7,6 +7,17 @@ import {
   SYMBOL_SKULL,
 } from "/src/symbols/symbol-types.js"
 
+export const DICE_ARRAY = [
+  { id: 1, symbol: SYMBOL_COIN },
+  { id: 2, symbol: SYMBOL_DIAMOND },
+  { id: 3, symbol: SYMBOL_SWORD },
+  { id: 4, symbol: SYMBOL_PARROT },
+  { id: 5, symbol: SYMBOL_MONKEY },
+  { id: 6, symbol: SYMBOL_SKULL },
+  { id: 7, symbol: SYMBOL_SKULL },
+  { id: 8, symbol: SYMBOL_SKULL },
+]
+
 const diceNumberToSymbol = {
   1: SYMBOL_COIN,
   2: SYMBOL_DIAMOND,
@@ -16,19 +27,16 @@ const diceNumberToSymbol = {
   6: SYMBOL_SKULL,
 }
 
+export const rollOnGoingDices = (onGoingDices) => {
+  onGoingDices.forEach((dice) => {
+    rollDice(dice)
+  })
+}
+
+const rollDice = (dice) => {
+  dice.symbol = getDiceRandomSymbol()
+}
+
+const getDiceRandomSymbol = () => diceNumberToSymbol[getRandomDiceNumber()]
+
 const getRandomDiceNumber = () => Math.floor(Math.random() * 6) + 1
-
-export const rollDice = (numberOfDice) => {
-  const rollDice = []
-  for (let i = 0; i < numberOfDice; i++) {
-    const diceNumber = getRandomDiceNumber()
-    rollDice.push(diceNumberToSymbol[diceNumber])
-  }
-  return rollDice
-}
-
-export const removeFromArray = (rollDice, symbol) => {
-  const index = rollDice.findIndex((symbolToFind) => symbolToFind === symbol)
-  rollDice.splice(index, 1)
-  return rollDice
-}

@@ -7,19 +7,14 @@ import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
 import { ButtonRestart } from "./ButtonRestart.js"
-import { rollDice, removeFromArray } from "./Dice/DiceHelpers.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
-import {
-  computeScore,
-  removeSkullsFromArray,
-  countSymbolsOccurences,
-  isGameOver,
-} from "./Score/ScoreHelpers.js"
+import { computeScore, isGameOver } from "./Score/ScoreHelpers.js"
+import { DICE_ARRAY, rollOnGoingDices } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH } from "src/Cards/card-types.js"
 
 export const MilleSabordGameBoard = () => {
-  const [diceOnGoing, setDiceRolled] = React.useState([])
+  const [diceOnGoing, setDiceOngoing] = React.useState(DICE_ARRAY)
   const [diceKept, setDiceKept] = React.useState([])
 
   const [totalScore, setTotalScore] = React.useState(0)
@@ -32,49 +27,57 @@ export const MilleSabordGameBoard = () => {
   const [cardDrawn, setCardDrawn] = React.useState(false)
 
   const clearDiceSet = () => {
-    setDiceRolled([])
+    setDiceOngoing([...diceOnGoing, ...diceKept])
     setDiceKept([])
     setDiceRolledOnce(false)
     setRoundFinished(false)
   }
 
   const rollTheDice = () => {
-    const numberOfDice = diceOnGoing.length
-    const roll = rollDice(numberOfDice > 0 ? numberOfDice : 8)
-
-    // if the roll contain some skulls, remove them from the current roll, add them to the kept dice
-    const numberOfSkulls = countSymbolsOccurences(roll)[SYMBOL_SKULL]
-    if (numberOfSkulls) {
-      for (var i = 0; i < numberOfSkulls; i++) diceKept.push(SYMBOL_SKULL)
-      // note : here it's important to set a copy of the array in order for the view to be updated.
-      setDiceKept([...diceKept])
-      const rollDiceWithoutSkulls = removeSkullsFromArray(roll)
-      setDiceRolled([...rollDiceWithoutSkulls])
-    } else {
-      setDiceRolled(roll)
-    }
+    rollOnGoingDices(diceOnGoing)
     if (!diceRolledOnce) setDiceRolledOnce(true)
-    if (isGameOver(diceKept, currentCard)) {
+
+    autoKeepSkulls()
+
+    if (isGameOver([...diceOnGoing, ...diceKept], currentCard)) {
       setRoundFinished(true)
       setCardDrawn(false)
     }
   }
 
-  const keepOneDice = (dice) => {
-    const newArray = removeFromArray(diceOnGoing, dice)
-    setDiceRolled([...newArray])
-    const keptArray = diceKept
-    keptArray.push(dice)
-    setDiceKept([...keptArray])
+  const autoKeepSkulls = () => {
+    const diceOnGoingWithoutSkulls = []
+    const diceKeptWithSkulls = [...diceKept]
+
+    diceOnGoing.forEach((dice) => {
+      if (dice.symbol === SYMBOL_SKULL) {
+        diceKeptWithSkulls.push(dice)
+      } else {
+        diceOnGoingWithoutSkulls.push(dice)
+      }
+    })
+
+    setDiceOngoing(diceOnGoingWithoutSkulls)
+    setDiceKept(diceKeptWithSkulls)
+  }
+
+  const keepDice = (dice) => {
+    const diceOnGoingWithoutDice = diceOnGoing.filter((diceCandidate) => diceCandidate !== dice)
+    setDiceOngoing(diceOnGoingWithoutDice)
+
+    const diceKeptWithDice = [...diceKept, dice]
+    setDiceKept(diceKeptWithDice)
+
     if (currentCard.type === CARD_WITCH && dice === SYMBOL_SKULL) currentCard.effectUsed = false
   }
 
-  const removeOneDice = (dice) => {
-    const newArray = removeFromArray(diceKept, dice)
-    setDiceKept([...newArray])
-    const rollArray = diceOnGoing
-    rollArray.push(dice)
-    setDiceRolled([...rollArray])
+  const unkeepDice = (dice) => {
+    const diceKeptWithoutDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
+    setDiceKept(diceKeptWithoutDice)
+
+    const diceOnGoingWithDice = [...diceOnGoing, dice]
+    setDiceOngoing(diceOnGoingWithDice)
+
     if (currentCard.type === CARD_WITCH && dice === SYMBOL_SKULL) currentCard.effectUsed = true
   }
 
@@ -115,20 +118,26 @@ export const MilleSabordGameBoard = () => {
         <ButtonRestart roundFinished={roundFinished} clearDiceSet={clearDiceSet} />
       </div>
       <DiceSet
-        title="Roll dice"
+        title="Dice ongoing"
         diceArray={diceOnGoing}
         actionText="Keep"
-        actionFunction={(dice) => keepOneDice(dice)}
-        displayActionCondition={() => !roundFinished}
+        actionFunction={(dice) => keepDice(dice)}
+        displayActionCondition={() => {
+          if (!diceRolledOnce) return false
+          if (roundFinished) return false
+          return true
+        }}
       />
       <DiceSet
         title="Dice kept"
         diceArray={diceKept}
         actionText="Remove"
-        actionFunction={(dice) => removeOneDice(dice)}
-        displayActionCondition={(dice) =>
-          !roundFinished && (dice !== SYMBOL_SKULL || canRemoveSkull)
-        }
+        actionFunction={(dice) => unkeepDice(dice)}
+        displayActionCondition={(dice) => {
+          if (roundFinished) return false
+          if (dice.symbol === SYMBOL_SKULL) return canRemoveSkull
+          return true
+        }}
       />
       <CurrentRoundScore
         diceRolledOnce={diceRolledOnce}
