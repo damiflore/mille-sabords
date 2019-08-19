@@ -67,6 +67,24 @@ const computeSymbolsScore = (symbolsArray, { perfectEnabled }) => {
   return score
 }
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * TODO: this function should be renamed to something more generic like
+ * computeRoundState or whatever
+ * it needs to receive { currentCard, currentRoundIndex, diceOnGoing, diceKept }
+ * return {
+ *   // isRoundOvermust be true if first round + sword challenge + 3 skulls or more
+ *   // true if 3 skulls or more afer first round
+ *   // false otherwise
+ *   isRoundOver: Boolean,
+ *   // isOnSkullIsland must be true if 4 skulls or more on first round
+ *   // false otherwise
+ *   isOnSkullIsland: Boolean,
+ *   // scoremust be 0 if isRoundOver except if chest card
+ *   // otherwise the score according to diceKept
+ *   score: Number
+ * }
+ */
 export const computeScore = ({ currentCard, diceKept }) => {
   if (diceKept.length === 0) {
     return 0
