@@ -5,11 +5,9 @@ const opts = {
   chromeFlags: ["--show-paint-rects"],
 }
 
-const url = "https://mille-sabords.herokuapp.com/"
-
 const config = null
 
-const generateLighthouseScoreMap = async () => {
+const generateLighthouseScoreMap = async ({ url }) => {
   const chrome = await chromeLauncher.launch({ chromeFlags: opts.chromeFlags })
   opts.port = chrome.port
   const results = await lighthouse(url, opts, config)

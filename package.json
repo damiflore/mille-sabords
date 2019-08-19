@@ -30,7 +30,6 @@
 		"log-lighthouse-score": "node ./script/postdeploy/log-lighthouse-score.js",
 		"build": "npm run dist",
 		"start": "node ./script/start/start.js",
-		"postdeploy": "node ./script/postdeploy/postdeploy.js",
 		"postinstall": "npm run generate-import-map",
 		"dist": "npm run clean && npm run generate-global-bundle",
 		"clean": "rimraf ./client/global-bundle && rimraf coverage",
@@ -42,6 +41,7 @@
 	"dependencies": {
 		"@dmail/server": "2.4.0",
 		"@jsenv/operating-system-path": "2.2.0",
+		"current-git-branch": "1.1.0",
 		"react": "16.8.6",
 		"react-dom": "16.8.6"
 	},
