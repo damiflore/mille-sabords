@@ -1,7 +1,15 @@
 const lighthouse = require("lighthouse")
 const chromeLauncher = require("chrome-launcher")
 
-const launchChromeAndRunLighthouse = async ({ url, opts, config = null }) => {
+const opts = {
+  chromeFlags: ["--show-paint-rects"],
+}
+
+const url = "https://mille-sabords.herokuapp.com/"
+
+const config = null
+
+const generateLighthouseScoreMap = async () => {
   const chrome = await chromeLauncher.launch({ chromeFlags: opts.chromeFlags })
   opts.port = chrome.port
   const results = await lighthouse(url, opts, config)
@@ -16,14 +24,7 @@ const launchChromeAndRunLighthouse = async ({ url, opts, config = null }) => {
   Object.keys(categories).forEach((categoryName) => {
     scoreMap[categoryName] = categories[categoryName].score
   })
-
-  console.log(scoreMap)
   return scoreMap
 }
 
-launchChromeAndRunLighthouse({
-  url: "https://mille-sabords.herokuapp.com/",
-  opts: {
-    chromeFlags: ["--show-paint-rects"],
-  },
-})
+exports.generateLighthouseScoreMap = generateLighthouseScoreMap
