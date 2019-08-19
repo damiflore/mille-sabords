@@ -5,7 +5,7 @@ const { operatingSystemPathToPathname } = require("@jsenv/operating-system-path"
 const projectPath = resolve(__dirname, "../../")
 
 startServer({
-  protocol: "https",
+  protocol: "http",
   ip: "",
   port: process.env.PORT || 0,
   requestToResponse: ({ ressource, method, headers }) => {
