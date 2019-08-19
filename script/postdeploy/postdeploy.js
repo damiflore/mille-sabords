@@ -3,11 +3,6 @@ const { generateLighthouseScoreMap } = require("./generateLighthouseScoreMap.js"
 
 const run = async () => {
   const herokuAppName = process.env.HEROKU_APP_NAME
-  console.log("process.env.HEROKU_APP_NAME", herokuAppName)
-  if (true) {
-    throw new Error(herokuAppName)
-  }
-
   const prIndex = herokuAppName.lastIndexOf("-pr-")
   // run this only for review app
   if (prIndex === -1) return
