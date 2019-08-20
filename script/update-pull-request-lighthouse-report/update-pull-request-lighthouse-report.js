@@ -5,12 +5,12 @@ const {
 const { projectPath } = require("../../jsenv.config.js")
 
 const run = async () => {
-  const productionReport = await generateLighthouseReport({
+  const productionLightouseReport = await generateLighthouseReport({
     url: "https://mille-sabords.herokuapp.com/",
   })
   await commentPullRequestWithLighthouseReport({
     projectPath,
-    productionReport,
+    productionLightouseReport,
   })
 }
 run()
