@@ -48,7 +48,7 @@
 	"devDependencies": {
 		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@dmail/assert": "3.13.0",
-		"@dmail/lighthouse-report": "1.1.0",
+		"@dmail/lighthouse-report": "1.2.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
 		"@jsenv/bundling": "1.13.0",
 		"@jsenv/chromium-launcher": "2.3.0",

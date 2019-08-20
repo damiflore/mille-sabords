@@ -10,6 +10,7 @@ const run = async () => {
   await generateLighthouseReport({
     url: server.origin,
     projectPath,
+    chromeFlags: ["--headless", "--disable-gpu", "--no-sandbox"],
   })
 }
 run()
