@@ -11,7 +11,7 @@ script:
   - npm run eslint-check
   - npm run prettier-check
   - npm run generate-coverage
-  - npm run dist
+  - npm run generate-lighthouse-report
 after_success:
   - npm run upload-coverage
-  - npm run lighthouse-ci
+  - node ./script/update-pull-request-lighthouse-report/update-pull-request-lighthouse-report.js
