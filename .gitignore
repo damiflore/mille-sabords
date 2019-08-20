@@ -1,9 +1,10 @@
-/node_modules
+/node_modules/
 /package-lock.json
 /importMap.json
 /jsconfig.json
-/.dist
-/dist
-/coverage
+/.dist/
+/dist/
+/coverage/
+/lighthouse/
 /env.json
 /.vscode/settings.json
