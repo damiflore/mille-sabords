@@ -1,4 +1,7 @@
 language: node_js
+branches:
+  only:
+    - "master"
 node_js:
   - "8.9.0"
 before_install:

@@ -15,4 +15,4 @@ coverage:
 
 comment:
   layout: "header"
-  behavior: once
+  behavior: default
