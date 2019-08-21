@@ -27,6 +27,7 @@
 		"upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
 		"generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
 		"generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
+		"generate-lighthouse-report": "node ./script/generate-lighthouse-report/generate-lighthouse-report.js",
 		"build": "npm run dist",
 		"start": "node ./script/start/start.js",
 		"postinstall": "npm run generate-import-map",
@@ -38,27 +39,30 @@
 		"node": "8.x"
 	},
 	"dependencies": {
-		"@dmail/server": "2.3.0",
+		"@dmail/server": "2.4.0",
 		"@jsenv/operating-system-path": "2.2.0",
+		"current-git-branch": "1.1.0",
 		"react": "16.8.6",
 		"react-dom": "16.8.6"
 	},
 	"devDependencies": {
-		"@dmail/assert": "3.13.0",
 		"@babel/plugin-transform-react-jsx": "7.3.0",
+		"@dmail/assert": "3.13.0",
+		"@dmail/lighthouse-report": "2.0.0",
 		"@jsenv/babel-plugin-map": "1.0.0",
-		"@jsenv/exploring-server": "2.13.0",
-		"@jsenv/testing": "1.24.0",
-		"@jsenv/chromium-launcher": "2.2.0",
-		"@jsenv/core": "5.131.0",
 		"@jsenv/bundling": "1.13.0",
+		"@jsenv/chromium-launcher": "2.3.0",
 		"@jsenv/codecov-upload": "1.6.0",
+		"@jsenv/core": "5.131.0",
 		"@jsenv/eslint-config": "9.7.0",
-		"@jsenv/prettier-config": "1.0.0",
-		"@jsenv/prettier-check-project": "3.2.0",
+		"@jsenv/exploring-server": "2.14.0",
 		"@jsenv/node-module-import-map": "3.2.0",
-		"prettier": "1.18.2",
+		"@jsenv/prettier-check-project": "3.2.0",
+		"@jsenv/prettier-config": "1.0.0",
+		"@jsenv/testing": "1.24.0",
 		"eslint": "5.1.0",
+		"node-fetch": "2.6.0",
+		"prettier": "1.18.2",
 		"rimraf": "2.6.2"
 	}
 }

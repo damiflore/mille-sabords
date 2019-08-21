@@ -14,7 +14,7 @@ export const DiceSet = ({
         {displayActionCondition(dice) && (
           <button onClick={() => actionFunction(dice)}>{actionText}</button>
         )}
-        <span style={{ marginLeft: "20px" }}>{dice}</span>
+        <span style={{ marginLeft: "20px" }}>{dice.symbol}</span>
       </div>
     ))}
   </div>

@@ -8,7 +8,7 @@ const { projectPath, babelPluginMap, convertMap } = require("../../jsenv.config.
 // this is to get the production build of react
 process.env.NODE_ENV = "production"
 
-generateGlobalBundle({
+exports.bundlePromise = generateGlobalBundle({
   projectPath,
   babelPluginMap,
   convertMap,

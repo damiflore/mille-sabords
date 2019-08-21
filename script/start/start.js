@@ -4,7 +4,7 @@ const { operatingSystemPathToPathname } = require("@jsenv/operating-system-path"
 
 const projectPath = resolve(__dirname, "../../")
 
-startServer({
+exports.serverPromise = startServer({
   protocol: "http",
   ip: "",
   port: process.env.PORT || 0,
