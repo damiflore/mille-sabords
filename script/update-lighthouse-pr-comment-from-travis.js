@@ -6,7 +6,7 @@ const { projectPath } = require("../jsenv.config.js")
 
 lighthousePullRequestCommentFromTravisBuild({
   projectPath,
-  getProductionReport: () =>
+  getLighthouseProductionReport: () =>
     generateLighthouseReport({
       url: "https://mille-sabords.herokuapp.com/",
     }),
