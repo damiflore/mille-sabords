@@ -1,7 +1,7 @@
-const { generateImportMapForProjectNodeModules } = require("@jsenv/node-module-import-map")
+const { generateImportMapForNodeModules } = require("@jsenv/node-module-import-map")
 const { projectPath } = require("../../jsenv.config.js")
 
-generateImportMapForProjectNodeModules({
+generateImportMapForNodeModules({
   projectPath,
   inputImportMap: {
     scopes: {
@@ -10,4 +10,7 @@ generateImportMapForProjectNodeModules({
       },
     },
   },
+  writeImportMapFile: true,
+  writeJsConfigFile: true,
+  scopeOriginRelativePerModule: true,
 })
