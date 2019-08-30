@@ -3,14 +3,7 @@ const { projectPath } = require("../../jsenv.config.js")
 
 generateImportMapForNodeModules({
   projectPath,
-  inputImportMap: {
-    scopes: {
-      "/node_modules/react-dom/": {
-        "/react": "/node_modules/react/index.js",
-      },
-    },
-  },
+  includeDevDependencies: true,
   writeImportMapFile: true,
   writeJsConfigFile: true,
-  scopeOriginRelativePerModule: true,
 })
