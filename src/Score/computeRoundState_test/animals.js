@@ -8,11 +8,11 @@ import {
   SYMBOL_DIAMOND,
 } from "/src/symbols/symbol-types.js"
 import { CARD_ANIMALS } from "src/Cards/card-types.js"
-import { computeScore } from "../ScoreHelpers.js"
+import { computeRoundState } from "../ScoreHelpers.js"
 
 // with 1 coin and 1 damond
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_ANIMALS },
     symbolArrayFromDiceKept: [
       SYMBOL_PARROT,
@@ -25,13 +25,18 @@ import { computeScore } from "../ScoreHelpers.js"
       SYMBOL_DIAMOND,
     ],
   })
-  const expected = 200
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 200,
+  }
   assert({ actual, expected })
 }
 
 // with 3 monkey and 2 parrot
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_ANIMALS },
     symbolArrayFromDiceKept: [
       SYMBOL_MONKEY,
@@ -44,6 +49,11 @@ import { computeScore } from "../ScoreHelpers.js"
       SYMBOL_SWORD,
     ],
   })
-  const expected = 500
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 500,
+  }
   assert({ actual, expected })
 }
