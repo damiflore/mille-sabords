@@ -12,35 +12,33 @@ import {
 export const initialDeck = [
   { type: CARD_PIRATE, cardQuantiy: 4, label: "Pirate" },
   { type: CARD_WITCH, cardQuantiy: 4, label: "Witch" },
-  { type: CARD_CHEST, cardQuantiy: 4, label: "Treasure chest" }, // card effect TODO
+  { type: CARD_CHEST, cardQuantiy: 4, label: "Treasure chest" },
   { type: CARD_ANIMALS, cardQuantiy: 4, label: "Parrot = monkey" },
-
   { type: CARD_DIAMOND, cardQuantiy: 4, label: "Diamond" },
   { type: CARD_COIN, cardQuantiy: 3, label: "Coin" },
   { type: CARD_SKULL, skullAmount: 1, cardQuantiy: 3, label: "1 skull" },
   { type: CARD_SKULL, skullAmount: 2, cardQuantiy: 2, label: "2 skulls" },
-
-  {
-    type: CARD_SWORD_CHALLENGE,
-    goal: 2,
-    gamble: 300,
-    cardQuantiy: 2,
-    label: "2 sword challenge",
-  }, // card effect TODO
-  {
-    type: CARD_SWORD_CHALLENGE,
-    goal: 3,
-    gamble: 500,
-    cardQuantiy: 3,
-    label: "3 sword challenge",
-  }, // card effect TODO
-  {
-    type: CARD_SWORD_CHALLENGE,
-    goal: 4,
-    gamble: 1000,
-    cardQuantiy: 2,
-    label: "4 sword challenge",
-  }, // card effect TODO
+  // {
+  //   type: CARD_SWORD_CHALLENGE,
+  //   goal: 2,
+  //   gamble: 300,
+  //   cardQuantiy: 2,
+  //   label: "2 sword challenge",
+  // }, // card effect TODO
+  // {
+  //   type: CARD_SWORD_CHALLENGE,
+  //   goal: 3,
+  //   gamble: 500,
+  //   cardQuantiy: 3,
+  //   label: "3 sword challenge",
+  // }, // card effect TODO
+  // {
+  //   type: CARD_SWORD_CHALLENGE,
+  //   goal: 4,
+  //   gamble: 1000,
+  //   cardQuantiy: 2,
+  //   label: "4 sword challenge",
+  // }, // card effect TODO
 ]
 
 const addCopiesOf = (arr, card) => {

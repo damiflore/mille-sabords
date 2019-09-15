@@ -1,10 +1,10 @@
-import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 import {
   CARD_PIRATE,
   CARD_ANIMALS,
   CARD_DIAMOND,
   CARD_COIN,
   CARD_SKULL,
+  CARD_CHEST,
 } from "/src/Cards/card-types.js"
 import {
   SYMBOL_DIAMOND,
@@ -26,15 +26,12 @@ export const countSymbolsOccurences = (symbolArray) => {
   return symbolCountMap
 }
 
-export const isGameOver = (diceArray, card) => {
-  let numerOfSkulls = countSymbolsOccurences(diceArrayToSymbolArray(diceArray))[SYMBOL_SKULL]
-  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
-  return numerOfSkulls > 2
-}
-
 const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
   let score = 0
   let usefullSymbol = 0
+
+  // remove skulls from symbol array
+  symbolArray = symbolArray.filter((symbol) => symbol !== SYMBOL_SKULL)
 
   // add points for dice combinaisons
   const symbolCountMap = countSymbolsOccurences(symbolArray)
@@ -65,46 +62,115 @@ const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
   return score
 }
 
+const computeHasThreeSkullsOrMore = (card, symbolArrayFromDiceKept, currentRoundIndex) => {
+  if (currentRoundIndex === 0) return false
+  let numerOfSkulls = countSymbolsOccurences(symbolArrayFromDiceKept)[SYMBOL_SKULL]
+  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
+  return numerOfSkulls > 2
+}
+
+const computeIsRoundOver = (
+  hasThreeSkullsOrMore,
+  scoreMarked,
+  currentCard,
+  isOnSkullIsland,
+  currentRoundIndex,
+) => {
+  if (currentRoundIndex === 0) return false
+  // if car = chest, round is over when we mark a score, or if we are on skull island
+  if (currentCard.type === CARD_CHEST) {
+    return scoreMarked || isOnSkullIsland
+  }
+  // if not, round is over when we mark a score,
+  // OR when we have 3 skulls or more
+  // OR if we are on skull island
+  return hasThreeSkullsOrMore || scoreMarked || isOnSkullIsland
+}
+
+const computeIsOnSkullIsland = (card, symbolArrayFromDiceKept, currentRoundIndex) => {
+  let numerOfSkulls = countSymbolsOccurences(symbolArrayFromDiceKept)[SYMBOL_SKULL]
+  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
+  if (currentRoundIndex === 1 && numerOfSkulls > 3) return true
+  return false
+}
+
 // eslint-disable-next-line valid-jsdoc
 /**
  * TODO: this function should be renamed to something more generic like
  * computeRoundState or whatever
  * it needs to receive { currentCard, currentRoundIndex, diceOnGoing, diceKept }
  * return {
- *   // isRoundOvermust be true if first round + sword challenge + 3 skulls or more
+ *   // isRoundOver must be true if first round + sword challenge + 3 skulls or more    <<< ?????
  *   // true if 3 skulls or more afer first round
  *   // false otherwise
  *   isRoundOver: Boolean,
+ *
  *   // isOnSkullIsland must be true if 4 skulls or more on first round
  *   // false otherwise
  *   isOnSkullIsland: Boolean,
- *   // scoremust be 0 if isRoundOver except if chest card
+ *
+ *   // score must be 0 if isRoundOver except if chest card
  *   // otherwise the score according to diceKept
  *   score: Number
  * }
  */
-export const computeScore = ({ currentCard, symbolArrayFromDiceKept }) => {
-  if (symbolArrayFromDiceKept.length === 0) {
-    return 0
+export const computeRoundState = ({
+  currentCard,
+  symbolArrayFromDiceKept,
+  currentRoundIndex,
+  scoreMarked,
+}) => {
+  console.log({ symbolArrayFromDiceKept })
+  const perfectEnabled = symbolArrayFromDiceKept.length === 8
+
+  const hasThreeSkullsOrMore = computeHasThreeSkullsOrMore(
+    currentCard,
+    symbolArrayFromDiceKept,
+    currentRoundIndex,
+  )
+  const isOnSkullIsland = computeIsOnSkullIsland(
+    currentCard,
+    symbolArrayFromDiceKept,
+    currentRoundIndex,
+  )
+
+  const roundState = {
+    hasThreeSkullsOrMore,
+    isRoundOver: computeIsRoundOver(
+      hasThreeSkullsOrMore,
+      scoreMarked,
+      currentCard,
+      isOnSkullIsland,
+      currentRoundIndex,
+    ),
+    isOnSkullIsland,
+    score: computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled }),
   }
 
-  const perfectEnabled = symbolArrayFromDiceKept.length === 8
+  console.log("roundState", roundState)
+  console.log("currentRoundIndex", currentRoundIndex)
+
+  if (symbolArrayFromDiceKept.length === 0) {
+    roundState.score = 0
+  }
 
   // add effects related to the drawn card
   if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {
-    return computeSymbolsScore([...symbolArrayFromDiceKept, currentCard.type], { perfectEnabled })
+    roundState.score = computeSymbolsScore([...symbolArrayFromDiceKept, currentCard.type], {
+      perfectEnabled,
+    })
   }
 
   if (currentCard.type === CARD_ANIMALS) {
-    return computeSymbolsScore(
+    roundState.score = computeSymbolsScore(
       symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
       { perfectEnabled },
     )
   }
 
-  if (currentCard.type === CARD_PIRATE) {
-    return computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled }) * 2
-  }
+  if (currentCard.type === CARD_PIRATE) roundState.score *= 2
 
-  return computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled })
+  if (currentCard.type !== CARD_CHEST && roundState.isRoundOver) roundState.score = 0
+
+  return roundState
 }
