@@ -1,7 +1,7 @@
 import React from "react"
 
 export const ButtonRoll = ({ cardDrawn, diceRolledOnce, diceOnGoing, onClick, roundState }) => {
-  if (roundState.hasThreeSkullsOrMore) {
+  if (diceRolledOnce && roundState.hasThreeSkullsOrMore) {
     return null
   }
 

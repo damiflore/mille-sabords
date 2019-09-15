@@ -6,7 +6,6 @@ import {
   CARD_DIAMOND,
   CARD_COIN,
   CARD_SKULL,
-  CARD_SWORD_CHALLENGE,
 } from "./card-types.js"
 
 export const initialDeck = [

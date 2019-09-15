@@ -13,7 +13,7 @@ export const DICE_ARRAY = [
   { id: 3, symbol: SYMBOL_SWORD },
   { id: 4, symbol: SYMBOL_PARROT },
   { id: 5, symbol: SYMBOL_MONKEY },
-  { id: 6, symbol: SYMBOL_MONKEY },
+  { id: 6, symbol: SYMBOL_SKULL },
   { id: 7, symbol: SYMBOL_SKULL },
   { id: 8, symbol: SYMBOL_SKULL },
 ]

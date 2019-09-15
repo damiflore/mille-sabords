@@ -62,8 +62,7 @@ const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
   return score
 }
 
-const computeHasThreeSkullsOrMore = (card, symbolArrayFromDiceKept, currentRoundIndex) => {
-  if (currentRoundIndex === 0) return false
+const computeHasThreeSkullsOrMore = (card, symbolArrayFromDiceKept) => {
   let numerOfSkulls = countSymbolsOccurences(symbolArrayFromDiceKept)[SYMBOL_SKULL]
   if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
   return numerOfSkulls > 2
@@ -120,7 +119,6 @@ export const computeRoundState = ({
   currentRoundIndex,
   scoreMarked,
 }) => {
-  console.log({ symbolArrayFromDiceKept })
   const perfectEnabled = symbolArrayFromDiceKept.length === 8
 
   const hasThreeSkullsOrMore = computeHasThreeSkullsOrMore(
@@ -146,9 +144,6 @@ export const computeRoundState = ({
     isOnSkullIsland,
     score: computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled }),
   }
-
-  console.log("roundState", roundState)
-  console.log("currentRoundIndex", currentRoundIndex)
 
   if (symbolArrayFromDiceKept.length === 0) {
     roundState.score = 0

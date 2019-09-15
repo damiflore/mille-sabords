@@ -141,7 +141,11 @@ export const MilleSabordGameBoard = () => {
           onClick={rollTheDice}
           roundState={roundState}
         />
-        <ButtonRestart clearDiceSet={clearDiceSet} roundState={roundState} />
+        <ButtonRestart
+          clearDiceSet={clearDiceSet}
+          roundState={roundState}
+          diceRolledOnce={diceRolledOnce}
+        />
       </div>
       <DiceSet
         title="Dice ongoing"
