@@ -5,6 +5,7 @@ import {
   CARD_COIN,
   CARD_SKULL,
   CARD_CHEST,
+  CARD_SWORD_CHALLENGE,
 } from "/src/Cards/card-types.js"
 import {
   SYMBOL_DIAMOND,
@@ -12,6 +13,7 @@ import {
   SYMBOL_SKULL,
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
+  SYMBOL_SWORD,
 } from "/src/symbols/symbol-types.js"
 
 export const countSymbolsOccurences = (symbolArray) => {
@@ -165,7 +167,19 @@ export const computeRoundState = ({
 
   if (currentCard.type === CARD_PIRATE) roundState.score *= 2
 
-  if (currentCard.type !== CARD_CHEST && roundState.isRoundOver) roundState.score = 0
+  if (currentCard.type === CARD_SWORD_CHALLENGE) {
+    const symbolCountMap = countSymbolsOccurences(symbolArrayFromDiceKept);
+    // if there are at least as many swords as requested by the challenge (card.goal)
+    // we add the gamble value to the current score
+    if (symbolCountMap[SYMBOL_SWORD] && symbolCountMap[SYMBOL_SWORD] >= currentCard.goal) {
+      roundState.score += currentCard.gamble
+    }
+    // if the challenge is not successful (less swords than the challenge goal)
+    // the score is the negative value of the gamble
+    else roundState.score = -Math.abs(currentCard.gamble)
+  }
 
+  if (currentCard.type !== CARD_CHEST && roundState.isRoundOver) roundState.score = 0
+  
   return roundState
 }
