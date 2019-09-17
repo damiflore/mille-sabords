@@ -23,7 +23,9 @@
  */
 
 import "./animals.js"
-// import "./chest.js"
-// import "./coin.js"
-// import "./pirate.js"
-// import "./sword-challenge.js"
+import "./chest.js"
+import "./coin.js"
+import "./pirate.js"
+import "./sword-challenge.js"
+import "./round-over.js"
+import "./skull.js"
