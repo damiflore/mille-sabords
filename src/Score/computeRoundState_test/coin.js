@@ -7,12 +7,11 @@ import {
   SYMBOL_COIN,
 } from "/src/symbols/symbol-types.js"
 import { CARD_COIN } from "src/Cards/card-types.js"
-// eslint-disable-next-line import/named
-import { computeScore } from "../ScoreHelpers.js"
+import { computeRoundState } from "../ScoreHelpers.js"
 
 // with nothing
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_COIN },
     symbolArrayFromDiceKept: [
       SYMBOL_SWORD,
@@ -25,13 +24,18 @@ import { computeScore } from "../ScoreHelpers.js"
       SYMBOL_SKULL,
     ],
   })
-  const expected = 100
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 100,
+  }
   assert({ actual, expected })
 }
 
 // with 7 coin + 1 parrot
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_COIN },
     symbolArrayFromDiceKept: [
       SYMBOL_COIN,
@@ -47,6 +51,11 @@ import { computeScore } from "../ScoreHelpers.js"
   // 4000 from "8 identic symbols"
   // 800 from "coin = 100"
   // -> 4800
-  const expected = 4800
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 4800,
+  }
   assert({ actual, expected })
 }

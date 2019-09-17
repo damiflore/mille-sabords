@@ -7,12 +7,11 @@ import {
   SYMBOL_COIN,
 } from "/src/symbols/symbol-types.js"
 import { CARD_PIRATE } from "src/Cards/card-types.js"
-// eslint-disable-next-line import/named
-import { computeScore } from "../ScoreHelpers.js"
+import { computeRoundState } from "../ScoreHelpers.js"
 
 // with nothing
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_PIRATE },
     symbolArrayFromDiceKept: [
       SYMBOL_SWORD,
@@ -25,13 +24,18 @@ import { computeScore } from "../ScoreHelpers.js"
       SYMBOL_SKULL,
     ],
   })
-  const expected = 0
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 0,
+  }
   assert({ actual, expected })
 }
 
 // with 3 coin
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_PIRATE },
     symbolArrayFromDiceKept: [
       SYMBOL_COIN,
@@ -44,13 +48,18 @@ import { computeScore } from "../ScoreHelpers.js"
       SYMBOL_SKULL,
     ],
   })
-  const expected = 800
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 800,
+  }
   assert({ actual, expected })
 }
 
 // with 3 coin + 5 sword
 {
-  const actual = computeScore({
+  const actual = computeRoundState({
     currentCard: { type: CARD_PIRATE },
     symbolArrayFromDiceKept: [
       SYMBOL_COIN,
@@ -69,6 +78,11 @@ import { computeScore } from "../ScoreHelpers.js"
   // 500 from "perfect" rule
   // x2 from pirate
   // -> 2800
-  const expected = 2800
+  const expected = {
+    hasThreeSkullsOrMore: false,
+    isRoundOver: false,
+    isOnSkullIsland: false,
+    score: 2800,
+  }
   assert({ actual, expected })
 }
