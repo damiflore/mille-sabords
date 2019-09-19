@@ -179,7 +179,7 @@ export const computeRoundState = ({
     else roundState.score = -Math.abs(currentCard.gamble)
   }
 
-  if (currentCard.type !== CARD_CHEST && roundState.isRoundOver) roundState.score = 0
-  
+  if (roundState.isRoundOver && currentCard.type !== CARD_CHEST && currentCard.type !== CARD_SWORD_CHALLENGE) roundState.score = 0
+
   return roundState
 }

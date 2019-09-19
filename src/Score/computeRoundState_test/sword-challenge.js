@@ -80,3 +80,27 @@ import { computeRoundState } from "../ScoreHelpers.js"
   }
   assert({ actual, expected })
 }
+
+// 3 skulls
+{
+  const actual = computeRoundState({
+    currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    symbolArrayFromDiceKept: [
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_COIN,
+      SYMBOL_SKULL,
+      SYMBOL_SKULL,
+      SYMBOL_SKULL,
+    ],
+  })
+  const expected = {
+    hasThreeSkullsOrMore: true,
+    isRoundOver: true,
+    isOnSkullIsland: false,
+    score: -300,
+  }
+  assert({ actual, expected })
+}
