@@ -7,6 +7,7 @@ import {
   SYMBOL_COIN,
 } from "/src/symbols/symbol-types.js"
 import { CARD_PIRATE } from "src/Cards/card-types.js"
+// eslint-disable-next-line import/named
 import { computeScore } from "../ScoreHelpers.js"
 
 // with nothing

@@ -1,7 +1,7 @@
 const { launchChromiumToLaunchTab } = require("@jsenv/chromium-launcher")
 const { jsenvBabelPluginMap } = require("@jsenv/babel-plugin-map")
 const transformReactJSX = require("@babel/plugin-transform-react-jsx")
-const { convertCommonJsWithRollup } = require("@jsenv/core")
+const { convertCommonJsWithRollup } = require("@jsenv/commonjs-converter")
 
 const projectPath = __dirname
 exports.projectPath = projectPath

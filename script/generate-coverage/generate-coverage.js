@@ -18,8 +18,8 @@ const run = async () => {
       ...jsenvCoverDescription,
       "/src/**/*.jsx": true,
     },
-    logCoverageTable: true,
-    writeCoverageHtmlFolder: true,
+    coverageConsoleReport: true,
+    coverageHtmlReport: true,
   })
 
   stop()
