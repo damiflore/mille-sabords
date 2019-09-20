@@ -7,6 +7,7 @@ import {
   SYMBOL_COIN,
 } from "/src/symbols/symbol-types.js"
 import { CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
+// eslint-disable-next-line import/named
 import { computeScore } from "../ScoreHelpers.js"
 
 // 8 coin
