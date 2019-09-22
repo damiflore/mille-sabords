@@ -27,13 +27,28 @@ const diceNumberToSymbol = {
   6: SYMBOL_SKULL,
 }
 
-export const rollOnGoingDices = (onGoingDices) => {
-  onGoingDices.forEach((dice) => {
+export const rollDices = (dices) => {
+  dices.forEach((dice) => {
     rollDice(dice)
   })
 }
 
 export const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
+
+export const splitSkulls = (dices) => {
+  const withoutSkulls = []
+  const skulls = []
+
+  dices.forEach((dice) => {
+    if (dice.symbol === SYMBOL_SKULL) {
+      skulls.push(dice)
+    } else {
+      withoutSkulls.push(dice)
+    }
+  })
+
+  return { withoutSkulls, skulls }
+}
 
 const diceToSymbol = (dice) => dice.symbol
 

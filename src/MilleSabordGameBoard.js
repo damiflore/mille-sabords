@@ -6,15 +6,22 @@ import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
+import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import { computeRoundState } from "./Score/ScoreHelpers.js"
-import { DICE_ARRAY, rollOnGoingDices, diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
+import {
+  DICE_ARRAY,
+  rollDices,
+  diceArrayToSymbolArray,
+  splitSkulls,
+} from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 
 export const MilleSabordGameBoard = () => {
-  const [diceOnGoing, setDiceOngoing] = React.useState(DICE_ARRAY)
+  const [diceOffGame, setDiceOffGame] = React.useState(DICE_ARRAY)
+  const [diceOnGoing, setDiceOngoing] = React.useState([])
   const [diceKept, setDiceKept] = React.useState([])
 
   const [totalScore, setTotalScore] = React.useState(0)
@@ -28,7 +35,8 @@ export const MilleSabordGameBoard = () => {
   const [scoreMarked, setScoreMarked] = React.useState(false)
 
   const clearDiceSet = () => {
-    setDiceOngoing([...diceOnGoing, ...diceKept])
+    setDiceOffGame(DICE_ARRAY)
+    setDiceOngoing([])
     setDiceKept([])
     setDiceRolledOnce(false)
     setCurrentRoundIndex(0)
@@ -37,11 +45,20 @@ export const MilleSabordGameBoard = () => {
   }
 
   const rollTheDice = () => {
-    rollOnGoingDices(diceOnGoing)
-    if (!diceRolledOnce) setDiceRolledOnce(true)
-    setCurrentRoundIndex(currentRoundIndex + 1)
+    let currentDiceArray
 
-    autoKeepSkulls()
+    if (diceRolledOnce) {
+      currentDiceArray = diceOnGoing
+      rollDices(diceOnGoing)
+    } else {
+      currentDiceArray = diceOffGame
+      rollDices(diceOffGame)
+      setDiceRolledOnce(true)
+      setDiceOngoing([...diceOffGame])
+      setDiceOffGame([])
+    }
+    setCurrentRoundIndex(currentRoundIndex + 1)
+    autoKeepSkulls(currentDiceArray)
 
     // check round state to know if round is over
     const roundState = computeRoundState({
@@ -56,20 +73,10 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const autoKeepSkulls = () => {
-    const diceOnGoingWithoutSkulls = []
-    const diceKeptWithSkulls = [...diceKept]
-
-    diceOnGoing.forEach((dice) => {
-      if (dice.symbol === SYMBOL_SKULL) {
-        diceKeptWithSkulls.push(dice)
-      } else {
-        diceOnGoingWithoutSkulls.push(dice)
-      }
-    })
-
-    setDiceOngoing(diceOnGoingWithoutSkulls)
-    setDiceKept(diceKeptWithSkulls)
+  const autoKeepSkulls = (currentDiceArray) => {
+    const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
+    setDiceOngoing(withoutSkulls)
+    setDiceKept([...diceKept, ...skulls])
   }
 
   const keepDice = (dice) => {
@@ -148,6 +155,7 @@ export const MilleSabordGameBoard = () => {
           diceRolledOnce={diceRolledOnce}
         />
       </div>
+      <Shaker diceOffGame={diceOffGame} />
       <DiceSet
         title="Dice ongoing"
         diceArray={diceOnGoing}
