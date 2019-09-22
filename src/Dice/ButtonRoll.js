@@ -1,7 +1,7 @@
 import React from "react"
 
-export const ButtonRoll = ({ cardDrawn, diceRolledOnce, diceOnGoing, onClick, roundState }) => {
-  if (diceRolledOnce && roundState.isRoundOver) {
+export const ButtonRoll = ({ cardDrawn, diceRolledOnce, diceOnGoing, onClick, isRoundOver }) => {
+  if (diceRolledOnce && isRoundOver) {
     return null
   }
 

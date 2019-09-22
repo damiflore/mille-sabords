@@ -11,12 +11,7 @@ import { CursedIsland } from "./CursedIsland/CursedIsland.jsx"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import { computeRoundState } from "./Score/ScoreHelpers.js"
-import {
-  DICE_ARRAY,
-  rollDices,
-  diceArrayToSymbolArray,
-  splitSkulls,
-} from "/src/Dice/DiceHelpers.js"
+import { DICE_ARRAY, rollDices, splitSkulls } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 
@@ -26,15 +21,20 @@ export const MilleSabordGameBoard = () => {
   const [diceKept, setDiceKept] = React.useState([])
   const [diceCursed, setDiceCursed] = React.useState([])
 
-  const [totalScore, setTotalScore] = React.useState(0)
+  const [totalScore, setTotalScore] = React.useState(1000)
 
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
   const [currentCard, setCurrentCard] = React.useState({})
 
   const [diceRolledOnce, setDiceRolledOnce] = React.useState(false)
-  const [currentRoundIndex, setCurrentRoundIndex] = React.useState(0)
+  const [currentRoundIndex, setCurrentRoundIndex] = React.useState(-1)
   const [cardDrawn, setCardDrawn] = React.useState(false)
   const [scoreMarked, setScoreMarked] = React.useState(false)
+
+  const [isOnSkullIsland, setIsOnSkullIsland] = React.useState(false)
+  const [hasThreeSkullsOrMore, setHasThreeSkullsOrMore] = React.useState(false)
+  const [isRoundOver, setIsRoundOver] = React.useState(false)
+  const [roundScore, setRoundScore] = React.useState(false)
 
   const clearDiceSet = () => {
     setDiceOffGame(DICE_ARRAY)
@@ -42,9 +42,13 @@ export const MilleSabordGameBoard = () => {
     setDiceKept([])
     setDiceCursed([])
     setDiceRolledOnce(false)
-    setCurrentRoundIndex(0)
+    setCurrentRoundIndex(-1)
     setScoreMarked(false)
     setCardDrawn(false)
+    setIsOnSkullIsland(false)
+    setHasThreeSkullsOrMore(false)
+    setIsRoundOver(false)
+    setRoundScore(0)
   }
 
   const rollTheDice = () => {
@@ -60,26 +64,35 @@ export const MilleSabordGameBoard = () => {
       setDiceOngoing([...diceOffGame])
       setDiceOffGame([])
     }
-    setCurrentRoundIndex(currentRoundIndex + 1)
-    checkCursedDices(currentDiceArray)
+    const currentRoundIndexLastValue = currentRoundIndex + 1
+    setCurrentRoundIndex(currentRoundIndexLastValue)
 
-    // check round state to know if round is over
-    const roundState = computeRoundState({
+    const diceCursedLastValue = curseDices(currentDiceArray)
+
+    const { isOnSkullIsland, hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
       currentCard,
-      symbolArrayFromDiceKept: diceArrayToSymbolArray([...diceOnGoing, ...diceKept]),
-      currentRoundIndex,
+      diceKept,
+      diceCursed: diceCursedLastValue,
+      currentRoundIndex: currentRoundIndexLastValue,
       scoreMarked,
     })
-    if (roundState.isRoundOver) {
+    setIsOnSkullIsland(isOnSkullIsland)
+    setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
+    setIsRoundOver(isRoundOver)
+    setRoundScore(score)
+
+    if (isRoundOver) {
       if (currentCard.type === CARD_SWORD_CHALLENGE) markScore()
       setCardDrawn(false)
     }
   }
 
-  const checkCursedDices = (currentDiceArray) => {
+  const curseDices = (currentDiceArray) => {
     const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
     setDiceOngoing(withoutSkulls)
-    setDiceCursed([...diceCursed, ...skulls])
+    const diceCursedLastValue = [...diceCursed, ...skulls]
+    setDiceCursed(diceCursedLastValue)
+    return diceCursedLastValue
   }
 
   const keepDice = (dice) => {
@@ -115,15 +128,7 @@ export const MilleSabordGameBoard = () => {
   }
 
   const markScore = () => {
-    setTotalScore(
-      totalScore +
-        computeRoundState({
-          currentCard,
-          symbolArrayFromDiceKept: diceArrayToSymbolArray(diceKept),
-          currentRoundIndex,
-          scoreMarked,
-        }).score,
-    )
+    setTotalScore(Math.min(totalScore + roundScore, 0))
     setCardDrawn(false)
     setScoreMarked(true)
   }
@@ -139,12 +144,6 @@ export const MilleSabordGameBoard = () => {
   }
 
   const canRemoveSkull = currentCard.type === CARD_WITCH && !currentCard.effectUsed
-  const roundState = computeRoundState({
-    currentCard,
-    symbolArrayFromDiceKept: diceArrayToSymbolArray([...diceOnGoing, ...diceKept]),
-    currentRoundIndex,
-    scoreMarked,
-  })
 
   return (
     <>
@@ -160,11 +159,11 @@ export const MilleSabordGameBoard = () => {
           cardDrawn={cardDrawn}
           diceOnGoing={diceOnGoing}
           onClick={rollTheDice}
-          roundState={roundState}
+          isRoundOver={isRoundOver}
         />
         <ButtonRestart
           clearDiceSet={clearDiceSet}
-          roundState={roundState}
+          isRoundOver={isRoundOver}
           diceRolledOnce={diceRolledOnce}
         />
       </div>
@@ -176,7 +175,7 @@ export const MilleSabordGameBoard = () => {
         actionFunction={(dice) => keepDice(dice)}
         displayActionCondition={() => {
           if (!diceRolledOnce) return false
-          if (roundState.isRoundOver) return false
+          if (isRoundOver) return false
           return true
         }}
       />
@@ -186,7 +185,7 @@ export const MilleSabordGameBoard = () => {
         actionText="Remove"
         actionFunction={(dice) => unkeepDice(dice)}
         displayActionCondition={() => {
-          if (roundState.isRoundOver) return false
+          if (isRoundOver) return false
           return true
         }}
       />
@@ -197,11 +196,11 @@ export const MilleSabordGameBoard = () => {
       ></CursedIsland>
       <CurrentRoundScore
         diceRolledOnce={diceRolledOnce}
-        diceKept={diceKept}
-        currentCard={currentCard}
+        isOnSkullIsland={isOnSkullIsland}
+        hasThreeSkullsOrMore={hasThreeSkullsOrMore}
+        isRoundOver={isRoundOver}
+        roundScore={roundScore}
         markScore={markScore}
-        scoreMarked={scoreMarked}
-        currentRoundIndex={currentRoundIndex}
       />
       <TotalScore totalScore={totalScore} />
     </>

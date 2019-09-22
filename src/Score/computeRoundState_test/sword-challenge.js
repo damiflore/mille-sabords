@@ -13,21 +13,22 @@ import { computeRoundState } from "../ScoreHelpers.js"
 {
   const actual = computeRoundState({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    symbolArrayFromDiceKept: [
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
+    diceCursed: [],
+    diceKept: [
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
     ],
   })
   const expected = {
+    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
-    isOnSkullIsland: false,
     score: -300,
   }
   assert({ actual, expected })
@@ -37,21 +38,20 @@ import { computeRoundState } from "../ScoreHelpers.js"
 {
   const actual = computeRoundState({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    symbolArrayFromDiceKept: [
-      SYMBOL_SWORD,
-      SYMBOL_SWORD,
-      SYMBOL_MONKEY,
-      SYMBOL_MONKEY,
-      SYMBOL_SKULL,
-      SYMBOL_SKULL,
-      SYMBOL_PARROT,
-      SYMBOL_PARROT,
+    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceKept: [
+      { symbol: SYMBOL_SWORD },
+      { symbol: SYMBOL_SWORD },
+      { symbol: SYMBOL_MONKEY },
+      { symbol: SYMBOL_MONKEY },
+      { symbol: SYMBOL_PARROT },
+      { symbol: SYMBOL_PARROT },
     ],
   })
   const expected = {
+    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
-    isOnSkullIsland: false,
     score: 300,
   }
   assert({ actual, expected })
@@ -61,21 +61,20 @@ import { computeRoundState } from "../ScoreHelpers.js"
 {
   const actual = computeRoundState({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    symbolArrayFromDiceKept: [
-      SYMBOL_SWORD,
-      SYMBOL_SWORD,
-      SYMBOL_SWORD,
-      SYMBOL_MONKEY,
-      SYMBOL_SKULL,
-      SYMBOL_SKULL,
-      SYMBOL_PARROT,
-      SYMBOL_PARROT,
+    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceKept: [
+      { symbol: SYMBOL_SWORD },
+      { symbol: SYMBOL_SWORD },
+      { symbol: SYMBOL_SWORD },
+      { symbol: SYMBOL_MONKEY },
+      { symbol: SYMBOL_PARROT },
+      { symbol: SYMBOL_PARROT },
     ],
   })
   const expected = {
+    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
-    isOnSkullIsland: false,
     score: 400,
   }
   assert({ actual, expected })
@@ -85,21 +84,19 @@ import { computeRoundState } from "../ScoreHelpers.js"
 {
   const actual = computeRoundState({
     currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
-    symbolArrayFromDiceKept: [
+    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceKept: [
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
+      { symbol: SYMBOL_COIN },
       SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_COIN,
-      SYMBOL_SKULL,
-      SYMBOL_SKULL,
-      SYMBOL_SKULL,
     ],
   })
   const expected = {
+    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
-    isOnSkullIsland: false,
     score: -300,
   }
   assert({ actual, expected })

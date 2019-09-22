@@ -1,15 +1,12 @@
 import React from "react"
 
-import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
-import { computeRoundState } from "./ScoreHelpers.js"
-
 export const CurrentRoundScore = ({
   diceRolledOnce,
-  diceKept,
-  currentCard,
+  isOnSkullIsland,
+  hasThreeSkullsOrMore,
+  isRoundOver,
+  roundScore,
   markScore,
-  scoreMarked,
-  currentRoundIndex,
 }) => {
   if (!diceRolledOnce) {
     return null
@@ -19,33 +16,32 @@ export const CurrentRoundScore = ({
     <div>
       <span className="subtitle"> Current round score: </span>
       <ScoreDisplay
-        currentCard={currentCard}
-        diceKept={diceKept}
+        isOnSkullIsland={isOnSkullIsland}
+        hasThreeSkullsOrMore={hasThreeSkullsOrMore}
+        isRoundOver={isRoundOver}
+        roundScore={roundScore}
         markScore={markScore}
-        currentRoundIndex={currentRoundIndex}
-        scoreMarked={scoreMarked}
       />
     </div>
   )
 }
 
-const ScoreDisplay = ({ currentCard, diceKept, markScore, scoreMarked, currentRoundIndex }) => {
-  const roundState = computeRoundState({
-    currentCard,
-    symbolArrayFromDiceKept: diceArrayToSymbolArray(diceKept),
-    currentRoundIndex,
-    scoreMarked,
-  })
-
-  if (roundState.isOnSkullIsland) {
+const ScoreDisplay = ({
+  isOnSkullIsland,
+  hasThreeSkullsOrMore,
+  isRoundOver,
+  roundScore,
+  markScore,
+}) => {
+  if (isOnSkullIsland) {
     return <span>XXX -Skull Island- XXX</span>
   }
 
   return (
     <>
-      <span>{roundState.score}</span>
-      {roundState.isRoundOver ? null : <MarkScoreButton onClick={markScore} />}
-      {roundState.hasThreeSkullsOrMore ? <div>Round over!</div> : null}
+      <span>{roundScore}</span>
+      {isRoundOver ? null : <MarkScoreButton onClick={markScore} />}
+      {hasThreeSkullsOrMore ? <div>Round over!</div> : null}
     </>
   )
 }

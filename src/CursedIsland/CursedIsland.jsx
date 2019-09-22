@@ -6,6 +6,7 @@ export const CursedIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => {
     <DiceSet
       title="Cursed Island"
       diceArray={diceCursed}
+      actionText="Remove"
       displayActionCondition={() => canRemoveSkull}
       actionFunction={removeSkull}
     />
