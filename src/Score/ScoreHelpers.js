@@ -10,30 +10,115 @@ import {
 import {
   SYMBOL_DIAMOND,
   SYMBOL_COIN,
-  SYMBOL_SKULL,
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SWORD,
 } from "/src/symbols/symbol-types.js"
+import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 
-export const countSymbolsOccurences = (symbolArray) => {
-  const symbolCountMap = {}
-  symbolArray.forEach((symbol) => {
-    if (symbolCountMap.hasOwnProperty(symbol)) {
-      symbolCountMap[symbol]++
-    } else {
-      symbolCountMap[symbol] = 1
+export const computeRoundState = ({
+  currentCard,
+  diceKept,
+  diceCursed,
+  currentRoundIndex,
+  scoreMarked = false,
+}) => {
+  const isFirstRound = currentRoundIndex === 0
+
+  let numerOfSkulls = diceCursed.length
+  if (currentCard.type === CARD_SKULL) numerOfSkulls += currentCard.skullAmount
+
+  const isOnSkullIsland = isFirstRound && numerOfSkulls > 3
+  const hasThreeSkullsOrMore = numerOfSkulls > 2
+
+  const perfectEnabled = diceKept.length === 8
+  const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
+
+  if (currentCard.type === CARD_CHEST) {
+    const isRoundOver = isOnSkullIsland || scoreMarked
+    const score = computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
+    return {
+      isOnSkullIsland,
+      hasThreeSkullsOrMore,
+      isRoundOver,
+      score,
     }
-  })
-  return symbolCountMap
+  }
+
+  if (currentCard.type === CARD_SWORD_CHALLENGE) {
+    const isRoundOver = isOnSkullIsland || hasThreeSkullsOrMore || scoreMarked
+    const swordGoalAchieved =
+      isOnSkullIsland || hasThreeSkullsOrMore
+        ? false
+        : countSymbol(symbolArrayFromDiceKept, SYMBOL_SWORD) >= currentCard.goal
+    const score = swordGoalAchieved
+      ? computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) + currentCard.gamble
+      : -currentCard.gamble
+    return {
+      isOnSkullIsland,
+      hasThreeSkullsOrMore,
+      isRoundOver,
+      score,
+    }
+  }
+
+  const isRoundOver = isOnSkullIsland || hasThreeSkullsOrMore || scoreMarked
+
+  if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {
+    return {
+      isOnSkullIsland,
+      hasThreeSkullsOrMore,
+      isRoundOver,
+      score: isRoundOver
+        ? 0
+        : computeScoreForSymbols([...symbolArrayFromDiceKept, currentCard.type], {
+            perfectEnabled,
+          }),
+    }
+  }
+
+  if (currentCard.type === CARD_ANIMALS) {
+    return {
+      isOnSkullIsland,
+      hasThreeSkullsOrMore,
+      isRoundOver,
+      score: isRoundOver
+        ? 0
+        : computeScoreForSymbols(
+            symbolArrayFromDiceKept.map((symbol) =>
+              symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol,
+            ),
+            { perfectEnabled },
+          ),
+    }
+  }
+
+  if (currentCard.type === CARD_PIRATE) {
+    return {
+      isOnSkullIsland,
+      hasThreeSkullsOrMore,
+      isRoundOver,
+      score: isRoundOver
+        ? 0
+        : computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) * 2,
+    }
+  }
+
+  return {
+    isOnSkullIsland,
+    hasThreeSkullsOrMore,
+    isRoundOver,
+    score: isRoundOver ? 0 : computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }),
+  }
 }
 
-const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
+const countSymbol = (symbolArray, symbol) => {
+  return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
+}
+
+const computeScoreForSymbols = (symbolArray, { perfectEnabled }) => {
   let score = 0
   let usefullSymbol = 0
-
-  // remove skulls from symbol array
-  symbolArray = symbolArray.filter((symbol) => symbol !== SYMBOL_SKULL)
 
   // add points for dice combinaisons
   const symbolCountMap = countSymbolsOccurences(symbolArray)
@@ -64,127 +149,14 @@ const computeSymbolsScore = (symbolArray, { perfectEnabled }) => {
   return score
 }
 
-const computeHasThreeSkullsOrMore = (card, symbolArrayFromDiceKept) => {
-  let numerOfSkulls = countSymbolsOccurences(symbolArrayFromDiceKept)[SYMBOL_SKULL]
-  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
-  return numerOfSkulls > 2
-}
-
-const computeIsRoundOver = (
-  hasThreeSkullsOrMore,
-  scoreMarked,
-  currentCard,
-  isOnSkullIsland,
-  currentRoundIndex,
-) => {
-  if (currentRoundIndex === 0) return false
-  // if car = chest, round is over when we mark a score, or if we are on skull island
-  if (currentCard.type === CARD_CHEST) {
-    return scoreMarked || isOnSkullIsland
-  }
-  // if not, round is over when we mark a score,
-  // OR when we have 3 skulls or more
-  // OR if we are on skull island
-  return hasThreeSkullsOrMore || scoreMarked || isOnSkullIsland
-}
-
-const computeIsOnSkullIsland = (card, symbolArrayFromDiceKept, currentRoundIndex) => {
-  let numerOfSkulls = countSymbolsOccurences(symbolArrayFromDiceKept)[SYMBOL_SKULL]
-  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
-  if (currentRoundIndex === 1 && numerOfSkulls > 3) return true
-  return false
-}
-
-// eslint-disable-next-line valid-jsdoc
-/**
- * TODO: this function should be renamed to something more generic like
- * computeRoundState or whatever
- * it needs to receive { currentCard, currentRoundIndex, diceOnGoing, diceKept }
- * return {
- *   // isRoundOver must be true if first round + sword challenge + 3 skulls or more    <<< ?????
- *   // true if 3 skulls or more afer first round
- *   // false otherwise
- *   isRoundOver: Boolean,
- *
- *   // isOnSkullIsland must be true if 4 skulls or more on first round
- *   // false otherwise
- *   isOnSkullIsland: Boolean,
- *
- *   // score must be 0 if isRoundOver except if chest card
- *   // otherwise the score according to diceKept
- *   score: Number
- * }
- */
-export const computeRoundState = ({
-  currentCard,
-  symbolArrayFromDiceKept,
-  currentRoundIndex,
-  scoreMarked,
-}) => {
-  const perfectEnabled = symbolArrayFromDiceKept.length === 8
-
-  const hasThreeSkullsOrMore = computeHasThreeSkullsOrMore(
-    currentCard,
-    symbolArrayFromDiceKept,
-    currentRoundIndex,
-  )
-  const isOnSkullIsland = computeIsOnSkullIsland(
-    currentCard,
-    symbolArrayFromDiceKept,
-    currentRoundIndex,
-  )
-
-  const roundState = {
-    hasThreeSkullsOrMore,
-    isRoundOver: computeIsRoundOver(
-      hasThreeSkullsOrMore,
-      scoreMarked,
-      currentCard,
-      isOnSkullIsland,
-      currentRoundIndex,
-    ),
-    isOnSkullIsland,
-    score: computeSymbolsScore(symbolArrayFromDiceKept, { perfectEnabled }),
-  }
-
-  if (symbolArrayFromDiceKept.length === 0) {
-    roundState.score = 0
-  }
-
-  // add effects related to the drawn card
-  if (currentCard.type === CARD_DIAMOND || currentCard.type === CARD_COIN) {
-    roundState.score = computeSymbolsScore([...symbolArrayFromDiceKept, currentCard.type], {
-      perfectEnabled,
-    })
-  }
-
-  if (currentCard.type === CARD_ANIMALS) {
-    roundState.score = computeSymbolsScore(
-      symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
-      { perfectEnabled },
-    )
-  }
-
-  if (currentCard.type === CARD_PIRATE) roundState.score *= 2
-
-  if (currentCard.type === CARD_SWORD_CHALLENGE) {
-    const symbolCountMap = countSymbolsOccurences(symbolArrayFromDiceKept)
-    // if there are at least as many swords as requested by the challenge (card.goal)
-    // we add the gamble value to the current score
-    if (symbolCountMap[SYMBOL_SWORD] && symbolCountMap[SYMBOL_SWORD] >= currentCard.goal) {
-      roundState.score += currentCard.gamble
+const countSymbolsOccurences = (symbolArray) => {
+  const symbolCountMap = {}
+  symbolArray.forEach((symbol) => {
+    if (symbolCountMap.hasOwnProperty(symbol)) {
+      symbolCountMap[symbol]++
+    } else {
+      symbolCountMap[symbol] = 1
     }
-    // if the challenge is not successful (less swords than the challenge goal)
-    // the score is the negative value of the gamble
-    else roundState.score = -Math.abs(currentCard.gamble)
-  }
-
-  if (
-    roundState.isRoundOver &&
-    currentCard.type !== CARD_CHEST &&
-    currentCard.type !== CARD_SWORD_CHALLENGE
-  )
-    roundState.score = 0
-
-  return roundState
+  })
+  return symbolCountMap
 }
