@@ -116,7 +116,9 @@ export const MilleSabordGameBoard = () => {
       if (currentCard.type === CARD_WITCH) {
         currentCard.effectUsed = true
       }
-      const cursedArrayWithoutThisDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
+      const cursedArrayWithoutThisDice = diceCursed.filter(
+        (diceCandidate) => diceCandidate !== dice,
+      )
       setDiceCursed(cursedArrayWithoutThisDice)
     } else {
       const keptArrayWithoutThisDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
