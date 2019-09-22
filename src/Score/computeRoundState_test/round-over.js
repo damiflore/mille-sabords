@@ -112,4 +112,3 @@ import { computeRoundState } from "../ScoreHelpers.js"
   }
   assert({ actual, expected })
 }
-

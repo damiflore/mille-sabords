@@ -168,7 +168,7 @@ export const computeRoundState = ({
   if (currentCard.type === CARD_PIRATE) roundState.score *= 2
 
   if (currentCard.type === CARD_SWORD_CHALLENGE) {
-    const symbolCountMap = countSymbolsOccurences(symbolArrayFromDiceKept);
+    const symbolCountMap = countSymbolsOccurences(symbolArrayFromDiceKept)
     // if there are at least as many swords as requested by the challenge (card.goal)
     // we add the gamble value to the current score
     if (symbolCountMap[SYMBOL_SWORD] && symbolCountMap[SYMBOL_SWORD] >= currentCard.goal) {
@@ -179,7 +179,12 @@ export const computeRoundState = ({
     else roundState.score = -Math.abs(currentCard.gamble)
   }
 
-  if (roundState.isRoundOver && currentCard.type !== CARD_CHEST && currentCard.type !== CARD_SWORD_CHALLENGE) roundState.score = 0
+  if (
+    roundState.isRoundOver &&
+    currentCard.type !== CARD_CHEST &&
+    currentCard.type !== CARD_SWORD_CHALLENGE
+  )
+    roundState.score = 0
 
   return roundState
 }

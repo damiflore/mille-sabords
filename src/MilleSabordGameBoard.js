@@ -51,7 +51,7 @@ export const MilleSabordGameBoard = () => {
       scoreMarked,
     })
     if (roundState.isRoundOver) {
-      if (currentCard.type === CARD_SWORD_CHALLENGE) markScore();
+      if (currentCard.type === CARD_SWORD_CHALLENGE) markScore()
       setCardDrawn(false)
     }
   }
