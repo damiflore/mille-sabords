@@ -21,7 +21,7 @@ export const computeRoundState = ({
   diceKept,
   diceCursed,
   currentRoundIndex,
-  scoreMarked,
+  scoreMarked = false,
 }) => {
   const isFirstRound = currentRoundIndex === 0
 

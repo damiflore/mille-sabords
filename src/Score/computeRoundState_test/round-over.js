@@ -21,7 +21,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       SYMBOL_DIAMOND,
     ],
-    currentRoundIndex: 2,
+    currentRoundIndex: 1,
     scoreMarked: false,
   })
   const expected = {
@@ -49,7 +49,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       SYMBOL_SWORD,
     ],
-    currentRoundIndex: 1,
+    currentRoundIndex: 0,
     scoreMarked: false,
   })
   const expected = {
@@ -77,7 +77,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       SYMBOL_SWORD,
     ],
-    currentRoundIndex: 2,
+    currentRoundIndex: 1,
     scoreMarked: false,
   })
   const expected = {
@@ -102,7 +102,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_DIAMOND },
       { symbol: SYMBOL_DIAMOND },
     ],
-    currentRoundIndex: 2,
+    currentRoundIndex: 1,
     scoreMarked: true,
   })
   const expected = {

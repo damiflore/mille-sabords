@@ -46,7 +46,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_DIAMOND },
     ],
-    currentRoundIndex: 1,
+    currentRoundIndex: 0,
   })
   const expected = {
     isOnSkullIsland: true,
@@ -70,7 +70,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_DIAMOND },
     ],
-    currentRoundIndex: 2,
+    currentRoundIndex: 1,
   })
   const expected = {
     isOnSkullIsland: false,
