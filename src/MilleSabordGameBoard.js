@@ -36,6 +36,37 @@ export const MilleSabordGameBoard = () => {
   const [isRoundOver, setIsRoundOver] = React.useState(false)
   const [roundScore, setRoundScore] = React.useState(false)
 
+  // compute some variables when
+  // - dice are rolled
+  // - or a dice is kept
+  // - or a dice is unkept
+  // - or score is marked (because it influences isRoundOver)
+  React.useEffect(() => {
+    const { isOnSkullIsland, hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
+      currentCard,
+      diceKept,
+      diceCursed,
+      currentRoundIndex,
+      scoreMarked,
+    })
+    setRoundScore(score)
+    setIsOnSkullIsland(isOnSkullIsland)
+    setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
+    setIsRoundOver(isRoundOver)
+  }, [currentCard, diceKept, diceCursed, currentRoundIndex, scoreMarked])
+
+  // auto mark score when round is over with sword challenge
+  React.useEffect(() => {
+    if (currentCard.type === CARD_SWORD_CHALLENGE && isRoundOver) markScore()
+  }, [isRoundOver, currentCard])
+
+  // auto set card drawn to false when round is over
+  React.useEffect(() => {
+    if (isRoundOver) {
+      setCardDrawn(false)
+    }
+  }, [isRoundOver])
+
   const clearDiceSet = () => {
     setDiceOffGame(DICE_ARRAY)
     setDiceOngoing([])
@@ -64,35 +95,14 @@ export const MilleSabordGameBoard = () => {
       setDiceOngoing([...diceOffGame])
       setDiceOffGame([])
     }
-    const currentRoundIndexLastValue = currentRoundIndex + 1
-    setCurrentRoundIndex(currentRoundIndexLastValue)
-
-    const diceCursedLastValue = curseDices(currentDiceArray)
-
-    const { isOnSkullIsland, hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
-      currentCard,
-      diceKept,
-      diceCursed: diceCursedLastValue,
-      currentRoundIndex: currentRoundIndexLastValue,
-      scoreMarked,
-    })
-    setIsOnSkullIsland(isOnSkullIsland)
-    setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
-    setIsRoundOver(isRoundOver)
-    setRoundScore(score)
-
-    if (isRoundOver) {
-      if (currentCard.type === CARD_SWORD_CHALLENGE) markScore()
-      setCardDrawn(false)
-    }
+    setCurrentRoundIndex(currentRoundIndex + 1)
+    curseDices(currentDiceArray)
   }
 
   const curseDices = (currentDiceArray) => {
     const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
     setDiceOngoing(withoutSkulls)
-    const diceCursedLastValue = [...diceCursed, ...skulls]
-    setDiceCursed(diceCursedLastValue)
-    return diceCursedLastValue
+    setDiceCursed([...diceCursed, ...skulls])
   }
 
   const keepDice = (dice) => {
@@ -130,7 +140,7 @@ export const MilleSabordGameBoard = () => {
   }
 
   const markScore = () => {
-    setTotalScore(Math.min(totalScore + roundScore, 0))
+    setTotalScore(Math.max(totalScore + roundScore, 0))
     setCardDrawn(false)
     setScoreMarked(true)
   }
@@ -145,7 +155,7 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const canRemoveSkull = currentCard.type === CARD_WITCH && !currentCard.effectUsed
+  const canRemoveSkull = currentCard.type === CARD_WITCH && !currentCard.effectUsed && !isRoundOver
 
   return (
     <>
