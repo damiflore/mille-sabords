@@ -11,7 +11,7 @@ import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import { computeRoundState } from "./Score/ScoreHelpers.js"
 import { DICE_ARRAY, rollOnGoingDices, diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
-import { CARD_WITCH } from "src/Cards/card-types.js"
+import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 
 export const MilleSabordGameBoard = () => {
   const [diceOnGoing, setDiceOngoing] = React.useState(DICE_ARRAY)
@@ -51,6 +51,7 @@ export const MilleSabordGameBoard = () => {
       scoreMarked,
     })
     if (roundState.isRoundOver) {
+      if (currentCard.type === CARD_SWORD_CHALLENGE) markScore()
       setCardDrawn(false)
     }
   }

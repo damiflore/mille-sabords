@@ -10,7 +10,7 @@ import {
 import { CARD_ANIMALS } from "src/Cards/card-types.js"
 import { computeRoundState } from "../ScoreHelpers.js"
 
-// with 1 coin and 1 damond
+// with 1 coin and 1 diamond
 {
   const actual = computeRoundState({
     currentCard: { type: CARD_ANIMALS },
