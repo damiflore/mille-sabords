@@ -6,7 +6,8 @@ import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
-import { Shaker } from "./Shaker/Shaker.jsx"
+import { CursedIsland } from "./CursedIsland/CursedIsland.jsx"
+// import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
 import { computeRoundState } from "./Score/ScoreHelpers.js"
@@ -23,6 +24,7 @@ export const MilleSabordGameBoard = () => {
   const [diceOffGame, setDiceOffGame] = React.useState(DICE_ARRAY)
   const [diceOnGoing, setDiceOngoing] = React.useState([])
   const [diceKept, setDiceKept] = React.useState([])
+  const [diceCursed, setDiceCursed] = React.useState([])
 
   const [totalScore, setTotalScore] = React.useState(0)
 
@@ -38,6 +40,7 @@ export const MilleSabordGameBoard = () => {
     setDiceOffGame(DICE_ARRAY)
     setDiceOngoing([])
     setDiceKept([])
+    setDiceCursed([])
     setDiceRolledOnce(false)
     setCurrentRoundIndex(0)
     setScoreMarked(false)
@@ -58,7 +61,7 @@ export const MilleSabordGameBoard = () => {
       setDiceOffGame([])
     }
     setCurrentRoundIndex(currentRoundIndex + 1)
-    autoKeepSkulls(currentDiceArray)
+    checkCursedDices(currentDiceArray)
 
     // check round state to know if round is over
     const roundState = computeRoundState({
@@ -73,32 +76,42 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const autoKeepSkulls = (currentDiceArray) => {
+  const checkCursedDices = (currentDiceArray) => {
     const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
     setDiceOngoing(withoutSkulls)
-    setDiceKept([...diceKept, ...skulls])
+    setDiceCursed([...diceCursed, ...skulls])
   }
 
   const keepDice = (dice) => {
+    if (dice.symbol === SYMBOL_SKULL) {
+      if (currentCard.type === CARD_WITCH) {
+        currentCard.effectUsed = false
+      }
+      const cursedArrayWithThisDice = [...diceCursed, dice]
+      setDiceCursed(cursedArrayWithThisDice)
+    } else {
+      const diceKeptWithDice = [...diceKept, dice]
+      setDiceKept(diceKeptWithDice)
+    }
+
     const diceOnGoingWithoutDice = diceOnGoing.filter((diceCandidate) => diceCandidate !== dice)
     setDiceOngoing(diceOnGoingWithoutDice)
-
-    const diceKeptWithDice = [...diceKept, dice]
-    setDiceKept(diceKeptWithDice)
-
-    if (currentCard.type === CARD_WITCH && dice.symbol === SYMBOL_SKULL)
-      currentCard.effectUsed = false
   }
 
   const unkeepDice = (dice) => {
-    const diceKeptWithoutDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
-    setDiceKept(diceKeptWithoutDice)
+    if (dice.symbol === SYMBOL_SKULL) {
+      if (currentCard.type === CARD_WITCH) {
+        currentCard.effectUsed = true
+      }
+      const cursedArrayWithoutThisDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
+      setDiceCursed(cursedArrayWithoutThisDice)
+    } else {
+      const keptArrayWithoutThisDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
+      setDiceKept(keptArrayWithoutThisDice)
+    }
 
-    const diceOnGoingWithDice = [...diceOnGoing, dice]
-    setDiceOngoing(diceOnGoingWithDice)
-
-    if (currentCard.type === CARD_WITCH && dice.symbol === SYMBOL_SKULL)
-      currentCard.effectUsed = true
+    const onGoingArrayWithThisDice = [...diceOnGoing, dice]
+    setDiceOngoing(onGoingArrayWithThisDice)
   }
 
   const markScore = () => {
@@ -155,7 +168,7 @@ export const MilleSabordGameBoard = () => {
           diceRolledOnce={diceRolledOnce}
         />
       </div>
-      <Shaker diceOffGame={diceOffGame} />
+      {/* <Shaker diceOffGame={diceOffGame} /> */}
       <DiceSet
         title="Dice ongoing"
         diceArray={diceOnGoing}
@@ -172,12 +185,16 @@ export const MilleSabordGameBoard = () => {
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => unkeepDice(dice)}
-        displayActionCondition={(dice) => {
+        displayActionCondition={() => {
           if (roundState.isRoundOver) return false
-          if (dice.symbol === SYMBOL_SKULL) return canRemoveSkull
           return true
         }}
       />
+      <CursedIsland
+        diceCursed={diceCursed}
+        canRemoveSkull={canRemoveSkull}
+        removeSkull={(dice) => unkeepDice(dice)}
+      ></CursedIsland>
       <CurrentRoundScore
         diceRolledOnce={diceRolledOnce}
         diceKept={diceKept}
