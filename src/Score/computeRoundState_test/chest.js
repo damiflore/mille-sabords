@@ -13,7 +13,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with nothing
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -25,7 +25,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 0,
@@ -36,7 +35,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -49,7 +48,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 100,
@@ -60,7 +58,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 4 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -74,7 +72,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 200,
@@ -85,7 +82,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 5 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -98,7 +95,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 500,
@@ -109,7 +105,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 6 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -123,7 +119,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 1000,
@@ -134,7 +129,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 7 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -148,7 +143,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 2000,
@@ -159,7 +153,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 8 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -176,7 +170,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
   // 500 from "perfect" rule
   // -> 4500
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 4500,
@@ -187,7 +180,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 1 coin
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -200,7 +193,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 100,
@@ -211,7 +203,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 1 diamond
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_DIAMOND },
@@ -224,7 +216,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 100,
@@ -235,7 +226,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 coin
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -251,7 +242,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
   // 300 from 3 coin
   // -> 400
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 400,
@@ -262,7 +252,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 parrot and 3 diamond
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -280,7 +270,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
   // 300 from 3 diamond
   // -> 500
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 500,
@@ -291,7 +280,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 parrot and 3 monkey and 2 coin
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_CHEST },
+    card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -310,7 +299,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
   // 500 from "perfect" rule
   // -> 900
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 900,

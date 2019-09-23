@@ -14,6 +14,8 @@ import { computeRoundState } from "./Score/ScoreHelpers.js"
 import { DICE_ARRAY, rollDices, splitSkulls } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
+import { canGoOnSkullIsland } from "/src/SkullIsland/canGoOnSkullIsland.js"
+import { isSentToSkullIsland } from "/src/SkullIsland/isSentToSkullIsland.js"
 
 export const MilleSabordGameBoard = () => {
   const [diceOffGame, setDiceOffGame] = React.useState(DICE_ARRAY)
@@ -24,7 +26,7 @@ export const MilleSabordGameBoard = () => {
   const [totalScore, setTotalScore] = React.useState(1000)
 
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
-  const [currentCard, setCurrentCard] = React.useState({})
+  const [card, setCard] = React.useState({})
 
   const [rollIndex, setRollIndex] = React.useState(-1)
   const [cardDrawn, setCardDrawn] = React.useState(false)
@@ -35,29 +37,33 @@ export const MilleSabordGameBoard = () => {
   const [isRoundOver, setIsRoundOver] = React.useState(false)
   const [roundScore, setRoundScore] = React.useState(false)
 
+  React.useEffect(() => {
+    if (canGoOnSkullIsland({ card, rollIndex }) && isSentToSkullIsland({ card, diceCursed })) {
+      setIsOnSkullIsland(true)
+    }
+  }, [card, rollIndex])
+
   // compute some variables when
   // - dice are rolled
   // - or a dice is kept
   // - or a dice is unkept
   // - or score is marked (because it influences isRoundOver)
   React.useEffect(() => {
-    const { isOnSkullIsland, hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
-      currentCard,
+    const { hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
+      card,
       diceKept,
       diceCursed,
-      rollIndex,
       scoreMarked,
     })
     setRoundScore(score)
-    setIsOnSkullIsland(isOnSkullIsland)
     setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
     setIsRoundOver(isRoundOver)
-  }, [currentCard, diceKept, diceCursed, rollIndex, scoreMarked])
+  }, [card, diceKept, diceCursed, scoreMarked])
 
   // auto mark score when round is over with sword challenge
   React.useEffect(() => {
-    if (currentCard.type === CARD_SWORD_CHALLENGE && isRoundOver) markScore()
-  }, [isRoundOver, currentCard])
+    if (card.type === CARD_SWORD_CHALLENGE && isRoundOver) markScore()
+  }, [isRoundOver, card])
 
   // auto set card drawn to false when round is over
   React.useEffect(() => {
@@ -105,8 +111,8 @@ export const MilleSabordGameBoard = () => {
 
   const keepDice = (dice) => {
     if (dice.symbol === SYMBOL_SKULL) {
-      if (currentCard.type === CARD_WITCH) {
-        currentCard.effectUsed = false
+      if (card.type === CARD_WITCH) {
+        card.effectUsed = false
       }
       const cursedArrayWithThisDice = [...diceCursed, dice]
       setDiceCursed(cursedArrayWithThisDice)
@@ -121,8 +127,8 @@ export const MilleSabordGameBoard = () => {
 
   const unkeepDice = (dice) => {
     if (dice.symbol === SYMBOL_SKULL) {
-      if (currentCard.type === CARD_WITCH) {
-        currentCard.effectUsed = true
+      if (card.type === CARD_WITCH) {
+        card.effectUsed = true
       }
       const cursedArrayWithoutThisDice = diceCursed.filter(
         (diceCandidate) => diceCandidate !== dice,
@@ -145,7 +151,7 @@ export const MilleSabordGameBoard = () => {
 
   const drawCard = () => {
     if (cardDeck.length > 0) {
-      setCurrentCard(cardDeck.pop())
+      setCard(cardDeck.pop())
       setCardDeck(cardDeck)
       setCardDrawn(true)
     } else {
@@ -153,16 +159,11 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const canRemoveSkull = currentCard.type === CARD_WITCH && !currentCard.effectUsed && !isRoundOver
+  const canRemoveSkull = card.type === CARD_WITCH && !card.effectUsed && !isRoundOver
 
   return (
     <>
-      <CardArea
-        cardDeck={cardDeck}
-        cardDrawn={cardDrawn}
-        drawCard={drawCard}
-        currentCard={currentCard}
-      />
+      <CardArea cardDeck={cardDeck} cardDrawn={cardDrawn} drawCard={drawCard} card={card} />
       <div>
         <ButtonRoll
           rollIndex={rollIndex}

@@ -12,7 +12,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // 8 coin
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -26,7 +26,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: -300,
@@ -37,7 +36,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // 2 sword completed with 2 sword
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -49,7 +48,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 300,
@@ -60,7 +58,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // 2 sword completed with 3 sword
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -72,7 +70,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 400,
@@ -83,7 +80,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // 3 skulls
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -94,7 +91,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: -300,

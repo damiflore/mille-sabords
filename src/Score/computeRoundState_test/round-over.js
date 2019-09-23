@@ -12,7 +12,8 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 skulls
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
+    rollIndex: 1,
     diceCursed: [SYMBOL_SKULL, SYMBOL_SKULL, SYMBOL_SKULL],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -21,11 +22,9 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       SYMBOL_DIAMOND,
     ],
-    rollIndex: 1,
     scoreMarked: false,
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,
@@ -36,7 +35,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 4 skulls - First round
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
     diceCursed: [
       { symbol: SYMBOL_SKULL },
       { symbol: SYMBOL_SKULL },
@@ -53,7 +52,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     scoreMarked: false,
   })
   const expected = {
-    isOnSkullIsland: true,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,
@@ -64,7 +62,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 4 skulls - Second round
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
     diceCursed: [
       { symbol: SYMBOL_SKULL },
       { symbol: SYMBOL_SKULL },
@@ -81,7 +79,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     scoreMarked: false,
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,
@@ -92,7 +89,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // user has clicked on "Mark score"
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -106,7 +103,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     scoreMarked: true,
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: true,
     score: 0,

@@ -12,7 +12,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with nothing
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_PIRATE },
+    card: { type: CARD_PIRATE },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -24,7 +24,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 0,
@@ -35,7 +34,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 coin
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_PIRATE },
+    card: { type: CARD_PIRATE },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -48,7 +47,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 800,
@@ -59,7 +57,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 coin + 5 sword
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_PIRATE },
+    card: { type: CARD_PIRATE },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -79,7 +77,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
   // x2 from pirate
   // -> 2800
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 2800,

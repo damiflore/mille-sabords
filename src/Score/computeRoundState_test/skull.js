@@ -13,7 +13,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 2 skulls (dice) + 1 sull (card)
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SKULL, skullAmount: 1 },
+    card: { type: CARD_SKULL, skullAmount: 1 },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -25,7 +25,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,
@@ -36,7 +35,8 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 2 skulls (dice) + 2 sull (card) - First round
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SKULL, skullAmount: 2 },
+    card: { type: CARD_SKULL, skullAmount: 2 },
+    rollIndex: 0,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -46,10 +46,8 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_DIAMOND },
     ],
-    rollIndex: 0,
   })
   const expected = {
-    isOnSkullIsland: true,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,
@@ -60,7 +58,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 2 skulls (dice) + 2 sull (card) - Second round
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_SKULL, skullAmount: 2 },
+    card: { type: CARD_SKULL, skullAmount: 2 },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -73,7 +71,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     rollIndex: 1,
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: true,
     isRoundOver: true,
     score: 0,

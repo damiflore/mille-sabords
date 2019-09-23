@@ -13,7 +13,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 1 coin and 1 diamond
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -25,7 +25,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 200,
@@ -36,7 +35,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
 // with 3 monkey and 2 parrot
 {
   const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+    card: { type: CARD_ANIMALS },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_MONKEY },
@@ -48,7 +47,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
     ],
   })
   const expected = {
-    isOnSkullIsland: false,
     hasThreeSkullsOrMore: false,
     isRoundOver: false,
     score: 500,
