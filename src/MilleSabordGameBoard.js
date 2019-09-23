@@ -26,8 +26,7 @@ export const MilleSabordGameBoard = () => {
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
   const [currentCard, setCurrentCard] = React.useState({})
 
-  const [diceRolledOnce, setDiceRolledOnce] = React.useState(false)
-  const [currentRoundIndex, setCurrentRoundIndex] = React.useState(-1)
+  const [rollIndex, setRollIndex] = React.useState(-1)
   const [cardDrawn, setCardDrawn] = React.useState(false)
   const [scoreMarked, setScoreMarked] = React.useState(false)
 
@@ -46,14 +45,14 @@ export const MilleSabordGameBoard = () => {
       currentCard,
       diceKept,
       diceCursed,
-      currentRoundIndex,
+      rollIndex,
       scoreMarked,
     })
     setRoundScore(score)
     setIsOnSkullIsland(isOnSkullIsland)
     setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
     setIsRoundOver(isRoundOver)
-  }, [currentCard, diceKept, diceCursed, currentRoundIndex, scoreMarked])
+  }, [currentCard, diceKept, diceCursed, rollIndex, scoreMarked])
 
   // auto mark score when round is over with sword challenge
   React.useEffect(() => {
@@ -72,8 +71,7 @@ export const MilleSabordGameBoard = () => {
     setDiceOngoing([])
     setDiceKept([])
     setDiceCursed([])
-    setDiceRolledOnce(false)
-    setCurrentRoundIndex(-1)
+    setRollIndex(-1)
     setScoreMarked(false)
     setCardDrawn(false)
     setIsOnSkullIsland(false)
@@ -85,17 +83,17 @@ export const MilleSabordGameBoard = () => {
   const rollTheDice = () => {
     let currentDiceArray
 
-    if (diceRolledOnce) {
-      currentDiceArray = diceOnGoing
-      rollDices(diceOnGoing)
-    } else {
+    if (rollIndex === -1) {
       currentDiceArray = diceOffGame
       rollDices(diceOffGame)
-      setDiceRolledOnce(true)
       setDiceOngoing([...diceOffGame])
       setDiceOffGame([])
+      setRollIndex(0)
+    } else {
+      currentDiceArray = diceOnGoing
+      rollDices(diceOnGoing)
+      setRollIndex(rollIndex + 1)
     }
-    setCurrentRoundIndex(currentRoundIndex + 1)
     curseDices(currentDiceArray)
   }
 
@@ -167,7 +165,7 @@ export const MilleSabordGameBoard = () => {
       />
       <div>
         <ButtonRoll
-          diceRolledOnce={diceRolledOnce}
+          rollIndex={rollIndex}
           cardDrawn={cardDrawn}
           diceOnGoing={diceOnGoing}
           onClick={rollTheDice}
@@ -176,7 +174,7 @@ export const MilleSabordGameBoard = () => {
         <ButtonRestart
           clearDiceSet={clearDiceSet}
           isRoundOver={isRoundOver}
-          diceRolledOnce={diceRolledOnce}
+          rollIndex={rollIndex}
         />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
@@ -186,7 +184,7 @@ export const MilleSabordGameBoard = () => {
         actionText="Keep"
         actionFunction={(dice) => keepDice(dice)}
         displayActionCondition={() => {
-          if (!diceRolledOnce) return false
+          if (rollIndex === -1) return false
           if (isRoundOver) return false
           return true
         }}
@@ -207,7 +205,7 @@ export const MilleSabordGameBoard = () => {
         removeSkull={(dice) => unkeepDice(dice)}
       ></CursedIsland>
       <CurrentRoundScore
-        diceRolledOnce={diceRolledOnce}
+        rollIndex={rollIndex}
         isOnSkullIsland={isOnSkullIsland}
         hasThreeSkullsOrMore={hasThreeSkullsOrMore}
         isRoundOver={isRoundOver}

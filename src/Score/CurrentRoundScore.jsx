@@ -1,14 +1,14 @@
 import React from "react"
 
 export const CurrentRoundScore = ({
-  diceRolledOnce,
+  rollIndex,
   isOnSkullIsland,
   hasThreeSkullsOrMore,
   isRoundOver,
   roundScore,
   markScore,
 }) => {
-  if (!diceRolledOnce) {
+  if (rollIndex === -1) {
     return null
   }
 

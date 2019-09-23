@@ -20,10 +20,10 @@ export const computeRoundState = ({
   currentCard,
   diceKept,
   diceCursed,
-  currentRoundIndex,
+  rollIndex,
   scoreMarked = false,
 }) => {
-  const isFirstRound = currentRoundIndex === 0
+  const isFirstRound = rollIndex === 0
 
   let numerOfSkulls = diceCursed.length
   if (currentCard.type === CARD_SKULL) numerOfSkulls += currentCard.skullAmount
