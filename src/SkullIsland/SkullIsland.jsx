@@ -1,7 +1,7 @@
 import React from "react"
 import { DiceSet } from "../Dice/DiceSet.js"
 
-export const CursedIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => {
+export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => {
   return (
     <DiceSet
       title="Cursed Island"

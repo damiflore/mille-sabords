@@ -6,7 +6,7 @@ import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
-import { CursedIsland } from "./CursedIsland/CursedIsland.jsx"
+import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
@@ -199,11 +199,11 @@ export const MilleSabordGameBoard = () => {
           return true
         }}
       />
-      <CursedIsland
+      <SkullIsland
         diceCursed={diceCursed}
         canRemoveSkull={canRemoveSkull}
         removeSkull={(dice) => unkeepDice(dice)}
-      ></CursedIsland>
+      ></SkullIsland>
       <CurrentRoundScore
         rollIndex={rollIndex}
         isOnSkullIsland={isOnSkullIsland}
