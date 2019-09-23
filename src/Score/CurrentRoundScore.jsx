@@ -1,11 +1,12 @@
 import React from "react"
 
+import { ButtonMarkScore } from "./ButtonMarkScore.jsx"
+
 export const CurrentRoundScore = ({
   rollIndex,
   isOnSkullIsland,
-  hasThreeSkullsOrMore,
-  isRoundOver,
   roundScore,
+  markScorePermission,
   markScore,
 }) => {
   if (rollIndex === -1) {
@@ -17,8 +18,7 @@ export const CurrentRoundScore = ({
       <span className="subtitle"> Current round score: </span>
       <ScoreDisplay
         isOnSkullIsland={isOnSkullIsland}
-        hasThreeSkullsOrMore={hasThreeSkullsOrMore}
-        isRoundOver={isRoundOver}
+        markScorePermission={markScorePermission}
         roundScore={roundScore}
         markScore={markScore}
       />
@@ -26,13 +26,7 @@ export const CurrentRoundScore = ({
   )
 }
 
-const ScoreDisplay = ({
-  isOnSkullIsland,
-  hasThreeSkullsOrMore,
-  isRoundOver,
-  roundScore,
-  markScore,
-}) => {
+const ScoreDisplay = ({ markScorePermission, isOnSkullIsland, roundScore, markScore }) => {
   if (isOnSkullIsland) {
     return <span>XXX -Skull Island- XXX</span>
   }
@@ -40,14 +34,8 @@ const ScoreDisplay = ({
   return (
     <>
       <span>{roundScore}</span>
-      {isRoundOver ? null : <MarkScoreButton onClick={markScore} />}
-      {hasThreeSkullsOrMore ? <div>Round over!</div> : null}
+      {markScorePermission.allowed ? <ButtonMarkScore onClick={markScore} /> : null}
+      <div>{markScorePermission.reason}</div>
     </>
   )
 }
-
-const MarkScoreButton = ({ onClick }) => (
-  <button onClick={onClick} style={{ marginLeft: "20px" }}>
-    Mark this score
-  </button>
-)

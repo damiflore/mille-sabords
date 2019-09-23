@@ -10,12 +10,14 @@ import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonRestart } from "./ButtonRestart.js"
 import { getMixedDeck } from "./Cards/CardsHelpers.js"
-import { computeRoundState } from "./Score/ScoreHelpers.js"
 import { DICE_ARRAY, rollDices, splitSkulls } from "/src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
-import { canGoOnSkullIsland } from "/src/SkullIsland/canGoOnSkullIsland.js"
-import { isSentToSkullIsland } from "/src/SkullIsland/isSentToSkullIsland.js"
+import { computeIsOnSkullIsland } from "/src/SkullIsland/computeIsOnSkullIsland.js"
+import { computeRollDicePermission } from "/src/Dice/computeRollDicePermission.js"
+import { computeMarkScorePermission } from "./Score/computeMarkScorePermission.js"
+import { computeRoundScore } from "/src//Score/computeRoundScore.js"
+import { countSkulls } from "/src/Dice/countSkulls.js"
 
 export const MilleSabordGameBoard = () => {
   const [diceOffGame, setDiceOffGame] = React.useState(DICE_ARRAY)
@@ -33,44 +35,87 @@ export const MilleSabordGameBoard = () => {
   const [scoreMarked, setScoreMarked] = React.useState(false)
 
   const [isOnSkullIsland, setIsOnSkullIsland] = React.useState(false)
-  const [hasThreeSkullsOrMore, setHasThreeSkullsOrMore] = React.useState(false)
-  const [isRoundOver, setIsRoundOver] = React.useState(false)
   const [roundScore, setRoundScore] = React.useState(false)
 
+  const [rollDicePermission, setRollDicePermission] = React.useState({})
+  const [keepDiceAllowed, setKeepDiceAllowed] = React.useState(false)
+  const [unkeepDiceAllowed, setUnkeepDiceAllowed] = React.useState(false)
+  const [markScorePermission, setMarkScorePermission] = React.useState({})
+  const [restartPermission, setRestartPermission] = React.useState({})
+
   React.useEffect(() => {
-    if (canGoOnSkullIsland({ card, rollIndex }) && isSentToSkullIsland({ card, diceCursed })) {
-      setIsOnSkullIsland(true)
+    const skullCount = countSkulls({ card, diceCursed })
+    if (skullCount > 2 || scoreMarked) {
+      setKeepDiceAllowed(false)
+      setUnkeepDiceAllowed(false)
+    } else {
+      setKeepDiceAllowed(true)
+      setUnkeepDiceAllowed(true)
     }
-  }, [card, rollIndex])
+  }, [card, diceCursed, scoreMarked])
 
-  // compute some variables when
-  // - dice are rolled
-  // - or a dice is kept
-  // - or a dice is unkept
-  // - or score is marked (because it influences isRoundOver)
+  // isOnSkullIsland computation
   React.useEffect(() => {
-    const { hasThreeSkullsOrMore, isRoundOver, score } = computeRoundState({
-      card,
-      diceKept,
-      diceCursed,
-      scoreMarked,
-    })
-    setRoundScore(score)
-    setHasThreeSkullsOrMore(hasThreeSkullsOrMore)
-    setIsRoundOver(isRoundOver)
-  }, [card, diceKept, diceCursed, scoreMarked])
+    setIsOnSkullIsland(
+      computeIsOnSkullIsland({
+        isOnSkullIsland,
+        card,
+        rollIndex,
+        diceCursed,
+      }),
+    )
+  }, [card, rollIndex, diceCursed])
 
-  // auto mark score when round is over with sword challenge
+  // rollDicePermission computation
   React.useEffect(() => {
-    if (card.type === CARD_SWORD_CHALLENGE && isRoundOver) markScore()
-  }, [isRoundOver, card])
+    setRollDicePermission(
+      computeRollDicePermission({
+        cardDrawn,
+        card,
+        diceCursed,
+      }),
+    )
+  }, [cardDrawn, card, diceCursed])
 
-  // auto set card drawn to false when round is over
+  // markScorePermission computation
   React.useEffect(() => {
-    if (isRoundOver) {
-      setCardDrawn(false)
+    setMarkScorePermission(
+      computeMarkScorePermission({
+        rollIndex,
+        card,
+        diceCursed,
+        scoreMarked,
+      }),
+    )
+  }, [card, rollIndex, diceCursed, scoreMarked])
+
+  // roundScore computation
+  React.useEffect(() => {
+    setRoundScore(
+      computeRoundScore({
+        card,
+        diceKept,
+        markScorePermission,
+      }),
+    )
+  }, [card, diceKept, markScorePermission])
+
+  // restart permission
+  React.useEffect(() => {
+    if (rollIndex === -1) {
+      setRestartPermission({ allowed: false })
+    } else if (!rollDicePermission.allowed && !markScorePermission.allowed) {
+      setRestartPermission({ allowed: true })
     }
-  }, [isRoundOver])
+  }, [rollIndex, rollDicePermission, markScorePermission])
+
+  // auto mark failed sword challenges
+  // TODO: fix this, it does not work
+  React.useEffect(() => {
+    if (card.type === CARD_SWORD_CHALLENGE && !markScorePermission.allowed && scoreMarked) {
+      markScore()
+    }
+  }, [card, markScorePermission, scoreMarked])
 
   const clearDiceSet = () => {
     setDiceOffGame(DICE_ARRAY)
@@ -81,8 +126,6 @@ export const MilleSabordGameBoard = () => {
     setScoreMarked(false)
     setCardDrawn(false)
     setIsOnSkullIsland(false)
-    setHasThreeSkullsOrMore(false)
-    setIsRoundOver(false)
     setRoundScore(0)
   }
 
@@ -159,24 +202,14 @@ export const MilleSabordGameBoard = () => {
     }
   }
 
-  const canRemoveSkull = card.type === CARD_WITCH && !card.effectUsed && !isRoundOver
+  const canRemoveSkull = rollDicePermission.allowed && card.type === CARD_WITCH && !card.effectUsed
 
   return (
     <>
       <CardArea cardDeck={cardDeck} cardDrawn={cardDrawn} drawCard={drawCard} card={card} />
       <div>
-        <ButtonRoll
-          rollIndex={rollIndex}
-          cardDrawn={cardDrawn}
-          diceOnGoing={diceOnGoing}
-          onClick={rollTheDice}
-          isRoundOver={isRoundOver}
-        />
-        <ButtonRestart
-          clearDiceSet={clearDiceSet}
-          isRoundOver={isRoundOver}
-          rollIndex={rollIndex}
-        />
+        <ButtonRoll rollDicePermission={rollDicePermission} onClick={rollTheDice} />
+        <ButtonRestart restartPermission={restartPermission} clearDiceSet={clearDiceSet} />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
       <DiceSet
@@ -184,21 +217,14 @@ export const MilleSabordGameBoard = () => {
         diceArray={diceOnGoing}
         actionText="Keep"
         actionFunction={(dice) => keepDice(dice)}
-        displayActionCondition={() => {
-          if (rollIndex === -1) return false
-          if (isRoundOver) return false
-          return true
-        }}
+        displayActionCondition={() => keepDiceAllowed}
       />
       <DiceSet
         title="Dice kept"
         diceArray={diceKept}
         actionText="Remove"
         actionFunction={(dice) => unkeepDice(dice)}
-        displayActionCondition={() => {
-          if (isRoundOver) return false
-          return true
-        }}
+        displayActionCondition={() => unkeepDiceAllowed}
       />
       <SkullIsland
         diceCursed={diceCursed}
@@ -208,9 +234,8 @@ export const MilleSabordGameBoard = () => {
       <CurrentRoundScore
         rollIndex={rollIndex}
         isOnSkullIsland={isOnSkullIsland}
-        hasThreeSkullsOrMore={hasThreeSkullsOrMore}
-        isRoundOver={isRoundOver}
         roundScore={roundScore}
+        markScorePermission={markScorePermission}
         markScore={markScore}
       />
       <TotalScore totalScore={totalScore} />

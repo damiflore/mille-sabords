@@ -3,7 +3,6 @@ import {
   CARD_ANIMALS,
   CARD_DIAMOND,
   CARD_COIN,
-  CARD_SKULL,
   CARD_CHEST,
   CARD_SWORD_CHALLENGE,
 } from "/src/Cards/card-types.js"
@@ -16,84 +15,47 @@ import {
 } from "/src/symbols/symbol-types.js"
 import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 
-export const computeRoundState = ({ card, diceKept, diceCursed, scoreMarked = false }) => {
-  let numerOfSkulls = diceCursed.length
-  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
-
-  const hasThreeSkullsOrMore = numerOfSkulls > 2
+export const computeRoundScore = ({ card, diceKept, markScorePermission }) => {
+  if (!markScorePermission.allowed) {
+    if (card.type === CARD_SWORD_CHALLENGE) {
+      return -card.gamble
+    }
+    return 0
+  }
 
   const perfectEnabled = diceKept.length === 8
   const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
 
-  if (card.type === CARD_CHEST) {
-    const isRoundOver = scoreMarked
-    const score = computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
-    return {
-      hasThreeSkullsOrMore,
-      isRoundOver,
-      score,
-    }
-  }
-
   if (card.type === CARD_SWORD_CHALLENGE) {
-    const isRoundOver = hasThreeSkullsOrMore || scoreMarked
-    const swordGoalAchieved = hasThreeSkullsOrMore
-      ? false
-      : countSymbol(symbolArrayFromDiceKept, SYMBOL_SWORD) >= card.goal
-    const score = swordGoalAchieved
-      ? computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) + card.gamble
-      : -card.gamble
-    return {
-      hasThreeSkullsOrMore,
-      isRoundOver,
-      score,
+    const swordChallengeAchieved = countSymbol(symbolArrayFromDiceKept, SYMBOL_SWORD) >= card.goal
+    if (swordChallengeAchieved) {
+      return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) + card.gamble
     }
+    return -card.gamble
   }
 
-  const isRoundOver = hasThreeSkullsOrMore || scoreMarked
+  if (card.type === CARD_CHEST) {
+    return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
+  }
 
   if (card.type === CARD_DIAMOND || card.type === CARD_COIN) {
-    return {
-      hasThreeSkullsOrMore,
-      isRoundOver,
-      score: isRoundOver
-        ? 0
-        : computeScoreForSymbols([...symbolArrayFromDiceKept, card.type], {
-            perfectEnabled,
-          }),
-    }
+    return computeScoreForSymbols([...symbolArrayFromDiceKept, card.type], {
+      perfectEnabled,
+    })
   }
 
   if (card.type === CARD_ANIMALS) {
-    return {
-      hasThreeSkullsOrMore,
-      isRoundOver,
-      score: isRoundOver
-        ? 0
-        : computeScoreForSymbols(
-            symbolArrayFromDiceKept.map((symbol) =>
-              symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol,
-            ),
-            { perfectEnabled },
-          ),
-    }
+    return computeScoreForSymbols(
+      symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
+      { perfectEnabled },
+    )
   }
 
   if (card.type === CARD_PIRATE) {
-    return {
-      hasThreeSkullsOrMore,
-      isRoundOver,
-      score: isRoundOver
-        ? 0
-        : computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) * 2,
-    }
+    return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) * 2
   }
 
-  return {
-    hasThreeSkullsOrMore,
-    isRoundOver,
-    score: isRoundOver ? 0 : computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }),
-  }
+  return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
 }
 
 const countSymbol = (symbolArray, symbol) => {

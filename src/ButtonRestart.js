@@ -1,7 +1,7 @@
 import React from "react"
 
-export const ButtonRestart = ({ clearDiceSet, isRoundOver, rollIndex }) => {
-  if (rollIndex > -1 && isRoundOver) {
+export const ButtonRestart = ({ restartPermission, clearDiceSet }) => {
+  if (restartPermission.allowed) {
     return <button onClick={() => clearDiceSet()}>Restart</button>
   }
 

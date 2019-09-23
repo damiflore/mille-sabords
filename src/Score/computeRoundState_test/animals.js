@@ -24,11 +24,7 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_DIAMOND },
     ],
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 200,
-  }
+  const expected = 200
   assert({ actual, expected })
 }
 
@@ -46,10 +42,6 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
     ],
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 500,
-  }
+  const expected = 500
   assert({ actual, expected })
 }
