@@ -8,11 +8,11 @@ import {
   SYMBOL_DIAMOND,
 } from "/src/symbols/symbol-types.js"
 import { CARD_CHEST } from "src/Cards/card-types.js"
-import { computeRoundState } from "../ScoreHelpers.js"
+import { computeRoundScore } from "/src/Score/computeRoundScore.js"
 
 // with nothing
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -23,18 +23,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 0,
-  }
+  const expected = 0
   assert({ actual, expected })
 }
 
 // with 3 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -46,18 +43,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 100,
-  }
+  const expected = 100
   assert({ actual, expected })
 }
 
 // with 4 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -70,18 +64,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 200,
-  }
+  const expected = 200
   assert({ actual, expected })
 }
 
 // with 5 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -93,18 +84,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_MONKEY },
       { symbol: SYMBOL_MONKEY },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 500,
-  }
+  const expected = 500
   assert({ actual, expected })
 }
 
 // with 6 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -117,18 +105,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_MONKEY },
       { symbol: SYMBOL_MONKEY },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 1000,
-  }
+  const expected = 1000
   assert({ actual, expected })
 }
 
 // with 7 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -141,18 +126,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_PARROT },
       { symbol: SYMBOL_MONKEY },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 2000,
-  }
+  const expected = 2000
   assert({ actual, expected })
 }
 
 // with 8 parrot
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -165,21 +147,18 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_PARROT },
       { symbol: SYMBOL_PARROT },
     ],
+    markScoreAllowed: true,
   })
   // 4000 from "8 identic symbols"
   // 500 from "perfect" rule
   // -> 4500
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 4500,
-  }
+  const expected = 4500
   assert({ actual, expected })
 }
 
 // with 1 coin
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -191,18 +170,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 100,
-  }
+  const expected = 100
   assert({ actual, expected })
 }
 
 // with 1 diamond
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -214,18 +190,15 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 100,
-  }
+  const expected = 100
   assert({ actual, expected })
 }
 
 // with 3 coin
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
@@ -237,21 +210,18 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
   // 100 from 3 identic coin
   // 300 from 3 coin
   // -> 400
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 400,
-  }
+  const expected = 400
   assert({ actual, expected })
 }
 
 // with 3 parrot and 3 diamond
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -264,22 +234,19 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
   // 100 from 3 identic parrot
   // 100 from 3 identic diamond
   // 300 from 3 diamond
   // -> 500
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 500,
-  }
+  const expected = 500
   assert({ actual, expected })
 }
 
 // with 3 parrot and 3 monkey and 2 coin
 {
-  const actual = computeRoundState({
+  const actual = computeRoundScore({
     card: { type: CARD_CHEST },
     diceCursed: [],
     diceKept: [
@@ -292,16 +259,13 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_COIN },
     ],
+    markScoreAllowed: true,
   })
   // 100 from 3 identic parrot
   // 100 from 3 identic monkey
   // 200 from 2 coin
   // 500 from "perfect" rule
   // -> 900
-  const expected = {
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 900,
-  }
+  const expected = 900
   assert({ actual, expected })
 }

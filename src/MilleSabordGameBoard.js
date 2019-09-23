@@ -98,7 +98,7 @@ export const MilleSabordGameBoard = () => {
       computeRoundScore({
         card,
         diceKept,
-        markScorePermission,
+        markScoreAllowed: markScorePermission.allowed,
       }),
     )
   }, [card, diceKept, markScorePermission])

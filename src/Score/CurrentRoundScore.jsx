@@ -1,5 +1,5 @@
 import React from "react"
-
+import { HAS_THREE_SKULLS_OR_MORE } from "/src/constants.js"
 import { ButtonMarkScore } from "./ButtonMarkScore.jsx"
 
 export const CurrentRoundScore = ({
@@ -35,7 +35,11 @@ const ScoreDisplay = ({ markScorePermission, isOnSkullIsland, roundScore, markSc
     <>
       <span>{roundScore}</span>
       {markScorePermission.allowed ? <ButtonMarkScore onClick={markScore} /> : null}
-      <div>{markScorePermission.reason}</div>
+      <div>
+        {markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE
+          ? "Round over !"
+          : markScorePermission.reason}
+      </div>
     </>
   )
 }

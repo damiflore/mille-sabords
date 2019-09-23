@@ -3,7 +3,6 @@ import {
   CARD_ANIMALS,
   CARD_DIAMOND,
   CARD_COIN,
-  CARD_CHEST,
   CARD_SWORD_CHALLENGE,
 } from "/src/Cards/card-types.js"
 import {
@@ -15,8 +14,8 @@ import {
 } from "/src/symbols/symbol-types.js"
 import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
 
-export const computeRoundScore = ({ card, diceKept, markScorePermission }) => {
-  if (!markScorePermission.allowed) {
+export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
+  if (!markScoreAllowed) {
     if (card.type === CARD_SWORD_CHALLENGE) {
       return -card.gamble
     }
@@ -32,10 +31,6 @@ export const computeRoundScore = ({ card, diceKept, markScorePermission }) => {
       return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) + card.gamble
     }
     return -card.gamble
-  }
-
-  if (card.type === CARD_CHEST) {
-    return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
   }
 
   if (card.type === CARD_DIAMOND || card.type === CARD_COIN) {
