@@ -42,7 +42,9 @@ export const MilleSabordGameBoard = () => {
   const [unkeepDiceAllowed, setUnkeepDiceAllowed] = React.useState(false)
   const [markScorePermission, setMarkScorePermission] = React.useState({})
   const [restartPermission, setRestartPermission] = React.useState({})
+  const [canRemoveSkull, setCanRemoveSkull] = React.useState(false)
 
+  // keepDiceAllowed, unkeepDiceAllowed
   React.useEffect(() => {
     const skullCount = countSkulls({ card, diceCursed })
     if (skullCount > 2 || scoreMarked) {
@@ -54,7 +56,7 @@ export const MilleSabordGameBoard = () => {
     }
   }, [card, diceCursed, scoreMarked])
 
-  // isOnSkullIsland computation
+  // isOnSkullIsland
   React.useEffect(() => {
     setIsOnSkullIsland(
       computeIsOnSkullIsland({
@@ -66,18 +68,19 @@ export const MilleSabordGameBoard = () => {
     )
   }, [card, rollIndex, diceCursed])
 
-  // rollDicePermission computation
+  // rollDicePermission
   React.useEffect(() => {
     setRollDicePermission(
       computeRollDicePermission({
         cardDrawn,
+        scoreMarked,
         card,
         diceCursed,
       }),
     )
-  }, [cardDrawn, card, diceCursed])
+  }, [cardDrawn, scoreMarked, card, diceCursed])
 
-  // markScorePermission computation
+  // markScorePermission
   React.useEffect(() => {
     setMarkScorePermission(
       computeMarkScorePermission({
@@ -89,7 +92,7 @@ export const MilleSabordGameBoard = () => {
     )
   }, [card, rollIndex, diceCursed, scoreMarked])
 
-  // roundScore computation
+  // roundScore
   React.useEffect(() => {
     setRoundScore(
       computeRoundScore({
@@ -100,7 +103,7 @@ export const MilleSabordGameBoard = () => {
     )
   }, [card, diceKept, markScorePermission])
 
-  // restart permission
+  // restartPermission
   React.useEffect(() => {
     if (rollIndex === -1) {
       setRestartPermission({ allowed: false })
@@ -109,13 +112,20 @@ export const MilleSabordGameBoard = () => {
     }
   }, [rollIndex, rollDicePermission, markScorePermission])
 
-  // auto mark failed sword challenges
-  // TODO: fix this, it does not work
+  // canRemoveSkull
   React.useEffect(() => {
-    if (card.type === CARD_SWORD_CHALLENGE && !markScorePermission.allowed && scoreMarked) {
-      markScore()
+    if (card.type === CARD_WITCH) {
+      if (diceCursed.length > 2) {
+        setCanRemoveSkull(false)
+      } else if (card.effectUsed) {
+        setCanRemoveSkull(false)
+      } else {
+        setCanRemoveSkull(true)
+      }
+    } else {
+      setCanRemoveSkull(false)
     }
-  }, [card, markScorePermission, scoreMarked])
+  }, [card, diceCursed])
 
   const clearDiceSet = () => {
     setDiceOffGame(DICE_ARRAY)
@@ -188,7 +198,6 @@ export const MilleSabordGameBoard = () => {
 
   const markScore = () => {
     setTotalScore(Math.max(totalScore + roundScore, 0))
-    setCardDrawn(false)
     setScoreMarked(true)
   }
 
@@ -201,8 +210,6 @@ export const MilleSabordGameBoard = () => {
       setCardDeck(getMixedDeck())
     }
   }
-
-  const canRemoveSkull = rollDicePermission.allowed && card.type === CARD_WITCH && !card.effectUsed
 
   return (
     <>

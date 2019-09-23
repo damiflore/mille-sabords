@@ -2,6 +2,7 @@ import { countSkulls } from "/src/Dice/countSkulls.js"
 
 export const computeRollDicePermission = ({
   cardDrawn,
+  scoreMarked,
   card,
   diceCursed,
   rollIndex,
@@ -11,6 +12,13 @@ export const computeRollDicePermission = ({
     return {
       allowed: false,
       reason: "you must draw a card",
+    }
+  }
+
+  if (scoreMarked) {
+    return {
+      allowed: false,
+      reason: "you must restart",
     }
   }
 
