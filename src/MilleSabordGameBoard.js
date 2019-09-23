@@ -127,6 +127,19 @@ export const MilleSabordGameBoard = () => {
     }
   }, [card, diceCursed])
 
+  // auto mark score for failed sword challenges
+  const markScorePermissionPreviousValue = usePrevious(markScorePermission)
+  React.useEffect(() => {
+    if (
+      card.type === CARD_SWORD_CHALLENGE &&
+      !scoreMarked &&
+      markScorePermissionPreviousValue.allowed &&
+      !markScorePermission.allowed
+    ) {
+      markScore()
+    }
+  }, [card, scoreMarked, markScorePermissionPreviousValue, markScorePermission])
+
   const clearDiceSet = () => {
     setDiceOffGame(DICE_ARRAY)
     setDiceOngoing([])
@@ -248,4 +261,12 @@ export const MilleSabordGameBoard = () => {
       <TotalScore totalScore={totalScore} />
     </>
   )
+}
+
+const usePrevious = (value) => {
+  const ref = React.useRef()
+  React.useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }
