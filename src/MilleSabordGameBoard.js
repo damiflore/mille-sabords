@@ -3,7 +3,7 @@ import React from "react"
 
 import { DiceSet } from "./Dice/DiceSet.js"
 import { ButtonRoll } from "./Dice/ButtonRoll.js"
-import { CurrentRoundScore } from "./Score/CurrentRoundScore.jsx"
+import { RoundScore } from "./Score/RoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
@@ -251,7 +251,7 @@ export const MilleSabordGameBoard = () => {
         canRemoveSkull={canRemoveSkull}
         removeSkull={(dice) => unkeepDice(dice)}
       ></SkullIsland>
-      <CurrentRoundScore
+      <RoundScore
         rollIndex={rollIndex}
         isOnSkullIsland={isOnSkullIsland}
         roundScore={roundScore}
