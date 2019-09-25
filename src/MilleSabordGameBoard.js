@@ -25,7 +25,7 @@ export const MilleSabordGameBoard = () => {
   const [diceKept, setDiceKept] = React.useState([])
   const [diceCursed, setDiceCursed] = React.useState([])
 
-  const [totalScore, setTotalScore] = React.useState(1000)
+  const [totalScore, setTotalScore] = React.useState(0)
 
   const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
   const [card, setCard] = React.useState({})
