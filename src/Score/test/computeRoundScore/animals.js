@@ -8,12 +8,12 @@ import {
   SYMBOL_DIAMOND,
 } from "/src/symbols/symbol-types.js"
 import { CARD_ANIMALS } from "src/Cards/card-types.js"
-import { computeRoundState } from "../ScoreHelpers.js"
+import { computeRoundScore } from "/src/Score/computeRoundScore.js"
 
 // with 1 coin and 1 diamond
 {
-  const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+  const actual = computeRoundScore({
+    card: { type: CARD_ANIMALS },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -23,20 +23,16 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_DIAMOND },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    isOnSkullIsland: false,
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 200,
-  }
+  const expected = 200
   assert({ actual, expected })
 }
 
 // with 3 monkey and 2 parrot
 {
-  const actual = computeRoundState({
-    currentCard: { type: CARD_ANIMALS },
+  const actual = computeRoundScore({
+    card: { type: CARD_ANIMALS },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_MONKEY },
@@ -46,12 +42,8 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_PARROT },
       { symbol: SYMBOL_SWORD },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    isOnSkullIsland: false,
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 500,
-  }
+  const expected = 500
   assert({ actual, expected })
 }

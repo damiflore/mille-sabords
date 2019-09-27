@@ -1,6 +1,6 @@
 import React from "react"
 
-export const CardArea = ({ cardDeck, cardDrawn, drawCard, currentCard }) => {
+export const CardArea = ({ cardDeck, cardDrawn, drawCard, card }) => {
   return (
     <div>
       {!cardDrawn && (
@@ -9,7 +9,7 @@ export const CardArea = ({ cardDeck, cardDrawn, drawCard, currentCard }) => {
         </button>
       )}
       <div style={{ marginTop: "10px" }}>Remaining cards: {cardDeck.length}</div>
-      <span className="card">{currentCard.label}</span>
+      <span className="card">{card.label}</span>
     </div>
   )
 }

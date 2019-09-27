@@ -1,27 +1,18 @@
 import React from "react"
 
-export const ButtonRoll = ({ cardDrawn, diceRolledOnce, diceOnGoing, onClick, isRoundOver }) => {
-  if (diceRolledOnce && isRoundOver) {
+export const ButtonRoll = ({ rollDicePermission, onClick }) => {
+  if (rollDicePermission.allowed) {
+    return <button onClick={onClick}>Roll!</button>
+  }
+
+  if (rollDicePermission.reaon === "3 skulls or more") {
     return null
   }
 
-  if (!cardDrawn) {
-    return (
-      <>
-        <button disabled={true}>Roll!</button>
-        <span> (You must draw a card)</span>
-      </>
-    )
-  }
-
-  if (diceRolledOnce && diceOnGoing.length < 2) {
-    return (
-      <>
-        <button disabled={true}>Roll!</button>
-        <span> (You must roll at least 2 dice)</span>
-      </>
-    )
-  }
-
-  return <button onClick={onClick}>Roll!</button>
+  return (
+    <>
+      <button disabled={true}>Roll!</button>
+      <span>{`(${rollDicePermission.reason})`}</span>
+    </>
+  )
 }

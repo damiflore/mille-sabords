@@ -7,12 +7,12 @@ import {
   SYMBOL_COIN,
 } from "/src/symbols/symbol-types.js"
 import { CARD_COIN } from "src/Cards/card-types.js"
-import { computeRoundState } from "../ScoreHelpers.js"
+import { computeRoundScore } from "/src/Score/computeRoundScore.js"
 
 // with nothing
 {
-  const actual = computeRoundState({
-    currentCard: { type: CARD_COIN },
+  const actual = computeRoundScore({
+    card: { type: CARD_COIN },
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -22,20 +22,16 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_MONKEY },
       { symbol: SYMBOL_MONKEY },
     ],
+    markScoreAllowed: true,
   })
-  const expected = {
-    isOnSkullIsland: false,
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 100,
-  }
+  const expected = 100
   assert({ actual, expected })
 }
 
 // with 7 coin + 1 parrot
 {
-  const actual = computeRoundState({
-    currentCard: { type: CARD_COIN },
+  const actual = computeRoundScore({
+    card: { type: CARD_COIN },
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -47,15 +43,11 @@ import { computeRoundState } from "../ScoreHelpers.js"
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_PARROT },
     ],
+    markScoreAllowed: true,
   })
   // 4000 from "8 identic symbols"
   // 800 from "coin = 100"
   // -> 4800
-  const expected = {
-    isOnSkullIsland: false,
-    hasThreeSkullsOrMore: false,
-    isRoundOver: false,
-    score: 4800,
-  }
+  const expected = 4800
   assert({ actual, expected })
 }
