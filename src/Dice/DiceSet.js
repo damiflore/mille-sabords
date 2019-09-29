@@ -1,5 +1,5 @@
 import React from "react"
-import { diceWidth } from "../UI/dicePosition"
+import { diceSize } from "../UI/dicePosition"
 
 export const DiceSet = ({
   title,
@@ -18,13 +18,11 @@ export const DiceSet = ({
               key={index}
               className="dice"
               style={{
-                width: diceWidth,
-                height: diceWidth,
-                left: `calc(${dice.position.x}px)`,
-                top: `calc(${dice.position.y}px)`,
-                // left: `calc(${dice.position.x}px - ${diceWidth / 2}px)`,
-                // top: `calc(${dice.position.y}px - ${diceWidth / 2}px)`,
-                // transform: `rotate(${dice.rotation}deg)`,
+                width: diceSize,
+                height: diceSize,
+                left: `${dice.position.x}px`,
+                top: `${dice.position.y}px`,
+                transform: `rotate(${dice.rotation}deg)`,
               }}
               onClick={() => actionFunction(dice)}
             >

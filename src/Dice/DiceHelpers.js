@@ -57,7 +57,7 @@ const diceToSymbol = (dice) => dice.symbol
 
 const rollDice = (dice, dices) => {
   dice.symbol = getDiceRandomSymbol()
-  dice.position = getDicePosition(dices)
+  dice.position = getRandomCollisionFreeDicePosition(dices)
   dice.rotation = getDiceRotation()
 }
 
@@ -70,15 +70,15 @@ const getRandomDiceNumber = () => Math.floor(Math.random() * 6) + 1
 const getRandomNumberBetweenInterval = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min) // min and max are included
 
-export const getDicePosition = (dices) => {
+export const getRandomCollisionFreeDicePosition = (dices) => {
   let dicePosition = {
     x: getRandomNumberBetweenInterval(0, 350),
     y: getRandomNumberBetweenInterval(0, 350),
   }
   if (detectCollision(dicePosition, dices)) {
-    dicePosition = getDicePosition(dices)
+    dicePosition = getRandomCollisionFreeDicePosition(dices)
   }
   return dicePosition
 }
 
-export const getDiceRotation = () => getRandomNumberBetweenInterval(-45, 45)
+export const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
