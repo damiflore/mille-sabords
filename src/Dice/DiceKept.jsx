@@ -1,15 +1,15 @@
 import React from "react"
 import { diceSize } from "../UI/dicePosition.js"
 
-export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => (
-  <div className="skullIsland">
-    <span className="title">Skull Island</span>
+export const DiceKept = ({ diceArray, unkeepDiceAllowed, unkeepDice }) => (
+  <div className="diceKept">
+    <span className="title">Dice kept</span>
     <div className="area">
-      {diceCursed.map((dice) => (
+      {diceArray.map((dice) => (
         <button
           key={dice.id}
-          disabled={!canRemoveSkull}
-          onClick={() => removeSkull(dice)}
+          disabled={!unkeepDiceAllowed}
+          onClick={() => unkeepDice(dice)}
           className="dice"
           style={{
             width: diceSize,

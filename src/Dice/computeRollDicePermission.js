@@ -1,4 +1,10 @@
 import { countSkulls } from "/src/Dice/countSkulls.js"
+import {
+  NOT_ENOUGH_DICE_TO_ROLL,
+  HAS_THREE_SKULLS_OR_MORE,
+  ROUND_NOT_STARTED,
+  CARD_NOT_DRAWN,
+} from "/src/constants.js"
 
 export const computeRollDicePermission = ({
   cardDrawn,
@@ -11,28 +17,28 @@ export const computeRollDicePermission = ({
   if (!cardDrawn) {
     return {
       allowed: false,
-      reason: "you must draw a card",
+      reason: CARD_NOT_DRAWN,
     }
   }
 
   if (scoreMarked) {
     return {
       allowed: false,
-      reason: "you must restart",
+      reason: ROUND_NOT_STARTED,
     }
   }
 
   if (countSkulls({ card, diceCursed }) > 2) {
     return {
       allowed: false,
-      reason: "3 skulls or more",
+      reason: HAS_THREE_SKULLS_OR_MORE,
     }
   }
 
   if (rollIndex > 0 && diceOnGoing.length < 2) {
     return {
       allowed: false,
-      reason: "you must roll at least two dice",
+      reason: NOT_ENOUGH_DICE_TO_ROLL,
     }
   }
 
