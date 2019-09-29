@@ -1,14 +1,14 @@
 import React from "react"
 
-export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => (
+export const DiceKept = ({ diceArray, unkeepDiceAllowed, unkeepDice }) => (
   <div className="diceSet">
     <span className="title">Dice kept</span>
     <div className="diceArea">
-      {diceCursed.map((dice) => (
+      {diceArray.map((dice) => (
         <button
           key={dice.id}
-          disabled={!canRemoveSkull}
-          onClick={() => removeSkull(dice)}
+          disabled={!unkeepDiceAllowed}
+          onClick={() => unkeepDice(dice)}
           className="dice"
         >
           {dice.symbol}

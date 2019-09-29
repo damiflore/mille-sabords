@@ -1,8 +1,9 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { DiceSet } from "./Dice/DiceSet.js"
+import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
 import { ButtonRoll } from "./Dice/ButtonRoll.js"
+import { DiceKept } from "./Dice/DiceKept.jsx"
 import { RoundScore } from "./Score/RoundScore.jsx"
 import { TotalScore } from "./Score/TotalScore.jsx"
 import { CardArea } from "./Cards/CardArea.js"
@@ -232,19 +233,11 @@ export const MilleSabordGameBoard = () => {
         <ButtonRestart restartPermission={restartPermission} clearDiceSet={clearDiceSet} />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
-      <DiceSet
-        title="Dice ongoing"
-        diceArray={diceOnGoing}
-        actionText="Keep"
-        actionFunction={(dice) => keepDice(dice)}
-        displayActionCondition={() => keepDiceAllowed}
-      />
-      <DiceSet
-        title="Dice kept"
+      <DiceOnGoing diceArray={diceOnGoing} keepDiceAllowed={keepDiceAllowed} keepDice={keepDice} />
+      <DiceKept
         diceArray={diceKept}
-        actionText="Remove"
-        actionFunction={(dice) => unkeepDice(dice)}
-        displayActionCondition={() => unkeepDiceAllowed}
+        unkeepDiceAllowed={unkeepDiceAllowed}
+        unkeepDice={unkeepDice}
       />
       <SkullIsland
         diceCursed={diceCursed}
