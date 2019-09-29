@@ -11,7 +11,8 @@ import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonNextRound } from "./ButtonNextRound.js"
 import { getMixedDeck } from "./Cards/getMixedDeck.js"
-import { rollDices, splitSkulls } from "src/Dice/DiceHelpers.js"
+import { rollDices } from "./Dice/rollDices.js"
+import { splitSkulls } from "src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
@@ -141,6 +142,8 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
     }
   }, [card, scoreMarked, markScorePermissionPreviousValue, markScorePermission])
 
+  const onGoingRef = React.createRef()
+
   const nextRound = () => {
     setDiceOffGame(diceArray)
     setDiceOngoing([])
@@ -158,15 +161,17 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
 
     if (rollIndex === -1) {
       currentDiceArray = diceOffGame
-      rollDices(diceOffGame)
       setDiceOngoing([...diceOffGame])
       setDiceOffGame([])
       setRollIndex(0)
     } else {
       currentDiceArray = diceOnGoing
-      rollDices(diceOnGoing)
       setRollIndex(rollIndex + 1)
     }
+
+    rollDices(currentDiceArray, {
+      diceParentElement: onGoingRef.current.querySelector(".area"),
+    })
     curseDices(currentDiceArray)
   }
 
@@ -233,7 +238,12 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
         <ButtonNextRound nextRoundPermission={nextRoundPermission} nextRound={nextRound} />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
-      <DiceOnGoing diceArray={diceOnGoing} keepDiceAllowed={keepDiceAllowed} keepDice={keepDice} />
+      <DiceOnGoing
+        ref={onGoingRef}
+        diceArray={diceOnGoing}
+        keepDiceAllowed={keepDiceAllowed}
+        keepDice={keepDice}
+      />
       <DiceKept
         diceArray={diceKept}
         unkeepDiceAllowed={unkeepDiceAllowed}

@@ -12,7 +12,6 @@ import {
   SYMBOL_MONKEY,
   SYMBOL_SWORD,
 } from "src/symbols/symbol-types.js"
-import { diceArrayToSymbolArray } from "src/Dice/DiceHelpers.js"
 
 export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
   if (!markScoreAllowed) {
@@ -52,6 +51,10 @@ export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
 
   return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
 }
+
+const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
+
+const diceToSymbol = (dice) => dice.symbol
 
 const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length

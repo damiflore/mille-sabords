@@ -1,5 +1,4 @@
 export const diceSize = 40
-export const areaWidth = 400
 
 // margin because of rotation
 const diceSpacing = diceSize / 8
@@ -23,7 +22,7 @@ export const detectCollision = (dicePosition, diceArray) => {
   })
 }
 
-export const rectCollides = (firstRect, secondRect) => {
+const rectCollides = (firstRect, secondRect) => {
   // first left of second
   if (firstRect.right <= secondRect.left) return false
   // first right of second
