@@ -2,9 +2,9 @@ import React from "react"
 import { diceSize } from "../UI/dicePosition.js"
 
 export const DiceOnGoing = ({ diceArray, keepDiceAllowed, keepDice }) => (
-  <div className="diceSet">
+  <div className="diceOnGoing">
     <span className="title">Dice on going</span>
-    <div className="diceArea">
+    <div className="area">
       {diceArray.map((dice) => (
         <button
           key={dice.id}

@@ -1,9 +1,9 @@
 import React from "react"
 
 export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => (
-  <div className="diceSet">
+  <div className="skullIsland">
     <span className="title">Dice kept</span>
-    <div className="diceArea">
+    <div className="area">
       {diceCursed.map((dice) => (
         <button
           key={dice.id}

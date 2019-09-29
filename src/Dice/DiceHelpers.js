@@ -26,8 +26,7 @@ const diceNumberToSymbol = {
   3: SYMBOL_SWORD,
   4: SYMBOL_PARROT,
   5: SYMBOL_MONKEY,
-  6: SYMBOL_DIAMOND,
-  // todo change back to SKULL !!!!!
+  6: SYMBOL_SKULL,
 }
 
 export const rollDices = (dices) => {

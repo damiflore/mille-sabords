@@ -1,9 +1,9 @@
 import React from "react"
 
 export const DiceKept = ({ diceArray, unkeepDiceAllowed, unkeepDice }) => (
-  <div className="diceSet">
+  <div className="diceKept">
     <span className="title">Dice kept</span>
-    <div className="diceArea">
+    <div className="area">
       {diceArray.map((dice) => (
         <button
           key={dice.id}
