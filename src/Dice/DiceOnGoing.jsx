@@ -14,8 +14,8 @@ export const DiceOnGoing = ({ diceArray, keepDiceAllowed, keepDice }) => (
           style={{
             width: diceSize,
             height: diceSize,
-            left: `${dice.position.x}px`,
-            top: `${dice.position.y}px`,
+            left: `${dice.x}px`,
+            top: `${dice.y}px`,
             transform: `rotate(${dice.rotation}deg)`,
             position: "absolute",
           }}

@@ -9,7 +9,19 @@ import {
   CARD_SWORD_CHALLENGE,
 } from "./card-types.js"
 
-export const initialDeck = [
+export const getMixedDeck = () => {
+  return mixCards(createInitialDeck())
+}
+
+const createInitialDeck = () => {
+  let cardDeck = []
+  initialDeck.forEach((card) => {
+    cardDeck = addCopiesOf(cardDeck, card)
+  })
+  return cardDeck
+}
+
+const initialDeck = [
   { type: CARD_PIRATE, cardQuantiy: 4, label: "Pirate" },
   { type: CARD_WITCH, cardQuantiy: 4, label: "Witch" },
   { type: CARD_CHEST, cardQuantiy: 4, label: "Treasure chest" },
@@ -46,15 +58,10 @@ const addCopiesOf = (arr, card) => {
   return arr
 }
 
-const createInitialDeck = () => {
-  let cardDeck = []
-  initialDeck.forEach((card) => {
-    cardDeck = addCopiesOf(cardDeck, card)
-  })
-  return cardDeck
+const mixCards = (deck) => {
+  for (var i = 0; i < 100; i++) swapTwoCards(deck)
+  return deck
 }
-
-const randomIndex = (arrayLength) => Math.floor(Math.random() * arrayLength)
 
 const swapTwoCards = (deck) => {
   // pick two random indexes
@@ -67,11 +74,4 @@ const swapTwoCards = (deck) => {
   return deck
 }
 
-const mixCards = (deck) => {
-  for (var i = 0; i < 100; i++) swapTwoCards(deck)
-  return deck
-}
-
-export const getMixedDeck = () => {
-  return mixCards(createInitialDeck())
-}
+const randomIndex = (arrayLength) => Math.floor(Math.random() * arrayLength)

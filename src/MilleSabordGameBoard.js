@@ -10,8 +10,8 @@ import { CardArea } from "./Cards/CardArea.js"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonNextRound } from "./ButtonNextRound.js"
-import { getMixedDeck } from "./Cards/CardsHelpers.js"
-import { DICE_ARRAY, rollDices, splitSkulls } from "src/Dice/DiceHelpers.js"
+import { getMixedDeck } from "./Cards/getMixedDeck.js"
+import { rollDices, splitSkulls } from "src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
 import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
@@ -20,8 +20,8 @@ import { computeMarkScorePermission } from "./Score/computeMarkScorePermission.j
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
 
-export const MilleSabordGameBoard = () => {
-  const [diceOffGame, setDiceOffGame] = React.useState(DICE_ARRAY)
+export const MilleSabordGameBoard = ({ diceArray }) => {
+  const [diceOffGame, setDiceOffGame] = React.useState(diceArray)
   const [diceOnGoing, setDiceOngoing] = React.useState([])
   const [diceKept, setDiceKept] = React.useState([])
   const [diceCursed, setDiceCursed] = React.useState([])
@@ -142,7 +142,7 @@ export const MilleSabordGameBoard = () => {
   }, [card, scoreMarked, markScorePermissionPreviousValue, markScorePermission])
 
   const nextRound = () => {
-    setDiceOffGame(DICE_ARRAY)
+    setDiceOffGame(diceArray)
     setDiceOngoing([])
     setDiceKept([])
     setDiceCursed([])

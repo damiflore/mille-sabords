@@ -6,18 +6,25 @@ import {
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
 } from "src/symbols/symbol-types.js"
-
 import { detectCollision } from "../UI/dicePosition.js"
 
-export const DICE_ARRAY = [
-  { id: 1, symbol: SYMBOL_COIN, position: { x: 0, y: 0 } },
-  { id: 2, symbol: SYMBOL_DIAMOND, position: { x: 0, y: 0 } },
-  { id: 3, symbol: SYMBOL_SWORD, position: { x: 0, y: 0 } },
-  { id: 4, symbol: SYMBOL_PARROT, position: { x: 0, y: 0 } },
-  { id: 5, symbol: SYMBOL_MONKEY, position: { x: 0, y: 0 } },
-  { id: 6, symbol: SYMBOL_SKULL, position: { x: 0, y: 0 } },
-  { id: 7, symbol: SYMBOL_SKULL, position: { x: 0, y: 0 } },
-  { id: 8, symbol: SYMBOL_SKULL, position: { x: 0, y: 0 } },
+export const getDiceArray = () => {
+  return DICE_ARRAY.map((dice) => {
+    return { ...dice }
+  })
+}
+
+const diceBaseProperties = { x: 0, y: 0 }
+
+const DICE_ARRAY = [
+  { ...diceBaseProperties, id: 1, symbol: SYMBOL_COIN },
+  { ...diceBaseProperties, id: 2, symbol: SYMBOL_DIAMOND },
+  { ...diceBaseProperties, id: 3, symbol: SYMBOL_SWORD },
+  { ...diceBaseProperties, id: 4, symbol: SYMBOL_PARROT },
+  { ...diceBaseProperties, id: 5, symbol: SYMBOL_MONKEY },
+  { ...diceBaseProperties, id: 6, symbol: SYMBOL_SKULL },
+  { ...diceBaseProperties, id: 7, symbol: SYMBOL_SKULL },
+  { ...diceBaseProperties, id: 8, symbol: SYMBOL_SKULL },
 ]
 
 const diceNumberToSymbol = {
@@ -56,28 +63,30 @@ const diceToSymbol = (dice) => dice.symbol
 
 const rollDice = (dice, index, dices) => {
   dice.symbol = getDiceRandomSymbol()
-  dice.position = getRandomCollisionFreeDicePosition(dices.slice(0, index))
+
+  const { x, y } = getRandomCollisionFreeDicePosition(dices.slice(0, index))
+  dice.x = x
+  dice.y = y
+
   dice.rotation = getDiceRotation()
 }
 
 const getDiceRandomSymbol = () => diceNumberToSymbol[getRandomDiceNumber()]
 
-const getRandomDiceNumber = () => Math.floor(Math.random() * 6) + 1
-
-// dice position
+const getRandomDiceNumber = () => getRandomNumberBetweenInterval(1, 6)
 
 const getRandomNumberBetweenInterval = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min) // min and max are included
 
 export const getRandomCollisionFreeDicePosition = (dices) => {
-  let dicePosition = {
+  const positionCandidate = {
     x: getRandomNumberBetweenInterval(0, 350),
     y: getRandomNumberBetweenInterval(0, 350),
   }
-  if (detectCollision(dicePosition, dices)) {
-    dicePosition = getRandomCollisionFreeDicePosition(dices)
+  if (detectCollision(positionCandidate, dices)) {
+    return getRandomCollisionFreeDicePosition(dices)
   }
-  return dicePosition
+  return positionCandidate
 }
 
 export const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
