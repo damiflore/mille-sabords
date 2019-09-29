@@ -1,25 +1,23 @@
 export const diceSize = 40
 export const areaWidth = 400
 
+// margin because of rotation
+const diceSpacing = diceSize / 8
+
 export const detectCollision = (dicePosition, diceArray) => {
   return diceArray.some((otherDice) => {
-    if (otherDice.position.x === 0 && otherDice.position.y === 0) return false
-
-    // margin because of rotation
-    const margin = diceSize / 8
-
     return rectCollides(
       {
-        top: dicePosition.y - margin,
-        left: dicePosition.x - margin,
-        bottom: dicePosition.y + diceSize + margin,
-        right: dicePosition.x + diceSize + margin,
+        top: dicePosition.y - diceSpacing,
+        left: dicePosition.x - diceSpacing,
+        bottom: dicePosition.y + diceSize + diceSpacing,
+        right: dicePosition.x + diceSize + diceSpacing,
       },
       {
-        top: otherDice.position.y - margin,
-        left: otherDice.position.x - margin,
-        bottom: otherDice.position.y + diceSize + margin,
-        right: otherDice.position.x + diceSize + margin,
+        top: otherDice.position.y - diceSpacing,
+        left: otherDice.position.x - diceSpacing,
+        bottom: otherDice.position.y + diceSize + diceSpacing,
+        right: otherDice.position.x + diceSize + diceSpacing,
       },
     )
   })

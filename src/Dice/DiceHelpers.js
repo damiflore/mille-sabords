@@ -31,8 +31,8 @@ const diceNumberToSymbol = {
 }
 
 export const rollDices = (dices) => {
-  dices.forEach((dice) => {
-    rollDice(dice, dices)
+  dices.forEach((dice, index) => {
+    rollDice(dice, index, dices)
   })
 }
 
@@ -55,9 +55,9 @@ export const splitSkulls = (dices) => {
 
 const diceToSymbol = (dice) => dice.symbol
 
-const rollDice = (dice, dices) => {
+const rollDice = (dice, index, dices) => {
   dice.symbol = getDiceRandomSymbol()
-  dice.position = getRandomCollisionFreeDicePosition(dices)
+  dice.position = getRandomCollisionFreeDicePosition(dices.slice(0, index))
   dice.rotation = getDiceRotation()
 }
 
