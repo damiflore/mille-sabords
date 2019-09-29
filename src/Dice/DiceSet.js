@@ -4,18 +4,17 @@ import { diceSize } from "../UI/dicePosition"
 export const DiceSet = ({
   title,
   diceArray,
-  actionText,
   actionFunction,
   displayActionCondition = () => true,
 }) => (
   <div className="diceSet">
     <span className="title">{title}</span>
     <div className="diceArea">
-      {diceArray.map((dice, index) => (
-        <>
+      {diceArray.map((dice) => (
+        <React.Fragment key={dice.id}>
           {displayActionCondition(dice) && (
             <button
-              key={index}
+              key={dice.id}
               className="dice"
               style={{
                 width: diceSize,
@@ -29,7 +28,7 @@ export const DiceSet = ({
               {dice.symbol}
             </button>
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   </div>
