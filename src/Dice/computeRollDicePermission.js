@@ -18,7 +18,7 @@ export const computeRollDicePermission = ({
   if (scoreMarked) {
     return {
       allowed: false,
-      reason: "you must restart",
+      reason: "you must start next round",
     }
   }
 
