@@ -1,8 +1,9 @@
 import React from "react"
+import { diceSize } from "../UI/dicePosition.js"
 
 export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => (
   <div className="skullIsland">
-    <span className="title">Dice kept</span>
+    <span className="title">Skull Island</span>
     <div className="area">
       {diceCursed.map((dice) => (
         <button
@@ -10,6 +11,10 @@ export const SkullIsland = ({ diceCursed, canRemoveSkull, removeSkull }) => (
           disabled={!canRemoveSkull}
           onClick={() => removeSkull(dice)}
           className="dice"
+          style={{
+            width: diceSize,
+            height: diceSize,
+          }}
         >
           {dice.symbol}
         </button>

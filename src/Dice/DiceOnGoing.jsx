@@ -17,6 +17,7 @@ export const DiceOnGoing = ({ diceArray, keepDiceAllowed, keepDice }) => (
             left: `${dice.position.x}px`,
             top: `${dice.position.y}px`,
             transform: `rotate(${dice.rotation}deg)`,
+            position: "absolute",
           }}
         >
           {dice.symbol}

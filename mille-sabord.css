@@ -35,7 +35,6 @@ body {
 .dice {
   overflow: hidden;
   padding: 2px;
-  position: absolute;
 }
 .diceWithCollision {
   overflow: hidden;
