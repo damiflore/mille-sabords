@@ -7,7 +7,7 @@ import {
   SYMBOL_SKULL,
 } from "src/symbols/symbol-types.js"
 
-import { detectCollision } from "../UI/dicePosition"
+import { detectCollision } from "../UI/dicePosition.js"
 
 export const DICE_ARRAY = [
   { id: 1, symbol: SYMBOL_COIN, position: { x: 0, y: 0 } },

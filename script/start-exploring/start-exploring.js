@@ -4,7 +4,9 @@ const jsenvConfig = require("../../jsenv.config.js")
 
 startExploring({
   ...jsenvConfig,
-  htmlFileUrl: String(new URL("./index.dev.html", pathToFileURL(jsenvConfig.projectDirectoryPath))),
+  htmlFileUrl: String(
+    new URL("./index.dev.html", `${pathToFileURL(jsenvConfig.projectDirectoryPath)}/`),
+  ),
   watchDescription: {
     "./**/*": false,
     "./*": true,

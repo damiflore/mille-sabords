@@ -1,4 +1,6 @@
-/.jsenv
-/coverage
-/dist
-/node_modules
+/.jsenv/
+/coverage/
+/dist/
+/node_modules/
+/script/generate-lighthouse-report/
+/script/update-lighthouse-pr-comment-from-travis.js
