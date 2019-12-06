@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
-} from "/src/symbols/symbol-types.js"
+} from "src/symbols/symbol-types.js"
 
 import { detectCollision } from "../UI/dicePosition"
 

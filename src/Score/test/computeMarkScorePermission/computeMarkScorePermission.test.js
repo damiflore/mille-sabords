@@ -1,8 +1,8 @@
-import { assert } from "@dmail/assert"
-import { SYMBOL_SKULL } from "/src/symbols/symbol-types.js"
+import { assert } from "@jsenv/assert"
+import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
 import { CARD_SKULL, CARD_ANIMALS, CARD_CHEST } from "src/Cards/card-types.js"
-import { HAS_THREE_SKULLS_OR_MORE } from "/src/constants.js"
-import { computeMarkScorePermission } from "/src/Score/computeMarkScorePermission.js"
+import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
+import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission.js"
 
 // with 3 skulls
 {

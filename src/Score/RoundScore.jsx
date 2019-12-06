@@ -1,5 +1,5 @@
 import React from "react"
-import { HAS_THREE_SKULLS_OR_MORE } from "/src/constants.js"
+import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { ButtonMarkScore } from "./ButtonMarkScore.jsx"
 
 export const RoundScore = ({

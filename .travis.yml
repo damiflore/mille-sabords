@@ -12,8 +12,8 @@ script:
   - npm run generate-import-map
   - npm run eslint-check
   - npm run prettier-check
-  - npm run generate-coverage
-  - npm run generate-lighthouse-report
+  - npm run test-with-coverage
+  # - npm run generate-lighthouse-report
 after_success:
   - npm run upload-coverage
-  - node ./script/update-lighthouse-pr-comment-from-travis.js
+  # - node ./script/update-lighthouse-pr-comment-from-travis.js

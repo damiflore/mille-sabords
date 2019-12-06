@@ -1,7 +1,6 @@
-/.dist/
+/.jsenv/
 /.vscode/settings.json
 /coverage/
-/dist/
 /lighthouse/
 /node_modules/
 /env.json

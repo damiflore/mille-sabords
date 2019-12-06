@@ -1,5 +1,5 @@
-import { countSkulls } from "/src/Dice/countSkulls.js"
-import { CARD_SWORD_CHALLENGE } from "/src/Cards/card-types.js"
+import { countSkulls } from "src/Dice/countSkulls.js"
+import { CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 
 export const computeIsOnSkullIsland = ({ isOnSkullIsland, card, rollIndex, diceCursed }) => {
   if (isOnSkullIsland) {

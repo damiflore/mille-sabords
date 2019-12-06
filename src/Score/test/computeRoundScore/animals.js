@@ -1,4 +1,4 @@
-import { assert } from "@dmail/assert"
+import { assert } from "@jsenv/assert"
 import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
@@ -6,9 +6,9 @@ import {
   SYMBOL_SKULL,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
-} from "/src/symbols/symbol-types.js"
+} from "src/symbols/symbol-types.js"
 import { CARD_ANIMALS } from "src/Cards/card-types.js"
-import { computeRoundScore } from "/src/Score/computeRoundScore.js"
+import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with 1 coin and 1 diamond
 {

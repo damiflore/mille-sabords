@@ -1,8 +1,9 @@
-const { resolve } = require("path")
-const { startServer, serveFile } = require("@dmail/server")
-const { operatingSystemPathToPathname } = require("@jsenv/operating-system-path")
+const { startServer, serveFile } = require("@jsenv/server")
+const { pathToFileURL } = require("url")
 
-const projectPath = resolve(__dirname, "../../")
+const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
+
+const projectDirectoryUrl = resolveUrl("../", pathToFileURL(__dirname))
 
 exports.serverPromise = startServer({
   protocol: "http",
@@ -12,7 +13,7 @@ exports.serverPromise = startServer({
     if (ressource === "/") {
       ressource = "/index.prod.html"
     }
-    return serveFile(`${operatingSystemPathToPathname(projectPath)}${ressource}`, {
+    return serveFile(resolveUrl(ressource.slice(1), projectDirectoryUrl), {
       method,
       headers,
     })

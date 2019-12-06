@@ -1,10 +1,10 @@
-import { countSkulls } from "/src/Dice/countSkulls.js"
+import { countSkulls } from "src/Dice/countSkulls.js"
 import {
   NOT_ENOUGH_DICE_TO_ROLL,
   HAS_THREE_SKULLS_OR_MORE,
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
-} from "/src/constants.js"
+} from "src/constants.js"
 
 export const computeRollDicePermission = ({
   cardDrawn,
