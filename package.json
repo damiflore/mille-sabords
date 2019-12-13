@@ -48,15 +48,15 @@
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "@jsenv/assert": "1.1.1",
-    "@jsenv/codecov-upload": "2.0.0",
-    "@jsenv/core": "10.0.0-alpha.10",
-    "@jsenv/eslint-config": "11.3.0",
-    "@jsenv/node-module-import-map": "8.6.0",
-    "@jsenv/prettier-check-project": "3.5.0",
-    "@jsenv/prettier-config": "1.0.1",
-    "eslint": "6.4.0",
+    "@jsenv/codecov-upload": "3.0.0",
+    "@jsenv/core": "10.1.0",
+    "@jsenv/eslint-config": "12.0.0",
+    "@jsenv/node-module-import-map": "9.4.0",
+    "@jsenv/prettier-check-project": "4.1.0",
+    "@jsenv/prettier-config": "1.1.0",
+    "eslint": "6.7.2",
     "node-fetch": "2.6.0",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "rimraf": "3.0.0"
   }
 }

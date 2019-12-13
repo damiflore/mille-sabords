@@ -13,10 +13,7 @@ process.env.NODE_ENV = "production"
 const importMapFileRelativeUrl = "./dist/importMap.json"
 
 exports.bundlePromise = generateImportMapForProjectPackage({
-  projectDirectoryPath: jsenvConfig.projectDirectoryPath,
-  includeDevDependencies: false,
-  includeImports: true,
-  includeExports: true,
+  ...jsenvConfig,
   importMapFileRelativeUrl,
   importMapFile: true,
 }).then(() => {

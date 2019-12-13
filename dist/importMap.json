@@ -3,19 +3,14 @@
     "@jsenv/server": "./node_modules/@jsenv/server/index.js",
     "react-dom": "./node_modules/react-dom/index.js",
     "react": "./node_modules/react/index.js",
-    "src/": "./src/",
-    "./": "./"
+    "src/": "./src/"
   },
   "scopes": {
-    "./node_modules/@jsenv/server/node_modules/kill-port/": {
-      "get-them-args": "./node_modules/get-them-args/index.js",
-      "shell-exec": "./node_modules/shell-exec/index.js"
-    },
     "./node_modules/@jsenv/server/": {
       "@jsenv/cancellation": "./node_modules/@jsenv/cancellation/index.js",
       "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
-      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js",
-      "kill-port": "./node_modules/@jsenv/server/node_modules/kill-port/index.js"
+      "@jsenv/logger": "./node_modules/@jsenv/logger/index.js",
+      "kill-port": "./node_modules/kill-port/index.js"
     },
     "./node_modules/loose-envify/": {
       "js-tokens": "./node_modules/js-tokens/index.js"
@@ -24,6 +19,10 @@
       "object-assign": "./node_modules/object-assign/index.js",
       "loose-envify": "./node_modules/loose-envify/index.js",
       "react-is": "./node_modules/react-is/index.js"
+    },
+    "./node_modules/kill-port/": {
+      "get-them-args": "./node_modules/get-them-args/index.js",
+      "shell-exec": "./node_modules/shell-exec/index.js"
     },
     "./node_modules/react-dom/": {
       "object-assign": "./node_modules/object-assign/index.js",

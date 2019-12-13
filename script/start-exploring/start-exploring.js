@@ -1,13 +1,10 @@
-const { pathToFileURL } = require("url")
 const { startExploring } = require("@jsenv/core")
 const jsenvConfig = require("../../jsenv.config.js")
 
 startExploring({
   ...jsenvConfig,
-  htmlFileUrl: String(
-    new URL("./index.dev.html", `${pathToFileURL(jsenvConfig.projectDirectoryPath)}/`),
-  ),
-  watchDescription: {
+  htmlFileRelativeUrl: "./index.dev.html",
+  watchConfig: {
     "./**/*": false,
     "./*": true,
     "./src/**/*": true,
