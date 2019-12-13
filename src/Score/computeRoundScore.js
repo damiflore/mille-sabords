@@ -4,15 +4,15 @@ import {
   CARD_DIAMOND,
   CARD_COIN,
   CARD_SWORD_CHALLENGE,
-} from "/src/Cards/card-types.js"
+} from "src/Cards/card-types.js"
 import {
   SYMBOL_DIAMOND,
   SYMBOL_COIN,
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SWORD,
-} from "/src/symbols/symbol-types.js"
-import { diceArrayToSymbolArray } from "/src/Dice/DiceHelpers.js"
+} from "src/symbols/symbol-types.js"
+import { diceArrayToSymbolArray } from "src/Dice/DiceHelpers.js"
 
 export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
   if (!markScoreAllowed) {

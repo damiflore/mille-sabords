@@ -1,21 +1,23 @@
-const { test } = require("@jsenv/testing")
-const {
-  projectPath,
-  babelPluginMap,
-  convertMap,
-  generateTestDescription,
-} = require("../../jsenv.config.js")
+const { executeTestPlan, launchChromiumTab, jsenvCoverageConfig } = require("@jsenv/core")
+const jsenvConfig = require("../../jsenv.config.js")
 
-const run = async () => {
-  const { testDescription, stop } = await generateTestDescription()
-
-  await test({
-    projectPath,
-    babelPluginMap,
-    convertMap,
-    executeDescription: testDescription,
-  })
-
-  stop()
-}
-run()
+executeTestPlan({
+  ...jsenvConfig,
+  testPlan: {
+    "./src/**/*.test.js": {
+      browser: {
+        launch: launchChromiumTab,
+      },
+    },
+    "./test/**/*.test.js": {
+      browser: {
+        launch: launchChromiumTab,
+      },
+    },
+  },
+  coverage: process.argv.includes("--coverage"),
+  coverageConfig: {
+    ...jsenvCoverageConfig,
+    "./src/**/*.jsx": true,
+  },
+})

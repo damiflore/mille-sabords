@@ -9,9 +9,6 @@
       "program": "${file}",
       "autoAttachChildProcesses": true,
       "sourceMaps": false,
-      "sourceMapPathOverrides": {
-        "/*": "${workspaceRoot}/*"
-      },
       "smartStep": true,
       "skipFiles": [
         // force-multiline
@@ -30,9 +27,6 @@
       "args": ["${relativeFile}"],
       "autoAttachChildProcesses": true,
       "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "/*": "${workspaceRoot}/*"
-      },
       "smartStep": true,
       "skipFiles": [
         // force-multiline
@@ -47,9 +41,6 @@
       "url": "http://127.0.0.1:3456/${relativeFile}",
       "runtimeArgs": ["--allow-file-access-from-files", "--disable-web-security"],
       "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "/*": "${workspaceRoot}/*"
-      },
       "smartStep": true,
       "skipFiles": [
         // force-multiline

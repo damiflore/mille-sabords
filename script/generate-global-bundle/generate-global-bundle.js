@@ -1,5 +1,5 @@
-const { generateGlobalBundle } = require("@jsenv/bundling")
-const { projectPath, babelPluginMap, convertMap } = require("../../jsenv.config.js")
+const { generateGlobalBundle } = require("@jsenv/core")
+const jsenvConfig = require("../../jsenv.config.js")
 const { generateImportMapForProjectPackage } = require("@jsenv/node-module-import-map")
 
 // TODO: change this for system format
@@ -10,19 +10,16 @@ const { generateImportMapForProjectPackage } = require("@jsenv/node-module-impor
 process.env.NODE_ENV = "production"
 
 // this is to avoid generating importMap for devDependencies
-const importMapRelativePath = "/dist/importMap.json"
+const importMapFileRelativeUrl = "./dist/importMap.json"
 
 exports.bundlePromise = generateImportMapForProjectPackage({
-  projectPath,
-  includeDevDependencies: false,
-  importMapFileRelativePath: importMapRelativePath,
+  ...jsenvConfig,
+  importMapFileRelativeUrl,
   importMapFile: true,
 }).then(() => {
   return generateGlobalBundle({
-    projectPath,
-    babelPluginMap,
-    importMapRelativePath,
-    convertMap,
+    ...jsenvConfig,
+    importMapFileRelativeUrl,
     globalName: "__mille_sabords__",
     minify: true,
   })

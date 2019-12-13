@@ -1,10 +1,11 @@
-const { createConfig } = require("@jsenv/eslint-config")
+const { createEslintConfig } = require("@jsenv/eslint-config")
+const jsenvConfig = require("./jsenv.config.js")
 
-const config = createConfig({
+const config = createEslintConfig({
+  ...jsenvConfig,
   importResolutionMethod: "import-map",
-  projectPath: __dirname,
-  jsxEnabled: true,
-  reactPluginEnabled: true,
+  react: true,
+  jsx: true,
 })
 
 module.exports = config

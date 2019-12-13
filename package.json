@@ -1,5 +1,6 @@
 {
   "name": "mille-sabords",
+  "description": "Web version of a dice game called mille sabords",
   "version": "0.0.1",
   "license": "MIT",
   "repository": {
@@ -13,7 +14,7 @@
   "browser": "dist/global/main.js",
   "main": "dist/commonjs/main.js",
   "imports": {
-    "/": "/"
+    "src/": "./src/"
   },
   "files": [
     "/dist/",
@@ -21,12 +22,11 @@
     "/index.js"
   ],
   "scripts": {
-    "start-exploring-server": "node ./script/start-exploring-server/start-exploring-server.js",
-    "start-continuous-testing": "node ./script/start-continuous-testing/start-continuous-testing.js",
+    "start-exploring": "node ./script/start-exploring/start-exploring.js",
     "test": "node ./script/test/test.js",
+    "test-with-coverage": "node ./script/test/test.js --coverage",
     "eslint-check": "eslint .",
     "prettier-check": "node ./script/prettier-check/prettier-check.js",
-    "generate-coverage": "node ./script/generate-coverage/generate-coverage.js",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
     "generate-global-bundle": "node ./script/generate-global-bundle/generate-global-bundle.js",
     "generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
@@ -42,29 +42,22 @@
     "node": "12.x"
   },
   "dependencies": {
-    "@dmail/server": "2.9.0",
-    "@jsenv/operating-system-path": "2.4.0",
+    "@jsenv/server": "1.2.0",
     "react": "16.9.0",
     "react-dom": "16.9.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "7.3.0",
-    "@dmail/assert": "3.14.0",
-    "@dmail/lighthouse-report": "2.1.0",
-    "@jsenv/babel-plugin-map": "3.0.0",
-    "@jsenv/bundling": "6.1.0",
-    "@jsenv/chromium-launcher": "3.8.0",
-    "@jsenv/codecov-upload": "1.8.0",
-    "@jsenv/commonjs-converter": "2.3.0",
-    "@jsenv/eslint-config": "10.0.0",
-    "@jsenv/exploring-server": "3.10.0",
-    "@jsenv/node-module-import-map": "7.0.0",
-    "@jsenv/prettier-check-project": "3.4.0",
-    "@jsenv/prettier-config": "1.0.0",
-    "@jsenv/testing": "3.3.0",
-    "eslint": "6.4.0",
+    "@jsenv/assert": "1.1.1",
+    "@jsenv/codecov-upload": "3.0.0",
+    "@jsenv/core": "10.1.0",
+    "@jsenv/eslint-config": "12.0.0",
+    "@jsenv/node-module-import-map": "9.4.0",
+    "@jsenv/prettier-check-project": "4.1.0",
+    "@jsenv/prettier-config": "1.1.0",
+    "eslint": "6.7.2",
     "node-fetch": "2.6.0",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "rimraf": "3.0.0"
   }
 }

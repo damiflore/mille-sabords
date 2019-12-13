@@ -1,4 +1,4 @@
-import { CARD_SKULL } from "/src/Cards/card-types.js"
+import { CARD_SKULL } from "src/Cards/card-types.js"
 
 export const countSkulls = ({ card, diceCursed }) => {
   let numerOfSkulls = diceCursed.length
