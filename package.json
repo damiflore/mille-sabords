@@ -1,5 +1,6 @@
 {
   "name": "mille-sabords",
+  "description": "Web version of a dice game called mille sabords",
   "version": "0.0.1",
   "license": "MIT",
   "repository": {

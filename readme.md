@@ -1,6 +1,6 @@
 # mille-sabords
 
-[![build](https://travis-ci.com/damiflore/mille-sabords.svg?branch=master)](http://travis-ci.com/damiflore/mille-sabords)
+[![github ci](https://github.com/damiflore/mille-sabords/workflows/ci/badge.svg)](https://github.com/damiflore/mille-sabords/actions?workflow=ci)
 [![codecov](https://codecov.io/gh/damiflore/mille-sabords/branch/master/graph/badge.svg)](https://codecov.io/gh/damiflore/mille-sabords)
 
-> A web version of the dice game called mille sabords.
+Web version of a dice game called mille sabords.
