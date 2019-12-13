@@ -5,8 +5,8 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
-} from "/src/symbols/symbol-types.js"
-import { diceSize, detectCollision } from "../UI/dicePosition"
+} from "src/symbols/symbol-types.js"
+import { diceSize, detectCollision } from "../UI/dicePosition.js"
 
 export const rollDices = (dices, { diceParentElement }) => {
   const clientRect = diceParentElement.getBoundingClientRect()
