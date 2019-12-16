@@ -5,3 +5,4 @@
 /node_modules/
 /script/generate-lighthouse-report/
 /script/update-lighthouse-pr-comment-from-travis.js
+!/.eslintrc.js
