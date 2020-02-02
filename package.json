@@ -48,7 +48,8 @@
   "dependencies": {
     "@jsenv/server": "1.5.3",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "systemjs": "6.2.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "7.8.3",
