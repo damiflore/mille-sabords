@@ -4,7 +4,7 @@ const { projectDirectoryUrl } = require("../jsenv.config.js")
 generateSnapshotFile({
   projectDirectoryUrl,
   directorySizeTrackingConfig: {
-    "./dist/global": {
+    "./dist/systemjs": {
       "./**/*.js": true,
       "./**/*.js.map": false,
     },
