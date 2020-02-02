@@ -12,7 +12,6 @@
   },
   "module": "index.js",
   "browser": "dist/systemjs/main.js",
-  "main": "dist/commonjs/main.js",
   "imports": {
     "src/": "./src/"
   },
