@@ -1,37 +1,25 @@
 {
   "imports": {
-    "@jsenv/server/": "./node_modules/@jsenv/server/",
-    "mille-sabords/": "./",
     "@jsenv/server": "./node_modules/@jsenv/server/index.js",
-    "react-dom/": "./node_modules/react-dom/",
     "react-dom": "./node_modules/react-dom/index.js",
-    "react/": "./node_modules/react/",
+    "systemjs": "./node_modules/systemjs/index",
     "react": "./node_modules/react/index.js",
     "src/": "./src/"
   },
   "scopes": {
     "./node_modules/@jsenv/server/node_modules/@jsenv/logger/": {
-      "@jsenv/logger/": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/"
+      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js"
     },
     "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/": {
-      "@jsenv/url-meta/": "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/"
-    },
-    "./node_modules/@jsenv/server/node_modules/kill-port/": {
-      "get-them-args": "./node_modules/get-them-args/index.js",
-      "kill-port/": "./node_modules/@jsenv/server/node_modules/kill-port/",
-      "shell-exec": "./node_modules/shell-exec/index.js"
+      "@jsenv/url-meta": "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/index.js"
     },
     "./node_modules/@jsenv/cancellation/": {
-      "@jsenv/cancellation/": "./node_modules/@jsenv/cancellation/"
+      "@jsenv/cancellation": "./node_modules/@jsenv/cancellation/index.js"
     },
     "./node_modules/@jsenv/node-signals/": {
-      "@jsenv/node-signals/": "./node_modules/@jsenv/node-signals/"
-    },
-    "./node_modules/event-target-shim/": {
-      "event-target-shim/": "./node_modules/event-target-shim/"
+      "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js"
     },
     "./node_modules/abort-controller/": {
-      "abort-controller/": "./node_modules/abort-controller/",
       "event-target-shim": "./node_modules/event-target-shim/dist/event-target-shim.js"
     },
     "./node_modules/@jsenv/server/": {
@@ -41,37 +29,24 @@
       "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js",
       "@jsenv/util": "./node_modules/@jsenv/util/index.js",
       "node-fetch": "./node_modules/node-fetch/lib/index.mjs",
-      "kill-port": "./node_modules/@jsenv/server/node_modules/kill-port/index.js"
-    },
-    "./node_modules/get-them-args/": {
-      "get-them-args/": "./node_modules/get-them-args/"
-    },
-    "./node_modules/object-assign/": {
-      "object-assign/": "./node_modules/object-assign/"
+      "kill-port": "./node_modules/kill-port/index.js"
     },
     "./node_modules/loose-envify/": {
-      "loose-envify/": "./node_modules/loose-envify/",
       "js-tokens": "./node_modules/js-tokens/index.js"
     },
     "./node_modules/@jsenv/util/": {
       "@jsenv/cancellation": "./node_modules/@jsenv/cancellation/index.js",
       "@jsenv/url-meta": "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/index.js",
-      "@jsenv/util/": "./node_modules/@jsenv/util/"
-    },
-    "./node_modules/node-fetch/": {
-      "node-fetch/": "./node_modules/node-fetch/"
+      "@jsenv/util": "./node_modules/@jsenv/util/index.js"
     },
     "./node_modules/prop-types/": {
       "object-assign": "./node_modules/object-assign/index.js",
       "loose-envify": "./node_modules/loose-envify/index.js",
-      "prop-types/": "./node_modules/prop-types/",
       "react-is": "./node_modules/react-is/index.js"
     },
-    "./node_modules/shell-exec/": {
-      "shell-exec/": "./node_modules/shell-exec/"
-    },
-    "./node_modules/js-tokens/": {
-      "js-tokens/": "./node_modules/js-tokens/"
+    "./node_modules/kill-port/": {
+      "get-them-args": "./node_modules/get-them-args/index.js",
+      "shell-exec": "./node_modules/shell-exec/index.js"
     },
     "./node_modules/react-dom/": {
       "object-assign": "./node_modules/object-assign/index.js",
@@ -81,11 +56,7 @@
     },
     "./node_modules/scheduler/": {
       "object-assign": "./node_modules/object-assign/index.js",
-      "loose-envify": "./node_modules/loose-envify/index.js",
-      "scheduler/": "./node_modules/scheduler/"
-    },
-    "./node_modules/react-is/": {
-      "react-is/": "./node_modules/react-is/"
+      "loose-envify": "./node_modules/loose-envify/index.js"
     },
     "./node_modules/react/": {
       "object-assign": "./node_modules/object-assign/index.js",

@@ -7,6 +7,10 @@
 
   <body>
     <div id="mille-sabord-container"></div>
-    <script src="/dist/global/main.js"></script>
+    <script src="/node_modules/systemjs/dist/s.min.js"></script>
+    <script type="systemjs-importmap" src="/dist/importMap.json"></script>
+    <script>
+      System.import("/dist/systemjs/main.js")
+    </script>
   </body>
 </html>
