@@ -1,4 +1,4 @@
-const { generateGlobalBundle } = require("@jsenv/core")
+const { generateSystemJsBundle } = require("@jsenv/core")
 const jsenvConfig = require("../../jsenv.config.js")
 const { generateImportMapForProjectPackage } = require("@jsenv/node-module-import-map")
 
@@ -17,10 +17,9 @@ exports.bundlePromise = generateImportMapForProjectPackage({
   importMapFileRelativeUrl,
   importMapFile: true,
 }).then(() => {
-  return generateGlobalBundle({
+  return generateSystemJsBundle({
     ...jsenvConfig,
     importMapFileRelativeUrl,
-    globalName: "__mille_sabords__",
     minify: true,
   })
 })
