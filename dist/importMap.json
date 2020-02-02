@@ -2,6 +2,7 @@
   "imports": {
     "@jsenv/server": "./node_modules/@jsenv/server/index.js",
     "react-dom": "./node_modules/react-dom/index.js",
+    "systemjs": "./node_modules/systemjs/index",
     "react": "./node_modules/react/index.js",
     "src/": "./src/"
   },

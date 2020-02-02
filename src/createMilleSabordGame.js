@@ -1,9 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { MilleSabordGameBoard } from "./MilleSabordGameBoard.js"
-import { getDiceArray } from "./Dice/DiceHelpers.js"
 
-export const createMilleSabordGame = ({ into }) => {
+export const createMilleSabordGame = async ({ into }) => {
+  const [{ MilleSabordGameBoard }, { getDiceArray }] = await Promise.all([
+    import("./MilleSabordGameBoard.js"),
+    import("./Dice/DiceHelpers.js"),
+  ])
+
   const diceArray = getDiceArray()
 
   ReactDOM.render(<MilleSabordGameBoard diceArray={diceArray} />, into)
