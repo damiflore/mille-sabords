@@ -1,10 +1,8 @@
-const { startExploring } = require("@jsenv/core")
-const jsenvConfig = require("../../jsenv.config.js")
+import { startExploring, jsenvExplorableConfig } from "@jsenv/core"
+import * as jsenvConfig from "../../jsenv.config.js"
 
 startExploring({
   ...jsenvConfig,
   htmlFileRelativeUrl: "./index.dev.html",
   port: 3456,
-  forcePort: true,
-  livereloading: true,
 })

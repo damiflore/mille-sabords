@@ -1,19 +1,19 @@
-const { startServer, serveFile } = require("@jsenv/server")
-const { pathToFileURL } = require("url")
+import { startServer, serveFile } from "@jsenv/server"
 
 const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
-const projectDirectoryUrl = resolveUrl("../", pathToFileURL(__dirname))
+const projectDirectoryUrl = new URL("./", import.meta.url)
 
-exports.serverPromise = startServer({
+export const serverPromise = startServer({
   protocol: "http",
   ip: "",
   port: process.env.PORT || 0,
-  requestToResponse: ({ ressource, method, headers }) => {
+  requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
     if (ressource === "/") {
       ressource = "/index.prod.html"
     }
     return serveFile(resolveUrl(ressource.slice(1), projectDirectoryUrl), {
+      cancellationToken,
       method,
       headers,
     })

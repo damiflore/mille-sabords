@@ -9,16 +9,20 @@ on:
       - master
 
 jobs:
-  ci:
-    name: node 12 on ubuntu
-    runs-on: ubuntu-latest
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [13.12.0]
+    runs-on: ${{ matrix.os }}
+    name: test on ${{ matrix.os }} and node ${{ matrix.node }}
     env:
       CI: true
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.8.0
+          node-version: ${{ matrix.node }}
       - name: npm install
         run: |
           npm config set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
@@ -36,17 +40,3 @@ jobs:
         run: npm run upload-coverage
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - name: pull request size impact
-        if: github.event_name == 'pull_request'
-        run: |
-          git checkout -f $GITHUB_BASE_REF
-          npm install
-          npm run dist
-          node ./.github/generate-size-snapshot.js ../snapshot.base.json
-          git checkout -f $GITHUB_HEAD_REF
-          npm install
-          npm run dist
-          node ./.github/generate-size-snapshot.js ../snapshot.head.json
-          node ./.github/report-size-impact ../snapshot.base.json ../snapshot.head.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

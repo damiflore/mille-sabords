@@ -1,5 +1,5 @@
-const { executeTestPlan, launchChromiumTab, jsenvCoverageConfig } = require("@jsenv/core")
-const jsenvConfig = require("../../jsenv.config.js")
+import { executeTestPlan, launchChromiumTab } from "@jsenv/core"
+import * as jsenvConfig from "../../jsenv.config.js"
 
 executeTestPlan({
   ...jsenvConfig,
@@ -15,7 +15,6 @@ executeTestPlan({
       },
     },
   },
-  coverage: process.argv.includes("--coverage"),
   coverageConfig: {
     ...jsenvCoverageConfig,
     "./src/**/*.jsx": true,

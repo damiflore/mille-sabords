@@ -1,11 +1,11 @@
-const {
+import {
   generateLighthouseReport,
   lighthousePullRequestCommentFromTravisBuild,
-} = require("@dmail/lighthouse-report")
-const { projectPath } = require("../jsenv.config.js")
+} from "@dmail/lighthouse-report"
+import { projectDirectoryUrl } from "../jsenv.config.js"
 
 lighthousePullRequestCommentFromTravisBuild({
-  projectPath,
+  projectPath: projectDirectoryUrl,
   getLighthouseProductionReport: () =>
     generateLighthouseReport({
       url: "https://mille-sabords.herokuapp.com/",
