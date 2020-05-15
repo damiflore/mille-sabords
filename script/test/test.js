@@ -1,4 +1,4 @@
-import { executeTestPlan, launchChromiumTab } from "@jsenv/core"
+import { executeTestPlan, launchChromiumTab, jsenvCoverageConfig } from "@jsenv/core"
 import * as jsenvConfig from "../../jsenv.config.js"
 
 executeTestPlan({

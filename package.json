@@ -24,9 +24,9 @@
   "scripts": {
     "start-exploring": "node ./script/start-exploring/start-exploring.js",
     "test": "node ./script/test/test.js",
-    "test-with-coverage": "node ./script/test/test.js --coverage",
-    "eslint-check": "eslint .",
-    "prettier-format": "node ./script/prettier-format/prettier-format.js",
+    "test-with-coverage": "npm run test -- --coverage",
+    "eslint-check": "node ./node_modules/eslint/bin/eslint.js .",
+    "prettier-format": "node --no-warnings ./script/prettier-format/prettier-format.js",
     "prettier-format-stage": "npm run prettier-format -- --staged",
     "prettier-check": "npm run prettier-format -- --dry-run",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
@@ -37,9 +37,7 @@
     "build": "npm run dist",
     "start": "node ./script/start/start.js",
     "postinstall": "npm run generate-import-map && npm run install-git-hooks",
-    "dist": "npm run clean && npm run generate-systemjs-bundle",
-    "clean": "rimraf dist && rimraf coverage",
-    "reinstall": "npm run clean && rimraf node_modules && npm install",
+    "dist": "npm run generate-systemjs-bundle",
     "git-hook-pre-commit": "npm run prettier-format-stage"
   },
   "engines": {
