@@ -7,9 +7,6 @@
     "src/": "./src/"
   },
   "scopes": {
-    "./node_modules/@jsenv/server/node_modules/@jsenv/logger/": {
-      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js"
-    },
     "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/": {
       "@jsenv/url-meta": "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/index.js"
     },
@@ -22,11 +19,14 @@
     "./node_modules/abort-controller/": {
       "event-target-shim": "./node_modules/event-target-shim/dist/event-target-shim.js"
     },
+    "./node_modules/@jsenv/logger/": {
+      "@jsenv/logger": "./node_modules/@jsenv/logger/index.js"
+    },
     "./node_modules/@jsenv/server/": {
       "@jsenv/cancellation": "./node_modules/@jsenv/cancellation/index.js",
       "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
       "abort-controller": "./node_modules/abort-controller/dist/abort-controller.js",
-      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js",
+      "@jsenv/logger": "./node_modules/@jsenv/logger/index.js",
       "@jsenv/util": "./node_modules/@jsenv/util/index.js",
       "node-fetch": "./node_modules/node-fetch/lib/index.mjs",
       "kill-port": "./node_modules/kill-port/index.js"
@@ -36,6 +36,7 @@
     },
     "./node_modules/@jsenv/util/": {
       "@jsenv/cancellation": "./node_modules/@jsenv/cancellation/index.js",
+      "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
       "@jsenv/url-meta": "./node_modules/@jsenv/util/node_modules/@jsenv/url-meta/index.js",
       "@jsenv/util": "./node_modules/@jsenv/util/index.js"
     },
