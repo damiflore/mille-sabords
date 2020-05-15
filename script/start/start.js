@@ -1,8 +1,11 @@
 import { startServer, serveFile } from "@jsenv/server"
 
-const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
+// not taken from jsenv.config.js because this code
+// will run in production and jsenv.config.js depends on
+// @jsenv/core which is a devDependency
+const projectDirectoryUrl = new URL("../../", import.meta.url)
 
-const projectDirectoryUrl = new URL("./", import.meta.url)
+const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
 export const serverPromise = startServer({
   protocol: "http",
