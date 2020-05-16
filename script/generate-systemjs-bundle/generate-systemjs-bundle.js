@@ -18,5 +18,6 @@ export const bundlePromise = generateImportMapForProjectPackage({
     bundleDirectoryClean: true,
     importMapFileRelativeUrl,
     minify: true,
+    manifestFile: true,
   })
 })
