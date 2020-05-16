@@ -1,10 +1,13 @@
-const { pathToFileURL } = require("url")
-const { jsenvBabelPluginMap, convertCommonJsWithRollup } = require("@jsenv/core")
+import { createRequire } from "module"
+import { jsenvBabelPluginMap, convertCommonJsWithRollup } from "@jsenv/core"
+
+const require = createRequire(import.meta.url)
+
 const transformReactJSX = require("@babel/plugin-transform-react-jsx")
 
-exports.projectDirectoryUrl = `${String(pathToFileURL(__dirname))}/`
+export const projectDirectoryUrl = String(new URL("./", import.meta.url))
 
-exports.babelPluginMap = {
+export const babelPluginMap = {
   ...jsenvBabelPluginMap,
   "transform-react-jsx": [
     transformReactJSX,
@@ -12,7 +15,7 @@ exports.babelPluginMap = {
   ],
 }
 
-exports.convertMap = {
+export const convertMap = {
   "./node_modules/react/index.js": convertCommonJsWithRollup,
   "./node_modules/react-dom/index.js": async (options) => {
     return convertCommonJsWithRollup({ ...options, external: ["react"] })

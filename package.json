@@ -12,6 +12,7 @@
   },
   "module": "index.js",
   "browser": "dist/systemjs/main.js",
+  "type": "module",
   "imports": {
     "src/": "./src/"
   },
@@ -23,9 +24,9 @@
   "scripts": {
     "start-exploring": "node ./script/start-exploring/start-exploring.js",
     "test": "node ./script/test/test.js",
-    "test-with-coverage": "node ./script/test/test.js --coverage",
-    "eslint-check": "eslint .",
-    "prettier-format": "node ./script/prettier-format/prettier-format.js",
+    "test-with-coverage": "npm run test -- --coverage",
+    "eslint-check": "node ./node_modules/eslint/bin/eslint.js .",
+    "prettier-format": "node --no-warnings ./script/prettier-format/prettier-format.js",
     "prettier-format-stage": "npm run prettier-format -- --staged",
     "prettier-check": "npm run prettier-format -- --dry-run",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
@@ -36,33 +37,30 @@
     "build": "npm run dist",
     "start": "node ./script/start/start.js",
     "postinstall": "npm run generate-import-map && npm run install-git-hooks",
-    "dist": "npm run clean && npm run generate-systemjs-bundle",
-    "clean": "rimraf dist && rimraf coverage",
-    "reinstall": "npm run clean && rimraf node_modules && npm install",
+    "dist": "npm run generate-systemjs-bundle",
     "git-hook-pre-commit": "npm run prettier-format-stage"
   },
   "engines": {
-    "node": "12.x"
+    "node": "13.x"
   },
   "dependencies": {
-    "@jsenv/server": "1.5.3",
+    "@jsenv/server": "2.4.0",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "systemjs": "6.2.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "7.8.3",
-    "@jsenv/assert": "1.2.2",
-    "@jsenv/codecov-upload": "3.2.0",
-    "@jsenv/core": "11.4.1",
-    "@jsenv/eslint-config": "12.2.0",
-    "@jsenv/git-hooks": "1.2.0",
-    "@jsenv/github-pull-request-filesize-impact": "2.3.1",
-    "@jsenv/node-module-import-map": "11.0.0",
-    "@jsenv/prettier-check-project": "5.4.0",
-    "@jsenv/prettier-config": "1.2.0",
-    "eslint": "6.8.0",
-    "prettier": "1.19.1",
-    "rimraf": "3.0.1"
+    "@babel/plugin-transform-react-jsx": "7.9.4",
+    "@jsenv/assert": "2.1.0",
+    "@jsenv/codecov-upload": "3.4.0",
+    "@jsenv/core": "13.0.0",
+    "@jsenv/eslint-config": "12.4.1",
+    "@jsenv/git-hooks": "1.3.3",
+    "@jsenv/github-pull-request-filesize-impact": "3.0.3",
+    "@jsenv/node-module-import-map": "11.1.1",
+    "@jsenv/prettier-check-project": "5.6.0",
+    "eslint": "7.0.0",
+    "playwright-chromium": "0.11.1",
+    "prettier": "2.0.5"
   }
 }
