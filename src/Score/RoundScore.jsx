@@ -28,17 +28,19 @@ export const RoundScore = ({
 
 const ScoreDisplay = ({ markScorePermission, isOnSkullIsland, roundScore, markScore }) => {
   if (isOnSkullIsland) {
-    return <span>XXX -Skull Island- XXX</span>
+    return <span>Skull Island!</span>
   }
 
   return (
     <>
       <span>{roundScore}</span>
-      {markScorePermission.allowed ? <ButtonMarkScore onClick={markScore} /> : null}
       <div>
-        {markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE
-          ? "Round over !"
-          : markScorePermission.reason}
+        {markScorePermission.allowed ? <ButtonMarkScore onClick={markScore} /> : null}
+        <div>
+          {markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE
+            ? "Round over !"
+            : markScorePermission.reason}
+        </div>
       </div>
     </>
   )

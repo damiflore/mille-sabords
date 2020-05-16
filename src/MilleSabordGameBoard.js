@@ -233,9 +233,24 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
   return (
     <>
       <CardArea cardDeck={cardDeck} cardDrawn={cardDrawn} drawCard={drawCard} card={card} />
+      <div className="score-area">
+        <TotalScore totalScore={totalScore} />
+        <ButtonNextRound nextRoundPermission={nextRoundPermission} nextRound={nextRound} />
+        <RoundScore
+          rollIndex={rollIndex}
+          isOnSkullIsland={isOnSkullIsland}
+          roundScore={roundScore}
+          markScorePermission={markScorePermission}
+          markScore={markScore}
+        />
+      </div>
+      <DiceKept
+        diceArray={diceKept}
+        unkeepDiceAllowed={unkeepDiceAllowed}
+        unkeepDice={unkeepDice}
+      />
       <div>
         <ButtonRoll rollDicePermission={rollDicePermission} onClick={rollTheDice} />
-        <ButtonNextRound nextRoundPermission={nextRoundPermission} nextRound={nextRound} />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
       <DiceOnGoing
@@ -244,24 +259,11 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
         keepDiceAllowed={keepDiceAllowed}
         keepDice={keepDice}
       />
-      <DiceKept
-        diceArray={diceKept}
-        unkeepDiceAllowed={unkeepDiceAllowed}
-        unkeepDice={unkeepDice}
-      />
       <SkullIsland
         diceCursed={diceCursed}
         canRemoveSkull={canRemoveSkull}
         removeSkull={(dice) => unkeepDice(dice)}
       ></SkullIsland>
-      <RoundScore
-        rollIndex={rollIndex}
-        isOnSkullIsland={isOnSkullIsland}
-        roundScore={roundScore}
-        markScorePermission={markScorePermission}
-        markScore={markScore}
-      />
-      <TotalScore totalScore={totalScore} />
     </>
   )
 }

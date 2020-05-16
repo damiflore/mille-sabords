@@ -1,4 +1,4 @@
-export const diceSize = 40
+export const diceSize = 50
 
 // margin because of rotation
 const diceSpacing = diceSize / 8

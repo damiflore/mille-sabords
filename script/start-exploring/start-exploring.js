@@ -4,7 +4,7 @@ const jsenvConfig = require("../../jsenv.config.js")
 startExploring({
   ...jsenvConfig,
   htmlFileRelativeUrl: "./index.dev.html",
-  port: 3456,
+  port: 3472,
   forcePort: true,
   livereloading: true,
 })
