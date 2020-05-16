@@ -1,8 +1,9 @@
 {
   "imports": {
+    "systemjs/dist/": "./node_modules/systemjs/dist/",
     "@jsenv/server": "./node_modules/@jsenv/server/index.js",
     "react-dom": "./node_modules/react-dom/index.js",
-    "systemjs": "./node_modules/systemjs/index",
+    "systemjs": "./node_modules/systemjs/dist/system-node.cjs",
     "react": "./node_modules/react/index.js",
     "src/": "./src/"
   },
