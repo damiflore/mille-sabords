@@ -10,13 +10,14 @@ const importMapFileRelativeUrl = "./dist/importMap.json"
 
 export const bundlePromise = generateImportMapForProjectPackage({
   ...jsenvConfig,
-  bundleDirectoryClean: true,
   importMapFileRelativeUrl,
   importMapFile: true,
 }).then(() => {
   return generateSystemJsBundle({
     ...jsenvConfig,
+    bundleDirectoryClean: true,
     importMapFileRelativeUrl,
     minify: true,
+    manifestFile: true,
   })
 })

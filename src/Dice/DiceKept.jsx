@@ -1,23 +1,17 @@
 import React from "react"
-import { diceSize } from "../UI/dicePosition.js"
+import { Dice } from "./Dice.jsx"
 
 export const DiceKept = ({ diceArray, unkeepDiceAllowed, unkeepDice }) => (
   <div className="diceKept">
-    <span className="title">Dice kept</span>
     <div className="area">
       {diceArray.map((dice) => (
-        <button
+        <Dice
           key={dice.id}
+          dice={dice}
           disabled={!unkeepDiceAllowed}
-          onClick={() => unkeepDice(dice)}
-          className="dice"
-          style={{
-            width: diceSize,
-            height: diceSize,
-          }}
-        >
-          {dice.symbol}
-        </button>
+          onClickAction={unkeepDice}
+          specificStyle={{ margin: "5px" }}
+        />
       ))}
     </div>
   </div>

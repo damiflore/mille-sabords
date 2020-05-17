@@ -1,6 +1,34 @@
+@import "./src/Cards/cards.css";
+@import "./src/Dice/dice.css";
+@import "./src/Score/score.css";
+@import "./src/SkullIsland/skull-island.css";
+
 body {
+  font-family: arial, sans;
   color: #444444;
-  margin: 20px;
+  margin: 0;
+}
+#mille-sabord-container {
+  background-image: url("src/Dice/assets/wood.jpg");
+  color: white;
+  padding: 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  overflow: hidden;
+  height: calc(100% - 40px);
+}
+/* #mille-sabord-container {
+padding: 15px 20px;} */
+button {
+  background: white;
+  border: solid 1px currentColor;
+  padding: 3px 6px;
+  border-radius: 2px;
+  font-size: 15px;
+}
+button:hover {
+  cursor: pointer;
+  background: #e4dfd2;
 }
 .title {
   font-size: 23px;
@@ -14,45 +42,8 @@ body {
   padding-right: 10px;
   font-size: 20px;
 }
-.diceOnGoing,
-.diceKept,
-.skullIsland {
-  display: inline-block;
-  padding: 20px;
-  margin: 20px 30px 20px 0;
-  vertical-align: top;
-  min-height: 100px;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-    0px 3px 1px -2px rgba(0, 0, 0, 0.12);
-}
-.diceOnGoing .area {
-  width: 400px;
-  height: 400px;
-  display: block;
-  position: relative;
-  margin: 20px;
-}
-.dice {
-  overflow: hidden;
-  padding: 2px;
-}
-.diceWithCollision {
-  overflow: hidden;
-  padding: 2px;
-  position: absolute;
-  border: 1px solid red;
-}
-.totalScore {
-  border: 2px solid grey;
-  border-radius: 20px;
-  padding: 2px 10px;
-}
-.card {
-  display: block;
-  border: 1px solid black;
-  width: 150px;
-  text-align: center;
-  padding: 30px 20px;
-  margin: 20px 0;
-  border-radius: 4px;
+@media only screen and (max-width: 680px) {
+  .subtitle {
+    font-size: 17px;
+  }
 }

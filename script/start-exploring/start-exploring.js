@@ -4,5 +4,5 @@ import * as jsenvConfig from "../../jsenv.config.js"
 startExploring({
   ...jsenvConfig,
   htmlFileRelativeUrl: "./index.dev.html",
-  port: 3456,
+  port: 3472,
 })

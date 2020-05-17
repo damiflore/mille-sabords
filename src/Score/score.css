@@ -1,0 +1,11 @@
+.score-area {
+  text-align: right;
+  float: right;
+  height: 170px;
+}
+.totalScore {
+  background: white;
+  color: black;
+  border-radius: 20px;
+  padding: 2px 10px;
+}

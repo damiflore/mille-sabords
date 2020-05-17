@@ -54,6 +54,8 @@ jobs:
           npm install
           npm run dist
           node ./.github/workflows/size-impact/generate-size-snapshot.js ../snapshot.base.json || echo "{}" > ../snapshot.base.json
+      - name: Clean dist/ to avoid conflict
+        run: rm -rf dist/
       - name: Git merge head
         # Here we must fetch $GITHUB_REF and not $GITHUB_HEAD_REF because
         # $GITHUB_HEAD_REF might come from a fork
