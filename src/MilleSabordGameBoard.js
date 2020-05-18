@@ -249,7 +249,7 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
         unkeepDiceAllowed={unkeepDiceAllowed}
         unkeepDice={unkeepDice}
       />
-      <div>
+      <div className="roll-action">
         <ButtonRoll rollDicePermission={rollDicePermission} onClick={rollTheDice} />
       </div>
       {/* <Shaker diceOffGame={diceOffGame} /> */}
