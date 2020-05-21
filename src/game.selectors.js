@@ -1,3 +1,4 @@
+import React from "react"
 import { countSkulls } from "src/Dice/countSkulls.js"
 import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import {
@@ -7,9 +8,12 @@ import {
   CARD_NOT_DRAWN,
 } from "src/constants.js"
 import { useGameStore } from "./MilleSabordGame.js"
+import { computeRoundScore } from "./Score/computeRoundScore.js"
+
+const { useMemo } = React
 
 export const useRollDicePermission = (
-  { rollIndex, diceOnGoing, cardDrawn, scoreMarked, card, diceCursed } = useGameStore(),
+  { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = useGameStore(),
 ) => {
   if (!cardDrawn) {
     return {
@@ -32,7 +36,7 @@ export const useRollDicePermission = (
     }
   }
 
-  if (rollIndex > 0 && diceOnGoing.length < 2) {
+  if (rollIndex > 0 && diceInGame.length < 2) {
     return {
       allowed: false,
       reason: NOT_ENOUGH_DICE_TO_ROLL,
@@ -116,4 +120,15 @@ export const useNextRoundPermission = ({ rollIndex } = useGameStore()) => {
   }
 
   return { allowed: false }
+}
+
+export const useRoundScore = ({ card, diceKept } = useGameStore()) => {
+  const markScorePermission = useMarkScorePermission()
+  return useMemo(() => {
+    return computeRoundScore({
+      card,
+      diceKept,
+      markScoreAllowed: markScorePermission.allowed,
+    })
+  }, [card, diceKept, markScorePermission])
 }

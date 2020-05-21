@@ -22,7 +22,6 @@ const GameStoreContext = createContext(null)
 const dices = getDiceArray()
 const defaultState = {
   totalScore: 0,
-  roundScore: 0,
   scoreMarked: false,
   isOnSkullIsland: false,
   cardDeck: getMixedDeck(),

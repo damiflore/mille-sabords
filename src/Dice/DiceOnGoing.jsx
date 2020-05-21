@@ -59,6 +59,6 @@ const keepDice = (
     setDiceKept(diceKeptWithDice)
   }
 
-  const diceOnGoingWithoutDice = diceInGame.filter((diceCandidate) => diceCandidate !== dice)
-  setDiceInGame(diceOnGoingWithoutDice)
+  const diceInGameWithoutDice = diceInGame.filter((diceCandidate) => diceCandidate !== dice)
+  setDiceInGame(diceInGameWithoutDice)
 }

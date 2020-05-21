@@ -25,11 +25,11 @@ export const unkeepDice = (
     setDiceKept(keptArrayWithoutThisDice)
   }
 
-  const onGoingArrayWithThisDice = [...diceInGame, dice]
-  setDiceInGame(onGoingArrayWithThisDice)
+  const inGameArrayWithThisDice = [...diceInGame, dice]
+  setDiceInGame(inGameArrayWithThisDice)
 }
 
-export const markScore = ({ setTotalScore, totalScore, roundScore, setScoreMarked }) => {
-  setTotalScore(Math.max(totalScore + roundScore, 0))
+export const markScore = ({ setTotalScore, totalScore, setScoreMarked }, score) => {
+  setTotalScore(Math.max(totalScore + score, 0))
   setScoreMarked(true)
 }

@@ -32,7 +32,6 @@ const nextRound = ({
   setCardDrawn,
   setCardEffectUsed,
   setIsOnSkullIsland,
-  setRoundScore,
 }) => {
   setDiceOffGame(dices)
   setDiceInGame([])
@@ -43,5 +42,4 @@ const nextRound = ({
   setCardDrawn(false)
   setCardEffectUsed(false)
   setIsOnSkullIsland(false)
-  setRoundScore(0)
 }

@@ -1,17 +1,15 @@
 import React from "react"
 import { useGameStore } from "src/MilleSabordGame.js"
-import { isSwordChallengeCard, isWitchCard } from "src/Cards/cards.js"
+import { isSwordChallengeCard } from "src/Cards/cards.js"
 import { markScore } from "src/game.actions.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
-import { computeRoundScore } from "src/Score/computeRoundScore.js"
-import { useMarkScorePermission } from "./game.selectors.js"
+import { useMarkScorePermission, useRoundScore } from "./game.selectors.js"
 
 const { useEffect, useRef } = React
 
 export const GameLogic = () => {
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
-  useRoundScore()
   return null
 }
 
@@ -22,6 +20,7 @@ const useFailSwordChallengeEffect = () => {
 
   const markScorePermission = useMarkScorePermission(store)
   const markScorePermissionPrevious = usePrevious(markScorePermission)
+  const roundScore = useRoundScore()
 
   useEffect(() => {
     if (
@@ -30,9 +29,9 @@ const useFailSwordChallengeEffect = () => {
       markScorePermissionPrevious.allowed &&
       !markScorePermission.allowed
     ) {
-      markScore(store)
+      markScore(store, roundScore)
     }
-  }, [card, scoreMarked, markScorePermissionPrevious, markScorePermission])
+  }, [card, scoreMarked, markScorePermissionPrevious, markScorePermission, roundScore])
 }
 
 const usePrevious = (value) => {
@@ -57,20 +56,4 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
       }),
     )
   }, [card, rollIndex, diceCursed])
-}
-
-// roundScore (derived state aussi non ?)
-const useRoundScore = () => {
-  const { setRoundScore, card, diceKept } = useGameStore()
-  const markScorePermission = useMarkScorePermission()
-
-  useEffect(() => {
-    setRoundScore(
-      computeRoundScore({
-        card,
-        diceKept,
-        markScoreAllowed: markScorePermission.allowed,
-      }),
-    )
-  }, [card, diceKept, markScorePermission])
 }
