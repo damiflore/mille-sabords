@@ -16,9 +16,10 @@ import {
   isTwoSwordsChallengeCard,
   isThreeSwordsChallengeCard,
   isFourSwordsChallengeCard,
+  getMixedDeck,
 } from "./Cards/cards.js"
 import { rollDices } from "./Dice/rollDices.js"
-import { splitSkulls } from "src/Dice/DiceHelpers.js"
+import { splitSkulls, getDiceArray } from "src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
 import { computeRollDicePermission } from "src/Dice/computeRollDicePermission.js"
@@ -27,8 +28,36 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
 import { useGameStore, useGameState, useGameActions } from "./gameStore.js"
 
+const dices = getDiceArray()
+const defaultState = {
+  totalScore: 0,
+  roundScore: 0,
+  scoreMarked: false,
+  isOnSkullIsland: false,
+  rollDicePermission: {},
+  keepDiceAllowed: false,
+  unkeepDiceAllowed: false,
+  markScorePermission: {},
+  nextRoundPermission: {},
+  canRemoveSkull: false,
+  cardDeck: getMixedDeck(),
+  cardsUsed: [],
+  card: null,
+  cardEffectUsed: false,
+  cardDrawn: false,
+  rollIndex: -1,
+  dices,
+  diceOffGame: dices,
+  diceInGame: [],
+  diceCursed: [],
+  diceKept: [],
+}
+
 export const MilleSabordGameBoard = ({ initialState } = {}) => {
-  const { StateContext, state, ActionsContext, actions } = useGameStore(initialState)
+  const { StateContext, state, ActionsContext, actions } = useGameStore({
+    ...defaultState,
+    ...initialState,
+  })
 
   return (
     <StateContext.Provider value={state}>
