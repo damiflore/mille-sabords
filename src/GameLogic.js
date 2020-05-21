@@ -9,15 +9,14 @@ import { useMarkScorePermission } from "./game.selectors.js"
 const { useEffect, useRef } = React
 
 export const GameLogic = () => {
-  useAutoMarkScore()
-  useSkullIsland()
+  useFailSwordChallengeEffect()
+  useFourSkullsOrMoreOnFirstRollEffect()
   useRoundScore()
-  useCanRemoveSkull()
   return null
 }
 
 // auto mark score for failed sword challenges
-const useAutoMarkScore = () => {
+const useFailSwordChallengeEffect = () => {
   const store = useGameStore()
   const { card, scoreMarked } = store
 
@@ -44,8 +43,8 @@ const usePrevious = (value) => {
   return ref.current
 }
 
-// isOnSkullIsland
-const useSkullIsland = () => {
+// go to skull island if 4 skulls or more on first roll
+const useFourSkullsOrMoreOnFirstRollEffect = () => {
   const { setIsOnSkullIsland, isOnSkullIsland, card, rollIndex, diceCursed } = useGameStore()
 
   useEffect(() => {
@@ -74,23 +73,4 @@ const useRoundScore = () => {
       }),
     )
   }, [card, diceKept, markScorePermission])
-}
-
-// canRemoveSkull (derived state aussi non ?)
-const useCanRemoveSkull = () => {
-  const { setCanRemoveSkull, cardEffectUsed, card, diceCursed } = useGameStore()
-
-  useEffect(() => {
-    if (isWitchCard(card)) {
-      if (diceCursed.length > 2) {
-        setCanRemoveSkull(false)
-      } else if (cardEffectUsed) {
-        setCanRemoveSkull(false)
-      } else {
-        setCanRemoveSkull(true)
-      }
-    } else {
-      setCanRemoveSkull(false)
-    }
-  }, [card, diceCursed])
 }

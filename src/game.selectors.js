@@ -1,5 +1,5 @@
 import { countSkulls } from "src/Dice/countSkulls.js"
-import { isChestCard } from "src/Cards/cards.js"
+import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import {
   NOT_ENOUGH_DICE_TO_ROLL,
   HAS_THREE_SKULLS_OR_MORE,
@@ -43,6 +43,20 @@ export const useRollDicePermission = (
     allowed: true,
     reason: "",
   }
+}
+
+export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGameStore()) => {
+  if (!isWitchCard(card)) {
+    return false
+  }
+
+  if (diceCursed.length > 2) {
+    return false
+  }
+  if (cardEffectUsed) {
+    return false
+  }
+  return true
 }
 
 export const useKeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameStore()) => {

@@ -2,10 +2,12 @@ import React from "react"
 import { Dice } from "../Dice/Dice.jsx"
 import { useGameStore } from "src/MilleSabordGame.js"
 import { unkeepDice } from "src/game.actions.js"
+import { useCanRemoveSkull } from "src/game.selectors.js"
 
 export const SkullIsland = () => {
   const store = useGameStore()
-  const { diceCursed, canRemoveSkull } = store
+  const { diceCursed } = store
+  const canRemoveSkull = useCanRemoveSkull()
 
   return (
     <div className="skullIsland">
@@ -16,7 +18,9 @@ export const SkullIsland = () => {
               key={dice.id}
               dice={dice}
               disabled={!canRemoveSkull}
-              onClickAction={(dice) => unkeepDice(store, dice)}
+              onClickAction={(dice) => {
+                unkeepDice(store, dice)
+              }}
               specificStyle={{ margin: "1px 5px" }}
             />
           ))}

@@ -25,7 +25,6 @@ const defaultState = {
   roundScore: 0,
   scoreMarked: false,
   isOnSkullIsland: false,
-  canRemoveSkull: false,
   cardDeck: getMixedDeck(),
   cardsUsed: [],
   card: null,

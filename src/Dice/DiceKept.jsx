@@ -1,14 +1,13 @@
 import React from "react"
 import { Dice } from "./Dice.jsx"
 import { useGameStore } from "src/MilleSabordGame.js"
-import { isWitchCard } from "src/Cards/cards.js"
-import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
-import { useKeepDiceAllowed } from "src/game.selectors.js"
+import { unkeepDice } from "src/game.actions.js"
+import { useUnkeepDiceAllowed } from "src/game.selectors.js"
 
 export const DiceKept = () => {
   const store = useGameStore()
   const { diceKept } = store
-  const unkeepDiceAllowed = useKeepDiceAllowed()
+  const unkeepDiceAllowed = useUnkeepDiceAllowed()
 
   return (
     <div className="diceKept">
@@ -33,32 +32,4 @@ export const DiceKept = () => {
       </div>
     </div>
   )
-}
-
-const unkeepDice = (
-  {
-    card,
-    diceKept,
-    setCardEffectUsed,
-    diceCursed,
-    setDiceCursed,
-    setDiceKept,
-    diceInGame,
-    setDiceInGame,
-  },
-  dice,
-) => {
-  if (dice.symbol === SYMBOL_SKULL) {
-    if (isWitchCard(card)) {
-      setCardEffectUsed(true)
-    }
-    const cursedArrayWithoutThisDice = diceCursed.filter((diceCandidate) => diceCandidate !== dice)
-    setDiceCursed(cursedArrayWithoutThisDice)
-  } else {
-    const keptArrayWithoutThisDice = diceKept.filter((diceCandidate) => diceCandidate !== dice)
-    setDiceKept(keptArrayWithoutThisDice)
-  }
-
-  const onGoingArrayWithThisDice = [...diceInGame, dice]
-  setDiceInGame(onGoingArrayWithThisDice)
 }
