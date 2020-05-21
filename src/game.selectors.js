@@ -36,7 +36,7 @@ export const useRollDicePermission = (
     }
   }
 
-  if (rollIndex > 0 && diceInGame.length < 2) {
+  if (rollIndex > -1 && diceInGame.length < 2) {
     return {
       allowed: false,
       reason: NOT_ENOUGH_DICE_TO_ROLL,

@@ -44,10 +44,10 @@ const roll = ({
 }) => {
   let currentDiceArray
   if (rollIndex === -1) {
+    setRollIndex(0)
     currentDiceArray = diceOffGame
     setDiceInGame([...diceOffGame])
     setDiceOffGame([])
-    setRollIndex(0)
   } else {
     currentDiceArray = diceInGame
     setRollIndex(rollIndex + 1)

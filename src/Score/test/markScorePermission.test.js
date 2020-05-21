@@ -19,7 +19,7 @@ import { useMarkScorePermission } from "src/game.selectors.js"
   assert({ actual, expected })
 }
 
-// no skull and userclicked on "Mark score"
+// no skull and user clicked on "Mark score"
 {
   const actual = useMarkScorePermission({
     rollIndex: 0,
