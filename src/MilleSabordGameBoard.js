@@ -244,11 +244,18 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
           markScore={markScore}
         />
       </div>
-      <DiceKept
-        diceArray={diceKept}
-        unkeepDiceAllowed={unkeepDiceAllowed}
-        unkeepDice={unkeepDice}
-      />
+      <div>
+        <DiceKept
+          diceArray={diceKept}
+          unkeepDiceAllowed={unkeepDiceAllowed}
+          unkeepDice={unkeepDice}
+        />
+        <SkullIsland
+          diceCursed={diceCursed}
+          canRemoveSkull={canRemoveSkull}
+          removeSkull={(dice) => unkeepDice(dice)}
+        />
+      </div>
       <div className="roll-action">
         <ButtonRoll rollDicePermission={rollDicePermission} onClick={rollTheDice} />
       </div>
@@ -259,11 +266,6 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
         keepDiceAllowed={keepDiceAllowed}
         keepDice={keepDice}
       />
-      <SkullIsland
-        diceCursed={diceCursed}
-        canRemoveSkull={canRemoveSkull}
-        removeSkull={(dice) => unkeepDice(dice)}
-      ></SkullIsland>
     </>
   )
 }

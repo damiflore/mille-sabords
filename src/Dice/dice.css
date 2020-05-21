@@ -1,35 +1,6 @@
-.diceOnGoing,
-.diceKept {
-  display: inline-block;
-  vertical-align: top;
-  min-height: 100px;
-}
-.diceOnGoing {
-  width: 50%;
-  height: 40%;
-  border: 1px solid red;
-}
-.diceOnGoing .area {
-  width: calc(100% - 40px);
-  height: calc(100% - 40px);
-  display: block;
-  position: relative;
-  margin: 20px;
-}
-.diceKept {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: relative;
-  top: -90px;
-}
-.diceKept .area {
-  background-image: url(./assets/wood-box.png);
-  background-size: 100%;
-  padding: 32px;
-  height: 112px;
-  width: 250px;
-}
+@import "./dice-ongoing.css";
+@import "./dice-kept.css";
+
 .dice {
   overflow: hidden;
   padding: 2px;
@@ -43,42 +14,4 @@
   padding: 2px;
   position: absolute;
   border: 1px solid red;
-}
-
-/* responsive */
-@media only screen and (max-width: 700px) {
-  .diceOnGoing .area {
-    margin: 0;
-  }
-}
-@media only screen and (max-width: 680px) {
-  .diceKept {
-    top: 0;
-    align-items: flex-start;
-  }
-  .diceKept .area {
-    margin-bottom: 10px;
-  }
-}
-@media only screen and (max-width: 356px), screen and (max-height: 680px) {
-  .diceKept .area {
-    padding: 22px;
-    height: 110px;
-    width: 230px;
-  }
-  .diceKept .area .dice {
-    margin: 3px !important;
-  }
-}
-@media only screen and (max-height: 900px), screen and (max-width: 720px) {
-  .diceOnGoing {
-    width: 90%;
-  }
-}
-@media only screen and (min-width: 681px) and (max-height: 900px) {
-  .roll-action,
-  .diceOnGoing {
-    position: relative;
-    top: -90px;
-  }
 }

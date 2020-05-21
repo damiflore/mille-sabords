@@ -1,108 +1,17 @@
-.skullIsland-wrapper {
-  display: inline-block;
-}
 .skullIsland {
-  margin-top: 15px;
-  transition: 300ms;
   display: inline-block;
-  vertical-align: top;
-  min-height: 100px;
 }
-.skullIsland .map {
-  background-image: url(../Dice/assets/map_skull-island.png);
-  width: 220px;
-  height: 220px;
-  background-size: 220px;
+.skullIsland .bottle {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 83px;
+  height: 244px;
+  margin-left: 20px;
+  background-image: url(../Dice/assets/skull-bottle.png);
   background-repeat: no-repeat;
-  transform: scale(2) rotate(-10deg) translateX(70px);
+  background-size: contain;
 }
 .skullIsland .area {
-  padding: 20%;
-  transform: scale(0.5) rotate(10deg) translateX(-70px);
-}
-.skullIsland-trigger,
-.skullIsland-close {
-  cursor: pointer;
-  display: none;
-}
-.skullIsland-trigger span,
-.skullIsland-close {
-  background: #69492c;
-  color: #f0dfa9;
-  border-radius: 100%;
-  text-align: center;
-}
-
-.skullIsland-trigger span {
-  border: 2px solid #f0dfa9;
-  padding: 5px;
-  width: 15px;
-  height: 15px;
-  font-size: 13px;
-  display: block;
-}
-
-.skullIsland-close {
-  border: 1px solid #f0dfa9;
-  padding: 3px;
-  width: 10px;
-  height: 10px;
-  font-size: 10px;
-  margin-left: 5px;
-}
-
-/* responsive */
-@media only screen and (max-width: 720px), screen and (max-height: 900px) {
-  .skullIsland-trigger {
-    display: inline-block;
-    background-image: url(../Dice/assets/skull-island-trigger.png);
-    width: 60px;
-    height: 220px;
-    background-size: 60px;
-    background-repeat: no-repeat;
-    position: absolute;
-    right: 0;
-  }
-  .skullIsland {
-    transform: translateX(120px);
-    width: 0px;
-  }
-  [data-skullIsland-visible] {
-    transform: translateX(-310px);
-  }
-  .skullIsland-close {
-    display: block;
-  }
-}
-@media only screen and (min-width: 720px) {
-  .skullIsland-trigger {
-    position: relative;
-    left: 26px;
-  }
-}
-@media only screen and (min-width: 681px) and (max-width: 720px) {
-  .skullIsland {
-    margin-top: 0;
-  }
-}
-@media only screen and (min-height: 900px) {
-  .skullIsland {
-    margin-top: 60;
-  }
-}
-@media only screen and (max-width: 400px) {
-  .skullIsland .map {
-    width: 200px;
-    height: 200px;
-    background-size: 200px;
-  }
-  [data-skullIsland-visible] {
-    transform: translateX(-255px);
-  }
-  .skullIsland-close {
-    width: 8px;
-    height: 8px;
-    font-size: 8px;
-    margin-left: 0px;
-  }
+  margin-left: 11px;
+  margin-bottom: 13px;
 }
