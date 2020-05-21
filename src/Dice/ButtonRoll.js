@@ -15,7 +15,7 @@ export const ButtonRoll = () => {
           roll(store)
         }}
       >
-        Roll!
+        Roll
       </button>
     )
   }
@@ -26,7 +26,7 @@ export const ButtonRoll = () => {
 
   return (
     <>
-      <button disabled={true}>Roll!</button>
+      <button disabled={true}>Roll</button>
       <span>{`(${rollDicePermission.reason})`}</span>
     </>
   )

@@ -12,7 +12,8 @@ export const DiceOnGoing = React.forwardRef((props, ref) => {
   const keepDiceAllowed = useKeepDiceAllowed()
 
   return (
-    <div className="diceOnGoing" ref={ref}>
+    <div className="dice-ongoing" ref={ref}>
+      <div className="map"></div>
       <div className="area">
         {diceInGame.map((dice) => (
           <Dice

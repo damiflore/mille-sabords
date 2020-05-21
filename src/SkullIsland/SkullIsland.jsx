@@ -10,7 +10,7 @@ export const SkullIsland = () => {
   const canRemoveSkull = useCanRemoveSkull()
 
   return (
-    <div className="skullIsland">
+    <div className="skull-island">
       <div className="bottle">
         <div className="area">
           {diceCursed.map((dice) => (

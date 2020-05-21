@@ -1,6 +1,7 @@
+@import "./src/Header/header.css";
+@import "./src/Score/score.css";
 @import "./src/Cards/cards.css";
 @import "./src/Dice/dice.css";
-@import "./src/Score/score.css";
 @import "./src/SkullIsland/skull-island.css";
 
 body {

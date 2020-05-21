@@ -37,8 +37,7 @@
     "build": "npm run dist",
     "start": "node ./script/start/start.js",
     "postinstall": "npm run generate-import-map && npm run install-git-hooks",
-    "dist": "npm run generate-systemjs-bundle",
-    "git-hook-pre-commit": "npm run prettier-format-stage"
+    "dist": "npm run generate-systemjs-bundle"
   },
   "engines": {
     "node": "13.x"

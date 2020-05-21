@@ -16,7 +16,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SWORD,
-} from "src/symbols/symbol-types.js"
+} from "src/Symbols/symbol-types.js"
 
 export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
   const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)

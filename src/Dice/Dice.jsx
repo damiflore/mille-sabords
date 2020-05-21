@@ -1,6 +1,6 @@
 import React from "react"
-import { diceSize } from "../UI/dicePosition.js"
-import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
+import { diceSize } from "./dicePosition.js"
+import { SYMBOL_SKULL } from "src/Symbols/symbol-types.js"
 
 export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => (
   <button
@@ -11,12 +11,9 @@ export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => (
     style={{
       width: diceSize,
       height: diceSize,
-      padding: "0",
-      boxShadow:
-        "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)",
       background: dice.symbol === SYMBOL_SKULL ? "black" : "#e6e6e6",
       color: dice.symbol === SYMBOL_SKULL ? "black" : "#e6e6e6",
-      borderRadius: "8px",
+      borderColor: dice.symbol === SYMBOL_SKULL ? "black" : "#b9b9b9",
       ...specificStyle,
     }}
   >

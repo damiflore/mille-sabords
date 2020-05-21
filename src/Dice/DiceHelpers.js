@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
-} from "src/symbols/symbol-types.js"
+} from "src/Symbols/symbol-types.js"
 
 export const getDiceArray = () => {
   return DICE_ARRAY.map((dice) => {
