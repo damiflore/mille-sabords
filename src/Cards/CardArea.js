@@ -1,7 +1,7 @@
 import React from "react"
 import { useGameState } from "src/gameStore.js"
 
-export const CardArea = ({ cardDeck, cardDrawn, shuffleDeck, drawCard, card }) => {
+export const CardArea = ({ cardDeck, cardDrawn, shuffleDeck, drawCard }) => {
   return (
     <div className="card-area">
       <div className="remaining-cards-number">{cardDeck.length}</div>
