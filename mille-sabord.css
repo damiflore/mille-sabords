@@ -7,6 +7,7 @@ body {
   font-family: arial, sans;
   color: #444444;
   margin: 0;
+  overflow: hidden;
 }
 #mille-sabord-container {
   background-image: url("src/Dice/assets/wood.jpg");
@@ -17,14 +18,15 @@ body {
   overflow: hidden;
   height: calc(100% - 40px);
 }
-/* #mille-sabord-container {
-padding: 15px 20px;} */
 button {
   background: white;
   border: solid 1px currentColor;
   padding: 3px 6px;
   border-radius: 2px;
   font-size: 15px;
+}
+button:disabled:hover {
+  cursor: default;
 }
 button:hover {
   cursor: pointer;
