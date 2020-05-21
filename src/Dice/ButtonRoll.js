@@ -2,10 +2,11 @@ import React from "react"
 import { useGameStore, onGoingRef } from "src/MilleSabordGame.js"
 import { splitSkulls } from "src/Dice/DiceHelpers.js"
 import { rollDices } from "src/Dice/rollDices.js"
+import { useRollDicePermission } from "src/game.selectors.js"
 
 export const ButtonRoll = () => {
   const store = useGameStore()
-  const { rollDicePermission } = store
+  const rollDicePermission = useRollDicePermission()
 
   if (rollDicePermission.allowed) {
     return (

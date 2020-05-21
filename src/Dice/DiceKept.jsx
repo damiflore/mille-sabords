@@ -3,10 +3,12 @@ import { Dice } from "./Dice.jsx"
 import { useGameStore } from "src/MilleSabordGame.js"
 import { isWitchCard } from "src/Cards/cards.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
+import { useKeepDiceAllowed } from "src/game.selectors.js"
 
 export const DiceKept = () => {
   const store = useGameStore()
-  const { diceKept, unkeepDiceAllowed } = store
+  const { diceKept } = store
+  const unkeepDiceAllowed = useKeepDiceAllowed()
 
   return (
     <div className="diceKept">

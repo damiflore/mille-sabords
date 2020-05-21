@@ -3,11 +3,13 @@ import { Dice } from "./Dice.jsx"
 import { isWitchCard } from "src/Cards/cards.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
 import { useGameStore } from "src/MilleSabordGame.js"
+import { useKeepDiceAllowed } from "src/game.selectors.js"
 
 // eslint-disable-next-line react/display-name
 export const DiceOnGoing = React.forwardRef((props, ref) => {
   const store = useGameStore()
-  const { diceInGame, keepDiceAllowed } = store
+  const { diceInGame } = store
+  const keepDiceAllowed = useKeepDiceAllowed()
 
   return (
     <div className="diceOnGoing" ref={ref}>

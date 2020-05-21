@@ -1,28 +1,17 @@
 import React from "react"
 import { useGameStore } from "src/MilleSabordGame.js"
-import {
-  isTwoSwordsChallengeCard,
-  isThreeSwordsChallengeCard,
-  isFourSwordsChallengeCard,
-  isWitchCard,
-} from "src/Cards/cards.js"
+import { isSwordChallengeCard, isWitchCard } from "src/Cards/cards.js"
 import { markScore } from "src/game.actions.js"
-import { countSkulls } from "src/Dice/countSkulls.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
-import { computeRollDicePermission } from "src/Dice/computeRollDicePermission.js"
-import { computeMarkScorePermission } from "./Score/computeMarkScorePermission.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
+import { useMarkScorePermission } from "./game.selectors.js"
 
 const { useEffect, useRef } = React
 
 export const GameLogic = () => {
   useAutoMarkScore()
-  useSkullAndScoreMarked()
   useSkullIsland()
-  useRollDicePermission()
-  useMarkScorePermission()
   useRoundScore()
-  useNextRoundPermission()
   useCanRemoveSkull()
   return null
 }
@@ -30,23 +19,21 @@ export const GameLogic = () => {
 // auto mark score for failed sword challenges
 const useAutoMarkScore = () => {
   const store = useGameStore()
-  const { markScorePermission, card, scoreMarked } = store
+  const { card, scoreMarked } = store
 
-  const markScorePermissionPreviousValue = usePrevious(markScorePermission)
+  const markScorePermission = useMarkScorePermission(store)
+  const markScorePermissionPrevious = usePrevious(markScorePermission)
+
   useEffect(() => {
-    const isSwordChallengeCard =
-      isTwoSwordsChallengeCard(card) ||
-      isThreeSwordsChallengeCard(card) ||
-      isFourSwordsChallengeCard(card)
     if (
-      isSwordChallengeCard &&
+      isSwordChallengeCard(card) &&
       !scoreMarked &&
-      markScorePermissionPreviousValue.allowed &&
+      markScorePermissionPrevious.allowed &&
       !markScorePermission.allowed
     ) {
       markScore(store)
     }
-  }, [card, scoreMarked, markScorePermissionPreviousValue, markScorePermission])
+  }, [card, scoreMarked, markScorePermissionPrevious, markScorePermission])
 }
 
 const usePrevious = (value) => {
@@ -55,22 +42,6 @@ const usePrevious = (value) => {
     ref.current = value
   })
   return ref.current
-}
-
-// this is a kind of derived state (it should not be an effect)
-const useSkullAndScoreMarked = () => {
-  const { card, diceCursed, scoreMarked, setKeepDiceAllowed, setUnkeepDiceAllowed } = useGameStore()
-
-  useEffect(() => {
-    const skullCount = countSkulls({ card, diceCursed })
-    if (skullCount > 2 || scoreMarked) {
-      setKeepDiceAllowed(false)
-      setUnkeepDiceAllowed(false)
-    } else {
-      setKeepDiceAllowed(true)
-      setUnkeepDiceAllowed(true)
-    }
-  }, [card, diceCursed, scoreMarked])
 }
 
 // isOnSkullIsland
@@ -89,41 +60,10 @@ const useSkullIsland = () => {
   }, [card, rollIndex, diceCursed])
 }
 
-// rollDicePermission (derived state aussi non ?)
-const useRollDicePermission = () => {
-  const { setRollDicePermission, cardDrawn, scoreMarked, card, diceCursed } = useGameStore()
-
-  useEffect(() => {
-    setRollDicePermission(
-      computeRollDicePermission({
-        cardDrawn,
-        scoreMarked,
-        card,
-        diceCursed,
-      }),
-    )
-  }, [cardDrawn, scoreMarked, card, diceCursed])
-}
-
-// markScorePermission (derived state aussi non ?)
-const useMarkScorePermission = () => {
-  const { setMarkScorePermission, rollIndex, scoreMarked, card, diceCursed } = useGameStore()
-
-  useEffect(() => {
-    setMarkScorePermission(
-      computeMarkScorePermission({
-        rollIndex,
-        card,
-        diceCursed,
-        scoreMarked,
-      }),
-    )
-  }, [card, rollIndex, diceCursed, scoreMarked])
-}
-
 // roundScore (derived state aussi non ?)
 const useRoundScore = () => {
-  const { setRoundScore, card, diceKept, markScorePermission } = useGameStore()
+  const { setRoundScore, card, diceKept } = useGameStore()
+  const markScorePermission = useMarkScorePermission()
 
   useEffect(() => {
     setRoundScore(
@@ -134,24 +74,6 @@ const useRoundScore = () => {
       }),
     )
   }, [card, diceKept, markScorePermission])
-}
-
-// nextRoundPermission (derived state aussi non ?)
-const useNextRoundPermission = () => {
-  const {
-    rollIndex,
-    setNextRoundPermission,
-    rollDicePermission,
-    markScorePermission,
-  } = useGameStore()
-
-  useEffect(() => {
-    if (rollIndex === -1) {
-      setNextRoundPermission({ allowed: false })
-    } else if (!rollDicePermission.allowed && !markScorePermission.allowed) {
-      setNextRoundPermission({ allowed: true })
-    }
-  }, [rollIndex, rollDicePermission, markScorePermission])
 }
 
 // canRemoveSkull (derived state aussi non ?)
