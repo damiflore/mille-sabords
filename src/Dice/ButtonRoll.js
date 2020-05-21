@@ -1,8 +1,22 @@
 import React from "react"
+import { useGameStore, onGoingRef } from "src/MilleSabordGame.js"
+import { splitSkulls } from "src/Dice/DiceHelpers.js"
+import { rollDices } from "src/Dice/rollDices.js"
 
-export const ButtonRoll = ({ rollDicePermission, onClick }) => {
+export const ButtonRoll = () => {
+  const store = useGameStore()
+  const { rollDicePermission } = store
+
   if (rollDicePermission.allowed) {
-    return <button onClick={onClick}>Roll!</button>
+    return (
+      <button
+        onClick={() => {
+          roll(store)
+        }}
+      >
+        Roll!
+      </button>
+    )
   }
 
   if (rollDicePermission.reaon === "3 skulls or more") {
@@ -15,4 +29,35 @@ export const ButtonRoll = ({ rollDicePermission, onClick }) => {
       <span>{`(${rollDicePermission.reason})`}</span>
     </>
   )
+}
+
+const roll = ({
+  rollIndex,
+  diceOffGame,
+  diceInGame,
+  setDiceInGame,
+  setDiceOffGame,
+  setRollIndex,
+  diceCursed,
+  setDiceCursed,
+}) => {
+  let currentDiceArray
+  if (rollIndex === -1) {
+    currentDiceArray = diceOffGame
+    setDiceInGame([...diceOffGame])
+    setDiceOffGame([])
+    setRollIndex(0)
+  } else {
+    currentDiceArray = diceInGame
+    setRollIndex(rollIndex + 1)
+  }
+
+  rollDices(currentDiceArray, {
+    diceParentElement: onGoingRef.current.querySelector(".area"),
+  })
+
+  // curse dices
+  const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
+  setDiceInGame(withoutSkulls)
+  setDiceCursed([...diceCursed, ...skulls])
 }

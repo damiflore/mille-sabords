@@ -1,7 +1,10 @@
 import React from "react"
-import { useGameState } from "src/gameStore.js"
+import { useGameStore } from "src/MilleSabordGame.js"
+import { mixDeck } from "src/Cards/cards.js"
 
-export const CardArea = ({ cardDeck, cardDrawn, shuffleDeck, drawCard }) => {
+export const CardArea = () => {
+  const { cardDeck } = useGameStore()
+
   return (
     <div className="card-area">
       <div className="remaining-cards-number">{cardDeck.length}</div>
@@ -10,27 +13,14 @@ export const CardArea = ({ cardDeck, cardDrawn, shuffleDeck, drawCard }) => {
         className="card default-card"
         style={{ backgroundImage: "url('src/Cards/assets/card_default.png')" }}
       >
-        {!cardDrawn && (
-          <button
-            className="draw-card-btn"
-            onClick={() => {
-              if (cardDeck.length === 0) {
-                shuffleDeck()
-              } else {
-                drawCard()
-              }
-            }}
-          >
-            {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
-          </button>
-        )}
+        <DeckButton />
       </div>
     </div>
   )
 }
 
 const CurrentCard = () => {
-  const { card, cardDrawn } = useGameState()
+  const { card, cardDrawn } = useGameStore()
 
   if (!card) return null
   if (!cardDrawn) return null
@@ -40,4 +30,59 @@ const CurrentCard = () => {
       <img src={`src/Cards/assets/card_${card}.png`} alt={card} />
     </div>
   )
+}
+
+const DeckButton = () => {
+  const { cardDrawn, cardDeck } = useGameStore()
+
+  if (cardDrawn) return null
+
+  if (cardDeck.length === 0) return <ShuffleDeckButton />
+
+  return <DrawCardButton />
+}
+
+const DrawCardButton = () => {
+  const store = useGameStore()
+
+  return (
+    <button
+      className="draw-card-btn"
+      onClick={() => {
+        drawCard(store)
+      }}
+    >
+      Draw a card
+    </button>
+  )
+}
+
+const drawCard = ({ cardDeck, cardsUsed, setCard, setCardDeck, setCardDrawn, setCardsUsed }) => {
+  setCardDrawn(true)
+  const cardDrawn = cardDeck[0]
+  setCardsUsed([...cardsUsed, cardDrawn])
+  setCard(cardDeck[0])
+  setCardDeck(cardDeck.slice(1))
+}
+
+const ShuffleDeckButton = () => {
+  const store = useGameStore()
+
+  return (
+    <button
+      className="draw-card-btn"
+      onClick={() => {
+        shuffleDeck(store)
+      }}
+    >
+      Shuffle deck
+    </button>
+  )
+}
+
+const shuffleDeck = ({ cardsUsed, setCardsUsed, setCardDeck }) => {
+  const newDeck = cardsUsed.slice()
+  mixDeck(newDeck)
+  setCardsUsed([])
+  setCardDeck(newDeck)
 }
