@@ -52,6 +52,7 @@ const MilleSabordGame = () => {
     nextRoundPermission,
     canRemoveSkull,
     cardDeck,
+    cardsUsed,
     cardEffectUsed,
     card,
     cardDrawn,
@@ -74,6 +75,7 @@ const MilleSabordGame = () => {
     setNextRoundPermission,
     setCanRemoveSkull,
     setCardDeck,
+    setCardsUsed,
     setCard,
     setCardEffectUsed,
     setCardDrawn,
@@ -264,11 +266,16 @@ const MilleSabordGame = () => {
   }
 
   const shuffleDeck = () => {
-    setCardDeck(mixDeck(cardDeck))
+    const newDeck = cardsUsed.slice()
+    mixDeck(newDeck)
+    setCardsUsed([])
+    setCardDeck(newDeck)
   }
 
   const drawCard = () => {
     setCardDrawn(true)
+    const cardDrawn = cardDeck[0]
+    setCardsUsed([...cardsUsed, cardDrawn])
     setCard(cardDeck[0])
     setCardDeck(cardDeck.slice(1))
   }

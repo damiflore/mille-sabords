@@ -15,6 +15,7 @@ const defaultState = {
   nextRoundPermission: {},
   canRemoveSkull: false,
   cardDeck: getMixedDeck(),
+  cardsUsed: [],
   card: null,
   cardEffectUsed: false,
   cardDrawn: false,
