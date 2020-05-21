@@ -1,6 +1,6 @@
 import React from "react"
 
-export const CardArea = ({ cardDeck, cardDrawn, drawCard, card }) => {
+export const CardArea = ({ cardDeck, cardDrawn, shuffleDeck, drawCard, card }) => {
   return (
     <div className="card-area">
       <div className="remaining-cards-number">{cardDeck.length}</div>
@@ -14,7 +14,16 @@ export const CardArea = ({ cardDeck, cardDrawn, drawCard, card }) => {
         style={{ backgroundImage: "url('src/Cards/assets/card_default.png')" }}
       >
         {!cardDrawn && (
-          <button className="draw-card-btn" onClick={() => drawCard()}>
+          <button
+            className="draw-card-btn"
+            onClick={() => {
+              if (cardDeck.length === 0) {
+                shuffleDeck()
+              } else {
+                drawCard()
+              }
+            }}
+          >
             {cardDeck.length > 0 ? "Draw a card" : "Shuffle the deck"}
           </button>
         )}

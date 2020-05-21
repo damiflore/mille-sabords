@@ -20,31 +20,62 @@ import { computeRollDicePermission } from "src/Dice/computeRollDicePermission.js
 import { computeMarkScorePermission } from "./Score/computeMarkScorePermission.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
+import { useGameStore, useGameState, useGameActions } from "./gameStore.js"
 
-export const MilleSabordGameBoard = ({ diceArray }) => {
-  const [diceOffGame, setDiceOffGame] = React.useState(diceArray)
-  const [diceOnGoing, setDiceOngoing] = React.useState([])
-  const [diceKept, setDiceKept] = React.useState([])
-  const [diceCursed, setDiceCursed] = React.useState([])
+export const MilleSabordGameBoard = ({ initialState } = {}) => {
+  const { StateContext, state, ActionsContext, actions } = useGameStore(initialState)
 
-  const [totalScore, setTotalScore] = React.useState(0)
+  return (
+    <StateContext.Provider value={state}>
+      <ActionsContext.Provider value={actions}>
+        <MilleSabordGame></MilleSabordGame>
+      </ActionsContext.Provider>
+    </StateContext.Provider>
+  )
+}
 
-  const [cardDeck, setCardDeck] = React.useState(getMixedDeck())
-  const [card, setCard] = React.useState({})
-
-  const [rollIndex, setRollIndex] = React.useState(-1)
-  const [cardDrawn, setCardDrawn] = React.useState(false)
-  const [scoreMarked, setScoreMarked] = React.useState(false)
-
-  const [isOnSkullIsland, setIsOnSkullIsland] = React.useState(false)
-  const [roundScore, setRoundScore] = React.useState(false)
-
-  const [rollDicePermission, setRollDicePermission] = React.useState({})
-  const [keepDiceAllowed, setKeepDiceAllowed] = React.useState(false)
-  const [unkeepDiceAllowed, setUnkeepDiceAllowed] = React.useState(false)
-  const [markScorePermission, setMarkScorePermission] = React.useState({})
-  const [nextRoundPermission, setNextRoundPermission] = React.useState({})
-  const [canRemoveSkull, setCanRemoveSkull] = React.useState(false)
+const MilleSabordGame = () => {
+  const {
+    totalScore,
+    roundScore,
+    scoreMarked,
+    isOnSkullIsland,
+    rollDicePermission,
+    keepDiceAllowed,
+    unkeepDiceAllowed,
+    markScorePermission,
+    nextRoundPermission,
+    canRemoveSkull,
+    cardDeck,
+    card,
+    cardDrawn,
+    rollIndex,
+    dices,
+    diceOffGame,
+    diceInGame,
+    diceCursed,
+    diceKept,
+  } = useGameState()
+  const {
+    setTotalScore,
+    setRoundScore,
+    setScoreMarked,
+    setIsOnSkullIsland,
+    setRollDicePermission,
+    setKeepDiceAllowed,
+    setUnkeepDiceAllowed,
+    setMarkScorePermission,
+    setNextRoundPermission,
+    setCanRemoveSkull,
+    setCardDeck,
+    setCard,
+    setCardDrawn,
+    setRollIndex,
+    setDiceOffGame,
+    setDiceInGame,
+    setDiceCursed,
+    setDiceKept,
+  } = useGameActions()
 
   // keepDiceAllowed, unkeepDiceAllowed
   React.useEffect(() => {
@@ -145,8 +176,8 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
   const onGoingRef = React.createRef()
 
   const nextRound = () => {
-    setDiceOffGame(diceArray)
-    setDiceOngoing([])
+    setDiceOffGame(dices)
+    setDiceInGame([])
     setDiceKept([])
     setDiceCursed([])
     setRollIndex(-1)
@@ -161,11 +192,11 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
 
     if (rollIndex === -1) {
       currentDiceArray = diceOffGame
-      setDiceOngoing([...diceOffGame])
+      setDiceInGame([...diceOffGame])
       setDiceOffGame([])
       setRollIndex(0)
     } else {
-      currentDiceArray = diceOnGoing
+      currentDiceArray = diceInGame
       setRollIndex(rollIndex + 1)
     }
 
@@ -177,7 +208,7 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
 
   const curseDices = (currentDiceArray) => {
     const { withoutSkulls, skulls } = splitSkulls(currentDiceArray)
-    setDiceOngoing(withoutSkulls)
+    setDiceInGame(withoutSkulls)
     setDiceCursed([...diceCursed, ...skulls])
   }
 
@@ -193,8 +224,8 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
       setDiceKept(diceKeptWithDice)
     }
 
-    const diceOnGoingWithoutDice = diceOnGoing.filter((diceCandidate) => diceCandidate !== dice)
-    setDiceOngoing(diceOnGoingWithoutDice)
+    const diceOnGoingWithoutDice = diceInGame.filter((diceCandidate) => diceCandidate !== dice)
+    setDiceInGame(diceOnGoingWithoutDice)
   }
 
   const unkeepDice = (dice) => {
@@ -211,8 +242,8 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
       setDiceKept(keptArrayWithoutThisDice)
     }
 
-    const onGoingArrayWithThisDice = [...diceOnGoing, dice]
-    setDiceOngoing(onGoingArrayWithThisDice)
+    const onGoingArrayWithThisDice = [...diceInGame, dice]
+    setDiceInGame(onGoingArrayWithThisDice)
   }
 
   const markScore = () => {
@@ -220,19 +251,25 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
     setScoreMarked(true)
   }
 
+  const shuffleDeck = () => {
+    setCardDeck(getMixedDeck())
+  }
+
   const drawCard = () => {
-    if (cardDeck.length > 0) {
-      setCard(cardDeck.pop())
-      setCardDeck(cardDeck)
-      setCardDrawn(true)
-    } else {
-      setCardDeck(getMixedDeck())
-    }
+    setCardDrawn(true)
+    setCard(cardDeck[0])
+    setCardDeck(cardDeck.slice(1))
   }
 
   return (
     <>
-      <CardArea cardDeck={cardDeck} cardDrawn={cardDrawn} drawCard={drawCard} card={card} />
+      <CardArea
+        cardDeck={cardDeck}
+        cardDrawn={cardDrawn}
+        drawCard={drawCard}
+        shuffleDeck={shuffleDeck}
+        card={card}
+      />
       <div className="score-area">
         <TotalScore totalScore={totalScore} />
         <ButtonNextRound nextRoundPermission={nextRoundPermission} nextRound={nextRound} />
@@ -262,7 +299,7 @@ export const MilleSabordGameBoard = ({ diceArray }) => {
       {/* <Shaker diceOffGame={diceOffGame} /> */}
       <DiceOnGoing
         ref={onGoingRef}
-        diceArray={diceOnGoing}
+        diceArray={diceInGame}
         keepDiceAllowed={keepDiceAllowed}
         keepDice={keepDice}
       />
