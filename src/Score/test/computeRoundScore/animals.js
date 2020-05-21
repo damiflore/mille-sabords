@@ -7,13 +7,13 @@ import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
 } from "src/symbols/symbol-types.js"
-import { CARD_ANIMALS } from "src/Cards/card-types.js"
+import { CARD_ANIMALS } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with 1 coin and 1 diamond
 {
   const actual = computeRoundScore({
-    card: { type: CARD_ANIMALS },
+    card: CARD_ANIMALS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -32,7 +32,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 3 monkey and 2 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_ANIMALS },
+    card: CARD_ANIMALS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_MONKEY },

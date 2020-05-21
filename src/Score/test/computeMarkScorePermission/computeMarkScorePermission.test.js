@@ -1,6 +1,6 @@
 import { assert } from "@jsenv/assert"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
-import { CARD_SKULL, CARD_ANIMALS, CARD_CHEST } from "src/Cards/card-types.js"
+import { CARD_ONE_SKULL, CARD_ANIMALS, CARD_CHEST, CARD_TWO_SKULLS } from "src/Cards/cards.js"
 import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission.js"
 
@@ -8,7 +8,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 0,
-    card: { type: CARD_ANIMALS },
+    card: CARD_ANIMALS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -23,7 +23,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 0,
-    card: { type: CARD_ANIMALS },
+    card: CARD_ANIMALS,
     diceCursed: [],
     scoreMarked: true,
   })
@@ -37,7 +37,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 0,
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -52,7 +52,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 1,
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -66,7 +66,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 1,
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -80,7 +80,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 0,
-    card: { type: CARD_SKULL, skullAmount: 1 },
+    card: CARD_ONE_SKULL,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -95,7 +95,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 0,
-    card: { type: CARD_SKULL, skullAmount: 2 },
+    card: CARD_TWO_SKULLS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })
@@ -110,7 +110,7 @@ import { computeMarkScorePermission } from "src/Score/computeMarkScorePermission
 {
   const actual = computeMarkScorePermission({
     rollIndex: 1,
-    card: { type: CARD_SKULL, skullAmount: 2 },
+    card: CARD_TWO_SKULLS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
   })

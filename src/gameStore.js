@@ -1,5 +1,5 @@
 import React from "react"
-import { getMixedDeck } from "./Cards/getMixedDeck.js"
+import { getMixedDeck } from "./Cards/cards.js"
 import { getDiceArray } from "src/Dice/DiceHelpers.js"
 
 const dices = getDiceArray()
@@ -15,7 +15,8 @@ const defaultState = {
   nextRoundPermission: {},
   canRemoveSkull: false,
   cardDeck: getMixedDeck(),
-  card: {},
+  card: null,
+  cardEffectUsed: false,
   cardDrawn: false,
   rollIndex: -1,
   dices,

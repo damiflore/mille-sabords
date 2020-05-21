@@ -1,5 +1,5 @@
 import { countSkulls } from "src/Dice/countSkulls.js"
-import { CARD_CHEST } from "src/Cards/card-types.js"
+import { isChestCard } from "src/Cards/cards.js"
 import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 
 export const computeMarkScorePermission = ({ rollIndex, card, diceCursed, scoreMarked }) => {
@@ -11,7 +11,7 @@ export const computeMarkScorePermission = ({ rollIndex, card, diceCursed, scoreM
 
   const skullCount = countSkulls({ card, diceCursed })
   if (skullCount > 2) {
-    if (card.type === CARD_CHEST && rollIndex > 0) {
+    if (isChestCard(card) && rollIndex > 0) {
       return {
         allowed: true,
       }

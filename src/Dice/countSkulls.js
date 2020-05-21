@@ -1,7 +1,13 @@
-import { CARD_SKULL } from "src/Cards/card-types.js"
+import { isOneSkullCard, isTwoSkullsCard } from "src/Cards/cards.js"
 
 export const countSkulls = ({ card, diceCursed }) => {
-  let numerOfSkulls = diceCursed.length
-  if (card.type === CARD_SKULL) numerOfSkulls += card.skullAmount
-  return numerOfSkulls
+  if (isOneSkullCard(card)) {
+    return diceCursed.length + 1
+  }
+
+  if (isTwoSkullsCard(card)) {
+    return diceCursed.length + 2
+  }
+
+  return diceCursed.length
 }

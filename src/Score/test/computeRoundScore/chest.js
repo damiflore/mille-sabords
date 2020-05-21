@@ -7,13 +7,13 @@ import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
 } from "src/symbols/symbol-types.js"
-import { CARD_CHEST } from "src/Cards/card-types.js"
+import { CARD_CHEST } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with nothing
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -32,7 +32,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 3 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -52,7 +52,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 4 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -73,7 +73,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 5 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -93,7 +93,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 6 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -114,7 +114,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 7 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -135,7 +135,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 8 parrot
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -159,7 +159,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 1 coin
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -179,7 +179,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 1 diamond
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_DIAMOND },
@@ -199,7 +199,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 3 coin
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -222,7 +222,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 3 parrot and 3 diamond
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },
@@ -247,7 +247,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // with 3 parrot and 3 monkey and 2 coin
 {
   const actual = computeRoundScore({
-    card: { type: CARD_CHEST },
+    card: CARD_CHEST,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_PARROT },

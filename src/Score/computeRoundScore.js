@@ -1,10 +1,15 @@
 import {
-  CARD_PIRATE,
-  CARD_ANIMALS,
-  CARD_DIAMOND,
-  CARD_COIN,
-  CARD_SWORD_CHALLENGE,
-} from "src/Cards/card-types.js"
+  isAnimalsCard,
+  isPirateCard,
+  isCoinCard,
+  isDiamondCard,
+  isTwoSwordsChallengeCard,
+  isThreeSwordsChallengeCard,
+  isFourSwordsChallengeCard,
+  TWO_SWORDS_CHALLENGE_GAMBLE,
+  THREE_SWORDS_CHALLENGE_GAMBLE,
+  FOUR_SWORDS_CHALLENGE_GAMBLE,
+} from "src/Cards/cards.js"
 import {
   SYMBOL_DIAMOND,
   SYMBOL_COIN,
@@ -14,53 +19,79 @@ import {
 } from "src/symbols/symbol-types.js"
 
 export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
-  if (!markScoreAllowed) {
-    if (card.type === CARD_SWORD_CHALLENGE) {
-      return -card.gamble
-    }
-    return 0
-  }
-
-  const perfectEnabled = diceKept.length === 8
   const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
 
-  if (card.type === CARD_SWORD_CHALLENGE) {
-    const swordChallengeAchieved = countSymbol(symbolArrayFromDiceKept, SYMBOL_SWORD) >= card.goal
-    if (swordChallengeAchieved) {
-      return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) + card.gamble
+  if (isTwoSwordsChallengeCard(card)) {
+    if (!markScoreAllowed) {
+      return -TWO_SWORDS_CHALLENGE_GAMBLE
     }
-    return -card.gamble
-  }
-
-  if (card.type === CARD_DIAMOND || card.type === CARD_COIN) {
-    return computeScoreForSymbols([...symbolArrayFromDiceKept, card.type], {
-      perfectEnabled,
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+      goal: 2,
+      gamble: TWO_SWORDS_CHALLENGE_GAMBLE,
     })
   }
 
-  if (card.type === CARD_ANIMALS) {
+  if (isThreeSwordsChallengeCard(card)) {
+    if (!markScoreAllowed) {
+      return -THREE_SWORDS_CHALLENGE_GAMBLE
+    }
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+      goal: 3,
+      gamble: THREE_SWORDS_CHALLENGE_GAMBLE,
+    })
+  }
+
+  if (isFourSwordsChallengeCard(card)) {
+    if (!markScoreAllowed) {
+      return -FOUR_SWORDS_CHALLENGE_GAMBLE
+    }
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+      goal: 4,
+      gamble: FOUR_SWORDS_CHALLENGE_GAMBLE,
+    })
+  }
+
+  if (isDiamondCard(card)) {
+    return computeScoreForSymbols([...symbolArrayFromDiceKept, SYMBOL_DIAMOND], diceKept)
+  }
+
+  if (isCoinCard(card)) {
+    return computeScoreForSymbols([...symbolArrayFromDiceKept, SYMBOL_COIN], diceKept)
+  }
+
+  if (isAnimalsCard(card)) {
     return computeScoreForSymbols(
       symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
-      { perfectEnabled },
+      diceKept,
     )
   }
 
-  if (card.type === CARD_PIRATE) {
-    return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled }) * 2
+  if (isPirateCard(card)) {
+    return computeScoreForSymbols(symbolArrayFromDiceKept, diceKept) * 2
   }
 
-  return computeScoreForSymbols(symbolArrayFromDiceKept, { perfectEnabled })
+  return computeScoreForSymbols(symbolArrayFromDiceKept, diceKept)
 }
 
 const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
 
 const diceToSymbol = (dice) => dice.symbol
 
+const computeScoreForSwordChallenge = (symbolArray, diceKept, { goal, gamble }) => {
+  const swordChallengeAchieved = countSymbol(symbolArray, SYMBOL_SWORD) >= goal
+  if (swordChallengeAchieved) {
+    return computeScoreForSymbols(symbolArray, diceKept) + gamble
+  }
+  return -gamble
+}
+
 const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
 }
 
-const computeScoreForSymbols = (symbolArray, { perfectEnabled }) => {
+const computeScoreForSymbols = (symbolArray, diceKept) => {
+  const perfectEnabled = diceKept.length === 8
+
   let score = 0
   let usefullSymbol = 0
 

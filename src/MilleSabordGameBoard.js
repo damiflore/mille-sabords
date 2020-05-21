@@ -10,11 +10,16 @@ import { CardArea } from "./Cards/CardArea.js"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { ButtonNextRound } from "./ButtonNextRound.js"
-import { getMixedDeck } from "./Cards/getMixedDeck.js"
+import {
+  mixDeck,
+  isWitchCard,
+  isTwoSwordsChallengeCard,
+  isThreeSwordsChallengeCard,
+  isFourSwordsChallengeCard,
+} from "./Cards/cards.js"
 import { rollDices } from "./Dice/rollDices.js"
 import { splitSkulls } from "src/Dice/DiceHelpers.js"
 import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
-import { CARD_WITCH, CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
 import { computeRollDicePermission } from "src/Dice/computeRollDicePermission.js"
 import { computeMarkScorePermission } from "./Score/computeMarkScorePermission.js"
@@ -47,6 +52,7 @@ const MilleSabordGame = () => {
     nextRoundPermission,
     canRemoveSkull,
     cardDeck,
+    cardEffectUsed,
     card,
     cardDrawn,
     rollIndex,
@@ -69,6 +75,7 @@ const MilleSabordGame = () => {
     setCanRemoveSkull,
     setCardDeck,
     setCard,
+    setCardEffectUsed,
     setCardDrawn,
     setRollIndex,
     setDiceOffGame,
@@ -147,10 +154,10 @@ const MilleSabordGame = () => {
 
   // canRemoveSkull
   React.useEffect(() => {
-    if (card.type === CARD_WITCH) {
+    if (isWitchCard(card)) {
       if (diceCursed.length > 2) {
         setCanRemoveSkull(false)
-      } else if (card.effectUsed) {
+      } else if (cardEffectUsed) {
         setCanRemoveSkull(false)
       } else {
         setCanRemoveSkull(true)
@@ -163,8 +170,12 @@ const MilleSabordGame = () => {
   // auto mark score for failed sword challenges
   const markScorePermissionPreviousValue = usePrevious(markScorePermission)
   React.useEffect(() => {
+    const isSwordChallengeCard =
+      isTwoSwordsChallengeCard(card) ||
+      isThreeSwordsChallengeCard(card) ||
+      isFourSwordsChallengeCard(card)
     if (
-      card.type === CARD_SWORD_CHALLENGE &&
+      isSwordChallengeCard &&
       !scoreMarked &&
       markScorePermissionPreviousValue.allowed &&
       !markScorePermission.allowed
@@ -183,6 +194,7 @@ const MilleSabordGame = () => {
     setRollIndex(-1)
     setScoreMarked(false)
     setCardDrawn(false)
+    setCardEffectUsed(false)
     setIsOnSkullIsland(false)
     setRoundScore(0)
   }
@@ -214,8 +226,8 @@ const MilleSabordGame = () => {
 
   const keepDice = (dice) => {
     if (dice.symbol === SYMBOL_SKULL) {
-      if (card.type === CARD_WITCH) {
-        card.effectUsed = false
+      if (isWitchCard(card)) {
+        setCardEffectUsed(false)
       }
       const cursedArrayWithThisDice = [...diceCursed, dice]
       setDiceCursed(cursedArrayWithThisDice)
@@ -230,8 +242,8 @@ const MilleSabordGame = () => {
 
   const unkeepDice = (dice) => {
     if (dice.symbol === SYMBOL_SKULL) {
-      if (card.type === CARD_WITCH) {
-        card.effectUsed = true
+      if (isWitchCard(card)) {
+        setCardEffectUsed(true)
       }
       const cursedArrayWithoutThisDice = diceCursed.filter(
         (diceCandidate) => diceCandidate !== dice,
@@ -252,7 +264,7 @@ const MilleSabordGame = () => {
   }
 
   const shuffleDeck = () => {
-    setCardDeck(getMixedDeck())
+    setCardDeck(mixDeck(cardDeck))
   }
 
   const drawCard = () => {

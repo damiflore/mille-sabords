@@ -1,5 +1,5 @@
 import { countSkulls } from "src/Dice/countSkulls.js"
-import { CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
+import { isSwordChallengeCard } from "src/Cards/cards.js"
 
 export const computeIsOnSkullIsland = ({ isOnSkullIsland, card, rollIndex, diceCursed }) => {
   if (isOnSkullIsland) {
@@ -14,7 +14,11 @@ export const computeIsOnSkullIsland = ({ isOnSkullIsland, card, rollIndex, diceC
 }
 
 const canGoOnSkullIsland = ({ card, rollIndex }) => {
-  return rollIndex === 0 && card.type !== CARD_SWORD_CHALLENGE
+  if (rollIndex !== 0) return false
+
+  if (isSwordChallengeCard(card)) return false
+
+  return true
 }
 
 const isSentToSkullIsland = ({ card, diceCursed }) => {

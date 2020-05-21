@@ -6,13 +6,13 @@ import {
   SYMBOL_SKULL,
   SYMBOL_COIN,
 } from "src/symbols/symbol-types.js"
-import { CARD_SWORD_CHALLENGE } from "src/Cards/card-types.js"
+import { CARD_TWO_SWORDS_CHALLENGE } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // 8 coin
 {
   const actual = computeRoundScore({
-    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: CARD_TWO_SWORDS_CHALLENGE,
     diceCursed: [],
     diceKept: [
       { symbol: SYMBOL_COIN },
@@ -33,7 +33,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // 2 sword completed with 2 sword
 {
   const actual = computeRoundScore({
-    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: CARD_TWO_SWORDS_CHALLENGE,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -52,7 +52,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // 2 sword completed with 3 sword
 {
   const actual = computeRoundScore({
-    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: CARD_TWO_SWORDS_CHALLENGE,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_SWORD },
@@ -71,7 +71,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 // cannot mark score (because 3skulls)
 {
   const actual = computeRoundScore({
-    card: { type: CARD_SWORD_CHALLENGE, goal: 2, gamble: 300 },
+    card: CARD_TWO_SWORDS_CHALLENGE,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
       { symbol: SYMBOL_COIN },
