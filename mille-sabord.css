@@ -33,6 +33,9 @@ button:hover {
   cursor: pointer;
   background: #e4dfd2;
 }
+button:focus {
+  outline: none;
+}
 .title {
   font-size: 23px;
   display: block;

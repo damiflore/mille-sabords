@@ -6,7 +6,7 @@
   display: inline-block;
   vertical-align: top;
 }
-.dice-kept .area {
+.dice-kept .dice-area {
   background-image: url(./assets/wood-box.jpg);
   box-shadow: inset 0px 0px 0px 9px rgba(94, 52, 29, 0.49),
     inset 0px 0px 0px 19px rgba(94, 52, 29, 0.49);
@@ -16,11 +16,11 @@
   padding: 30px;
   height: 165px;
   width: 165px;
-  margin: 15px 0;
+  margin-top: 15px;
 }
 
 /* CSS to draw the wood box */
-.dice-kept .area .box {
+.dice-kept .dice-area .box {
   width: calc(100% + 20px);
   height: calc(100% + 20px);
   position: relative;

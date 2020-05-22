@@ -48,12 +48,8 @@ export const MilleSabordGame = ({ initialState } = {}) => {
   return (
     <GameStoreContext.Provider value={store}>
       <GameLogic />
-      {/* <CardArea /> */}
       <Header />
-      <div className="score-area">
-        <ButtonNextRound />
-        <RoundScore />
-      </div>
+      {/* <CardArea /> */}
       <div className="dice-kept-and-skulls">
         <DiceKept />
         <SkullIsland />

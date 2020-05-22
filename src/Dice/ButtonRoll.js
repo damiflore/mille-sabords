@@ -24,12 +24,13 @@ export const ButtonRoll = () => {
     return null
   }
 
-  return (
-    <>
-      <button disabled={true}>Roll</button>
-      <span>{`(${rollDicePermission.reason})`}</span>
-    </>
-  )
+  return null
+  // return (
+  //   <>
+  //     <button disabled={true}>Roll</button>
+  //     <span>{`(${rollDicePermission.reason})`}</span>
+  //   </>
+  // )
 }
 
 const roll = ({
