@@ -7,6 +7,7 @@ https://usehooks.com/useLocalStorage/
 */
 
 import React from "react"
+import { createLogger } from "@jsenv/logger"
 
 const { useState, useEffect } = React
 
@@ -28,19 +29,24 @@ export const useStructuredState = (initialStructuredValue) => {
   }
 }
 
-export const useStateWithSessionStorage = (initialValue, sessionStorageKey) => {
+export const useStateWithSessionStorage = (
+  initialValue,
+  sessionStorageKey,
+  { logLevel = "warn" } = {},
+) => {
+  const logger = createLogger({ logLevel })
   const [value, setValue] = useState(() => {
     if (sessionStorage.hasOwnProperty(sessionStorageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(sessionStorageKey))
-      // console.log(`read sessionStorage ${sessionStorageKey} = `, valueFromSessionStorage)
+      logger.debug(`read sessionStorage ${sessionStorageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }
-    // console.log(`sessionStorage has nothing for ${sessionStorageKey}`)
+    logger.debug(`sessionStorage has nothing for ${sessionStorageKey}`)
     return initialValue
   })
 
   useEffect(() => {
-    // console.log(`write sessionStorage ${sessionStorageKey} = `, value)
+    logger.debug(`write sessionStorage ${sessionStorageKey} = `, value)
     sessionStorage.setItem(sessionStorageKey, JSON.stringify(value))
   }, [value, sessionStorageKey])
 
@@ -62,11 +68,24 @@ export const useStructuredStateWithSessionStorage = (initialStructuredValue, ses
     structuredValues[key] = value
 
     const actionType = statePropertyNameToSetter(key)
-    structuredSetters[actionType] = (value) => {
-      setValue(value)
-      const nextStructuredState = { ...currentStructuredState, [key]: value }
-      currentStructuredState = nextStructuredState
-      setStructuredState(currentStructuredState)
+    structuredSetters[actionType] = (newValue) => {
+      setValue(newValue)
+
+      /*
+       without this if we would update structured state even if the value did not change
+       meaning react would consider it has changed
+       and it would be rewritten to sessionStorage.
+
+       We don't put this if around setValue above because I guess
+       it's a feature of react that if you call setValue(currentValue)
+       the component is rerendered even if the value is the same
+      */
+      if (newValue !== value) {
+        const nextStructuredState = { ...currentStructuredState, [key]: newValue }
+        currentStructuredState = nextStructuredState
+        setStructuredState(currentStructuredState)
+        return
+      }
     }
   })
 
