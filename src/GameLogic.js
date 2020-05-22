@@ -1,5 +1,5 @@
 import React from "react"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { isSwordChallengeCard } from "src/Cards/cards.js"
 import { markScore } from "src/game.actions.js"
 import { computeIsOnSkullIsland } from "src/SkullIsland/computeIsOnSkullIsland.js"
@@ -15,10 +15,10 @@ export const GameLogic = () => {
 
 // auto mark score for failed sword challenges
 const useFailSwordChallengeEffect = () => {
-  const store = useGameStore()
-  const { card, scoreMarked } = store
+  const state = useGameState()
+  const { card, scoreMarked } = state
 
-  const markScorePermission = useMarkScorePermission(store)
+  const markScorePermission = useMarkScorePermission(state)
   const markScorePermissionPrevious = usePrevious(markScorePermission)
   const roundScore = useRoundScore()
 
@@ -29,7 +29,7 @@ const useFailSwordChallengeEffect = () => {
       markScorePermissionPrevious.allowed &&
       !markScorePermission.allowed
     ) {
-      markScore(store, roundScore)
+      markScore(state, roundScore)
     }
   }, [card, scoreMarked, markScorePermissionPrevious, markScorePermission, roundScore])
 }
@@ -44,7 +44,7 @@ const usePrevious = (value) => {
 
 // go to skull island if 4 skulls or more on first roll
 const useFourSkullsOrMoreOnFirstRollEffect = () => {
-  const { setIsOnSkullIsland, isOnSkullIsland, card, rollIndex, diceCursed } = useGameStore()
+  const { setIsOnSkullIsland, isOnSkullIsland, card, rollIndex, diceCursed } = useGameState()
 
   useEffect(() => {
     setIsOnSkullIsland(

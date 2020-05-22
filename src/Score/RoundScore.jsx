@@ -1,25 +1,25 @@
 import React from "react"
 // import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { MarkScoreIcon } from "./MarkScoreIcon.jsx"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { useMarkScorePermission, useRoundScore } from "src/game.selectors.js"
 import { markScore } from "src/game.actions.js"
 
 export const RoundScore = () => {
-  const { rollIndex } = useGameStore()
+  const { rollIndex } = useGameState()
   return <div className="score-area">{rollIndex === -1 ? null : <ScoreDisplay />}</div>
 }
 
 const ScoreDisplay = () => {
-  const store = useGameStore()
+  const state = useGameState()
 
   // const { isOnSkullIsland } = store
   // if (isOnSkullIsland) {
   //   return <span>Skull Island!</span>
   // }
 
-  const markScorePermission = useMarkScorePermission(store)
-  const roundScore = useRoundScore(store)
+  const markScorePermission = useMarkScorePermission(state)
+  const roundScore = useRoundScore(state)
 
   return (
     <>
@@ -35,7 +35,7 @@ const ScoreDisplay = () => {
       {markScorePermission.allowed ? (
         <ButtonMarkScore
           onClick={() => {
-            markScore(store, roundScore)
+            markScore(state, roundScore)
           }}
         />
       ) : null}

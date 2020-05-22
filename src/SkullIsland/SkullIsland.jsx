@@ -1,13 +1,13 @@
 import React from "react"
 import { Dice } from "../Dice/Dice.jsx"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { unkeepDice } from "src/game.actions.js"
 import { useCanRemoveSkull } from "src/game.selectors.js"
 
 export const SkullIsland = () => {
-  const store = useGameStore()
-  const { diceCursed } = store
-  const canRemoveSkull = useCanRemoveSkull()
+  const state = useGameState()
+  const { diceCursed } = state
+  const canRemoveSkull = useCanRemoveSkull(state)
 
   return (
     <div className="skull-island">
@@ -19,7 +19,7 @@ export const SkullIsland = () => {
               dice={dice}
               disabled={!canRemoveSkull}
               onClickAction={(dice) => {
-                unkeepDice(store, dice)
+                unkeepDice(state, dice)
               }}
               specificStyle={{ margin: "1px 5px" }}
             />

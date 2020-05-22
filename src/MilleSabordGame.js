@@ -9,13 +9,13 @@ import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 // import { CardArea } from "./Cards/CardArea.js"
 // import { Shaker } from "./Shaker/Shaker.jsx"
 import { getMixedDeck } from "./Cards/cards.js"
-import { useStore } from "src/useStore.js"
+import { useStructuredStateWithSessionStorage } from "src/useStructuredState.js"
 import { getDiceArray } from "./Dice/DiceHelpers.js"
 import { GameLogic } from "./GameLogic.js"
 
 const { createContext, useContext, createRef } = React
 
-const GameStoreContext = createContext(null)
+const GameStateContext = createContext(null)
 
 const dices = getDiceArray()
 const defaultState = {
@@ -38,13 +38,16 @@ const defaultState = {
 export const onGoingRef = createRef()
 
 export const MilleSabordGame = ({ initialState } = {}) => {
-  const store = useStore({
-    ...defaultState,
-    ...initialState,
-  })
+  const gameState = useStructuredStateWithSessionStorage(
+    {
+      ...defaultState,
+      ...initialState,
+    },
+    "game",
+  )
 
   return (
-    <GameStoreContext.Provider value={store}>
+    <GameStateContext.Provider value={gameState}>
       <GameLogic />
       <Header />
       {/* <CardArea /> */}
@@ -56,8 +59,8 @@ export const MilleSabordGame = ({ initialState } = {}) => {
       <div className="roll-action">
         <ButtonRoll />
       </div>
-    </GameStoreContext.Provider>
+    </GameStateContext.Provider>
   )
 }
 
-export const useGameStore = () => useContext(GameStoreContext)
+export const useGameState = () => useContext(GameStateContext)

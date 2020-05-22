@@ -1,16 +1,16 @@
 import React from "react"
 import { Dice } from "./Dice.jsx"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { unkeepDice } from "src/game.actions.js"
 import { useUnkeepDiceAllowed, useMarkScorePermission } from "src/game.selectors.js"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 
 export const DiceKept = () => {
-  const store = useGameStore()
-  const { diceKept, isOnSkullIsland } = store
-  const unkeepDiceAllowed = useUnkeepDiceAllowed()
-  const markScorePermission = useMarkScorePermission(store)
+  const state = useGameState()
+  const { diceKept, isOnSkullIsland } = state
+  const unkeepDiceAllowed = useUnkeepDiceAllowed(state)
+  const markScorePermission = useMarkScorePermission(state)
 
   const roundOver = markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE || isOnSkullIsland
 

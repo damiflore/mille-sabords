@@ -7,13 +7,13 @@ import {
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
 } from "src/constants.js"
-import { useGameStore } from "./MilleSabordGame.js"
+import { useGameState } from "./MilleSabordGame.js"
 import { computeRoundScore } from "./Score/computeRoundScore.js"
 
 const { useMemo } = React
 
 export const useRollDicePermission = (
-  { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = useGameStore(),
+  { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = useGameState(),
 ) => {
   if (!cardDrawn) {
     return {
@@ -49,7 +49,7 @@ export const useRollDicePermission = (
   }
 }
 
-export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGameStore()) => {
+export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGameState()) => {
   if (!isWitchCard(card)) {
     return false
   }
@@ -63,7 +63,7 @@ export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGame
   return true
 }
 
-export const useKeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameStore()) => {
+export const useKeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameState()) => {
   const skullCount = countSkulls({ card, diceCursed })
   if (skullCount > 2 || scoreMarked) {
     return false
@@ -71,7 +71,7 @@ export const useKeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameSt
   return true
 }
 
-export const useUnkeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameStore()) => {
+export const useUnkeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameState()) => {
   const skullCount = countSkulls({ card, diceCursed })
   if (skullCount > 2 || scoreMarked) {
     return false
@@ -80,7 +80,7 @@ export const useUnkeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGame
 }
 
 export const useMarkScorePermission = (
-  { rollIndex, scoreMarked, card, diceCursed } = useGameStore(),
+  { rollIndex, scoreMarked, card, diceCursed } = useGameState(),
 ) => {
   if (scoreMarked) {
     return {
@@ -107,7 +107,7 @@ export const useMarkScorePermission = (
   }
 }
 
-export const useNextRoundPermission = ({ rollIndex } = useGameStore()) => {
+export const useNextRoundPermission = ({ rollIndex } = useGameState()) => {
   const rollDicePermission = useRollDicePermission()
   const markScorePermission = useMarkScorePermission()
 
@@ -122,7 +122,7 @@ export const useNextRoundPermission = ({ rollIndex } = useGameStore()) => {
   return { allowed: false }
 }
 
-export const useRoundScore = ({ card, diceKept } = useGameStore()) => {
+export const useRoundScore = ({ card, diceKept } = useGameState()) => {
   const markScorePermission = useMarkScorePermission()
   return useMemo(() => {
     return computeRoundScore({

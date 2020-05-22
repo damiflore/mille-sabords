@@ -2,14 +2,14 @@ import React from "react"
 import { Dice } from "./Dice.jsx"
 import { isWitchCard } from "src/Cards/cards.js"
 import { SYMBOL_SKULL } from "src/constants.js"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
 
 // eslint-disable-next-line react/display-name
 export const DiceOnGoing = React.forwardRef((props, ref) => {
-  const store = useGameStore()
-  const { diceInGame } = store
-  const keepDiceAllowed = useKeepDiceAllowed()
+  const state = useGameState()
+  const { diceInGame } = state
+  const keepDiceAllowed = useKeepDiceAllowed(state)
 
   return (
     <div className="dice-ongoing" ref={ref}>
@@ -21,7 +21,7 @@ export const DiceOnGoing = React.forwardRef((props, ref) => {
             dice={dice}
             disabled={!keepDiceAllowed}
             onClickAction={(dice) => {
-              keepDice(store, dice)
+              keepDice(state, dice)
             }}
             specificStyle={{
               left: `${dice.x}px`,

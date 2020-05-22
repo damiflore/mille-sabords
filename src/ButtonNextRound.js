@@ -1,16 +1,16 @@
 import React from "react"
-import { useGameStore } from "src/MilleSabordGame.js"
+import { useGameState } from "src/MilleSabordGame.js"
 import { useNextRoundPermission } from "src/game.selectors.js"
 
 export const ButtonNextRound = () => {
-  const store = useGameStore()
+  const state = useGameState()
   const nextRoundPermission = useNextRoundPermission()
 
   if (nextRoundPermission.allowed) {
     return (
       <button
         onClick={() => {
-          nextRound(store)
+          nextRound(state)
         }}
       >
         Next round
