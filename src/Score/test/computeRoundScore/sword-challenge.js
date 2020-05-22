@@ -5,7 +5,7 @@ import {
   SYMBOL_SWORD,
   SYMBOL_SKULL,
   SYMBOL_COIN,
-} from "src/symbols/symbol-types.js"
+} from "src/constants.js"
 import { CARD_TWO_SWORDS_CHALLENGE } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 

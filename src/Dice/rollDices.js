@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
-} from "src/Symbols/symbol-types.js"
+} from "src/constants.js"
 import { diceSize, detectCollision } from "./dicePosition.js"
 
 export const rollDices = (dices, { diceParentElement }) => {

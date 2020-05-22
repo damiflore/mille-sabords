@@ -1,6 +1,6 @@
 import React from "react"
 import { diceSize } from "./dicePosition.js"
-import { SYMBOL_SKULL } from "src/Symbols/symbol-types.js"
+import { SYMBOL_SKULL } from "src/constants.js"
 
 export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => (
   <button
