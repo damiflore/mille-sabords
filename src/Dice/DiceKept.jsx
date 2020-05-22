@@ -12,10 +12,7 @@ export const DiceKept = () => {
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const markScorePermission = useMarkScorePermission(store)
 
-  const roundOver =
-    markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE ||
-    isOnSkullIsland ||
-    !markScorePermission.allowed
+  const roundOver = markScorePermission.reason === HAS_THREE_SKULLS_OR_MORE || isOnSkullIsland
 
   return (
     <div className="dice-kept">
