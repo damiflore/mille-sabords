@@ -1,7 +1,7 @@
 import React from "react"
 import { Dice } from "./Dice.jsx"
 import { isWitchCard } from "src/Cards/cards.js"
-import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
+import { SYMBOL_SKULL } from "src/constants.js"
 import { useGameStore } from "src/MilleSabordGame.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
 
@@ -12,7 +12,8 @@ export const DiceOnGoing = React.forwardRef((props, ref) => {
   const keepDiceAllowed = useKeepDiceAllowed()
 
   return (
-    <div className="diceOnGoing" ref={ref}>
+    <div className="dice-ongoing" ref={ref}>
+      <div className="map"></div>
       <div className="area">
         {diceInGame.map((dice) => (
           <Dice

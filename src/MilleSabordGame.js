@@ -4,12 +4,10 @@ import React from "react"
 import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
 import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { DiceKept } from "./Dice/DiceKept.jsx"
-import { RoundScore } from "./Score/RoundScore.jsx"
-import { TotalScore } from "./Score/TotalScore.jsx"
-import { CardArea } from "./Cards/CardArea.js"
+import { Header } from "./Header/Header.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
+// import { CardArea } from "./Cards/CardArea.js"
 // import { Shaker } from "./Shaker/Shaker.jsx"
-import { ButtonNextRound } from "./ButtonNextRound.js"
 import { getMixedDeck } from "./Cards/cards.js"
 import { useStore } from "src/useStore.js"
 import { getDiceArray } from "./Dice/DiceHelpers.js"
@@ -48,21 +46,16 @@ export const MilleSabordGame = ({ initialState } = {}) => {
   return (
     <GameStoreContext.Provider value={store}>
       <GameLogic />
-      <CardArea />
-      <div className="score-area">
-        <TotalScore />
-        <ButtonNextRound />
-        <RoundScore />
-      </div>
-      <div>
+      <Header />
+      {/* <CardArea /> */}
+      <div className="dice-kept-and-skulls">
         <DiceKept />
         <SkullIsland />
       </div>
+      <DiceOnGoing ref={onGoingRef} />
       <div className="roll-action">
         <ButtonRoll />
       </div>
-      {/* <Shaker diceOffGame={diceOffGame} /> */}
-      <DiceOnGoing ref={onGoingRef} />
     </GameStoreContext.Provider>
   )
 }

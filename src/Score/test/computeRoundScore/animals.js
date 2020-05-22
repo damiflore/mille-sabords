@@ -6,7 +6,7 @@ import {
   SYMBOL_SKULL,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
-} from "src/symbols/symbol-types.js"
+} from "src/constants.js"
 import { CARD_ANIMALS } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 

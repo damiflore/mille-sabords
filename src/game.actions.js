@@ -1,5 +1,5 @@
 import { isWitchCard } from "src/Cards/cards.js"
-import { SYMBOL_SKULL } from "src/symbols/symbol-types.js"
+import { SYMBOL_SKULL } from "src/constants.js"
 
 export const unkeepDice = (
   {

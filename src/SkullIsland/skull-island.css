@@ -1,7 +1,7 @@
-.skullIsland {
+.skull-island {
   display: inline-block;
 }
-.skullIsland .bottle {
+.skull-island .bottle {
   display: flex;
   flex-direction: column-reverse;
   width: 83px;
@@ -11,7 +11,7 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
-.skullIsland .area {
+.skull-island .area {
   margin-left: 11px;
   margin-bottom: 13px;
 }

@@ -4,63 +4,41 @@
   vertical-align: top;
   margin-bottom: 30px;
 }
-.card {
+.card-area .card {
   display: block;
   border: 2px solid #9e9e9e;
   background: white;
-  width: 150px;
+  width: 100px;
   text-align: center;
   border-radius: 4px;
 }
-.current-card {
+.card-area .current-card {
   margin: 15px;
   position: absolute;
 }
-.default-card {
-  height: 230px;
+.card-area .default-card {
+  height: 154px;
 }
-.draw-card-btn {
+.card-area .draw-card-btn {
   position: relative;
   top: 40%;
   color: #4e8fc2;
 }
-.card img {
-  width: 150px;
+.card-area .card img {
+  width: 100px;
   height: auto;
 }
-.remaining-cards-number {
-  position: relative;
-  background: #005e97;
+.card-area .remaining-cards-number {
+  position: absolute;
+  top: -8px;
+  left: -8px;
   color: white;
+  background: #005e97;
   border: 2px solid #9e9e9e;
-  padding: 5px;
   border-radius: 100%;
-  top: 14px;
+  padding: 5px;
   width: 15px;
   height: 15px;
   font-size: 13px;
-  left: -10px;
   text-align: center;
-}
-
-/* responsive */
-@media only screen and (max-width: 680px) {
-  .remaining-cards-number {
-    position: absolute;
-    top: -8px;
-    left: -8px;
-  }
-  .default-card {
-    height: 154px;
-  }
-  .card,
-  .card img {
-    width: 100px;
-  }
-}
-
-@media only screen and (max-width: 356px), screen and (max-height: 680px) {
-  .card-area {
-    margin-bottom: 10px;
-  }
 }

@@ -3,6 +3,7 @@ import { Dice } from "./Dice.jsx"
 import { useGameStore } from "src/MilleSabordGame.js"
 import { unkeepDice } from "src/game.actions.js"
 import { useUnkeepDiceAllowed } from "src/game.selectors.js"
+import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {
   const store = useGameStore()
@@ -10,8 +11,8 @@ export const DiceKept = () => {
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
 
   return (
-    <div className="diceKept">
-      <div className="area">
+    <div className="dice-kept">
+      <div className="dice-area">
         <div className="box">
           {diceKept.map((dice) => (
             <Dice
@@ -30,6 +31,7 @@ export const DiceKept = () => {
         <div className="bottom-left-corner"></div>
         <div className="bottom-right-corner"></div>
       </div>
+      <RoundScore />
     </div>
   )
 }

@@ -1,6 +1,7 @@
+@import "./src/Header/header.css";
+@import "./src/Score/score.css";
 @import "./src/Cards/cards.css";
 @import "./src/Dice/dice.css";
-@import "./src/Score/score.css";
 @import "./src/SkullIsland/skull-island.css";
 
 body {
@@ -31,6 +32,9 @@ button:disabled:hover {
 button:hover {
   cursor: pointer;
   background: #e4dfd2;
+}
+button:focus {
+  outline: none;
 }
 .title {
   font-size: 23px;

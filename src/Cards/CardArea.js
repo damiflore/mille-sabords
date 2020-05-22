@@ -42,6 +42,14 @@ const DeckButton = () => {
   return <DrawCardButton />
 }
 
+const drawCard = ({ cardDeck, cardsUsed, setCard, setCardDeck, setCardDrawn, setCardsUsed }) => {
+  setCardDrawn(true)
+  const cardDrawn = cardDeck[0]
+  setCardsUsed([...cardsUsed, cardDrawn])
+  setCard(cardDeck[0])
+  setCardDeck(cardDeck.slice(1))
+}
+
 const DrawCardButton = () => {
   const store = useGameStore()
 
@@ -55,14 +63,6 @@ const DrawCardButton = () => {
       Draw a card
     </button>
   )
-}
-
-const drawCard = ({ cardDeck, cardsUsed, setCard, setCardDeck, setCardDrawn, setCardsUsed }) => {
-  setCardDrawn(true)
-  const cardDrawn = cardDeck[0]
-  setCardsUsed([...cardsUsed, cardDrawn])
-  setCard(cardDeck[0])
-  setCardDeck(cardDeck.slice(1))
 }
 
 const ShuffleDeckButton = () => {

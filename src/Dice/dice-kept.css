@@ -1,8 +1,12 @@
-.diceKept {
+.dice-kept-and-skulls {
+  display: flex;
+  justify-content: space-around;
+}
+.dice-kept {
   display: inline-block;
   vertical-align: top;
 }
-.diceKept .area {
+.dice-kept .dice-area {
   background-image: url(./assets/wood-box.jpg);
   box-shadow: inset 0px 0px 0px 9px rgba(94, 52, 29, 0.49),
     inset 0px 0px 0px 19px rgba(94, 52, 29, 0.49);
@@ -10,21 +14,21 @@
   position: relative;
   background-size: 100%;
   padding: 30px;
-  height: 160px;
-  width: 200px;
-  margin: 15px 0;
+  height: 165px;
+  width: 165px;
+  margin-top: 15px;
 }
 
 /* CSS to draw the wood box */
-.diceKept .area .box {
+.dice-kept .dice-area .box {
   width: calc(100% + 20px);
   height: calc(100% + 20px);
   position: relative;
   left: -12px;
   top: -13px;
-  border: 2px solid black;
+  border: 2px solid rgba(44, 29, 0, 0.8);
 }
-.diceKept .top-left-corner {
+.dice-kept .top-left-corner {
   width: 28px;
   border-bottom: 2px solid rgb(44, 29, 0);
   transform: rotate(42deg);
@@ -33,7 +37,7 @@
   left: 0;
   top: -1px;
 }
-.diceKept .top-right-corner {
+.dice-kept .top-right-corner {
   width: 28px;
   border-bottom: 2px solid rgb(44, 29, 0);
   transform: rotate(-42deg);
@@ -42,7 +46,7 @@
   right: 0;
   top: -1px;
 }
-.diceKept .bottom-left-corner {
+.dice-kept .bottom-left-corner {
   width: 28px;
   border-bottom: 2px solid rgb(44, 29, 0);
   transform: rotate(-42deg);
@@ -51,7 +55,7 @@
   left: 0;
   bottom: 0px;
 }
-.diceKept .bottom-right-corner {
+.dice-kept .bottom-right-corner {
   width: 28px;
   border-bottom: 2px solid rgb(44, 29, 0);
   transform: rotate(42deg);
