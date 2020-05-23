@@ -1,20 +1,20 @@
 import React from "react"
-import { countSkulls } from "src/Dice/countSkulls.js"
-import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import {
   NOT_ENOUGH_DICE_TO_ROLL,
   HAS_THREE_SKULLS_OR_MORE,
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
 } from "src/constants.js"
-import { useGameState } from "./MilleSabordGame.js"
+import { createGameSelector } from "src/game.store.js"
+import { countSkulls } from "src/Dice/countSkulls.js"
+import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "./Score/computeRoundScore.js"
 
 const { useMemo } = React
 
-export const useRollDicePermission = (
-  { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = useGameState(),
-) => {
+export const useRollDicePermission = createGameSelector((state) => {
+  const { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = state
+
   if (!cardDrawn) {
     return {
       allowed: false,
@@ -47,13 +47,14 @@ export const useRollDicePermission = (
     allowed: true,
     reason: "",
   }
-}
+})
 
-export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGameState()) => {
+export const useCanRemoveSkull = createGameSelector((state) => {
+  const { cardEffectUsed, card, diceCursed } = state
+
   if (!isWitchCard(card)) {
     return false
   }
-
   if (diceCursed.length > 2) {
     return false
   }
@@ -61,27 +62,37 @@ export const useCanRemoveSkull = ({ cardEffectUsed, card, diceCursed } = useGame
     return false
   }
   return true
-}
+})
 
-export const useKeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameState()) => {
+export const useKeepDiceAllowed = createGameSelector((state) => {
+  const { card, diceCursed, scoreMarked } = state
+
+  if (scoreMarked) {
+    return false
+  }
   const skullCount = countSkulls({ card, diceCursed })
-  if (skullCount > 2 || scoreMarked) {
+  if (skullCount > 2) {
     return false
   }
   return true
-}
+})
 
-export const useUnkeepDiceAllowed = ({ card, diceCursed, scoreMarked } = useGameState()) => {
+export const useUnkeepDiceAllowed = createGameSelector((state) => {
+  const { card, diceCursed, scoreMarked } = state
+
+  if (scoreMarked) {
+    return false
+  }
   const skullCount = countSkulls({ card, diceCursed })
-  if (skullCount > 2 || scoreMarked) {
+  if (skullCount > 2) {
     return false
   }
   return true
-}
+})
 
-export const useMarkScorePermission = (
-  { rollIndex, scoreMarked, card, diceCursed } = useGameState(),
-) => {
+export const useMarkScorePermission = createGameSelector((state) => {
+  const { rollIndex, scoreMarked, card, diceCursed } = state
+
   if (scoreMarked) {
     return {
       allowed: false,
@@ -105,30 +116,33 @@ export const useMarkScorePermission = (
   return {
     allowed: true,
   }
-}
+})
 
-export const useNextRoundPermission = ({ rollIndex } = useGameState()) => {
-  const rollDicePermission = useRollDicePermission()
-  const markScorePermission = useMarkScorePermission()
-
+export const useNextRoundPermission = createGameSelector((state) => {
+  const { rollIndex } = state
   if (rollIndex === -1) {
     return { allowed: false }
   }
 
+  const rollDicePermission = useRollDicePermission(state)
+  const markScorePermission = useMarkScorePermission(state)
   if (!rollDicePermission.allowed && !markScorePermission.allowed) {
     return { allowed: true }
   }
 
   return { allowed: false }
-}
+})
 
-export const useRoundScore = ({ card, diceKept } = useGameState()) => {
-  const markScorePermission = useMarkScorePermission()
-  return useMemo(() => {
-    return computeRoundScore({
-      card,
-      diceKept,
-      markScoreAllowed: markScorePermission.allowed,
-    })
-  }, [card, diceKept, markScorePermission])
-}
+export const useRoundScore = createGameSelector((state) => {
+  const { card, diceKept } = state
+  const markScorePermission = useMarkScorePermission(state)
+  return useMemo(
+    () =>
+      computeRoundScore({
+        card,
+        diceKept,
+        markScoreAllowed: markScorePermission.allowed,
+      }),
+    [card, diceKept, markScorePermission],
+  )
+})

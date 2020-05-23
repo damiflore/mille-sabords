@@ -1,9 +1,9 @@
 import React from "react"
+import { useGameState } from "src/game.store.js"
+import { useMarkScorePermission, useRoundScore } from "src/game.selectors.js"
+import { useMarkScore } from "src/game.actions.js"
 // import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { MarkScoreIcon } from "./MarkScoreIcon.jsx"
-import { useGameState } from "src/MilleSabordGame.js"
-import { useMarkScorePermission, useRoundScore } from "src/game.selectors.js"
-import { markScore } from "src/game.actions.js"
 
 export const RoundScore = () => {
   const { rollIndex } = useGameState()
@@ -20,6 +20,7 @@ const ScoreDisplay = () => {
 
   const markScorePermission = useMarkScorePermission(state)
   const roundScore = useRoundScore(state)
+  const markScore = useMarkScore()
 
   return (
     <>
@@ -35,7 +36,7 @@ const ScoreDisplay = () => {
       {markScorePermission.allowed ? (
         <ButtonMarkScore
           onClick={() => {
-            markScore(state, roundScore)
+            markScore(roundScore)
           }}
         />
       ) : null}

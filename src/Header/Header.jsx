@@ -1,6 +1,7 @@
 import React from "react"
-import { useGameState } from "src/MilleSabordGame.js"
-import { cardColors, isSwordChallengeCard, mixDeck } from "src/Cards/cards.js"
+import { useGameState } from "src/game.store.js"
+import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
+import { cardColors, isSwordChallengeCard } from "src/Cards/cards.js"
 import { ButtonNextRound } from "src/ButtonNextRound.js"
 
 export const Header = () => {
@@ -76,49 +77,24 @@ const DeckButton = () => {
   return <DrawCardButton />
 }
 
-const drawCard = ({ cardDeck, cardsUsed, setCard, setCardDeck, setCardDrawn, setCardsUsed }) => {
-  setCardDrawn(true)
-  const cardDrawn = cardDeck[0]
-  setCardsUsed([...cardsUsed, cardDrawn])
-  setCard(cardDeck[0])
-  setCardDeck(cardDeck.slice(1))
-}
-
 const DrawCardButton = () => {
-  const state = useGameState()
+  const drawCard = useDrawCard()
 
   return (
-    <button
-      className="draw-card-btn"
-      onClick={() => {
-        drawCard(state)
-      }}
-    >
+    <button className="draw-card-btn" onClick={drawCard}>
       Draw a card
     </button>
   )
 }
 
 const ShuffleDeckButton = () => {
-  const state = useGameState()
+  const shuffleDeck = useShuffleDeck()
 
   return (
-    <button
-      className="draw-card-btn"
-      onClick={() => {
-        shuffleDeck(state)
-      }}
-    >
+    <button className="draw-card-btn" onClick={shuffleDeck}>
       Shuffle deck
     </button>
   )
-}
-
-const shuffleDeck = ({ cardsUsed, setCardsUsed, setCardDeck }) => {
-  const newDeck = cardsUsed.slice()
-  mixDeck(newDeck)
-  setCardsUsed([])
-  setCardDeck(newDeck)
 }
 
 const TotalScore = () => {

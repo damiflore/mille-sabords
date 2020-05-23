@@ -1,5 +1,5 @@
 import React from "react"
-import { useGameState } from "src/MilleSabordGame.js"
+import { useGameState } from "src/game.store.js"
 
 export const CardArea = () => {
   const { cardDeck } = useGameState()
