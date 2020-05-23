@@ -134,13 +134,14 @@ export const useNextRoundPermission = createGameSelector((state) => {
 })
 
 export const useRoundScore = createGameSelector((state) => {
-  const { card, diceKept } = state
+  const { card, diceKept, scoreMarked } = state
   const markScorePermission = useMarkScorePermission(state)
   return useMemo(
     () =>
       computeRoundScore({
         card,
         diceKept,
+        scoreMarked,
         markScoreAllowed: markScorePermission.allowed,
       }),
     [card, diceKept, markScorePermission],
