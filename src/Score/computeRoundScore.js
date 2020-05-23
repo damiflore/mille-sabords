@@ -18,11 +18,11 @@ import {
   SYMBOL_SWORD,
 } from "src/constants.js"
 
-export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
+export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowed }) => {
   const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
 
   if (isTwoSwordsChallengeCard(card)) {
-    if (!markScoreAllowed) {
+    if (!scoreMarked && !markScoreAllowed) {
       return -TWO_SWORDS_CHALLENGE_GAMBLE
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
@@ -32,7 +32,7 @@ export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
   }
 
   if (isThreeSwordsChallengeCard(card)) {
-    if (!markScoreAllowed) {
+    if (!scoreMarked && !markScoreAllowed) {
       return -THREE_SWORDS_CHALLENGE_GAMBLE
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
@@ -42,7 +42,7 @@ export const computeRoundScore = ({ card, diceKept, markScoreAllowed }) => {
   }
 
   if (isFourSwordsChallengeCard(card)) {
-    if (!markScoreAllowed) {
+    if (!scoreMarked && !markScoreAllowed) {
       return -FOUR_SWORDS_CHALLENGE_GAMBLE
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {

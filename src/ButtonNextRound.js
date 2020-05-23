@@ -1,45 +1,31 @@
 import React from "react"
-import { useGameState } from "src/MilleSabordGame.js"
-import { useNextRoundPermission } from "src/game.selectors.js"
+import { useGameState, createGameAction } from "src/game.store.js"
+import { nextRoundPermissionSelector } from "src/game.selectors.js"
 
 export const ButtonNextRound = () => {
   const state = useGameState()
-  const nextRoundPermission = useNextRoundPermission()
+  const nextRoundPermission = nextRoundPermissionSelector(state)
+  const nextRound = useNextRound()
 
   if (nextRoundPermission.allowed) {
-    return (
-      <button
-        onClick={() => {
-          nextRound(state)
-        }}
-      >
-        Next round
-      </button>
-    )
+    return <button onClick={nextRound}>Next round</button>
   }
 
   return null
 }
 
-const nextRound = ({
-  dices,
-  setDiceOffGame,
-  setDiceInGame,
-  setDiceKept,
-  setDiceCursed,
-  setRollIndex,
-  setScoreMarked,
-  setCardDrawn,
-  setCardEffectUsed,
-  setIsOnSkullIsland,
-}) => {
-  setDiceOffGame(dices)
-  setDiceInGame([])
-  setDiceKept([])
-  setDiceCursed([])
-  setRollIndex(-1)
-  setScoreMarked(false)
-  setCardDrawn(false)
-  setCardEffectUsed(false)
-  setIsOnSkullIsland(false)
-}
+const useNextRound = createGameAction((state) => {
+  const { dices } = state
+  return {
+    ...state,
+    diceOffGame: dices,
+    diceInGame: [],
+    diceKept: [],
+    diceCursed: [],
+    rollIndex: -1,
+    scoreMarked: false,
+    cardDrawn: false,
+    cardEffectUsed: false,
+    isOnSkullIsland: false,
+  }
+})
