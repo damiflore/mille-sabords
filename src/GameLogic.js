@@ -46,6 +46,7 @@ const useFailSwordChallengeEffect = () => {
     if (
       isSwordChallengeCard(card) &&
       !scoreMarked &&
+      markScorePermissionPrevious &&
       markScorePermissionPrevious.allowed &&
       !markScorePermission.allowed
     ) {
