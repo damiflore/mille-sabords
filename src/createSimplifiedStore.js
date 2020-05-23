@@ -12,8 +12,6 @@ export const createSimplifiedStore = () => {
 
   const useState = () => useContext(StateContext)
 
-  const createSelector = (stateGetter) => createStoreSelector({ useState }, stateGetter)
-
   const useDispatch = () => useContext(DispatchContext)
 
   // le fait que les actions n'ont pas de type
@@ -25,19 +23,12 @@ export const createSimplifiedStore = () => {
   const createAction = (actionReducer) => createStoreAction({ useDispatch }, actionReducer)
 
   return {
-    createSelector,
     createAction,
     useReducer,
     useState,
     useDispatch,
     StateContext,
     DispatchContext,
-  }
-}
-
-export const createStoreSelector = (store, stateGetter) => {
-  return (state = store.useState()) => {
-    return stateGetter(state)
   }
 }
 

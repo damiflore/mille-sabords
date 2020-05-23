@@ -1,5 +1,5 @@
 import { assert } from "@jsenv/assert"
-import { useRollDicePermission } from "src/game.selectors.js"
+import { rollDicePermissionSelector } from "src/game.selectors.js"
 import {
   NOT_ENOUGH_DICE_TO_ROLL,
   HAS_THREE_SKULLS_OR_MORE,
@@ -10,7 +10,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
 
 // card not drawn
 {
-  const actual = useRollDicePermission({
+  const actual = rollDicePermissionSelector({
     cardDrawn: false,
   })
   const expected = {
@@ -22,7 +22,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
 
 // round not started
 {
-  const actual = useRollDicePermission({
+  const actual = rollDicePermissionSelector({
     cardDrawn: true,
     scoreMarked: true,
   })
@@ -35,7 +35,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
 
 // dice never rolled
 {
-  const actual = useRollDicePermission({
+  const actual = rollDicePermissionSelector({
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
@@ -51,7 +51,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
 
 // not enough dice to roll
 {
-  const actual = useRollDicePermission({
+  const actual = rollDicePermissionSelector({
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
@@ -68,7 +68,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
 
 // too many skulls (will need update for skull island)
 {
-  const actual = useRollDicePermission({
+  const actual = rollDicePermissionSelector({
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,

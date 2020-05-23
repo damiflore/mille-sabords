@@ -1,6 +1,6 @@
 import React from "react"
 import { useGameState } from "src/game.store.js"
-import { useKeepDiceAllowed } from "src/game.selectors.js"
+import { keepDiceAllowedSelector } from "src/game.selectors.js"
 import { useKeepDice } from "src/game.actions.js"
 import { Dice } from "./Dice.jsx"
 
@@ -8,7 +8,7 @@ import { Dice } from "./Dice.jsx"
 export const DiceOnGoing = React.forwardRef((props, ref) => {
   const state = useGameState()
   const { diceInGame } = state
-  const keepDiceAllowed = useKeepDiceAllowed(state)
+  const keepDiceAllowed = keepDiceAllowedSelector(state)
   const keepDice = useKeepDice()
 
   return (

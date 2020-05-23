@@ -5,14 +5,13 @@ import {
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
 } from "src/constants.js"
-import { createGameSelector } from "src/game.store.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
 import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "./Score/computeRoundScore.js"
 
 const { useMemo } = React
 
-export const useRollDicePermission = createGameSelector((state) => {
+export const rollDicePermissionSelector = (state) => {
   const { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = state
 
   if (!cardDrawn) {
@@ -47,9 +46,9 @@ export const useRollDicePermission = createGameSelector((state) => {
     allowed: true,
     reason: "",
   }
-})
+}
 
-export const useCanRemoveSkull = createGameSelector((state) => {
+export const canRemoveSkullSelector = (state) => {
   const { cardEffectUsed, card, diceCursed } = state
 
   if (!isWitchCard(card)) {
@@ -62,9 +61,9 @@ export const useCanRemoveSkull = createGameSelector((state) => {
     return false
   }
   return true
-})
+}
 
-export const useKeepDiceAllowed = createGameSelector((state) => {
+export const keepDiceAllowedSelector = (state) => {
   const { card, diceCursed, scoreMarked } = state
 
   if (scoreMarked) {
@@ -75,9 +74,9 @@ export const useKeepDiceAllowed = createGameSelector((state) => {
     return false
   }
   return true
-})
+}
 
-export const useUnkeepDiceAllowed = createGameSelector((state) => {
+export const unkeepDiceAllowedSelector = (state) => {
   const { card, diceCursed, scoreMarked } = state
 
   if (scoreMarked) {
@@ -88,9 +87,9 @@ export const useUnkeepDiceAllowed = createGameSelector((state) => {
     return false
   }
   return true
-})
+}
 
-export const useMarkScorePermission = createGameSelector((state) => {
+export const markScorePermissionSelector = (state) => {
   const { rollIndex, scoreMarked, card, diceCursed } = state
 
   if (scoreMarked) {
@@ -116,26 +115,26 @@ export const useMarkScorePermission = createGameSelector((state) => {
   return {
     allowed: true,
   }
-})
+}
 
-export const useNextRoundPermission = createGameSelector((state) => {
+export const nextRoundPermissionSelector = (state) => {
   const { rollIndex } = state
   if (rollIndex === -1) {
     return { allowed: false }
   }
 
-  const rollDicePermission = useRollDicePermission(state)
-  const markScorePermission = useMarkScorePermission(state)
+  const rollDicePermission = rollDicePermissionSelector(state)
+  const markScorePermission = markScorePermissionSelector(state)
   if (!rollDicePermission.allowed && !markScorePermission.allowed) {
     return { allowed: true }
   }
 
   return { allowed: false }
-})
+}
 
-export const useRoundScore = createGameSelector((state) => {
+export const roundScoreSelector = (state) => {
   const { card, diceKept, scoreMarked } = state
-  const markScorePermission = useMarkScorePermission(state)
+  const markScorePermission = markScorePermissionSelector(state)
   return useMemo(
     () =>
       computeRoundScore({
@@ -146,4 +145,4 @@ export const useRoundScore = createGameSelector((state) => {
       }),
     [card, diceKept, markScorePermission],
   )
-})
+}

@@ -1,12 +1,12 @@
 import React from "react"
 import { useGameState, createGameAction } from "src/game.store.js"
-import { useRollDicePermission } from "src/game.selectors.js"
+import { rollDicePermissionSelector } from "src/game.selectors.js"
 import { onGoingRef } from "src/MilleSabordGame.js"
 import { rollDices } from "src/Dice/rollDices.js"
 
 export const ButtonRoll = () => {
   const state = useGameState()
-  const rollDicePermission = useRollDicePermission(state)
+  const rollDicePermission = rollDicePermissionSelector(state)
   const roll = useRoll()
 
   if (rollDicePermission.allowed) {

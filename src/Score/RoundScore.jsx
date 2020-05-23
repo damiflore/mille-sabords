@@ -1,6 +1,6 @@
 import React from "react"
 import { useGameState } from "src/game.store.js"
-import { useMarkScorePermission, useRoundScore } from "src/game.selectors.js"
+import { markScorePermissionSelector, roundScoreSelector } from "src/game.selectors.js"
 import { useMarkScore } from "src/game.actions.js"
 // import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { MarkScoreIcon } from "./MarkScoreIcon.jsx"
@@ -18,8 +18,8 @@ const ScoreDisplay = () => {
   //   return <span>Skull Island!</span>
   // }
 
-  const markScorePermission = useMarkScorePermission(state)
-  const roundScore = useRoundScore(state)
+  const markScorePermission = markScorePermissionSelector(state)
+  const roundScore = roundScoreSelector(state)
   const markScore = useMarkScore()
 
   return (

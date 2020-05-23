@@ -1,6 +1,6 @@
 import React from "react"
 import { useGameState } from "src/game.store.js"
-import { useMarkScorePermission, useRoundScore } from "src/game.selectors.js"
+import { markScorePermissionSelector, roundScoreSelector } from "src/game.selectors.js"
 import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
 import { SYMBOL_SKULL } from "src/constants.js"
 import { isSwordChallengeCard } from "src/Cards/cards.js"
@@ -38,9 +38,9 @@ const useFailSwordChallengeEffect = () => {
   const state = useGameState()
   const { card, scoreMarked } = state
   const markScore = useMarkScore()
-  const markScorePermission = useMarkScorePermission(state)
+  const markScorePermission = markScorePermissionSelector(state)
   const markScorePermissionPrevious = usePrevious(markScorePermission)
-  const roundScore = useRoundScore()
+  const roundScore = roundScoreSelector(state)
 
   useEffect(() => {
     if (
