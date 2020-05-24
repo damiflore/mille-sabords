@@ -1,6 +1,5 @@
 import { createGameAction } from "src/game.store.js"
-import { isWitchCard, mixDeck } from "src/Cards/cards.js"
-import { SYMBOL_SKULL } from "src/constants.js"
+import { mixDeck } from "src/Cards/cards.js"
 
 export const useDrawCard = createGameAction((state) => {
   const { cardDeck, cardsUsed } = state
@@ -23,6 +22,17 @@ export const useCurseDice = createGameAction((state, dice) => {
   }
 })
 
+export const useUncurseDice = createGameAction((state, dice) => {
+  const { diceCursed, diceInGame } = state
+  return {
+    ...state,
+    cardEffectUsed: true,
+    diceUncursedByWitch: dice,
+    diceCursed: diceCursed.filter((diceCandidate) => diceCandidate !== dice),
+    diceInGame: [...diceInGame, dice],
+  }
+})
+
 export const useMarkScore = createGameAction((state, score) => {
   const { totalScore } = state
   return {
@@ -33,15 +43,7 @@ export const useMarkScore = createGameAction((state, score) => {
 })
 
 export const useUnkeepDice = createGameAction((state, dice) => {
-  const { card, cardEffectUsed, diceCursed, diceKept, diceInGame } = state
-  if (dice.symbol === SYMBOL_SKULL) {
-    return {
-      ...state,
-      cardEffectUsed: isWitchCard(card) ? true : cardEffectUsed,
-      diceCursed: diceCursed.filter((diceCandidate) => diceCandidate !== dice),
-      diceInGame: [...diceInGame, dice],
-    }
-  }
+  const { diceKept, diceInGame } = state
 
   return {
     ...state,
@@ -51,16 +53,7 @@ export const useUnkeepDice = createGameAction((state, dice) => {
 })
 
 export const useKeepDice = createGameAction((state, dice) => {
-  const { card, diceInGame, diceCursed, diceKept, cardEffectUsed } = state
-
-  if (dice.symbol === SYMBOL_SKULL) {
-    return {
-      ...state,
-      cardEffectUsed: isWitchCard(card) ? false : cardEffectUsed,
-      diceCursed: [...diceCursed, dice],
-      diceInGame: diceInGame.filter((diceCandidate) => diceCandidate !== dice),
-    }
-  }
+  const { diceInGame, diceKept } = state
 
   return {
     ...state,

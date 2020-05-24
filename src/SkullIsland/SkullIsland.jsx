@@ -1,14 +1,16 @@
 import React from "react"
+
 import { useGameState } from "src/game.store.js"
 import { canRemoveSkullSelector } from "src/game.selectors.js"
-import { useUnkeepDice } from "src/game.actions.js"
+import { useUncurseDice } from "src/game.actions.js"
+
 import { Dice } from "src/Dice/Dice.jsx"
 
 export const SkullIsland = () => {
   const state = useGameState()
   const { diceCursed } = state
   const canRemoveSkull = canRemoveSkullSelector(state)
-  const unkeepDice = useUnkeepDice()
+  const uncurseDice = useUncurseDice()
 
   return (
     <div className="skull-island">
@@ -20,7 +22,7 @@ export const SkullIsland = () => {
               dice={dice}
               disabled={!canRemoveSkull}
               onClickAction={(dice) => {
-                unkeepDice(dice)
+                uncurseDice(dice)
               }}
               specificStyle={{ margin: "1px 5px" }}
             />

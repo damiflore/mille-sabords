@@ -1,14 +1,16 @@
 import React from "react"
+
 import { useGameState } from "src/game.store.js"
 import { markScorePermissionSelector, roundScoreSelector } from "src/game.selectors.js"
 import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
-import { SYMBOL_SKULL } from "src/constants.js"
+
 import { isSwordChallengeCard } from "src/Cards/cards.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
+import { SYMBOL_SKULL } from "src/constants.js"
 
 const { useEffect, useRef } = React
 
-export const GameLogic = () => {
+export const GameEffects = () => {
   useCurseDiceEffect()
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
@@ -16,21 +18,30 @@ export const GameLogic = () => {
 }
 
 const useCurseDiceEffect = () => {
-  const { diceInGame, rollIndex } = useGameState()
+  const state = useGameState()
+  const { rollIndex, diceInGame, diceCursed, diceUncursedByWitch } = state
   const curseDice = useCurseDice()
 
   useEffect(() => {
-    diceInGame.forEach((dice) => {
-      if (dice.symbol === SYMBOL_SKULL) {
-        curseDice(dice)
-      }
+    const diceCursedCount = diceCursed.length
+    const remainingCursedSpot = Math.max(3 - diceCursedCount, 0)
+    if (!remainingCursedSpot) {
+      return () => {}
+    }
+    const skullsInGame = diceInGame.filter((dice) => {
+      return dice.symbol === SYMBOL_SKULL && dice !== diceUncursedByWitch
     })
-  }, [
-    diceInGame,
-    // rollIndex because rolling dices may change their symbol
-    // (but I guess in that case diceinGame may change but not sure)
-    rollIndex,
-  ])
+    const diceToCurse = skullsInGame.slice(0, remainingCursedSpot)
+    const timeout = setTimeout(() => {
+      diceToCurse.forEach((dice) => {
+        curseDice(dice)
+      })
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [diceInGame, diceCursed, rollIndex])
 }
 
 // auto mark score for failed sword challenges

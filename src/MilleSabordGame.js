@@ -1,7 +1,10 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 import { createLogger } from "@jsenv/logger"
+
 import { gameStore } from "src/game.store.js"
+import { GameEffects } from "src/game.effects.js"
+
 import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
 import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { DiceKept } from "./Dice/DiceKept.jsx"
@@ -9,7 +12,6 @@ import { Header } from "./Header/Header.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 import { getMixedDeck } from "./Cards/cards.js"
 import { getDiceArray } from "./Dice/DiceHelpers.js"
-import { GameLogic } from "./GameLogic.js"
 
 const { createRef, useEffect } = React
 
@@ -21,10 +23,11 @@ const defaultState = {
   cardDeck: getMixedDeck(),
   cardsUsed: [],
   card: null,
-  cardEffectUsed: false,
+  cardEffectUsed: false, // TOOD: remove this it can be tested with diceUncursedByWitch !== null
   cardDrawn: false,
   rollIndex: -1,
   dices,
+  diceUncursedByWitch: null,
   diceOffGame: dices,
   diceInGame: [],
   diceCursed: [],
@@ -59,7 +62,7 @@ export const MilleSabordGame = ({ initialState, logLevel = "warn" } = {}) => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <GameLogic />
+        <GameEffects />
         <Header />
         {/* <CardArea /> */}
         <div className="dice-kept-and-skulls">
