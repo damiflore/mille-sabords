@@ -1,7 +1,9 @@
 import React from "react"
+
 import { useGameState } from "src/game.store.js"
 import { markScorePermissionSelector, roundScoreSelector } from "src/game.selectors.js"
 import { useMarkScore } from "src/game.actions.js"
+
 // import { HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
 import { MarkScoreIcon } from "./MarkScoreIcon.jsx"
 
@@ -13,7 +15,7 @@ export const RoundScore = () => {
 const ScoreDisplay = () => {
   const state = useGameState()
 
-  // const { isOnSkullIsland } = store
+  // const { isOnSkullIsland } = state
   // if (isOnSkullIsland) {
   //   return <span>Skull Island!</span>
   // }
@@ -24,15 +26,7 @@ const ScoreDisplay = () => {
 
   return (
     <>
-      <div
-        className="round-score"
-        style={{
-          paddingRight: markScorePermission.allowed ? "20px" : "10px",
-          marginLeft: markScorePermission.allowed ? "20px" : "0",
-        }}
-      >
-        {roundScore}
-      </div>
+      <div className="round-score">{roundScore}</div>
       {markScorePermission.allowed ? (
         <ButtonMarkScore
           onClick={() => {

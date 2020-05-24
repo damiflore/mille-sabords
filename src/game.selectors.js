@@ -6,7 +6,7 @@ import {
   CARD_NOT_DRAWN,
 } from "src/constants.js"
 import { countSkulls } from "src/Dice/countSkulls.js"
-import { isWitchCard, isChestCard } from "src/Cards/cards.js"
+import { isWitchCard, isChestCard, isSwordChallengeCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "./Score/computeRoundScore.js"
 
 const { useMemo } = React
@@ -87,6 +87,23 @@ export const unkeepDiceAllowedSelector = (state) => {
     return false
   }
   return true
+}
+
+export const roundLostSelector = (state) => {
+  const { isOnSkullIsland } = state
+  if (
+    markScorePermissionSelector(state).reason === HAS_THREE_SKULLS_OR_MORE ||
+    isOnSkullIsland ||
+    swordChallendeFailedSelector(state)
+  )
+    return true
+  return false
+}
+
+const swordChallendeFailedSelector = (state) => {
+  const { card } = state
+  if (isSwordChallengeCard(card) && !markScorePermissionSelector(state).allowed) return true
+  return false
 }
 
 export const markScorePermissionSelector = (state) => {
