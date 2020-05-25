@@ -65,18 +65,28 @@ export const MilleSabordGame = ({ initialState, logLevel = "warn" } = {}) => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <GameEffects />
-        <Header />
-        {/* <CardArea /> */}
-        <div className="dice-kept-and-skulls">
-          <DiceKept />
-          <SkullIsland />
-        </div>
-        <DiceOnGoing ref={onGoingRef} />
-        <div className="roll-action">
-          <ButtonRoll />
-        </div>
+        <GameMemoized />
       </StateContext.Provider>
     </DispatchContext.Provider>
   )
 }
+
+const Game = () => {
+  return (
+    <>
+      <GameEffects />
+      <Header />
+      {/* <CardArea /> */}
+      <div className="dice-kept-and-skulls">
+        <DiceKept />
+        <SkullIsland />
+      </div>
+      <DiceOnGoing ref={onGoingRef} />
+      <div className="roll-action">
+        <ButtonRoll />
+      </div>
+    </>
+  )
+}
+
+const GameMemoized = React.memo(Game)
