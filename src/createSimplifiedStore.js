@@ -40,6 +40,38 @@ export const createSimplifiedStore = (defaultState, { init = (state) => state, e
       )
     }, [initialState])
 
+    /**
+    IN CASE OF PERF ISSUE BECAUSE TOO MUCH RERENDER:
+
+    checkout https://github.com/facebook/react/issues/15156#issuecomment-474590693
+
+    And just wrap the part that can be memoized into useMemo so that
+    it gets rerendered only if a part of the state changes.
+    It means the functionnal component must declare all self state dependencies and wrap the expensive
+    part with useMemo
+
+    React keep trying to render component children even if this one is memoized as shown
+    in test-manual/rerender/
+
+--- BEFORE ---
+```js
+const Button = () => {
+  const theme = useContext(ThemeContext);
+  return <ExpensiveTree className={theme} />;
+}
+```
+
+--- AFTER ---
+```js
+const Button = () => {
+  const theme = useContext(ThemeContext);
+  return useMemo(() => {
+    return <ExpensiveTree className={theme} />;
+  }, [theme])
+}
+```
+    */
+
     return (
       <DispatchContext.Provider value={dispatch}>
         <StateContext.Provider value={state}>{children}</StateContext.Provider>
