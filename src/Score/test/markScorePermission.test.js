@@ -86,7 +86,11 @@ import { markScorePermissionSelector } from "src/game.selectors.js"
   const actual = markScorePermissionSelector({
     rollIndex: 0,
     card: CARD_ONE_SKULL,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from card
+      { symbol: SYMBOL_SKULL },
+      { symbol: SYMBOL_SKULL },
+    ],
     scoreMarked: false,
   })
   const expected = {
@@ -101,7 +105,12 @@ import { markScorePermissionSelector } from "src/game.selectors.js"
   const actual = markScorePermissionSelector({
     rollIndex: 0,
     card: CARD_TWO_SKULLS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from card
+      { symbol: SYMBOL_SKULL }, // from card
+      { symbol: SYMBOL_SKULL },
+      { symbol: SYMBOL_SKULL },
+    ],
     scoreMarked: false,
   })
   const expected = {
@@ -116,7 +125,12 @@ import { markScorePermissionSelector } from "src/game.selectors.js"
   const actual = markScorePermissionSelector({
     rollIndex: 1,
     card: CARD_TWO_SKULLS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from card
+      { symbol: SYMBOL_SKULL }, // from card
+      { symbol: SYMBOL_SKULL },
+      { symbol: SYMBOL_SKULL },
+    ],
     scoreMarked: false,
   })
   const expected = {

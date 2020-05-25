@@ -7,7 +7,8 @@ import {
 } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
-import { Dice } from "./Dice.jsx"
+import { Dice } from "src/Dice/Dice.jsx"
+import { isDiamondDiceFromCard, isCoinDiceFromCard } from "src/Dice/DiceHelpers.js"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {
@@ -24,7 +25,9 @@ export const DiceKept = () => {
             <Dice
               key={dice.id}
               dice={dice}
-              disabled={!unkeepDiceAllowed}
+              disabled={
+                isDiamondDiceFromCard(dice) || isCoinDiceFromCard(dice) || !unkeepDiceAllowed
+              }
               onClickAction={(dice) => {
                 unkeepDice(dice)
               }}

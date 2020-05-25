@@ -1,8 +1,6 @@
 import {
   isAnimalsCard,
   isPirateCard,
-  isCoinCard,
-  isDiamondCard,
   isTwoSwordsChallengeCard,
   isThreeSwordsChallengeCard,
   isFourSwordsChallengeCard,
@@ -49,14 +47,6 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
       goal: 4,
       gamble: FOUR_SWORDS_CHALLENGE_GAMBLE,
     })
-  }
-
-  if (isDiamondCard(card)) {
-    return computeScoreForSymbols([...symbolArrayFromDiceKept, SYMBOL_DIAMOND], diceKept)
-  }
-
-  if (isCoinCard(card)) {
-    return computeScoreForSymbols([...symbolArrayFromDiceKept, SYMBOL_COIN], diceKept)
   }
 
   if (isAnimalsCard(card)) {

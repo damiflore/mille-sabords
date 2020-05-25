@@ -5,6 +5,10 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
+  CARD_ONE_SKULL,
+  CARD_TWO_SKULLS,
+  CARD_DIAMOND,
+  CARD_COIN,
 } from "src/constants.js"
 
 export const getDiceArray = () => {
@@ -26,17 +30,42 @@ const DICE_ARRAY = [
   { ...diceBaseProperties, id: 8, symbol: SYMBOL_SKULL },
 ]
 
-export const splitSkulls = (dices) => {
-  const withoutSkulls = []
-  const skulls = []
-
-  dices.forEach((dice) => {
-    if (dice.symbol === SYMBOL_SKULL) {
-      skulls.push(dice)
-    } else {
-      withoutSkulls.push(dice)
-    }
-  })
-
-  return { withoutSkulls, skulls }
+export const skullDiceFromOneSkullCard = {
+  ...diceBaseProperties,
+  fromCard: CARD_ONE_SKULL,
+  id: 9,
+  symbol: SYMBOL_SKULL,
 }
+
+export const firstSkullDiceFromTwoSkullsCard = {
+  ...diceBaseProperties,
+  fromCard: CARD_TWO_SKULLS,
+  id: 9,
+  symbol: SYMBOL_SKULL,
+}
+export const secondSkullDiceFromTwoSkullsCard = {
+  ...firstSkullDiceFromTwoSkullsCard,
+  fromCard: CARD_TWO_SKULLS,
+  id: 10,
+}
+
+export const diamondDiceFromCard = {
+  ...diceBaseProperties,
+  fromCard: CARD_DIAMOND,
+  id: 9,
+  symbol: SYMBOL_DIAMOND,
+}
+
+export const coinDiceFromCard = {
+  ...diceBaseProperties,
+  fromCard: CARD_COIN,
+  id: 9,
+  symbol: SYMBOL_COIN,
+}
+
+export const isDiamondDiceFromCard = (dice) => dice.fromCard === CARD_DIAMOND
+
+export const isCoinDiceFromCard = (dice) => dice.fromCard === CARD_COIN
+
+export const isSkullDiceFromCard = (dice) =>
+  dice.fromCard === CARD_ONE_SKULL || dice.fromCard === CARD_TWO_SKULLS

@@ -1,5 +1,6 @@
 import React from "react"
 
+import { useBecomes } from "src/hooks.js"
 import { useGameState } from "src/game.store.js"
 import {
   threeSkullOrMoreInCursedAreaSelector,
@@ -9,12 +10,15 @@ import {
   roundScoreSelector,
 } from "src/game.selectors.js"
 import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
+import { useCardsEffects } from "src/Cards/cards.effects.js"
 
 import { isSwordChallengeCard } from "src/Cards/cards.js"
 
-const { useEffect, useRef } = React
+const { useEffect } = React
 
 export const GameEffects = () => {
+  useCardsEffects()
+
   useCurseDiceEffect()
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
@@ -50,34 +54,20 @@ const useFailSwordChallengeEffect = () => {
   const state = useGameState()
   const { card, scoreMarked } = state
   const markScore = useMarkScore()
+  const swordChallengeCard = isSwordChallengeCard(card)
   const threeSkullsOrMoreInCursedArea = threeSkullOrMoreInCursedAreaSelector(state)
-  const threeSkullsOrMoreInCursedAreaPrevious = usePrevious(threeSkullsOrMoreInCursedArea)
+  const threeSkullsOrMoreInCursedAreaBecomesTrue = useBecomes(
+    (threeSkullsOrMoreInCursedAreaPrevious) =>
+      !threeSkullsOrMoreInCursedAreaPrevious && threeSkullsOrMoreInCursedArea,
+    [threeSkullsOrMoreInCursedArea],
+  )
   const roundScore = roundScoreSelector(state)
 
   useEffect(() => {
-    if (
-      isSwordChallengeCard(card) &&
-      !scoreMarked &&
-      !threeSkullsOrMoreInCursedAreaPrevious &&
-      threeSkullsOrMoreInCursedArea
-    ) {
+    if (swordChallengeCard && !scoreMarked && threeSkullsOrMoreInCursedAreaBecomesTrue) {
       markScore(roundScore)
     }
-  }, [
-    card,
-    scoreMarked,
-    threeSkullsOrMoreInCursedAreaPrevious,
-    threeSkullsOrMoreInCursedArea,
-    roundScore,
-  ])
-}
-
-const usePrevious = (value) => {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
+  }, [swordChallengeCard, scoreMarked, threeSkullsOrMoreInCursedAreaBecomesTrue, roundScore])
 }
 
 // go to skull island if 4 skulls or more on first roll

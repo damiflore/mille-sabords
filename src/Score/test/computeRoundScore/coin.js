@@ -15,6 +15,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
     card: CARD_COIN,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     diceKept: [
+      { symbol: SYMBOL_COIN }, // from the card
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_SWORD },
       { symbol: SYMBOL_PARROT },
@@ -34,6 +35,7 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
     card: CARD_COIN,
     diceCursed: [],
     diceKept: [
+      { symbol: SYMBOL_COIN }, // from the card
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_COIN },
       { symbol: SYMBOL_COIN },

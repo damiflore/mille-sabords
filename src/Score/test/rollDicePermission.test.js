@@ -56,7 +56,9 @@ import {
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_ONE_SKULL,
-    diceCursed: [],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from the card
+    ],
     diceRolled: [{ symbol: SYMBOL_SKULL }],
     rollIndex: 0,
   })
@@ -74,7 +76,10 @@ import {
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
-    diceCursed: [],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from the card
+      { symbol: SYMBOL_SKULL }, // from the card
+    ],
     diceRolled: [skullDice, {}],
     diceUncursedByWitch: skullDice,
     rollIndex: 0,
@@ -91,7 +96,10 @@ import {
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
-    diceCursed: [],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from the card
+      { symbol: SYMBOL_SKULL }, // from the card
+    ],
     rollIndex: 0,
     diceRolled: [0],
   })
@@ -108,7 +116,11 @@ import {
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
-    diceCursed: [0],
+    diceCursed: [
+      { symbol: SYMBOL_SKULL }, // from the card
+      { symbol: SYMBOL_SKULL }, // from the card
+      { symbol: SYMBOL_SKULL },
+    ],
   })
   const expected = {
     allowed: false,

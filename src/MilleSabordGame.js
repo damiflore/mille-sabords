@@ -54,6 +54,7 @@ export const MilleSabordGame = ({ initialState, logLevel = "warn" } = {}) => {
     logger.debug(`sessionStorage has nothing for ${storageKey}`)
     return initialGameState
   })
+  logger.debug("initial state", state)
   const { DispatchContext, StateContext } = gameStore
 
   useEffect(() => {

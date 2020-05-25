@@ -7,7 +7,7 @@ import {
   CARD_NOT_DRAWN,
   SYMBOL_SKULL,
 } from "src/constants.js"
-import { isWitchCard, isChestCard, isOneSkullCard, isTwoSkullsCard } from "src/Cards/cards.js"
+import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 const { useMemo } = React
@@ -77,15 +77,7 @@ export const threeSkullOrMoreInCursedAreaSelector = (state) =>
   skullCountInCursedAreaSelector(state) > 2
 
 export const skullCountInCursedAreaSelector = (state) => {
-  const { card, diceCursed } = state
-  if (isOneSkullCard(card)) {
-    return diceCursed.length + 1
-  }
-
-  if (isTwoSkullsCard(card)) {
-    return diceCursed.length + 2
-  }
-
+  const { diceCursed } = state
   return diceCursed.length
 }
 
