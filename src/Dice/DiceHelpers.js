@@ -17,7 +17,7 @@ export const getDiceArray = () => {
   })
 }
 
-const diceBaseProperties = { x: 0, y: 0 }
+const diceBaseProperties = {}
 
 const DICE_ARRAY = [
   { ...diceBaseProperties, id: 1, symbol: SYMBOL_COIN },

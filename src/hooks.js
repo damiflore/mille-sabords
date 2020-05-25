@@ -13,15 +13,21 @@ export const usePrevious = (value) => {
 
 // https://stackoverflow.com/a/61680184/2634179
 export const useBecomes = (callback, deps) => {
-  const [state, setState] = useState(false)
+  const [becomes, setBecomes] = useState(false)
 
   const argsRef = useRef(null)
   useEffect(() => {
     if (argsRef.current !== null) {
-      setState(callback(...argsRef.current))
+      const returnValue = callback(...argsRef.current)
+      if (returnValue) {
+        // tell outside it becomes true
+        setBecomes(true)
+        // immediatly reset to false
+        setBecomes(false)
+      }
     }
     argsRef.current = deps
   }, deps)
 
-  return state
+  return becomes
 }
