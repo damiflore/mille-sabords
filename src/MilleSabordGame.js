@@ -6,9 +6,9 @@ import { gameStore } from "src/game.store.js"
 import { GameEffects } from "src/game.effects.js"
 
 import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
-import { ButtonRoll } from "./Dice/ButtonRoll.js"
 import { DiceKept } from "./Dice/DiceKept.jsx"
 import { Header } from "./Header/Header.jsx"
+import { Footer } from "./Footer/Footer.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 import { getMixedDeck } from "./Cards/cards.js"
 import { getDiceArray } from "./Dice/DiceHelpers.js"
@@ -82,9 +82,7 @@ const Game = () => {
         <SkullIsland />
       </div>
       <DiceOnGoing ref={onGoingRef} />
-      <div className="roll-action">
-        <ButtonRoll />
-      </div>
+      <Footer />
     </>
   )
 }

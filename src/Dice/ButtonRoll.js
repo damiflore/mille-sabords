@@ -11,13 +11,15 @@ export const ButtonRoll = () => {
 
   if (rollDicePermission.allowed) {
     return (
-      <button
-        onClick={() => {
-          roll(state)
-        }}
-      >
-        Roll
-      </button>
+      <div className="roll-action">
+        <button
+          onClick={() => {
+            roll(state)
+          }}
+        >
+          Roll
+        </button>
+      </div>
     )
   }
 
@@ -26,12 +28,6 @@ export const ButtonRoll = () => {
   }
 
   return null
-  // return (
-  //   <>
-  //     <button disabled={true}>Roll</button>
-  //     <span>{`(${rollDicePermission.reason})`}</span>
-  //   </>
-  // )
 }
 
 const useRoll = createGameAction((state) => {

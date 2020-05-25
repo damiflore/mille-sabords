@@ -1,8 +1,10 @@
 import React from "react"
+
 import { useGameState } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
+
 import { cardColors, isSwordChallengeCard } from "src/Cards/cards.js"
-import { ButtonNextRound } from "src/ButtonNextRound.js"
+import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
 
 export const Header = () => {
   return (
