@@ -7,13 +7,7 @@ import {
   CARD_NOT_DRAWN,
   SYMBOL_SKULL,
 } from "src/constants.js"
-import {
-  isWitchCard,
-  isChestCard,
-  isSwordChallengeCard,
-  isOneSkullCard,
-  isTwoSkullsCard,
-} from "src/Cards/cards.js"
+import { isWitchCard, isChestCard, isOneSkullCard, isTwoSkullsCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 const { useMemo } = React
@@ -132,29 +126,6 @@ export const unkeepDiceAllowedSelector = (state) => {
     return false
   }
   return true
-}
-
-export const roundLostSelector = (state) => {
-  const { isOnSkullIsland } = state
-  if (isOnSkullIsland) {
-    return true
-  }
-
-  if (threeSkullOrMoreInCursedAreaSelector(state)) {
-    return true
-  }
-
-  if (swordChallendeFailedSelector(state)) {
-    return true
-  }
-
-  return false
-}
-
-const swordChallendeFailedSelector = (state) => {
-  const { card } = state
-  if (isSwordChallengeCard(card) && !markScorePermissionSelector(state).allowed) return true
-  return false
 }
 
 export const markScorePermissionSelector = (state) => {

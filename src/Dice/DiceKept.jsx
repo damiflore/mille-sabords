@@ -1,7 +1,10 @@
 import React from "react"
 
 import { useGameState } from "src/game.store.js"
-import { unkeepDiceAllowedSelector, roundLostSelector } from "src/game.selectors.js"
+import {
+  unkeepDiceAllowedSelector,
+  threeSkullOrMoreInCursedAreaSelector,
+} from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
 import { Dice } from "./Dice.jsx"
@@ -43,7 +46,7 @@ export const DiceKept = () => {
 const CursedCover = () => {
   const state = useGameState()
 
-  if (!roundLostSelector(state)) {
+  if (!threeSkullOrMoreInCursedAreaSelector(state)) {
     return null
   }
 
