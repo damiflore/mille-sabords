@@ -57,7 +57,7 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
     card: CARD_TWO_SKULLS,
     diceCursed: [],
     rollIndex: 0,
-    diceInGame: [0],
+    diceRolled: [0],
   })
   const expected = {
     allowed: false,

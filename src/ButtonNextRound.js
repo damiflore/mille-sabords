@@ -15,17 +15,15 @@ export const ButtonNextRound = () => {
 }
 
 const useNextRound = createGameAction((state) => {
-  const { dices } = state
   return {
     ...state,
-    diceOffGame: dices,
-    diceInGame: [],
+    diceUncursedByWitch: null,
+    rollIndex: -1,
+    diceRolled: [],
     diceKept: [],
     diceCursed: [],
-    rollIndex: -1,
     scoreMarked: false,
     cardDrawn: false,
-    cardEffectUsed: false,
     isOnSkullIsland: false,
   }
 })

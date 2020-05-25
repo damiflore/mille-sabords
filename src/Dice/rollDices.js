@@ -15,31 +15,34 @@ export const rollDices = (dices, { diceParentElement }) => {
   const yMin = 0
   const yMax = clientRect.height - diceSize
 
-  dices.forEach((dice, index) => {
-    rollDice({
-      dice,
-      index,
-      dices,
+  const dicesRolled = []
+  dices.forEach((dice) => {
+    const diceRolled = rollDice(dice, {
+      dicesRolled,
       xMin,
       xMax,
       yMin,
       yMax,
     })
+    dicesRolled.push(diceRolled)
   })
+  return dicesRolled
 }
 
-const rollDice = ({ dice, index, dices, xMin, xMax, yMin, yMax }) => {
-  const { x, y } = getRandomCollisionFreeDicePosition(dices.slice(0, index), {
+const rollDice = (dice, { dicesRolled, xMin, xMax, yMin, yMax }) => {
+  const { x, y } = getRandomCollisionFreeDicePosition(dicesRolled, {
     xMin,
     xMax,
     yMin,
     yMax,
   })
-  dice.x = x
-  dice.y = y
-  dice.rotation = getDiceRotation()
-
-  dice.symbol = getDiceRandomSymbol()
+  return {
+    ...dice,
+    symbol: getDiceRandomSymbol(),
+    x,
+    y,
+    rotation: getDiceRotation(),
+  }
 }
 
 const getRandomCollisionFreeDicePosition = (dices, { xMin, xMax, yMin, yMax }) => {

@@ -23,13 +23,11 @@ const defaultState = {
   cardDeck: getMixedDeck(),
   cardsUsed: [],
   card: null,
-  cardEffectUsed: false, // TOOD: remove this it can be tested with diceUncursedByWitch !== null
   cardDrawn: false,
   rollIndex: -1,
   dices,
   diceUncursedByWitch: null,
-  diceOffGame: dices,
-  diceInGame: [],
+  diceRolled: [],
   diceCursed: [],
   diceKept: [],
 }
@@ -46,6 +44,10 @@ export const MilleSabordGame = ({ initialState, logLevel = "warn" } = {}) => {
   const [state, dispatch] = gameStore.useReducer(initialGameState, () => {
     if (sessionStorage.hasOwnProperty(storageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(storageKey))
+      // TODO: when we will update the game
+      // previously stored data might be in an unexpected format
+      // we should also store a kind of version to be sure we are compatible
+      // with the data we try to restore
       logger.debug(`read sessionStorage ${storageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }

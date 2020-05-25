@@ -33,15 +33,23 @@ export const DiceKept = () => {
         <div className="top-right-corner"></div>
         <div className="bottom-left-corner"></div>
         <div className="bottom-right-corner"></div>
-        {roundLostSelector(state) && (
-          <>
-            <div className="cursed-cover">
-              <img src={`src/Dice/assets/cursed-cover.png`} alt="cursed-cover" />
-            </div>
-          </>
-        )}
+        <CursedCover />
       </div>
       <RoundScore />
+    </div>
+  )
+}
+
+const CursedCover = () => {
+  const state = useGameState()
+
+  if (!roundLostSelector(state)) {
+    return null
+  }
+
+  return (
+    <div className="cursed-cover">
+      <img src={`src/Dice/assets/cursed-cover.png`} alt="cursed-cover" />
     </div>
   )
 }

@@ -35,28 +35,24 @@ export const ButtonRoll = () => {
 }
 
 const useRoll = createGameAction((state) => {
-  const { rollIndex, diceOffGame } = state
+  const { rollIndex, dices } = state
 
   if (rollIndex === -1) {
-    rollDices(diceOffGame, {
-      diceParentElement: onGoingRef.current.querySelector(".area"),
-    })
-
     return {
       ...state,
       rollIndex: 0,
-      diceInGame: [...diceOffGame],
-      diceOffGame: [],
+      diceRolled: rollDices(dices, {
+        diceParentElement: onGoingRef.current.querySelector(".area"),
+      }),
     }
   }
 
-  const { diceInGame } = state
-  rollDices(diceInGame, {
-    diceParentElement: onGoingRef.current.querySelector(".area"),
-  })
-
+  const { diceRolled } = state
   return {
     ...state,
     rollIndex: rollIndex + 1,
+    diceRolled: rollDices(diceRolled, {
+      diceParentElement: onGoingRef.current.querySelector(".area"),
+    }),
   }
 })

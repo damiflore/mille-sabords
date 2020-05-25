@@ -7,14 +7,19 @@ import {
   CARD_NOT_DRAWN,
   SYMBOL_SKULL,
 } from "src/constants.js"
-import { countSkulls } from "src/Dice/countSkulls.js"
-import { isWitchCard, isChestCard, isSwordChallengeCard } from "src/Cards/cards.js"
+import {
+  isWitchCard,
+  isChestCard,
+  isSwordChallengeCard,
+  isOneSkullCard,
+  isTwoSkullsCard,
+} from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 const { useMemo } = React
 
 export const rollDicePermissionSelector = (state) => {
-  const { rollIndex, diceInGame, cardDrawn, scoreMarked, card, diceCursed } = state
+  const { rollIndex, diceRolled, cardDrawn, scoreMarked } = state
 
   if (!cardDrawn) {
     return {
@@ -36,24 +41,23 @@ export const rollDicePermissionSelector = (state) => {
     }
   }
 
-  if (countSkulls({ card, diceCursed }) > 2) {
+  if (threeSkullOrMoreInCursedAreaSelector(state)) {
     return {
       allowed: false,
       reason: HAS_THREE_SKULLS_OR_MORE,
     }
   }
 
-  const skullsInGame = skullsInGameSelector(state)
-  if (skullsInGame.length) {
+  if (hasSkullsInRolledAreaSelector(state)) {
     return {
       allowed: false,
       // reason is that dice are being cursed
-      // they will move from diceInGame to diceCursed
+      // they will move from diceRolled to diceCursed
       reason: "",
     }
   }
 
-  if (diceInGame.length < 2) {
+  if (diceRolled.length < 2) {
     return {
       allowed: false,
       reason: NOT_ENOUGH_DICE_TO_ROLL,
@@ -65,13 +69,34 @@ export const rollDicePermissionSelector = (state) => {
   }
 }
 
-export const skullsInGameSelector = (state) => {
-  const { diceInGame, diceUncursedByWitch } = state
-  return diceInGame.filter((dice) => dice.symbol === SYMBOL_SKULL && dice !== diceUncursedByWitch)
+export const remainingSpotInCursedAreaSelector = (state) =>
+  3 - skullCountInCursedAreaSelector(state)
+
+export const hasSkullsInRolledAreaSelector = (state) => skullsInRolledAreaSelector(state).length > 0
+
+export const skullsInRolledAreaSelector = (state) => {
+  const { diceRolled, diceUncursedByWitch } = state
+  return diceRolled.filter((dice) => dice.symbol === SYMBOL_SKULL && dice !== diceUncursedByWitch)
+}
+
+export const threeSkullOrMoreInCursedAreaSelector = (state) =>
+  skullCountInCursedAreaSelector(state) > 2
+
+export const skullCountInCursedAreaSelector = (state) => {
+  const { card, diceCursed } = state
+  if (isOneSkullCard(card)) {
+    return diceCursed.length + 1
+  }
+
+  if (isTwoSkullsCard(card)) {
+    return diceCursed.length + 2
+  }
+
+  return diceCursed.length
 }
 
 export const canRemoveSkullSelector = (state) => {
-  const { cardEffectUsed, card, diceCursed } = state
+  const { diceUncursedByWitch, card, diceCursed } = state
 
   if (!isWitchCard(card)) {
     return false
@@ -79,33 +104,31 @@ export const canRemoveSkullSelector = (state) => {
   if (diceCursed.length > 2) {
     return false
   }
-  if (cardEffectUsed) {
+  if (diceUncursedByWitch) {
     return false
   }
   return true
 }
 
 export const keepDiceAllowedSelector = (state) => {
-  const { card, diceCursed, scoreMarked } = state
+  const { scoreMarked } = state
 
   if (scoreMarked) {
     return false
   }
-  const skullCount = countSkulls({ card, diceCursed })
-  if (skullCount > 2) {
+  if (threeSkullOrMoreInCursedAreaSelector(state)) {
     return false
   }
   return true
 }
 
 export const unkeepDiceAllowedSelector = (state) => {
-  const { card, diceCursed, scoreMarked } = state
+  const { scoreMarked } = state
 
   if (scoreMarked) {
     return false
   }
-  const skullCount = countSkulls({ card, diceCursed })
-  if (skullCount > 2) {
+  if (threeSkullOrMoreInCursedAreaSelector(state)) {
     return false
   }
   return true
@@ -113,12 +136,18 @@ export const unkeepDiceAllowedSelector = (state) => {
 
 export const roundLostSelector = (state) => {
   const { isOnSkullIsland } = state
-  if (
-    markScorePermissionSelector(state).reason === HAS_THREE_SKULLS_OR_MORE ||
-    isOnSkullIsland ||
-    swordChallendeFailedSelector(state)
-  )
+  if (isOnSkullIsland) {
     return true
+  }
+
+  if (threeSkullOrMoreInCursedAreaSelector(state)) {
+    return true
+  }
+
+  if (swordChallendeFailedSelector(state)) {
+    return true
+  }
+
   return false
 }
 
@@ -129,7 +158,7 @@ const swordChallendeFailedSelector = (state) => {
 }
 
 export const markScorePermissionSelector = (state) => {
-  const { rollIndex, scoreMarked, card, diceCursed } = state
+  const { rollIndex, scoreMarked, card } = state
 
   if (scoreMarked) {
     return {
@@ -137,8 +166,7 @@ export const markScorePermissionSelector = (state) => {
     }
   }
 
-  const skullCount = countSkulls({ card, diceCursed })
-  if (skullCount > 2) {
+  if (threeSkullOrMoreInCursedAreaSelector(state)) {
     if (isChestCard(card) && rollIndex > 0) {
       return {
         allowed: true,
