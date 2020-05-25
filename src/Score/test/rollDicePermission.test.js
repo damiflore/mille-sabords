@@ -5,8 +5,9 @@ import {
   HAS_THREE_SKULLS_OR_MORE,
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
+  SYMBOL_SKULL,
 } from "src/constants.js"
-import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
+import { CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/Cards/cards.js"
 
 // card not drawn
 {
@@ -44,7 +45,41 @@ import { CARD_TWO_SKULLS } from "src/Cards/cards.js"
   })
   const expected = {
     allowed: true,
+  }
+  assert({ actual, expected })
+}
+
+// skulls in rolled area
+{
+  const actual = rollDicePermissionSelector({
+    cardDrawn: true,
+    scoreMarked: false,
+    card: CARD_ONE_SKULL,
+    diceCursed: [],
+    diceRolled: [{ symbol: SYMBOL_SKULL }],
+    rollIndex: 0,
+  })
+  const expected = {
+    allowed: false,
     reason: "",
+  }
+  assert({ actual, expected })
+}
+
+// skulls in rolled area (but uncursed by witch)
+{
+  const skullDice = { symbol: SYMBOL_SKULL }
+  const actual = rollDicePermissionSelector({
+    cardDrawn: true,
+    scoreMarked: false,
+    card: CARD_TWO_SKULLS,
+    diceCursed: [],
+    diceRolled: [skullDice, {}],
+    diceUncursedByWitch: skullDice,
+    rollIndex: 0,
+  })
+  const expected = {
+    allowed: true,
   }
   assert({ actual, expected })
 }
