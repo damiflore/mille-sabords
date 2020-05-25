@@ -11,8 +11,8 @@ export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => (
     style={{
       width: diceSize,
       height: diceSize,
-      background: dice.symbol === SYMBOL_SKULL ? "black" : "#e6e6e6",
-      color: dice.symbol === SYMBOL_SKULL ? "black" : "#e6e6e6",
+      background: dice.symbol === SYMBOL_SKULL ? "black" : "#fcfcfc",
+      color: dice.symbol === SYMBOL_SKULL ? "black" : "#fcfcfc",
       borderColor: dice.symbol === SYMBOL_SKULL ? "black" : "#b9b9b9",
       ...specificStyle,
     }}

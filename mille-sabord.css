@@ -3,6 +3,7 @@
 @import "./src/Cards/cards.css";
 @import "./src/Dice/dice.css";
 @import "./src/SkullIsland/skull-island.css";
+@import "./src/Footer/footer.css";
 
 body {
   font-family: arial, sans;
@@ -13,7 +14,7 @@ body {
 #mille-sabord-container {
   background-image: url("src/Dice/assets/wood.jpg");
   color: white;
-  padding: 20px;
+  padding: 15px;
   max-width: 680px;
   margin: 0 auto;
   overflow: hidden;
@@ -28,10 +29,6 @@ button {
 }
 button:disabled:hover {
   cursor: default;
-}
-button:hover {
-  cursor: pointer;
-  background: #e4dfd2;
 }
 button:focus {
   outline: none;

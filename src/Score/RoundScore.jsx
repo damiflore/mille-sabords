@@ -20,6 +20,7 @@ const ScoreDisplay = () => {
 
   return (
     <>
+      <div className="bonds"></div>
       <div className="round-score">{roundScore}</div>
     </>
   )

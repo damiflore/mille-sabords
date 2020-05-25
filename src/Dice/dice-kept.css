@@ -70,7 +70,7 @@
   position: relative;
   left: -24px;
   top: -213px;
-  animation: closeBox 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: closeBox 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
   transform: perspective(1200px) rotateX(90deg);
   transform-origin: top;
 }

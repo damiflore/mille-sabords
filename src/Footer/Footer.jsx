@@ -27,11 +27,19 @@ const ButtonMarkScore = ({ onClick }) => {
   const state = useGameState()
   const { rollIndex } = state
   const markScorePermission = markScorePermissionSelector(state)
+  const roundScore = roundScoreSelector(state)
+
+  const sign = roundScore < 0 ? "-" : "+"
 
   if (markScorePermission.allowed && rollIndex !== -1)
     return (
       <div className="collect-action">
-        <button onClick={onClick}>Collect</button>
+        <button onClick={onClick}>
+          <span>Collect</span>
+          <span className="score">
+            {sign} {Math.abs(roundScore)}
+          </span>
+        </button>
       </div>
     )
 
