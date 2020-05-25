@@ -4,8 +4,6 @@ const { useEffect, useRef } = React
 
 // https://stackoverflow.com/a/61680184/2634179
 export const useBecomes = (callback, deps) => {
-  const previousDeps = usePrevious(deps)
-
   const mountedRef = useRef(false)
   useEffect(() => {
     if (mountedRef.current === false) {
@@ -13,10 +11,15 @@ export const useBecomes = (callback, deps) => {
     }
   })
 
-  return mountedRef.current ? Boolean(callback(...previousDeps)) : false
+  const depsRef = useRef(deps)
+  useEffect(() => {
+    depsRef.current = deps
+  }, deps)
+
+  return mountedRef.current ? Boolean(callback(...depsRef.current)) : false
 }
 
-const usePrevious = (value) => {
+export const usePrevious = (value) => {
   const ref = useRef(value)
   useEffect(() => {
     ref.current = value

@@ -1,14 +1,12 @@
 import React from "react"
 
-const { createContext, useReducer: useReducerReact, useContext } = React
+const { createContext, useContext, useReducer, useEffect } = React
 
-export const createSimplifiedStore = () => {
+export const createSimplifiedStore = (defaultState, { init = (state) => state, effect } = {}) => {
   const StateContext = createContext(null)
   const DispatchContext = createContext(null)
 
   const reducer = (state, action) => action.reducer(state, ...action.args)
-
-  const useReducer = (initialValue, init) => useReducerReact(reducer, initialValue, init)
 
   const useState = () => useContext(StateContext)
 
@@ -22,13 +20,38 @@ export const createSimplifiedStore = () => {
   // pas pour le moment
   const createAction = (actionReducer) => createStoreAction({ useDispatch }, actionReducer)
 
+  const ContextProvider = ({ initialState, children }) => {
+    const [state, dispatch] = useReducer(reducer, defaultState, () => init(defaultState))
+
+    if (effect) {
+      useEffect(() => effect(state), [state])
+    }
+
+    useEffect(() => {
+      if (!initialState) return
+      dispatch(
+        {
+          reducer: (state) => {
+            return { ...state, ...initialState }
+          },
+          args: [],
+        },
+        [initialState],
+      )
+    }, [initialState])
+
+    return (
+      <DispatchContext.Provider value={dispatch}>
+        <StateContext.Provider value={state}>{children}</StateContext.Provider>
+      </DispatchContext.Provider>
+    )
+  }
+
   return {
     createAction,
-    useReducer,
     useState,
     useDispatch,
-    StateContext,
-    DispatchContext,
+    ContextProvider,
   }
 }
 

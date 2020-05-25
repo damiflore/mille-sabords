@@ -1,8 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
-import { createLogger } from "@jsenv/logger"
 
-import { gameStore } from "src/game.store.js"
+import { GameContextProvider } from "src/game.store.js"
 import { GameEffects } from "src/game.effects.js"
 
 import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
@@ -10,64 +9,16 @@ import { DiceKept } from "./Dice/DiceKept.jsx"
 import { Header } from "./Header/Header.jsx"
 import { Footer } from "./Footer/Footer.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
-import { getMixedDeck } from "./Cards/cards.js"
-import { getDiceArray } from "./Dice/DiceHelpers.js"
 
-const { createRef, useEffect } = React
-
-const dices = getDiceArray()
-const defaultState = {
-  totalScore: 0,
-  scoreMarked: false,
-  isOnSkullIsland: false,
-  cardDeck: getMixedDeck(),
-  cardsUsed: [],
-  card: null,
-  cardDrawn: false,
-  rollIndex: -1,
-  dices,
-  diceUncursedByWitch: null,
-  diceRolled: [],
-  diceCursed: [],
-  diceKept: [],
-}
+const { createRef } = React
 
 export const onGoingRef = createRef()
 
-export const MilleSabordGame = ({ initialState, logLevel = "warn" } = {}) => {
-  const logger = createLogger({ logLevel })
-  const storageKey = "game"
-  const initialGameState = {
-    ...defaultState,
-    ...initialState,
-  }
-  const [state, dispatch] = gameStore.useReducer(initialGameState, () => {
-    if (sessionStorage.hasOwnProperty(storageKey)) {
-      const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(storageKey))
-      // TODO: when we will update the game
-      // previously stored data might be in an unexpected format
-      // we should also store a kind of version to be sure we are compatible
-      // with the data we try to restore
-      logger.debug(`read sessionStorage ${storageKey} = `, valueFromSessionStorage)
-      return valueFromSessionStorage
-    }
-    logger.debug(`sessionStorage has nothing for ${storageKey}`)
-    return initialGameState
-  })
-  logger.debug("initial state", state)
-  const { DispatchContext, StateContext } = gameStore
-
-  useEffect(() => {
-    logger.debug(`write sessionStorage ${storageKey} = `, state)
-    sessionStorage.setItem(storageKey, JSON.stringify(state))
-  }, [state])
-
+export const MilleSabordGame = ({ gameState }) => {
   return (
-    <DispatchContext.Provider value={dispatch}>
-      <StateContext.Provider value={state}>
-        <GameMemoized />
-      </StateContext.Provider>
-    </DispatchContext.Provider>
+    <GameContextProvider initialState={gameState}>
+      <GameMemoized />
+    </GameContextProvider>
   )
 }
 
@@ -87,4 +38,4 @@ const Game = () => {
   )
 }
 
-const GameMemoized = React.memo(Game)
+const GameMemoized = Game
