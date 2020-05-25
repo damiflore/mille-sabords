@@ -6,8 +6,8 @@ import {
   SYMBOL_SKULL,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
+  CARD_CHEST,
 } from "src/constants.js"
-import { CARD_CHEST } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with nothing

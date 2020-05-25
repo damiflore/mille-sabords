@@ -70,11 +70,9 @@ export const useSendToSkullIsland = createGameAction((state) => {
 
 export const useShuffleDeck = createGameAction((state) => {
   const { cardsUsed } = state
-  const newDeck = cardsUsed.slice()
-  mixDeck(newDeck)
   return {
     ...state,
     cardsUsed: [],
-    cardDeck: newDeck,
+    cardDeck: mixDeck(cardsUsed),
   }
 })

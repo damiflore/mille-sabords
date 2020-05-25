@@ -1,3 +1,17 @@
+import {
+  CARD_PIRATE,
+  CARD_WITCH,
+  CARD_CHEST,
+  CARD_ANIMALS,
+  CARD_DIAMOND,
+  CARD_COIN,
+  CARD_ONE_SKULL,
+  CARD_TWO_SKULLS,
+  CARD_TWO_SWORDS_CHALLENGE,
+  CARD_THREE_SWORDS_CHALLENGE,
+  CARD_FOUR_SWORDS_CHALLENGE,
+} from "src/constants.js"
+
 export const getMixedDeck = () => {
   return mixDeck(createInitialDeck())
 }
@@ -32,8 +46,9 @@ export const createDeck = (repartition) => {
 }
 
 export const mixDeck = (deck) => {
-  for (var i = 0; i < 100; i++) swapTwoCards(deck)
-  return deck
+  const deckMixed = [...deck]
+  for (var i = 0; i < 100; i++) swapTwoCards(deckMixed)
+  return deckMixed
 }
 
 const swapTwoCards = (deck) => {
@@ -49,6 +64,7 @@ const swapTwoCards = (deck) => {
 
 const randomIndex = (arrayLength) => Math.floor(Math.random() * arrayLength)
 
+// in theory they should be selectors
 export const isPirateCard = (card) => card === CARD_PIRATE
 export const isWitchCard = (card) => card === CARD_WITCH
 export const isChestCard = (card) => card === CARD_CHEST
@@ -64,18 +80,6 @@ export const isSwordChallengeCard = (card) =>
   isTwoSwordsChallengeCard(card) ||
   isThreeSwordsChallengeCard(card) ||
   isFourSwordsChallengeCard(card)
-
-export const CARD_PIRATE = "pirate"
-export const CARD_WITCH = "witch"
-export const CARD_CHEST = "chest"
-export const CARD_ANIMALS = "animals"
-export const CARD_DIAMOND = "diamond"
-export const CARD_COIN = "coin"
-export const CARD_ONE_SKULL = "1skull"
-export const CARD_TWO_SKULLS = "2skulls"
-export const CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge"
-export const CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge"
-export const CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge"
 
 export const TWO_SWORDS_CHALLENGE_GAMBLE = 300
 export const THREE_SWORDS_CHALLENGE_GAMBLE = 500

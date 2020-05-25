@@ -1,6 +1,12 @@
 import { assert } from "@jsenv/assert"
-import { SYMBOL_SKULL, HAS_THREE_SKULLS_OR_MORE } from "src/constants.js"
-import { CARD_ONE_SKULL, CARD_ANIMALS, CARD_CHEST, CARD_TWO_SKULLS } from "src/Cards/cards.js"
+import {
+  SYMBOL_SKULL,
+  HAS_THREE_SKULLS_OR_MORE,
+  CARD_ONE_SKULL,
+  CARD_ANIMALS,
+  CARD_CHEST,
+  CARD_TWO_SKULLS,
+} from "src/constants.js"
 import { markScorePermissionSelector } from "src/game.selectors.js"
 
 // with 3 skulls

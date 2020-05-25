@@ -6,8 +6,9 @@ import {
   ROUND_NOT_STARTED,
   CARD_NOT_DRAWN,
   SYMBOL_SKULL,
+  CARD_TWO_SKULLS,
+  CARD_ONE_SKULL,
 } from "src/constants.js"
-import { CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/Cards/cards.js"
 
 // card not drawn
 {

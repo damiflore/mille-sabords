@@ -6,8 +6,8 @@ import {
   SYMBOL_SKULL,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
+  CARD_ANIMALS,
 } from "src/constants.js"
-import { CARD_ANIMALS } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with 1 coin and 1 diamond
