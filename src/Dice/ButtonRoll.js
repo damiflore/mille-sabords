@@ -1,7 +1,7 @@
 import React from "react"
 import { useGameState, createGameAction } from "src/game.store.js"
 import { rollDiceAllowedSelector } from "src/game.selectors.js"
-import { onGoingRef } from "src/MilleSabordGame.js"
+import { diceRolledAreaElementRef } from "src/MilleSabordGame.js"
 import { rollDices } from "src/Dice/rollDices.js"
 
 export const ButtonRoll = () => {
@@ -34,7 +34,7 @@ const useRoll = createGameAction((state) => {
       ...state,
       rollIndex: 0,
       diceRolled: rollDices(dices, {
-        diceParentElement: onGoingRef.current.querySelector(".area"),
+        diceParentElement: diceRolledAreaElementRef.current.querySelector(".area"),
       }),
     }
   }
@@ -44,7 +44,7 @@ const useRoll = createGameAction((state) => {
     ...state,
     rollIndex: rollIndex + 1,
     diceRolled: rollDices(diceRolled, {
-      diceParentElement: onGoingRef.current.querySelector(".area"),
+      diceParentElement: diceRolledAreaElementRef.current.querySelector(".area"),
     }),
   }
 })

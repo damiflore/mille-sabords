@@ -10,32 +10,29 @@ import { Header } from "./Header/Header.jsx"
 import { Footer } from "./Footer/Footer.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 
-const { createRef } = React
+const { createRef, useMemo } = React
 
-export const onGoingRef = createRef()
+export const diceRolledAreaElementRef = createRef()
 
 export const MilleSabordGame = ({ gameState }) => {
+  const GameMemoized = useMemo(() => {
+    return (
+      <>
+        <GameEffects />
+        <Header />
+        <div className="dice-kept-and-skulls">
+          <DiceKept />
+          <SkullIsland />
+        </div>
+        <DiceOnGoing ref={diceRolledAreaElementRef} />
+        <Footer />
+      </>
+    )
+  })
+
   return (
     <GameContextProvider initialState={gameState}>
       <GameMemoized />
     </GameContextProvider>
   )
 }
-
-const Game = () => {
-  return (
-    <>
-      <GameEffects />
-      <Header />
-      {/* <CardArea /> */}
-      <div className="dice-kept-and-skulls">
-        <DiceKept />
-        <SkullIsland />
-      </div>
-      <DiceOnGoing ref={onGoingRef} />
-      <Footer />
-    </>
-  )
-}
-
-const GameMemoized = Game
