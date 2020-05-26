@@ -7,6 +7,8 @@ import {
   TWO_SWORDS_CHALLENGE_GAMBLE,
   THREE_SWORDS_CHALLENGE_GAMBLE,
   FOUR_SWORDS_CHALLENGE_GAMBLE,
+  isCoinCard,
+  isDiamondCard,
 } from "src/Cards/cards.js"
 import {
   SYMBOL_DIAMOND,
@@ -23,7 +25,7 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
     if (!scoreMarked && !markScoreAllowed) {
       return -TWO_SWORDS_CHALLENGE_GAMBLE
     }
-    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
       goal: 2,
       gamble: TWO_SWORDS_CHALLENGE_GAMBLE,
     })
@@ -33,7 +35,7 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
     if (!scoreMarked && !markScoreAllowed) {
       return -THREE_SWORDS_CHALLENGE_GAMBLE
     }
-    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
       goal: 3,
       gamble: THREE_SWORDS_CHALLENGE_GAMBLE,
     })
@@ -43,7 +45,7 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
     if (!scoreMarked && !markScoreAllowed) {
       return -FOUR_SWORDS_CHALLENGE_GAMBLE
     }
-    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, diceKept, {
+    return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
       goal: 4,
       gamble: FOUR_SWORDS_CHALLENGE_GAMBLE,
     })
@@ -52,25 +54,28 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
   if (isAnimalsCard(card)) {
     return computeScoreForSymbols(
       symbolArrayFromDiceKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
-      diceKept,
     )
   }
 
   if (isPirateCard(card)) {
-    return computeScoreForSymbols(symbolArrayFromDiceKept, diceKept) * 2
+    return computeScoreForSymbols(symbolArrayFromDiceKept) * 2
   }
 
-  return computeScoreForSymbols(symbolArrayFromDiceKept, diceKept)
+  if (isCoinCard(card) || isDiamondCard(card)) {
+    return computeScoreForSymbols(symbolArrayFromDiceKept, 9)
+  }
+
+  return computeScoreForSymbols(symbolArrayFromDiceKept)
 }
 
 const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
 
 const diceToSymbol = (dice) => dice.symbol
 
-const computeScoreForSwordChallenge = (symbolArray, diceKept, { goal, gamble }) => {
+const computeScoreForSwordChallenge = (symbolArray, { goal, gamble }) => {
   const swordChallengeAchieved = countSymbol(symbolArray, SYMBOL_SWORD) >= goal
   if (swordChallengeAchieved) {
-    return computeScoreForSymbols(symbolArray, diceKept) + gamble
+    return computeScoreForSymbols(symbolArray) + gamble
   }
   return -gamble
 }
@@ -79,8 +84,8 @@ const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
 }
 
-const computeScoreForSymbols = (symbolArray, diceKept) => {
-  const perfectEnabled = diceKept.length === 8
+const computeScoreForSymbols = (symbolArray, perfectCount = 8) => {
+  const perfectEnabled = symbolArray.length === perfectCount
 
   let score = 0
   let usefullSymbol = 0
