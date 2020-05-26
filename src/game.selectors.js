@@ -41,8 +41,10 @@ export const remainingSpotInCursedAreaSelector = (state) =>
 export const hasSkullsInRolledAreaSelector = (state) => skullsInRolledAreaSelector(state).length > 0
 
 export const skullsInRolledAreaSelector = (state) => {
-  const { diceRolled, diceUncursedByWitch } = state
-  return diceRolled.filter((dice) => dice.symbol === SYMBOL_SKULL && dice !== diceUncursedByWitch)
+  const { diceRolled, witchUncursedDiceId } = state
+  return diceRolled.filter(
+    (dice) => dice.symbol === SYMBOL_SKULL && dice.id !== witchUncursedDiceId,
+  )
 }
 
 export const threeSkullOrMoreInCursedAreaSelector = (state) =>
@@ -54,7 +56,7 @@ export const skullCountInCursedAreaSelector = (state) => {
 }
 
 export const removeSkullAllowedSelector = (state) => {
-  const { diceUncursedByWitch, card, diceCursed } = state
+  const { witchUncursedDiceId, card, diceCursed } = state
   if (!isWitchCard(card)) {
     return false
   }
@@ -63,7 +65,7 @@ export const removeSkullAllowedSelector = (state) => {
     return false
   }
 
-  if (diceUncursedByWitch) {
+  if (witchUncursedDiceId) {
     return false
   }
 

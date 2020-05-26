@@ -19,6 +19,9 @@ export const getDiceArray = () => {
 
 const diceBaseProperties = {}
 
+// Don't use an id: 0
+// Otherwise if(witchUncursedDiceId) would return false and we would have to check
+// if (typeof witchUncursedDiceId === 'number')
 const DICE_ARRAY = [
   { ...diceBaseProperties, id: 1, symbol: SYMBOL_COIN },
   { ...diceBaseProperties, id: 2, symbol: SYMBOL_DIAMOND },

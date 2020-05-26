@@ -13,7 +13,7 @@ const defaultState = {
   cardDrawn: false,
   rollIndex: -1,
   dices: getDiceArray(),
-  diceUncursedByWitch: null,
+  witchUncursedDiceId: undefined,
   diceRolled: [],
   diceCursed: [],
   diceKept: [],

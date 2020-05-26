@@ -26,7 +26,7 @@ export const useUncurseDice = createGameAction((state, dice) => {
   const { diceCursed, diceRolled } = state
   return {
     ...state,
-    diceUncursedByWitch: dice,
+    witchUncursedDiceId: dice.id,
     diceCursed: diceCursed.filter((diceCandidate) => diceCandidate !== dice),
     diceRolled: [...diceRolled, dice],
   }

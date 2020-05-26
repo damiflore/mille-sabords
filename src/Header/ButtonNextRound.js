@@ -17,7 +17,7 @@ export const ButtonNextRound = () => {
 const useStartNextRound = createGameAction((state) => {
   return {
     ...state,
-    diceUncursedByWitch: null,
+    witchUncursedDiceId: null,
     rollIndex: -1,
     diceRolled: [],
     diceKept: [],

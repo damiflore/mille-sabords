@@ -52,7 +52,7 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
 
 // skulls in rolled area (but uncursed by witch)
 {
-  const skullDice = { symbol: SYMBOL_SKULL }
+  const skullDice = { id: 1, symbol: SYMBOL_SKULL }
   const actual = rollDiceAllowedSelector({
     cardDrawn: true,
     scoreMarked: false,
@@ -62,7 +62,7 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
       { symbol: SYMBOL_SKULL }, // from the card
     ],
     diceRolled: [skullDice, {}],
-    diceUncursedByWitch: skullDice,
+    witchUncursedDiceId: skullDice.id,
     rollIndex: 0,
   })
   const expected = true
