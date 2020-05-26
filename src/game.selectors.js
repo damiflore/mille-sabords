@@ -1,66 +1,38 @@
 import React from "react"
 
-import {
-  NOT_ENOUGH_DICE_TO_ROLL,
-  HAS_THREE_SKULLS_OR_MORE,
-  ROUND_NOT_STARTED,
-  CARD_NOT_DRAWN,
-  SYMBOL_SKULL,
-} from "src/constants.js"
+import { SYMBOL_SKULL } from "src/constants.js"
 import { isWitchCard, isChestCard } from "src/Cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 const { useMemo } = React
 
-export const rollDicePermissionSelector = (state) => {
+export const rollDiceAllowedSelector = (state) => {
   const { rollIndex, diceRolled, cardDrawn, scoreMarked } = state
-
   if (!cardDrawn) {
-    return {
-      allowed: false,
-      reason: CARD_NOT_DRAWN,
-    }
+    return false
   }
 
   if (scoreMarked) {
-    return {
-      allowed: false,
-      reason: ROUND_NOT_STARTED,
-    }
+    return false
   }
 
   if (rollIndex === -1) {
-    return {
-      allowed: true,
-    }
+    return true
   }
 
   if (threeSkullOrMoreInCursedAreaSelector(state)) {
-    return {
-      allowed: false,
-      reason: HAS_THREE_SKULLS_OR_MORE,
-    }
+    return false
   }
 
   if (hasSkullsInRolledAreaSelector(state)) {
-    return {
-      allowed: false,
-      // reason is that dice are being cursed
-      // they will move from diceRolled to diceCursed
-      reason: "",
-    }
+    return false
   }
 
   if (diceRolled.length < 2) {
-    return {
-      allowed: false,
-      reason: NOT_ENOUGH_DICE_TO_ROLL,
-    }
+    return false
   }
 
-  return {
-    allowed: true,
-  }
+  return true
 }
 
 export const remainingSpotInCursedAreaSelector = (state) =>
@@ -81,98 +53,97 @@ export const skullCountInCursedAreaSelector = (state) => {
   return diceCursed.length
 }
 
-export const canRemoveSkullSelector = (state) => {
+export const removeSkullAllowedSelector = (state) => {
   const { diceUncursedByWitch, card, diceCursed } = state
-
   if (!isWitchCard(card)) {
     return false
   }
+
   if (diceCursed.length > 2) {
     return false
   }
+
   if (diceUncursedByWitch) {
     return false
   }
+
   return true
 }
 
 export const keepDiceAllowedSelector = (state) => {
   const { scoreMarked } = state
-
   if (scoreMarked) {
     return false
   }
+
   if (threeSkullOrMoreInCursedAreaSelector(state)) {
     return false
   }
+
   return true
 }
 
 export const unkeepDiceAllowedSelector = (state) => {
   const { scoreMarked } = state
-
   if (scoreMarked) {
     return false
   }
+
   if (threeSkullOrMoreInCursedAreaSelector(state)) {
     return false
   }
+
   return true
 }
 
-export const markScorePermissionSelector = (state) => {
+export const markScoreAllowedSelector = (state) => {
   const { rollIndex, scoreMarked, card } = state
 
   if (scoreMarked) {
-    return {
-      allowed: false,
-    }
+    return false
   }
 
   if (threeSkullOrMoreInCursedAreaSelector(state)) {
     if (isChestCard(card) && rollIndex > 0) {
-      return {
-        allowed: true,
-      }
+      return true
     }
 
-    return {
-      allowed: false,
-      reason: HAS_THREE_SKULLS_OR_MORE,
-    }
+    return false
   }
 
-  return {
-    allowed: true,
-  }
+  return true
 }
 
-export const nextRoundPermissionSelector = (state) => {
+export const startNextRoundAllowedSelector = (state) => {
   const { rollIndex } = state
   if (rollIndex === -1) {
-    return { allowed: false }
+    return false
   }
 
-  const rollDicePermission = rollDicePermissionSelector(state)
-  const markScorePermission = markScorePermissionSelector(state)
-  if (!rollDicePermission.allowed && !markScorePermission.allowed) {
-    return { allowed: true }
+  const rollDiceAllowed = rollDiceAllowedSelector(state)
+  if (rollDiceAllowed) {
+    return false
   }
 
-  return { allowed: false }
+  const markScoreAllowed = markScoreAllowedSelector(state)
+  if (markScoreAllowed) {
+    return false
+  }
+
+  return true
 }
 
 export const roundScoreSelector = (state) => {
   const { card, diceKept, scoreMarked } = state
-  const markScorePermission = markScorePermissionSelector(state)
+  const markScoreAllowed = markScoreAllowedSelector(state)
   return useMemo(
     () =>
       computeRoundScore({
         card,
         diceKept,
         scoreMarked,
-        markScoreAllowed: markScorePermission.allowed,
+        markScoreAllowed,
       }),
-    [card, diceKept, markScorePermission],
+    [card, diceKept, scoreMarked, markScoreAllowed],
   )
 }

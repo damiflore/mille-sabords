@@ -2,7 +2,7 @@ import React from "react"
 
 import { useGameState } from "src/game.store.js"
 import { useMarkScore } from "src/game.actions.js"
-import { markScorePermissionSelector, roundScoreSelector } from "src/game.selectors.js"
+import { markScoreAllowedSelector, roundScoreSelector } from "src/game.selectors.js"
 
 import { ButtonRoll } from "src/Dice/ButtonRoll.js"
 
@@ -26,12 +26,12 @@ export const Footer = () => {
 const ButtonMarkScore = ({ onClick }) => {
   const state = useGameState()
   const { rollIndex } = state
-  const markScorePermission = markScorePermissionSelector(state)
+  const markScoreAllowed = markScoreAllowedSelector(state)
   const roundScore = roundScoreSelector(state)
 
   const sign = roundScore < 0 ? "-" : "+"
 
-  if (markScorePermission.allowed && rollIndex !== -1)
+  if (markScoreAllowed && rollIndex !== -1)
     return (
       <div className="collect-action">
         <button onClick={onClick}>

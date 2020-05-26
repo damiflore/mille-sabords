@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useGameState } from "src/game.store.js"
-import { canRemoveSkullSelector } from "src/game.selectors.js"
+import { removeSkullAllowedSelector } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 
 import { Dice } from "src/Dice/Dice.jsx"
@@ -9,7 +9,7 @@ import { Dice } from "src/Dice/Dice.jsx"
 export const SkullIsland = () => {
   const state = useGameState()
   const { diceCursed } = state
-  const canRemoveSkull = canRemoveSkullSelector(state)
+  const removeSkullAllowed = removeSkullAllowedSelector(state)
   const uncurseDice = useUncurseDice()
 
   return (
@@ -20,7 +20,7 @@ export const SkullIsland = () => {
             <Dice
               key={dice.id}
               dice={dice}
-              disabled={!canRemoveSkull}
+              disabled={!removeSkullAllowed}
               onClickAction={(dice) => {
                 uncurseDice(dice)
               }}

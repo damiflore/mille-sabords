@@ -1,20 +1,20 @@
 import React from "react"
 import { useGameState, createGameAction } from "src/game.store.js"
-import { nextRoundPermissionSelector } from "src/game.selectors.js"
+import { startNextRoundAllowedSelector } from "src/game.selectors.js"
 
 export const ButtonNextRound = () => {
   const state = useGameState()
-  const nextRoundPermission = nextRoundPermissionSelector(state)
-  const nextRound = useNextRound()
+  const startNextRoundAllowed = startNextRoundAllowedSelector(state)
+  const startNextRound = useStartNextRound()
 
-  if (nextRoundPermission.allowed) {
-    return <button onClick={nextRound}>Next round</button>
+  if (startNextRoundAllowed) {
+    return <button onClick={startNextRound}>Next round</button>
   }
 
   return null
 }
 
-const useNextRound = createGameAction((state) => {
+const useStartNextRound = createGameAction((state) => {
   return {
     ...state,
     diceUncursedByWitch: null,

@@ -1,15 +1,15 @@
 import React from "react"
 import { useGameState, createGameAction } from "src/game.store.js"
-import { rollDicePermissionSelector } from "src/game.selectors.js"
+import { rollDiceAllowedSelector } from "src/game.selectors.js"
 import { onGoingRef } from "src/MilleSabordGame.js"
 import { rollDices } from "src/Dice/rollDices.js"
 
 export const ButtonRoll = () => {
   const state = useGameState()
-  const rollDicePermission = rollDicePermissionSelector(state)
+  const rollDiceAllowed = rollDiceAllowedSelector(state)
   const roll = useRoll()
 
-  if (rollDicePermission.allowed) {
+  if (rollDiceAllowed) {
     return (
       <div className="roll-action">
         <button
@@ -21,10 +21,6 @@ export const ButtonRoll = () => {
         </button>
       </div>
     )
-  }
-
-  if (rollDicePermission.reaon === "3 skulls or more") {
-    return null
   }
 
   return null
