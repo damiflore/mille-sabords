@@ -5,6 +5,7 @@ import {
   CARD_ANIMALS,
   CARD_CHEST,
   CARD_TWO_SKULLS,
+  CARD_WITCH,
 } from "src/constants.js"
 import { markScoreAllowedSelector } from "src/game.selectors.js"
 
@@ -15,6 +16,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_ANIMALS,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = false
   assert({ actual, expected })
@@ -27,6 +29,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_ANIMALS,
     diceCursed: [],
     scoreMarked: true,
+    diceRolled: [],
   })
   const expected = false
   assert({ actual, expected })
@@ -39,6 +42,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = false
   assert({ actual, expected })
@@ -51,6 +55,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = true
   assert({ actual, expected })
@@ -63,6 +68,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_CHEST,
     diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = true
   assert({ actual, expected })
@@ -79,6 +85,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
       { symbol: SYMBOL_SKULL },
     ],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = false
   assert({ actual, expected })
@@ -96,6 +103,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
       { symbol: SYMBOL_SKULL },
     ],
     scoreMarked: false,
+    diceRolled: [],
   })
   const expected = false
   assert({ actual, expected })
@@ -113,6 +121,51 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
       { symbol: SYMBOL_SKULL },
     ],
     scoreMarked: false,
+    diceRolled: [],
+  })
+  const expected = false
+  assert({ actual, expected })
+}
+
+// skull in rolled area ( = cursed animation ongoing)
+{
+  const actual = markScoreAllowedSelector({
+    rollIndex: 0,
+    card: CARD_ANIMALS,
+    diceCursed: [],
+    scoreMarked: false,
+    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+  })
+  const expected = false
+  assert({ actual, expected })
+}
+
+// skull in rolled area uncursed by witch
+{
+  const actual = markScoreAllowedSelector({
+    rollIndex: 0,
+    card: CARD_WITCH,
+    diceCursed: [],
+    scoreMarked: false,
+    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+    witchUncursedDiceId: 12,
+  })
+  const expected = true
+  assert({ actual, expected })
+}
+
+// skull in rolled area different that the one uncursed by witch
+{
+  const actual = markScoreAllowedSelector({
+    rollIndex: 0,
+    card: CARD_WITCH,
+    diceCursed: [],
+    scoreMarked: false,
+    diceRolled: [
+      { symbol: SYMBOL_SKULL, id: 12 },
+      { symbol: SYMBOL_SKULL, id: 13 },
+    ],
+    witchUncursedDiceId: 12,
   })
   const expected = false
   assert({ actual, expected })
