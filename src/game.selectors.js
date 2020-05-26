@@ -136,6 +136,7 @@ export const startNextRoundAllowedSelector = (state) => {
     return false
   }
 
+  if (threeSkullOrMoreInCursedAreaSelector(state)) return true
   if (hasSkullsInRolledAreaSelector(state)) {
     return false
   }

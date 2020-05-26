@@ -61,3 +61,16 @@ import { startNextRoundAllowedSelector } from "src/game.selectors.js"
   const expected = true
   assert({ actual, expected })
 }
+
+// round finished: has 3 skulls + one remaining in rolled area
+{
+  const actual = startNextRoundAllowedSelector({
+    rollIndex: 3,
+    card: CARD_ANIMALS,
+    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    scoreMarked: false,
+    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+  })
+  const expected = true
+  assert({ actual, expected })
+}
