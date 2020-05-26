@@ -8,7 +8,11 @@ export const ButtonNextRound = () => {
   const startNextRound = useStartNextRound()
 
   if (startNextRoundAllowed) {
-    return <button onClick={startNextRound}>Next round</button>
+    return (
+      <div className="next-round-action">
+        <button onClick={startNextRound}>Next round</button>
+      </div>
+    )
   }
 
   return null

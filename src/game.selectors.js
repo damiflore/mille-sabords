@@ -113,6 +113,10 @@ export const markScoreAllowedSelector = (state) => {
     return false
   }
 
+  if (hasSkullsInRolledAreaSelector(state)) {
+    return false
+  }
+
   return true
 }
 
@@ -129,6 +133,10 @@ export const startNextRoundAllowedSelector = (state) => {
 
   const markScoreAllowed = markScoreAllowedSelector(state)
   if (markScoreAllowed) {
+    return false
+  }
+
+  if (hasSkullsInRolledAreaSelector(state)) {
     return false
   }
 

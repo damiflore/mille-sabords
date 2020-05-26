@@ -3,6 +3,7 @@ import React from "react"
 import { useGameState } from "src/game.store.js"
 import { useMarkScore } from "src/game.actions.js"
 import { markScoreAllowedSelector, roundScoreSelector } from "src/game.selectors.js"
+import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
 
 import { ButtonRoll } from "src/Dice/ButtonRoll.js"
 
@@ -19,6 +20,7 @@ export const Footer = () => {
           markScore(roundScore)
         }}
       />
+      <ButtonNextRound />
     </div>
   )
 }
