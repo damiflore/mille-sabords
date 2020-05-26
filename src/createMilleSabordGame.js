@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 export const createMilleSabordGame = async ({ into, gameState = {} }) => {
-  const { MilleSabordGame } = await import("./MilleSabordGame.js")
+  const { Game } = await import("./game.component.js")
 
-  ReactDOM.render(<MilleSabordGame gameState={gameState} />, into)
+  ReactDOM.render(<Game gameState={gameState} />, into)
 }

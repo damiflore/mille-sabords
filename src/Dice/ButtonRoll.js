@@ -1,7 +1,7 @@
 import React from "react"
 import { useGameState, createGameAction } from "src/game.store.js"
 import { rollDiceAllowedSelector } from "src/game.selectors.js"
-import { diceRolledAreaElementRef } from "src/MilleSabordGame.js"
+import { diceRolledAreaElementRef } from "src/game.component.js"
 import { rollDices } from "src/Dice/rollDices.js"
 
 export const ButtonRoll = () => {

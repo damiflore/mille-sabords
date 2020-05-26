@@ -14,25 +14,21 @@ const { createRef, useMemo } = React
 
 export const diceRolledAreaElementRef = createRef()
 
-export const MilleSabordGame = ({ gameState }) => {
-  const GameMemoized = useMemo(() => {
-    return (
-      <>
-        <GameEffects />
-        <Header />
-        <div className="dice-kept-and-skulls">
-          <DiceKept />
-          <SkullIsland />
-        </div>
-        <DiceOnGoing ref={diceRolledAreaElementRef} />
-        <Footer />
-      </>
-    )
-  })
-
+export const Game = ({ gameState }) => {
   return (
     <GameContextProvider initialState={gameState}>
-      <GameMemoized />
+      {useMemo(() => (
+        <>
+          <GameEffects />
+          <Header />
+          <div className="dice-kept-and-skulls">
+            <DiceKept />
+            <SkullIsland />
+          </div>
+          <DiceOnGoing ref={diceRolledAreaElementRef} />
+          <Footer />
+        </>
+      ))}
     </GameContextProvider>
   )
 }
