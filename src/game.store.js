@@ -4,15 +4,17 @@ import { getMixedDeck } from "./Cards/cards.js"
 import { getDiceArray } from "./Dice/DiceHelpers.js"
 
 const defaultState = {
+  // persist accross a game round
   totalScore: 0,
-  scoreMarked: false,
-  isOnSkullIsland: false,
   cardDeck: getMixedDeck(),
   cardsUsed: [],
-  card: null,
-  cardDrawn: false,
-  rollIndex: -1,
   dices: getDiceArray(),
+  // game round
+  rollIndex: -1,
+  scoreMarked: false,
+  isOnSkullIsland: false,
+  cardDrawn: false,
+  card: null,
   witchUncursedDiceId: undefined,
   diceRolled: [],
   diceCursed: [],
