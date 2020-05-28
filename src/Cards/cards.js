@@ -81,9 +81,18 @@ export const isSwordChallengeCard = (card) =>
   isThreeSwordsChallengeCard(card) ||
   isFourSwordsChallengeCard(card)
 
-export const TWO_SWORDS_CHALLENGE_GAMBLE = 300
-export const THREE_SWORDS_CHALLENGE_GAMBLE = 500
-export const FOUR_SWORDS_CHALLENGE_GAMBLE = 1000
+export const TWO_SWORDS_CHALLENGE_GAMBLE = {
+  numberOfSwords: 2,
+  gambleAmount: 300,
+}
+export const THREE_SWORDS_CHALLENGE_GAMBLE = {
+  numberOfSwords: 3,
+  gambleAmount: 500,
+}
+export const FOUR_SWORDS_CHALLENGE_GAMBLE = {
+  numberOfSwords: 4,
+  gambleAmount: 1000,
+}
 
 export const cardColors = {
   [CARD_PIRATE]: { color1: "#E6A9AB", color2: "#C1272D" },

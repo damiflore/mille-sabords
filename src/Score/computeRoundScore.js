@@ -23,31 +23,31 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
 
   if (isTwoSwordsChallengeCard(card)) {
     if (!scoreMarked && !markScoreAllowed) {
-      return -TWO_SWORDS_CHALLENGE_GAMBLE
+      return -TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
-      goal: 2,
-      gamble: TWO_SWORDS_CHALLENGE_GAMBLE,
+      goal: TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
+      gamble: TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
   }
 
   if (isThreeSwordsChallengeCard(card)) {
     if (!scoreMarked && !markScoreAllowed) {
-      return -THREE_SWORDS_CHALLENGE_GAMBLE
+      return -THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
-      goal: 3,
-      gamble: THREE_SWORDS_CHALLENGE_GAMBLE,
+      goal: THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
+      gamble: THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
   }
 
   if (isFourSwordsChallengeCard(card)) {
     if (!scoreMarked && !markScoreAllowed) {
-      return -FOUR_SWORDS_CHALLENGE_GAMBLE
+      return -FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
     return computeScoreForSwordChallenge(symbolArrayFromDiceKept, {
-      goal: 4,
-      gamble: FOUR_SWORDS_CHALLENGE_GAMBLE,
+      goal: FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
+      gamble: FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
   }
 
@@ -68,7 +68,7 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
   return computeScoreForSymbols(symbolArrayFromDiceKept)
 }
 
-const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
+export const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
 
 const diceToSymbol = (dice) => dice.symbol
 
@@ -80,7 +80,7 @@ const computeScoreForSwordChallenge = (symbolArray, { goal, gamble }) => {
   return -gamble
 }
 
-const countSymbol = (symbolArray, symbol) => {
+export const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
 }
 

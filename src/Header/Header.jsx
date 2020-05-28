@@ -4,13 +4,15 @@ import { useGameState } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
 
 import { cardColors, isSwordChallengeCard } from "src/Cards/cards.js"
-import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
+import { SwordChallengeIndicator } from "src/Header/SwordChallengeIndicator.jsx"
 
 export const Header = () => {
   return (
     <div className="header">
-      <SmallCard />
-      <ButtonNextRound />
+      <div className="card-container">
+        <SmallCard />
+        <SwordChallengeIndicator />
+      </div>
       <TotalScore />
     </div>
   )
@@ -103,7 +105,7 @@ const TotalScore = () => {
   const { totalScore } = useGameState()
   return (
     <div className="total-score">
-      <span>{totalScore}</span>
+      <span className="score">{totalScore}</span>
     </div>
   )
 }

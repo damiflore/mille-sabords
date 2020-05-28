@@ -18,7 +18,7 @@ body {
   max-width: 680px;
   margin: 0 auto;
   overflow: hidden;
-  height: calc(100% - 40px);
+  height: 100%;
 }
 button {
   background: white;
