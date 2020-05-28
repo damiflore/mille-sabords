@@ -1,0 +1,13 @@
+#lab {
+  display: flex;
+}
+
+#lab aside {
+  width: 300px;
+  border-right: 2px solid black;
+  padding: 1em;
+}
+
+button[data-active] {
+  border: 2px solid red;
+}

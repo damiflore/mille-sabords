@@ -10,5 +10,6 @@ startExploring({
     "./src/**/*.js": true,
     "./test/**/*.js": true,
     "./test-manual/**/*.js": true,
+    "./lab/lab.index.js": true,
   },
 })

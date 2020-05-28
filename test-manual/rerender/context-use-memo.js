@@ -88,4 +88,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.querySelector("#mille-sabord-container"))
+ReactDOM.render(<App />, document.querySelector("#app"))

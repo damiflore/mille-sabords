@@ -6,7 +6,7 @@ export const createSimplifiedStore = (defaultState, { init = (state) => state, e
   const StateContext = createContext(null)
   const DispatchContext = createContext(null)
 
-  const reducer = (state, action) => action.reducer(state, ...action.args)
+  const reducer = (state, action) => action(state)
 
   const useState = () => useContext(StateContext)
 
@@ -29,15 +29,9 @@ export const createSimplifiedStore = (defaultState, { init = (state) => state, e
 
     useEffect(() => {
       if (!initialState) return
-      dispatch(
-        {
-          reducer: (state) => {
-            return { ...state, ...initialState }
-          },
-          args: [],
-        },
-        [initialState],
-      )
+      dispatch((state) => {
+        return { ...state, ...initialState }
+      })
     }, [initialState])
 
     /**
@@ -90,10 +84,7 @@ const Button = () => {
 export const createStoreAction = (store, actionReducer) => {
   return (dispatch = store.useDispatch()) => {
     return (...args) => {
-      dispatch({
-        reducer: actionReducer,
-        args,
-      })
+      dispatch((state) => actionReducer(state, ...args))
     }
   }
 }
