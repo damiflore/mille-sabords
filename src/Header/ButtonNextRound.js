@@ -1,5 +1,5 @@
 import React from "react"
-import { useGameState, createGameAction } from "src/game.store.js"
+import { useGameState, createGameAction } from "src/game.context.js"
 import { startNextRoundAllowedSelector } from "src/game.selectors.js"
 
 export const ButtonNextRound = () => {

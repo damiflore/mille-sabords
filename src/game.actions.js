@@ -1,4 +1,4 @@
-import { createGameAction } from "src/game.store.js"
+import { createGameAction } from "src/game.context.js"
 import { mixDeck } from "src/cards/cards.js"
 
 export const useDrawCard = createGameAction((state) => {

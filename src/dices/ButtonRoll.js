@@ -1,12 +1,12 @@
 import React from "react"
-import { useGameState, createGameAction } from "src/game.store.js"
+import { useGameState, createGameAction, useGameNode } from "src/game.context.js"
 import { rollDiceAllowedSelector } from "src/game.selectors.js"
-import { diceRolledAreaElementRef } from "src/game.component.js"
 import { rollDices } from "src/dices/rollDices.js"
 
 export const ButtonRoll = () => {
   const state = useGameState()
   const rollDiceAllowed = rollDiceAllowedSelector(state)
+  const diceRolledAreaNode = useGameNode("dice-rolled-area")
   const roll = useRoll()
 
   if (rollDiceAllowed) {
@@ -14,7 +14,7 @@ export const ButtonRoll = () => {
       <div className="roll-action">
         <button
           onClick={() => {
-            roll(state)
+            roll(diceRolledAreaNode)
           }}
         >
           Roll
@@ -26,7 +26,7 @@ export const ButtonRoll = () => {
   return null
 }
 
-const useRoll = createGameAction((state) => {
+const useRoll = createGameAction((state, diceRolledAreaNode) => {
   const { rollIndex, dices } = state
 
   if (rollIndex === -1) {
@@ -34,7 +34,7 @@ const useRoll = createGameAction((state) => {
       ...state,
       rollIndex: 0,
       diceRolled: rollDices(dices, {
-        diceParentElement: diceRolledAreaElementRef.current.querySelector(".area"),
+        diceParentElement: diceRolledAreaNode,
       }),
     }
   }
@@ -44,7 +44,7 @@ const useRoll = createGameAction((state) => {
     ...state,
     rollIndex: rollIndex + 1,
     diceRolled: rollDices(diceRolled, {
-      diceParentElement: diceRolledAreaElementRef.current.querySelector(".area"),
+      diceParentElement: diceRolledAreaNode,
     }),
   }
 })

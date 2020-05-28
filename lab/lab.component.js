@@ -1,6 +1,11 @@
 import React from "react"
 
-import { GameContextProvider, useGameState, useGameDispatch } from "src/game.store.js"
+import {
+  GameContextProvider,
+  useGameState,
+  useGameDispatch,
+  useGameNode,
+} from "src/game.context.js"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -108,11 +113,7 @@ const GameLab = () => {
         <fieldset>
           <legend>Dices</legend>
           {dices.map((dice) => {
-            return (
-              <div className="dice-variants" key={dice.id}>
-                <DiceVariants dice={dice} />
-              </div>
-            )
+            return <DiceVariants key={dice.id} dice={dice} />
           })}
         </fieldset>
       </form>
@@ -127,18 +128,38 @@ const GameLab = () => {
   )
 }
 
+const VARIANTS = [
+  "random",
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+  SYMBOL_MONKEY,
+  SYMBOL_PARROT,
+  SYMBOL_SKULL,
+  SYMBOL_SWORD,
+]
+
 const DiceVariants = ({ dice }) => {
-  return [
-    "random",
-    SYMBOL_COIN,
-    SYMBOL_DIAMOND,
-    SYMBOL_MONKEY,
-    SYMBOL_PARROT,
-    SYMBOL_SKULL,
-    SYMBOL_SWORD,
-  ].map((variant) => {
-    return <DiceVariant key={variant} variant={variant} dice={dice} />
-  })
+  const diceNode = useGameNode(dice.id)
+
+  return (
+    <div className="dice-variants">
+      <button
+        disabled={!diceNode}
+        onClick={() => {
+          const outline = diceNode.style.outline
+          diceNode.style.outline = "5px solid red"
+          setTimeout(() => {
+            diceNode.style.outline = outline
+          }, 1000)
+        }}
+      >
+        inspect
+      </button>
+      {VARIANTS.map((variant) => {
+        return <DiceVariant key={variant} variant={variant} dice={dice} />
+      })}
+    </div>
+  )
 }
 
 const diceIsCheated = (dice) => dice.faces[0] === dice.faces[1]

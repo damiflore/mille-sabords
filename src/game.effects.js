@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 import {
   threeSkullOrMoreInCursedAreaSelector,
   skullsInRolledAreaSelector,

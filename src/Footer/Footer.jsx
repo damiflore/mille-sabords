@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 import { useMarkScore } from "src/game.actions.js"
 import { markScoreAllowedSelector, roundScoreSelector } from "src/game.selectors.js"
 import { ButtonNextRound } from "src/Header/ButtonNextRound.js"

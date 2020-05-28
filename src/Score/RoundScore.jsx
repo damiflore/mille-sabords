@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 import { roundScoreSelector } from "src/game.selectors.js"
 
 export const RoundScore = () => {

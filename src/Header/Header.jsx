@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
 
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"

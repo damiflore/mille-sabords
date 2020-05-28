@@ -9,9 +9,7 @@ import { Header } from "./Header/Header.jsx"
 import { Footer } from "./Footer/Footer.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
 
-const { createRef, useMemo } = React
-
-export const diceRolledAreaElementRef = createRef()
+const { useMemo } = React
 
 export const Game = () => {
   /*
@@ -31,7 +29,7 @@ export const Game = () => {
         <DiceKept />
         <SkullIsland />
       </div>
-      <DiceOnGoing ref={diceRolledAreaElementRef} />
+      <DiceOnGoing />
       <Footer />
     </div>
   ))

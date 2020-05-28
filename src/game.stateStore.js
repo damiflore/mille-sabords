@@ -23,7 +23,7 @@ const defaultState = {
 
 const logger = createLogger({ logLevel: "warn" })
 const gameStateSessionStorageKey = "game"
-const gameStore = createSimplifiedStore(defaultState, {
+export const gameStateStore = createSimplifiedStore(defaultState, {
   init: (initialState) => {
     if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(gameStateSessionStorageKey))
@@ -45,13 +45,3 @@ const gameStore = createSimplifiedStore(defaultState, {
     sessionStorage.setItem(gameStateSessionStorageKey, JSON.stringify(state))
   },
 })
-
-export const createGameAction = gameStore.createAction
-
-export const useGameState = gameStore.useState
-
-export const useGameDispatch = gameStore.useDispatch
-
-export const createGameSelector = gameStore.createSelector
-
-export const GameContextProvider = gameStore.ContextProvider

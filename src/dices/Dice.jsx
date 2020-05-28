@@ -1,14 +1,16 @@
 import React from "react"
 import { diceSize } from "./dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
+import { useGameNodeCallback } from "src/game.context.js"
 
 export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => {
   const onSkull = diceIsOnSkull(dice)
 
   return (
     <button
-      key={dice.id}
       disabled={disabled}
+      data-dice-id={dice.id}
+      ref={useGameNodeCallback(dice.id)}
       onClick={() => onClickAction(dice)}
       className="dice"
       style={{

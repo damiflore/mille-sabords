@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 import { removeSkullAllowedSelector } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 

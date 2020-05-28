@@ -11,7 +11,7 @@ import {
 } from "src/cards/cards.js"
 import { SYMBOL_SWORD } from "src/constants.js"
 import { countSymbol, diceArrayToSymbolArray } from "src/Score/computeRoundScore.js"
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 
 export const swordQuantityRequiredSelector = (state) => {
   const { card } = state

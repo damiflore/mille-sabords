@@ -1,6 +1,6 @@
 import React from "react"
 import { useBecomes } from "src/hooks.js"
-import { useGameState } from "src/game.store.js"
+import { useGameState } from "src/game.context.js"
 
 import { isOneSkullCard, isTwoSkullsCard, isDiamondCard, isCoinCard } from "src/cards/cards.js"
 import {
