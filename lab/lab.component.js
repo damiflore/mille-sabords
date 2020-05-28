@@ -13,8 +13,8 @@ import {
   CARD_CHEST,
   CARD_TWO_SKULLS,
   CARD_WITCH,
-  SYMBOL_SKULL,
-} from "src/constants.js"
+} from "src/cards/cards.js"
+import { createDiceOnSkull } from "src/test/test.material.js"
 import { Game } from "src/game.component.js"
 
 const link = document.createElement("link")
@@ -25,10 +25,7 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    diceCursed: [
-      { id: 100, symbol: SYMBOL_SKULL },
-      { id: 101, symbol: SYMBOL_SKULL },
-    ],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
   }
 
   return (

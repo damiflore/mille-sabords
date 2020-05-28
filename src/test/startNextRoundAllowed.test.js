@@ -1,6 +1,7 @@
 import { assert } from "@jsenv/assert"
-import { SYMBOL_SKULL, CARD_ANIMALS } from "src/constants.js"
+import { CARD_ANIMALS } from "src/cards/cards.js"
 import { startNextRoundAllowedSelector } from "src/game.selectors.js"
+import { createDiceOnSkull } from "src/test/test.material.js"
 
 // dice not rolled one
 {
@@ -30,7 +31,7 @@ import { startNextRoundAllowedSelector } from "src/game.selectors.js"
     card: CARD_ANIMALS,
     diceCursed: [],
     scoreMarked: false,
-    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+    diceRolled: [createDiceOnSkull()],
   })
   const expected = false
   assert({ actual, expected })
@@ -54,7 +55,7 @@ import { startNextRoundAllowedSelector } from "src/game.selectors.js"
   const actual = startNextRoundAllowedSelector({
     rollIndex: 3,
     card: CARD_ANIMALS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -67,9 +68,9 @@ import { startNextRoundAllowedSelector } from "src/game.selectors.js"
   const actual = startNextRoundAllowedSelector({
     rollIndex: 3,
     card: CARD_ANIMALS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
-    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+    diceRolled: [createDiceOnSkull()],
   })
   const expected = true
   assert({ actual, expected })

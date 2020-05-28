@@ -3,8 +3,8 @@ import React from "react"
 
 import { GameEffects } from "src/game.effects.js"
 
-import { DiceOnGoing } from "./Dice/DiceOnGoing.jsx"
-import { DiceKept } from "./Dice/DiceKept.jsx"
+import { DiceOnGoing } from "src/dices/DiceOnGoing.jsx"
+import { DiceKept } from "src/dices/DiceKept.jsx"
 import { Header } from "./Header/Header.jsx"
 import { Footer } from "./Footer/Footer.jsx"
 import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"

@@ -1,6 +1,13 @@
 import { assert } from "@jsenv/assert"
 import { rollDiceAllowedSelector } from "src/game.selectors.js"
-import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
+import {
+  CARD_TWO_SKULLS,
+  CARD_ONE_SKULL,
+  DICE_SKULL_FROM_CARD_ONE_SKULL,
+  DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+  DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+} from "src/cards/cards.js"
+import { createDiceOnCoin, createDiceOnSkull } from "src/test/test.material.js"
 
 // card not drawn
 {
@@ -40,10 +47,8 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_ONE_SKULL,
-    diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from the card
-    ],
-    diceRolled: [{ symbol: SYMBOL_SKULL }],
+    diceCursed: [DICE_SKULL_FROM_CARD_ONE_SKULL],
+    diceRolled: [createDiceOnSkull()],
     rollIndex: 0,
   })
   const expected = false
@@ -52,16 +57,13 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
 
 // skulls in rolled area (but uncursed by witch)
 {
-  const skullDice = { id: 1, symbol: SYMBOL_SKULL }
+  const skullDice = createDiceOnSkull()
   const actual = rollDiceAllowedSelector({
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
-    diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from the card
-      { symbol: SYMBOL_SKULL }, // from the card
-    ],
-    diceRolled: [skullDice, {}],
+    diceCursed: [DICE_SKULL_1_FROM_CARD_TWO_SKULLS, DICE_SKULL_2_FROM_CARD_TWO_SKULLS],
+    diceRolled: [skullDice, createDiceOnCoin()],
     witchUncursedDiceId: skullDice.id,
     rollIndex: 0,
   })
@@ -75,12 +77,9 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
     cardDrawn: true,
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
-    diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from the card
-      { symbol: SYMBOL_SKULL }, // from the card
-    ],
+    diceCursed: [DICE_SKULL_1_FROM_CARD_TWO_SKULLS, DICE_SKULL_2_FROM_CARD_TWO_SKULLS],
     rollIndex: 0,
-    diceRolled: [0],
+    diceRolled: [createDiceOnCoin()],
   })
   const expected = false
   assert({ actual, expected })
@@ -93,9 +92,9 @@ import { SYMBOL_SKULL, CARD_TWO_SKULLS, CARD_ONE_SKULL } from "src/constants.js"
     scoreMarked: false,
     card: CARD_TWO_SKULLS,
     diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from the card
-      { symbol: SYMBOL_SKULL }, // from the card
-      { symbol: SYMBOL_SKULL },
+      DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+      DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+      createDiceOnSkull(),
     ],
   })
   const expected = false

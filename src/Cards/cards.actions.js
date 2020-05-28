@@ -1,17 +1,17 @@
 import { createGameAction } from "src/game.store.js"
 import {
-  skullDiceFromOneSkullCard,
-  firstSkullDiceFromTwoSkullsCard,
-  secondSkullDiceFromTwoSkullsCard,
-  diamondDiceFromCard,
-  coinDiceFromCard,
-} from "src/Dice/DiceHelpers.js"
+  DICE_SKULL_FROM_CARD_ONE_SKULL,
+  DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+  DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+  DICE_COIN_FROM_CARD_COIN,
+  DICE_DIAMOND_FROM_CARD_DIAMOND,
+} from "src/dices/dices.js"
 
 export const useActivateOneSkullCard = createGameAction((state) => {
   const { diceCursed } = state
   return {
     ...state,
-    diceCursed: [...diceCursed, skullDiceFromOneSkullCard],
+    diceCursed: [...diceCursed, DICE_SKULL_FROM_CARD_ONE_SKULL],
   }
 })
 
@@ -19,15 +19,11 @@ export const useActivateTwoSkullsCard = createGameAction((state) => {
   const { diceCursed } = state
   return {
     ...state,
-    diceCursed: [...diceCursed, firstSkullDiceFromTwoSkullsCard, secondSkullDiceFromTwoSkullsCard],
-  }
-})
-
-export const useActivateDiamondCard = createGameAction((state) => {
-  const { diceKept } = state
-  return {
-    ...state,
-    diceKept: [...diceKept, diamondDiceFromCard],
+    diceCursed: [
+      ...diceCursed,
+      DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+      DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+    ],
   }
 })
 
@@ -35,6 +31,14 @@ export const useActivateCoinCard = createGameAction((state) => {
   const { diceKept } = state
   return {
     ...state,
-    diceKept: [...diceKept, coinDiceFromCard],
+    diceKept: [...diceKept, DICE_COIN_FROM_CARD_COIN],
+  }
+})
+
+export const useActivateDiamondCard = createGameAction((state) => {
+  const { diceKept } = state
+  return {
+    ...state,
+    diceKept: [...diceKept, DICE_DIAMOND_FROM_CARD_DIAMOND],
   }
 })

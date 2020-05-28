@@ -1,5 +1,5 @@
 import { createGameAction } from "src/game.store.js"
-import { mixDeck } from "src/Cards/cards.js"
+import { mixDeck } from "src/cards/cards.js"
 
 export const useDrawCard = createGameAction((state) => {
   const { cardDeck, cardsUsed } = state

@@ -1,14 +1,14 @@
 import { createLogger } from "@jsenv/logger"
 import { createSimplifiedStore } from "./createSimplifiedStore.js"
-import { getMixedDeck } from "./Cards/cards.js"
-import { getDiceArray } from "./Dice/DiceHelpers.js"
+import { CARDS, mixDeck } from "src/cards/cards.js"
+import { DICES } from "src/dices/dices.js"
 
 const defaultState = {
   // persist accross a game round
   totalScore: 0,
-  cardDeck: getMixedDeck(),
+  cardDeck: mixDeck(CARDS),
   cardsUsed: [],
-  dices: getDiceArray(),
+  dices: DICES,
   // game round
   rollIndex: -1,
   scoreMarked: false,

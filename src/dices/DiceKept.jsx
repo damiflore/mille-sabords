@@ -7,8 +7,8 @@ import {
 } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
-import { Dice } from "src/Dice/Dice.jsx"
-import { isDiamondDiceFromCard, isCoinDiceFromCard } from "src/Dice/DiceHelpers.js"
+import { Dice } from "src/dices/Dice.jsx"
+import { isDiamondDiceFromCard, isCoinDiceFromCard } from "src/dices/dices.js"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {

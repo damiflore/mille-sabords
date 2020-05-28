@@ -1,11 +1,3 @@
-import {
-  SYMBOL_COIN,
-  SYMBOL_DIAMOND,
-  SYMBOL_SWORD,
-  SYMBOL_PARROT,
-  SYMBOL_MONKEY,
-  SYMBOL_SKULL,
-} from "src/constants.js"
 import { diceSize, detectCollision } from "./dicePosition.js"
 
 export const rollDices = (dices, { diceParentElement }) => {
@@ -38,7 +30,7 @@ const rollDice = (dice, { dicesRolled, xMin, xMax, yMin, yMax }) => {
   })
   return {
     ...dice,
-    symbol: getDiceRandomSymbol(),
+    visibleFaceIndex: getRandomDiceFace(dice),
     x,
     y,
     rotation: getDiceRotation(),
@@ -67,18 +59,7 @@ const getRandomCollisionFreeDicePosition = (dices, { xMin, xMax, yMin, yMax }) =
 
 const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
 
-const diceNumberToSymbol = {
-  1: SYMBOL_COIN,
-  2: SYMBOL_DIAMOND,
-  3: SYMBOL_SWORD,
-  4: SYMBOL_PARROT,
-  5: SYMBOL_MONKEY,
-  6: SYMBOL_SKULL,
-}
-
-const getDiceRandomSymbol = () => diceNumberToSymbol[getRandomDiceNumber()]
-
-const getRandomDiceNumber = () => getRandomNumberBetweenInterval(1, 6)
+const getRandomDiceFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length)
 
 const getRandomNumberBetweenInterval = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min) // min and max are included

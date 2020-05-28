@@ -1,7 +1,7 @@
 import React from "react"
 
-import { SYMBOL_SKULL } from "src/constants.js"
-import { isWitchCard, isChestCard } from "src/Cards/cards.js"
+import { diceIsOnSkull } from "src/dices/dices.js"
+import { isWitchCard, isChestCard } from "src/cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 const { useMemo } = React
@@ -42,9 +42,7 @@ export const hasSkullsInRolledAreaSelector = (state) => skullsInRolledAreaSelect
 
 export const skullsInRolledAreaSelector = (state) => {
   const { diceRolled, witchUncursedDiceId } = state
-  return diceRolled.filter(
-    (dice) => dice.symbol === SYMBOL_SKULL && dice.id !== witchUncursedDiceId,
-  )
+  return diceRolled.filter((dice) => diceIsOnSkull(dice) && dice.id !== witchUncursedDiceId)
 }
 
 export const threeSkullOrMoreInCursedAreaSelector = (state) =>

@@ -1,4 +1,11 @@
 import {
+  SYMBOL_DIAMOND,
+  SYMBOL_COIN,
+  SYMBOL_PARROT,
+  SYMBOL_MONKEY,
+  SYMBOL_SWORD,
+} from "src/constants.js"
+import {
   isAnimalsCard,
   isPirateCard,
   isTwoSwordsChallengeCard,
@@ -9,14 +16,8 @@ import {
   FOUR_SWORDS_CHALLENGE_GAMBLE,
   isCoinCard,
   isDiamondCard,
-} from "src/Cards/cards.js"
-import {
-  SYMBOL_DIAMOND,
-  SYMBOL_COIN,
-  SYMBOL_PARROT,
-  SYMBOL_MONKEY,
-  SYMBOL_SWORD,
-} from "src/constants.js"
+} from "src/cards/cards.js"
+import { diceToVisibleSymbol } from "src/dices/dices.js"
 
 export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowed }) => {
   const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
@@ -68,9 +69,8 @@ export const computeRoundScore = ({ card, diceKept, scoreMarked, markScoreAllowe
   return computeScoreForSymbols(symbolArrayFromDiceKept)
 }
 
-export const diceArrayToSymbolArray = (diceArray) => diceArray.map((dice) => diceToSymbol(dice))
-
-const diceToSymbol = (dice) => dice.symbol
+export const diceArrayToSymbolArray = (diceArray) =>
+  diceArray.map((dice) => diceToVisibleSymbol(dice))
 
 const computeScoreForSwordChallenge = (symbolArray, { goal, gamble }) => {
   const swordChallengeAchieved = countSymbol(symbolArray, SYMBOL_SWORD) >= goal
