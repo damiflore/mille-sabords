@@ -1,8 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-export const createMilleSabordGame = async ({ into, gameState = {} }) => {
+import { GameContextProvider } from "src/game.store.js"
+
+export const createMilleSabordGame = async ({ into }) => {
   const { Game } = await import("./game.component.js")
 
-  ReactDOM.render(<Game gameState={gameState} />, into)
+  ReactDOM.render(
+    <GameContextProvider>
+      <Game />
+    </GameContextProvider>,
+    into,
+  )
 }

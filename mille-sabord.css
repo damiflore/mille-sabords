@@ -9,7 +9,6 @@ body {
   font-family: arial, sans;
   color: #444444;
   margin: 0;
-  overflow: hidden;
 }
 #mille-sabord-container {
   background-image: url("src/Dice/assets/wood.jpg");

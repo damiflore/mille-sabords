@@ -14,7 +14,8 @@
   "browser": "dist/systemjs/main.js",
   "type": "module",
   "imports": {
-    "src/": "./src/"
+    "src/": "./src/",
+    "lab/": "./lab/"
   },
   "files": [
     "/dist/",
