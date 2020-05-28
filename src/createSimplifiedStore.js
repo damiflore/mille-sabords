@@ -75,9 +75,9 @@ const Button = () => {
 
   return {
     createAction,
+    ContextProvider,
     useState,
     useDispatch,
-    ContextProvider,
   }
 }
 
