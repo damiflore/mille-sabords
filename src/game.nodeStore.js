@@ -1,3 +1,3 @@
-import { createDOMNodeStore } from "./createDOMNodeStore.js"
+import { createDOMNodeStore } from "./store/createDOMNodeStore.js"
 
 export const gameNodeStore = createDOMNodeStore()

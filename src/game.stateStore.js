@@ -1,5 +1,5 @@
 import { createLogger } from "@jsenv/logger"
-import { createSimplifiedStore } from "./createSimplifiedStore.js"
+import { createStateStoreNaive } from "./store/createStateStoreNaive.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
@@ -23,7 +23,7 @@ const defaultState = {
 
 const logger = createLogger({ logLevel: "warn" })
 const gameStateSessionStorageKey = "game"
-export const gameStateStore = createSimplifiedStore(defaultState, {
+export const gameStateStore = createStateStoreNaive(defaultState, {
   init: (initialState) => {
     if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(gameStateSessionStorageKey))
