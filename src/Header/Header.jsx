@@ -62,7 +62,7 @@ const CurrentCard = () => {
       }}
     >
       <img
-        src={`src/Cards/assets/card_small-${
+        src={`src/cards/assets/card_small-${
           isSwordChallengeCard(card) ? "sword-challenge" : card
         }.png`}
         alt={card}
