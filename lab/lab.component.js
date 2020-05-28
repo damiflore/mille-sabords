@@ -1,6 +1,6 @@
 import React from "react"
 
-import { GameContextProvider } from "src/game.store.js"
+import { GameContextProvider, useGameState, useGameDispatch } from "src/game.store.js"
 import { CARD_COIN, SYMBOL_SKULL } from "src/constants.js"
 import { createDeck } from "src/Cards/cards.js"
 import { Game } from "src/game.component.js"
@@ -24,13 +24,17 @@ export const Lab = () => {
     <div id="lab">
       <GameContextProvider initialState={gameState}>
         <GameLab />
-        <Game gameState={gameState} />
+        <Game />
       </GameContextProvider>
     </div>
   )
 }
 
 const GameLab = () => {
+  const state = useGameState()
+  const { totalScore } = state
+  const setTotalScore = useSetTotalScore()
+
   return (
     <aside>
       <button
@@ -40,6 +44,24 @@ const GameLab = () => {
       >
         Clear storage
       </button>
+      <form
+        onSubmit={(submitEvent) => {
+          submitEvent.preventDefault()
+          setTotalScore(parseInt(document.querySelector("form").totalScore.value))
+        }}
+      >
+        <input type="number" name="totalScore" defaultValue={totalScore} onChange={() => {}} />
+        <button type="submit">set total score</button>
+      </form>
     </aside>
   )
+}
+
+const useSetTotalScore = () => {
+  const dispatch = useGameDispatch()
+  return (totalScore) => {
+    dispatch((state) => {
+      return { ...state, totalScore }
+    })
+  }
 }
