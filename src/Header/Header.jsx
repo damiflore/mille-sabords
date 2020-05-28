@@ -40,7 +40,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       style={{
-        backgroundImage: "url('src/Cards/assets/card_default.png')",
+        backgroundImage: "url('src/cards/assets/card_default.png')",
         backgroundSize: "217px",
       }}
     ></div>

@@ -46,5 +46,4 @@ export const diceIsOnmonkey = (dice) => diceToVisibleSymbol(dice) === SYMBOL_MON
 export const diceIsOnParrot = (dice) => diceToVisibleSymbol(dice) === SYMBOL_PARROT
 export const diceIsOnSkull = (dice) => diceToVisibleSymbol(dice) === SYMBOL_SKULL
 export const diceIsOnSword = (dice) => diceToVisibleSymbol(dice) === SYMBOL_SWORD
-export const diceToVisibleSymbol = ({ faces, visibleFaceIndex }, symbol) =>
-  faces[visibleFaceIndex] === symbol
+export const diceToVisibleSymbol = ({ faces, visibleFaceIndex }) => faces[visibleFaceIndex]

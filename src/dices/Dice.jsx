@@ -21,7 +21,7 @@ export const Dice = ({ dice, disabled, onClickAction, specificStyle }) => {
       }}
     >
       <img
-        src={`src/Dice/assets/dice_${diceToVisibleSymbol(dice)}.png`}
+        src={`src/dices/assets/dice_${diceToVisibleSymbol(dice)}.png`}
         style={{
           width: "100%",
           height: "100%",
