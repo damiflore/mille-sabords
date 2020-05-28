@@ -2,13 +2,13 @@ import React from "react"
 import { useBecomes } from "src/hooks.js"
 import { useGameState } from "src/game.store.js"
 
-import { isOneSkullCard, isTwoSkullsCard, isDiamondCard, isCoinCard } from "src/Cards/cards.js"
+import { isOneSkullCard, isTwoSkullsCard, isDiamondCard, isCoinCard } from "src/cards/cards.js"
 import {
   useActivateOneSkullCard,
   useActivateTwoSkullsCard,
   useActivateDiamondCard,
   useActivateCoinCard,
-} from "src/Cards/cards.actions.js"
+} from "src/cards/cards.actions.js"
 
 const { useEffect } = React
 

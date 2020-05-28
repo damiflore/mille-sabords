@@ -2,6 +2,15 @@ import React from "react"
 
 import { GameContextProvider, useGameState, useGameDispatch } from "src/game.store.js"
 import {
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+  SYMBOL_MONKEY,
+  SYMBOL_PARROT,
+  SYMBOL_SKULL,
+  SYMBOL_SWORD,
+} from "src/constants.js"
+import { faces } from "src/dices/dices.js"
+import {
   CARD_ANIMALS,
   CARD_COIN,
   CARD_DIAMOND,
@@ -13,8 +22,8 @@ import {
   CARD_CHEST,
   CARD_TWO_SKULLS,
   CARD_WITCH,
-  SYMBOL_SKULL,
-} from "src/constants.js"
+} from "src/cards/cards.js"
+import { createDiceOnSkull } from "src/test/test.material.js"
 import { Game } from "src/game.component.js"
 
 const link = document.createElement("link")
@@ -25,10 +34,7 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    diceCursed: [
-      { id: 100, symbol: SYMBOL_SKULL },
-      { id: 101, symbol: SYMBOL_SKULL },
-    ],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
   }
 
   return (
@@ -43,19 +49,12 @@ export const Lab = () => {
 
 const GameLab = () => {
   const state = useGameState()
-  const { cardDeck } = state
+  const { cardDeck, dices } = state
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
 
   return (
     <aside>
-      <button
-        onClick={() => {
-          sessionStorage.clear()
-        }}
-      >
-        Clear storage
-      </button>
       <form
         onSubmit={(submitEvent) => {
           submitEvent.preventDefault()
@@ -101,7 +100,77 @@ const GameLab = () => {
           })}
         </fieldset>
       </form>
+      <form
+        onSubmit={(submitEvent) => {
+          submitEvent.preventDefault()
+        }}
+      >
+        <fieldset>
+          <legend>Dices</legend>
+          {dices.map((dice) => {
+            return (
+              <div className="dice-variants" key={dice.id}>
+                <DiceVariants dice={dice} />
+              </div>
+            )
+          })}
+        </fieldset>
+      </form>
+      <button
+        onClick={() => {
+          sessionStorage.clear()
+        }}
+      >
+        Clear storage
+      </button>
     </aside>
+  )
+}
+
+const DiceVariants = ({ dice }) => {
+  return [
+    "random",
+    SYMBOL_COIN,
+    SYMBOL_DIAMOND,
+    SYMBOL_MONKEY,
+    SYMBOL_PARROT,
+    SYMBOL_SKULL,
+    SYMBOL_SWORD,
+  ].map((variant) => {
+    return <DiceVariant key={variant} variant={variant} dice={dice} />
+  })
+}
+
+const diceIsCheated = (dice) => dice.faces[0] === dice.faces[1]
+
+const DiceVariant = ({ dice, variant }) => {
+  const isCurrent = diceIsCheated(dice) ? dice.faces[0] === variant : variant === "random"
+  const dispatch = useGameDispatch()
+
+  return (
+    <button
+      className="dice-variant"
+      data-active={isCurrent ? "" : undefined}
+      // should also be disabled if the dice is in kept area (but we don't iterate over thoose)
+      disabled={isCurrent}
+      onClick={() => {
+        if (variant === "random") {
+          dice.faces = faces
+        } else {
+          dice.faces = dice.faces.map(() => variant)
+        }
+        console.log(dice)
+        dispatch((state) => {
+          return { ...state }
+        })
+      }}
+    >
+      {variant === "random" ? (
+        "?"
+      ) : (
+        <img width="32" height="32" src={`src/dices/assets/dice_${variant}.png`} />
+      )}
+    </button>
   )
 }
 

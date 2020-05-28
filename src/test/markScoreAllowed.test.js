@@ -1,20 +1,23 @@
 import { assert } from "@jsenv/assert"
 import {
-  SYMBOL_SKULL,
   CARD_ONE_SKULL,
   CARD_ANIMALS,
   CARD_CHEST,
   CARD_TWO_SKULLS,
   CARD_WITCH,
-} from "src/constants.js"
+  DICE_SKULL_FROM_CARD_ONE_SKULL,
+  DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+  DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+} from "src/cards/cards.js"
 import { markScoreAllowedSelector } from "src/game.selectors.js"
+import { createDiceOnSkull } from "src/test/test.material.js"
 
 // with 3 skulls
 {
   const actual = markScoreAllowedSelector({
     rollIndex: 0,
     card: CARD_ANIMALS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -40,7 +43,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
   const actual = markScoreAllowedSelector({
     rollIndex: 0,
     card: CARD_CHEST,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -53,7 +56,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
   const actual = markScoreAllowedSelector({
     rollIndex: 1,
     card: CARD_CHEST,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -66,7 +69,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
   const actual = markScoreAllowedSelector({
     rollIndex: 1,
     card: CARD_CHEST,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -79,11 +82,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
   const actual = markScoreAllowedSelector({
     rollIndex: 0,
     card: CARD_ONE_SKULL,
-    diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from card
-      { symbol: SYMBOL_SKULL },
-      { symbol: SYMBOL_SKULL },
-    ],
+    diceCursed: [DICE_SKULL_FROM_CARD_ONE_SKULL, createDiceOnSkull(), createDiceOnSkull()],
     scoreMarked: false,
     diceRolled: [],
   })
@@ -97,10 +96,10 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     rollIndex: 0,
     card: CARD_TWO_SKULLS,
     diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from card
-      { symbol: SYMBOL_SKULL }, // from card
-      { symbol: SYMBOL_SKULL },
-      { symbol: SYMBOL_SKULL },
+      DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+      DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+      createDiceOnSkull(),
+      createDiceOnSkull(),
     ],
     scoreMarked: false,
     diceRolled: [],
@@ -115,10 +114,10 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     rollIndex: 1,
     card: CARD_TWO_SKULLS,
     diceCursed: [
-      { symbol: SYMBOL_SKULL }, // from card
-      { symbol: SYMBOL_SKULL }, // from card
-      { symbol: SYMBOL_SKULL },
-      { symbol: SYMBOL_SKULL },
+      DICE_SKULL_1_FROM_CARD_TWO_SKULLS,
+      DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
+      createDiceOnSkull(),
+      createDiceOnSkull(),
     ],
     scoreMarked: false,
     diceRolled: [],
@@ -134,7 +133,7 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
     card: CARD_ANIMALS,
     diceCursed: [],
     scoreMarked: false,
-    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
+    diceRolled: [createDiceOnSkull()],
   })
   const expected = false
   assert({ actual, expected })
@@ -142,13 +141,14 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
 
 // skull in rolled area uncursed by witch
 {
+  const skullDice = createDiceOnSkull()
   const actual = markScoreAllowedSelector({
     rollIndex: 0,
     card: CARD_WITCH,
     diceCursed: [],
     scoreMarked: false,
-    diceRolled: [{ symbol: SYMBOL_SKULL, id: 12 }],
-    witchUncursedDiceId: 12,
+    diceRolled: [skullDice],
+    witchUncursedDiceId: skullDice.id,
   })
   const expected = true
   assert({ actual, expected })
@@ -156,16 +156,15 @@ import { markScoreAllowedSelector } from "src/game.selectors.js"
 
 // skull in rolled area different that the one uncursed by witch
 {
+  const skullDiceA = createDiceOnSkull()
+  const skullDiceB = createDiceOnSkull()
   const actual = markScoreAllowedSelector({
     rollIndex: 0,
     card: CARD_WITCH,
     diceCursed: [],
     scoreMarked: false,
-    diceRolled: [
-      { symbol: SYMBOL_SKULL, id: 12 },
-      { symbol: SYMBOL_SKULL, id: 13 },
-    ],
-    witchUncursedDiceId: 12,
+    diceRolled: [skullDiceA, skullDiceB],
+    witchUncursedDiceId: skullDiceA.id,
   })
   const expected = false
   assert({ actual, expected })

@@ -10,9 +10,8 @@ import {
   roundScoreSelector,
 } from "src/game.selectors.js"
 import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
-import { useCardsEffects } from "src/Cards/cards.effects.js"
-
-import { isSwordChallengeCard } from "src/Cards/cards.js"
+import { useCardsEffects } from "src/cards/cards.effects.js"
+import { isSwordChallengeCard } from "src/cards/cards.js"
 
 const { useEffect } = React
 

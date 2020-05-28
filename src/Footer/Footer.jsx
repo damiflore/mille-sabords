@@ -5,7 +5,7 @@ import { useMarkScore } from "src/game.actions.js"
 import { markScoreAllowedSelector, roundScoreSelector } from "src/game.selectors.js"
 import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
 
-import { ButtonRoll } from "src/Dice/ButtonRoll.js"
+import { ButtonRoll } from "src/dices/ButtonRoll.js"
 
 export const Footer = () => {
   const state = useGameState()

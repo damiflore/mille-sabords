@@ -10,7 +10,7 @@ export const CardArea = () => {
       {/* <CurrentCard /> */}
       <div
         className="card default-card"
-        style={{ backgroundImage: "url('src/Cards/assets/card_default.png')" }}
+        style={{ backgroundImage: "url('src/cards/assets/card_default.png')" }}
       >
         {/* <DeckButton /> */}
       </div>

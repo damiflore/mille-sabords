@@ -2,8 +2,8 @@ import React from "react"
 import { useGameState } from "src/game.store.js"
 import { keepDiceAllowedSelector } from "src/game.selectors.js"
 import { useKeepDice } from "src/game.actions.js"
-import { Dice } from "src/Dice/Dice.jsx"
-import { SYMBOL_SKULL } from "src/constants.js"
+import { Dice } from "src/dices/Dice.jsx"
+import { diceIsOnSkull } from "src/dices/dices.js"
 
 // eslint-disable-next-line react/display-name
 export const DiceOnGoing = React.forwardRef((props, ref) => {
@@ -20,7 +20,7 @@ export const DiceOnGoing = React.forwardRef((props, ref) => {
           <Dice
             key={dice.id}
             dice={dice}
-            disabled={dice.symbol === SYMBOL_SKULL ? true : !keepDiceAllowed}
+            disabled={diceIsOnSkull(dice) ? true : !keepDiceAllowed}
             onClickAction={(dice) => {
               keepDice(dice)
             }}

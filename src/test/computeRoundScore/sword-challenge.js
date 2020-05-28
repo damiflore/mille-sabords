@@ -1,12 +1,12 @@
 import { assert } from "@jsenv/assert"
+import { CARD_TWO_SWORDS_CHALLENGE } from "src/cards/cards.js"
 import {
-  SYMBOL_PARROT,
-  SYMBOL_MONKEY,
-  SYMBOL_SWORD,
-  SYMBOL_SKULL,
-  SYMBOL_COIN,
-  CARD_TWO_SWORDS_CHALLENGE,
-} from "src/constants.js"
+  createDiceOnCoin,
+  createDiceOnSkull,
+  createDiceOnSword,
+  createDiceOnMonkey,
+  createDiceOnParrot,
+} from "src/test/test.material.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // 8 coin
@@ -15,14 +15,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
     card: CARD_TWO_SWORDS_CHALLENGE,
     diceCursed: [],
     diceKept: [
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
     ],
     markScoreAllowed: true,
   })
@@ -34,14 +34,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
     diceKept: [
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_PARROT },
-      { symbol: SYMBOL_PARROT },
+      createDiceOnSword(),
+      createDiceOnSword(),
+      createDiceOnMonkey(),
+      createDiceOnMonkey(),
+      createDiceOnParrot(),
+      createDiceOnParrot(),
     ],
     markScoreAllowed: true,
   })
@@ -53,14 +53,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
     diceKept: [
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_PARROT },
-      { symbol: SYMBOL_PARROT },
+      createDiceOnSword(),
+      createDiceOnSword(),
+      createDiceOnSword(),
+      createDiceOnMonkey(),
+      createDiceOnParrot(),
+      createDiceOnParrot(),
     ],
     markScoreAllowed: true,
   })
@@ -72,13 +72,13 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull(), createDiceOnSkull()],
     diceKept: [
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_COIN },
-      SYMBOL_COIN,
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
+      createDiceOnCoin(),
     ],
     markScoreAllowed: false,
   })

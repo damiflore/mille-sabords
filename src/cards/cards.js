@@ -1,35 +1,47 @@
-import {
-  CARD_PIRATE,
-  CARD_WITCH,
-  CARD_CHEST,
-  CARD_ANIMALS,
-  CARD_DIAMOND,
-  CARD_COIN,
-  CARD_ONE_SKULL,
-  CARD_TWO_SKULLS,
-  CARD_TWO_SWORDS_CHALLENGE,
-  CARD_THREE_SWORDS_CHALLENGE,
-  CARD_FOUR_SWORDS_CHALLENGE,
-} from "src/constants.js"
+import { SYMBOL_SKULL, SYMBOL_DIAMOND, SYMBOL_COIN } from "src/constants.js"
+import { faces, createDice } from "src/dices/dices.js"
 
-export const getMixedDeck = () => {
-  return mixDeck(createInitialDeck())
-}
+export const CARD_ANIMALS = "animals"
+export const CARD_CHEST = "chest"
+export const CARD_COIN = "coin"
+export const CARD_DIAMOND = "diamond"
+export const CARD_PIRATE = "pirate"
+export const CARD_WITCH = "witch"
+export const CARD_ONE_SKULL = "1skull"
+export const CARD_TWO_SKULLS = "2skulls"
+export const CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge"
+export const CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge"
+export const CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge"
 
-const createInitialDeck = () =>
-  createDeck({
-    [CARD_PIRATE]: 4,
-    [CARD_WITCH]: 4,
-    [CARD_CHEST]: 4,
-    [CARD_ANIMALS]: 4,
-    [CARD_DIAMOND]: 4,
-    [CARD_COIN]: 3,
-    [CARD_ONE_SKULL]: 3,
-    [CARD_TWO_SKULLS]: 2,
-    [CARD_TWO_SWORDS_CHALLENGE]: 2,
-    [CARD_THREE_SWORDS_CHALLENGE]: 3,
-    [CARD_FOUR_SWORDS_CHALLENGE]: 4,
-  })
+export const DICE_SKULL_FROM_CARD_ONE_SKULL = createDice({
+  fromCard: CARD_ONE_SKULL,
+  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
+})
+
+export const DICE_SKULL_1_FROM_CARD_TWO_SKULLS = createDice({
+  fromCard: CARD_TWO_SKULLS,
+  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
+})
+
+export const DICE_SKULL_2_FROM_CARD_TWO_SKULLS = createDice({
+  fromCard: CARD_TWO_SKULLS,
+  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
+})
+
+export const DICE_COIN_FROM_CARD_COIN = createDice({
+  fromCard: CARD_COIN,
+  visibleFaceIndex: faces.indexOf(SYMBOL_COIN),
+})
+
+export const DICE_DIAMOND_FROM_CARD_DIAMOND = createDice({
+  fromCard: CARD_DIAMOND,
+  visibleFaceIndex: faces.indexOf(SYMBOL_DIAMOND),
+})
+
+export const isDiamondDiceFromCard = (dice) => dice.fromCard === CARD_DIAMOND
+export const isCoinDiceFromCard = (dice) => dice.fromCard === CARD_COIN
+export const isSkullDiceFromCard = (dice) =>
+  dice.fromCard === CARD_ONE_SKULL || dice.fromCard === CARD_TWO_SKULLS
 
 export const createDeck = (repartition) => {
   const cards = []
@@ -44,6 +56,20 @@ export const createDeck = (repartition) => {
 
   return cards
 }
+
+export const CARDS = createDeck({
+  [CARD_PIRATE]: 4,
+  [CARD_WITCH]: 4,
+  [CARD_CHEST]: 4,
+  [CARD_ANIMALS]: 4,
+  [CARD_DIAMOND]: 4,
+  [CARD_COIN]: 3,
+  [CARD_ONE_SKULL]: 3,
+  [CARD_TWO_SKULLS]: 2,
+  [CARD_TWO_SWORDS_CHALLENGE]: 2,
+  [CARD_THREE_SWORDS_CHALLENGE]: 3,
+  [CARD_FOUR_SWORDS_CHALLENGE]: 4,
+})
 
 export const mixDeck = (deck) => {
   const deckMixed = [...deck]
@@ -64,7 +90,6 @@ const swapTwoCards = (deck) => {
 
 const randomIndex = (arrayLength) => Math.floor(Math.random() * arrayLength)
 
-// in theory they should be selectors
 export const isPirateCard = (card) => card === CARD_PIRATE
 export const isWitchCard = (card) => card === CARD_WITCH
 export const isChestCard = (card) => card === CARD_CHEST

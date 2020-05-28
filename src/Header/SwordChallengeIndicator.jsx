@@ -8,7 +8,7 @@ import {
   TWO_SWORDS_CHALLENGE_GAMBLE,
   THREE_SWORDS_CHALLENGE_GAMBLE,
   FOUR_SWORDS_CHALLENGE_GAMBLE,
-} from "src/Cards/cards.js"
+} from "src/cards/cards.js"
 import { SYMBOL_SWORD } from "src/constants.js"
 import { countSymbol, diceArrayToSymbolArray } from "src/Score/computeRoundScore.js"
 import { useGameState } from "src/game.store.js"
@@ -46,12 +46,12 @@ export const SwordChallengeIndicator = () => {
 
 const SwordIconActivated = () => (
   <div className="sword-icon">
-    <img src={`src/Dice/assets/dice_sword.png`} />
+    <img src={`src/dices/assets/dice_sword.png`} />
   </div>
 )
 
 const SwordIconDisabled = () => (
   <div className="sword-icon disabled">
-    <img src={`src/Cards/assets/swords-disabled.png`} />
+    <img src={`src/cards/assets/swords-disabled.png`} />
   </div>
 )

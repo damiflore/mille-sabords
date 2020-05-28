@@ -1,7 +1,7 @@
 @import "./src/Header/header.css";
 @import "./src/Score/score.css";
-@import "./src/Cards/cards.css";
-@import "./src/Dice/dice.css";
+@import "./src/cards/cards.css";
+@import "./src/dices/dice.css";
 @import "./src/SkullIsland/skull-island.css";
 @import "./src/Footer/footer.css";
 
@@ -11,13 +11,13 @@ body {
   margin: 0;
 }
 #mille-sabord-container {
-  background-image: url("src/Dice/assets/wood.jpg");
+  background-image: url("src/dices/assets/wood.jpg");
   color: white;
   padding: 15px;
   max-width: 680px;
   margin: 0 auto;
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
 }
 button {
   background: white;

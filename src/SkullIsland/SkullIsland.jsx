@@ -4,7 +4,7 @@ import { useGameState } from "src/game.store.js"
 import { removeSkullAllowedSelector } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 
-import { Dice } from "src/Dice/Dice.jsx"
+import { Dice } from "src/dices/Dice.jsx"
 
 export const SkullIsland = () => {
   const state = useGameState()

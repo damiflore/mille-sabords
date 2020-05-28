@@ -1,27 +1,27 @@
 import { assert } from "@jsenv/assert"
+import { CARD_ANIMALS } from "src/cards/cards.js"
 import {
-  SYMBOL_PARROT,
-  SYMBOL_MONKEY,
-  SYMBOL_SWORD,
-  SYMBOL_SKULL,
-  SYMBOL_COIN,
-  SYMBOL_DIAMOND,
-  CARD_ANIMALS,
-} from "src/constants.js"
+  createDiceOnCoin,
+  createDiceOnDiamond,
+  createDiceOnSkull,
+  createDiceOnSword,
+  createDiceOnMonkey,
+  createDiceOnParrot,
+} from "src/test/test.material.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
 // with 1 coin and 1 diamond
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
     diceKept: [
-      { symbol: SYMBOL_PARROT },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_SWORD },
-      { symbol: SYMBOL_COIN },
-      { symbol: SYMBOL_DIAMOND },
+      createDiceOnParrot(),
+      createDiceOnMonkey(),
+      createDiceOnSword(),
+      createDiceOnSword(),
+      createDiceOnCoin(),
+      createDiceOnDiamond(),
     ],
     markScoreAllowed: true,
   })
@@ -33,14 +33,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    diceCursed: [{ symbol: SYMBOL_SKULL }, { symbol: SYMBOL_SKULL }],
+    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
     diceKept: [
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_MONKEY },
-      { symbol: SYMBOL_PARROT },
-      { symbol: SYMBOL_PARROT },
-      { symbol: SYMBOL_SWORD },
+      createDiceOnMonkey(),
+      createDiceOnMonkey(),
+      createDiceOnMonkey(),
+      createDiceOnParrot(),
+      createDiceOnParrot(),
+      createDiceOnSword(),
     ],
     markScoreAllowed: true,
   })

@@ -3,7 +3,7 @@ import React from "react"
 import { useGameState } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
 
-import { cardColors, isSwordChallengeCard } from "src/Cards/cards.js"
+import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 import { SwordChallengeIndicator } from "src/Header/SwordChallengeIndicator.jsx"
 
 export const Header = () => {
@@ -40,7 +40,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       style={{
-        backgroundImage: "url('src/Cards/assets/card_default.png')",
+        backgroundImage: "url('src/cards/assets/card_default.png')",
         backgroundSize: "217px",
       }}
     ></div>
@@ -62,7 +62,7 @@ const CurrentCard = () => {
       }}
     >
       <img
-        src={`src/Cards/assets/card_small-${
+        src={`src/cards/assets/card_small-${
           isSwordChallengeCard(card) ? "sword-challenge" : card
         }.png`}
         alt={card}
