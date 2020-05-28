@@ -5,7 +5,7 @@ import {
   DICE_SKULL_2_FROM_CARD_TWO_SKULLS,
   DICE_COIN_FROM_CARD_COIN,
   DICE_DIAMOND_FROM_CARD_DIAMOND,
-} from "src/dices/dices.js"
+} from "src/cards/cards.js"
 
 export const useActivateOneSkullCard = createGameAction((state) => {
   const { diceCursed } = state
