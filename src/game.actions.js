@@ -17,7 +17,7 @@ export const useCurseDice = createGameAction((state, dice) => {
   const { diceRolled, diceCursed } = state
   return {
     ...state,
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate !== dice),
+    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
     diceCursed: [...diceCursed, dice],
   }
 })
@@ -27,7 +27,7 @@ export const useUncurseDice = createGameAction((state, dice) => {
   return {
     ...state,
     witchUncursedDiceId: dice.id,
-    diceCursed: diceCursed.filter((diceCandidate) => diceCandidate !== dice),
+    diceCursed: diceCursed.filter((diceCandidate) => diceCandidate.id !== dice.id),
     diceRolled: [...diceRolled, dice],
   }
 })
@@ -46,7 +46,7 @@ export const useUnkeepDice = createGameAction((state, dice) => {
 
   return {
     ...state,
-    diceKept: diceKept.filter((diceCandidate) => diceCandidate !== dice),
+    diceKept: diceKept.filter((diceCandidate) => diceCandidate.id !== dice.id),
     diceRolled: [...diceRolled, dice],
   }
 })
@@ -57,7 +57,7 @@ export const useKeepDice = createGameAction((state, dice) => {
   return {
     ...state,
     diceKept: [...diceKept, dice],
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate !== dice),
+    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
   }
 })
 

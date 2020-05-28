@@ -16,7 +16,8 @@ export const rollDices = (dices, { diceParentElement }) => {
       yMin,
       yMax,
     })
-    dicesRolled.push(diceRolled)
+    Object.assign(dice, diceRolled)
+    dicesRolled.push(dice)
   })
   return dicesRolled
 }
@@ -59,7 +60,7 @@ const getRandomCollisionFreeDicePosition = (dices, { xMin, xMax, yMin, yMax }) =
 
 const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
 
-const getRandomDiceFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length)
+const getRandomDiceFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length - 1)
 
 const getRandomNumberBetweenInterval = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min) // min and max are included
