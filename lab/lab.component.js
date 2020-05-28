@@ -1,8 +1,20 @@
 import React from "react"
 
 import { GameContextProvider, useGameState, useGameDispatch } from "src/game.store.js"
-import { CARD_COIN, SYMBOL_SKULL } from "src/constants.js"
-import { createDeck } from "src/Cards/cards.js"
+import {
+  CARD_ANIMALS,
+  CARD_COIN,
+  CARD_DIAMOND,
+  CARD_ONE_SKULL,
+  CARD_TWO_SWORDS_CHALLENGE,
+  CARD_THREE_SWORDS_CHALLENGE,
+  CARD_FOUR_SWORDS_CHALLENGE,
+  CARD_PIRATE,
+  CARD_CHEST,
+  CARD_TWO_SKULLS,
+  CARD_WITCH,
+  SYMBOL_SKULL,
+} from "src/constants.js"
 import { Game } from "src/game.component.js"
 
 const link = document.createElement("link")
@@ -13,7 +25,6 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    cardDeck: createDeck({ [CARD_COIN]: 1 }),
     diceCursed: [
       { id: 100, symbol: SYMBOL_SKULL },
       { id: 101, symbol: SYMBOL_SKULL },
@@ -32,8 +43,9 @@ export const Lab = () => {
 
 const GameLab = () => {
   const state = useGameState()
-  const { totalScore } = state
+  const { totalScore, cardDeck } = state
   const setTotalScore = useSetTotalScore()
+  const nextCard = cardDeck[0]
 
   return (
     <aside>
@@ -45,15 +57,55 @@ const GameLab = () => {
         Clear storage
       </button>
       <form
+        id="form-total-score"
         onSubmit={(submitEvent) => {
           submitEvent.preventDefault()
-          setTotalScore(parseInt(document.querySelector("form").totalScore.value))
+          setTotalScore(parseInt(document.querySelector("#form-total-score").totalScore.value))
         }}
       >
         <input type="number" name="totalScore" defaultValue={totalScore} onChange={() => {}} />
         <button type="submit">set total score</button>
       </form>
+      <form
+        onSubmit={(submitEvent) => {
+          submitEvent.preventDefault()
+        }}
+      >
+        <fieldset>
+          <legend>Next card in the deck</legend>
+          {[
+            CARD_ANIMALS,
+            CARD_PIRATE,
+            CARD_WITCH,
+            CARD_CHEST,
+            CARD_COIN,
+            CARD_DIAMOND,
+            CARD_ONE_SKULL,
+            CARD_TWO_SKULLS,
+            CARD_TWO_SWORDS_CHALLENGE,
+            CARD_THREE_SWORDS_CHALLENGE,
+            CARD_FOUR_SWORDS_CHALLENGE,
+          ].map((card) => {
+            return <NextCardInput active={card === nextCard} key={card} card={card} />
+          })}
+        </fieldset>
+      </form>
     </aside>
+  )
+}
+
+const NextCardInput = ({ active, card }) => {
+  const setNextCard = useSetNextCard()
+
+  return (
+    <button
+      data-active={active ? "" : undefined}
+      onClick={() => {
+        setNextCard(card)
+      }}
+    >
+      {card}
+    </button>
   )
 }
 
@@ -62,6 +114,19 @@ const useSetTotalScore = () => {
   return (totalScore) => {
     dispatch((state) => {
       return { ...state, totalScore }
+    })
+  }
+}
+
+const useSetNextCard = () => {
+  const { cardDeck } = useGameState()
+  const dispatch = useGameDispatch()
+  return (card) => {
+    dispatch((state) => {
+      return {
+        ...state,
+        cardDeck: [card, ...cardDeck.slice(1)],
+      }
     })
   }
 }
