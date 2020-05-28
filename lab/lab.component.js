@@ -43,7 +43,7 @@ export const Lab = () => {
 
 const GameLab = () => {
   const state = useGameState()
-  const { totalScore, cardDeck } = state
+  const { cardDeck } = state
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
 
@@ -57,14 +57,25 @@ const GameLab = () => {
         Clear storage
       </button>
       <form
-        id="form-total-score"
         onSubmit={(submitEvent) => {
           submitEvent.preventDefault()
-          setTotalScore(parseInt(document.querySelector("#form-total-score").totalScore.value))
         }}
       >
-        <input type="number" name="totalScore" defaultValue={totalScore} onChange={() => {}} />
-        <button type="submit">set total score</button>
+        <fieldset>
+          <legend>Total score</legend>
+          {[0, 3000, 5900].map((score) => {
+            return (
+              <button
+                key={score}
+                onClick={() => {
+                  setTotalScore(score)
+                }}
+              >
+                Set to {score}
+              </button>
+            )
+          })}
+        </fieldset>
       </form>
       <form
         onSubmit={(submitEvent) => {
