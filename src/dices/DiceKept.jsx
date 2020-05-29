@@ -22,8 +22,8 @@ export const DiceKept = () => {
     <div className="dice-kept">
       <div className="dice-area">
         <div className="box">
-          {isCoinCard(card) ? <BonusCoin /> : null}
-          {isDiamondCard(card) ? <BonusDiamond /> : null}
+          {isCoinCard(card) ? <ExtraCoin /> : null}
+          {isDiamondCard(card) ? <ExtraDiamond /> : null}
           {dicesInKeptArea.map((dice) => (
             <Dice
               key={dice.id}
@@ -47,7 +47,7 @@ export const DiceKept = () => {
   )
 }
 
-const BonusCoin = () => {
+const ExtraCoin = () => {
   return (
     <img
       src={`src/dices/assets/dice_coin.png`}
@@ -59,7 +59,7 @@ const BonusCoin = () => {
   )
 }
 
-const BonusDiamond = () => {
+const ExtraDiamond = () => {
   return (
     <img
       src={`src/dices/assets/dice_diamond.png`}
