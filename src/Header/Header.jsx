@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
+import { useCard, useCardDrawn, useCardDeck, useTotalScore } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
 
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
@@ -28,7 +28,8 @@ const SmallCard = () => {
 }
 
 const TopDeckCard = () => {
-  const { card, cardDrawn } = useGameState()
+  const card = useCard()
+  const cardDrawn = useCardDrawn()
 
   if (!card || !cardDrawn) return <BackCard />
 
@@ -48,7 +49,8 @@ const BackCard = () => {
 }
 
 const CurrentCard = () => {
-  const { card, cardDrawn } = useGameState()
+  const card = useCard()
+  const cardDrawn = useCardDrawn()
 
   if (!card) return null
   if (!cardDrawn) return null
@@ -72,7 +74,8 @@ const CurrentCard = () => {
 }
 
 const DeckButton = () => {
-  const { cardDrawn, cardDeck } = useGameState()
+  const cardDrawn = useCardDrawn()
+  const cardDeck = useCardDeck()
 
   if (cardDrawn) return null
 
@@ -102,7 +105,7 @@ const ShuffleDeckButton = () => {
 }
 
 const TotalScore = () => {
-  const { totalScore } = useGameState()
+  const totalScore = useTotalScore()
   return (
     <div className="total-score">
       <span className="score">{totalScore}</span>

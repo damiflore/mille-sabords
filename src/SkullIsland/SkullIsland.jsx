@@ -1,15 +1,14 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
-import { removeSkullAllowedSelector } from "src/game.selectors.js"
+import { useDiceCursed } from "src/game.store.js"
+import { useRemoveSkullAllowed } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
 
 export const SkullIsland = () => {
-  const state = useGameState()
-  const { diceCursed } = state
-  const removeSkullAllowed = removeSkullAllowedSelector(state)
+  const diceCursed = useDiceCursed()
+  const removeSkullAllowed = useRemoveSkullAllowed()
   const uncurseDice = useUncurseDice()
 
   return (

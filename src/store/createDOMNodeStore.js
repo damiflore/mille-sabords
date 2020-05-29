@@ -19,7 +19,7 @@ export const createDOMNodeStore = () => {
 
   const getNodeRefCallback = (id) => getOrCreateValuePointer(id).refCallback
 
-  const ContextProvider = ({ children }) => {
+  const Provider = ({ children }) => {
     return (
       <GetNodeContext.Provider value={getNode}>
         <GetNodeRefCallbackContext.Provider value={getNodeRefCallback}>
@@ -34,7 +34,7 @@ export const createDOMNodeStore = () => {
   const useDOMNodeCallback = (id) => useContext(GetNodeRefCallbackContext)(id)
 
   return {
-    ContextProvider,
+    Provider,
     useDOMNode,
     useDOMNodeCallback,
   }

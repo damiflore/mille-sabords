@@ -1,16 +1,15 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
+import { useRollIndex } from "src/game.store.js"
 import { useMarkScore } from "src/game.actions.js"
-import { markScoreAllowedSelector, roundScoreSelector } from "src/game.selectors.js"
+import { useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
 import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
 
 import { ButtonRoll } from "src/dices/ButtonRoll.js"
 
 export const Footer = () => {
-  const state = useGameState()
   const markScore = useMarkScore()
-  const roundScore = roundScoreSelector(state)
+  const roundScore = useRoundScore()
 
   return (
     <div className="actions">
@@ -26,10 +25,9 @@ export const Footer = () => {
 }
 
 const ButtonMarkScore = ({ onClick }) => {
-  const state = useGameState()
-  const { rollIndex } = state
-  const markScoreAllowed = markScoreAllowedSelector(state)
-  const roundScore = roundScoreSelector(state)
+  const rollIndex = useRollIndex()
+  const markScoreAllowed = useMarkScoreAllowed()
+  const roundScore = useRoundScore()
 
   const sign = roundScore < 0 ? "-" : "+"
 

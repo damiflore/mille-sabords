@@ -1,8 +1,8 @@
 import React from "react"
-import { useGameState } from "src/game.context.js"
+import { useCardDeck } from "src/game.store.js"
 
 export const CardArea = () => {
-  const { cardDeck } = useGameState()
+  const cardDeck = useCardDeck()
 
   return (
     <div className="card-area">

@@ -1,6 +1,6 @@
 import React from "react"
 import { useBecomes } from "src/hooks.js"
-import { useGameState } from "src/game.context.js"
+import { useCard, useCardDrawn } from "src/game.store.js"
 
 import { isOneSkullCard, isTwoSkullsCard, isDiamondCard, isCoinCard } from "src/cards/cards.js"
 import {
@@ -20,11 +20,10 @@ export const useCardsEffects = () => {
 }
 
 const useOneSkullCardEffect = () => {
-  const state = useGameState()
-  const { card } = state
+  const card = useCard()
   const cardBecomesDrawn = useCardBecomesDrawn()
-  const oneSkullCard = isOneSkullCard(card)
   const activateOneSkullCard = useActivateOneSkullCard()
+  const oneSkullCard = isOneSkullCard(card)
 
   useEffect(() => {
     if (cardBecomesDrawn && oneSkullCard) {
@@ -34,11 +33,10 @@ const useOneSkullCardEffect = () => {
 }
 
 const useTwoSkullsCardEffect = () => {
-  const state = useGameState()
-  const { card } = state
+  const card = useCard()
   const cardBecomesDrawn = useCardBecomesDrawn()
-  const twoSkullSCard = isTwoSkullsCard(card)
   const activateTwoSkullsCard = useActivateTwoSkullsCard()
+  const twoSkullSCard = isTwoSkullsCard(card)
 
   useEffect(() => {
     if (cardBecomesDrawn && twoSkullSCard) {
@@ -48,11 +46,10 @@ const useTwoSkullsCardEffect = () => {
 }
 
 const useDiamondCardEffect = () => {
-  const state = useGameState()
-  const { card } = state
+  const card = useCard()
   const cardBecomesDrawn = useCardBecomesDrawn()
-  const diamondCard = isDiamondCard(card)
   const activateDiamondCard = useActivateDiamondCard()
+  const diamondCard = isDiamondCard(card)
 
   useEffect(() => {
     if (cardBecomesDrawn && diamondCard) {
@@ -62,11 +59,10 @@ const useDiamondCardEffect = () => {
 }
 
 const useCoinCardEffect = () => {
-  const state = useGameState()
-  const { card } = state
+  const card = useCard()
   const cardBecomesDrawn = useCardBecomesDrawn()
-  const coinCard = isCoinCard(card)
   const activateCoinCard = useActivateCoinCard()
+  const coinCard = isCoinCard(card)
 
   useEffect(() => {
     if (cardBecomesDrawn && coinCard) {
@@ -76,6 +72,6 @@ const useCoinCardEffect = () => {
 }
 
 const useCardBecomesDrawn = () => {
-  const { cardDrawn } = useGameState()
+  const cardDrawn = useCardDrawn()
   return useBecomes((cardDrawnPrevious) => !cardDrawnPrevious && cardDrawn, [cardDrawn])
 }

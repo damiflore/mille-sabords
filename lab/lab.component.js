@@ -1,11 +1,7 @@
 import React from "react"
 
-import {
-  GameContextProvider,
-  useGameState,
-  useGameDispatch,
-  useGameNode,
-} from "src/game.context.js"
+import { GameContextProvider } from "src/GameContextProvider.js"
+import { useCardDeck, useDices, useGameDispatch, useGameNode } from "src/game.store.js"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -53,8 +49,8 @@ export const Lab = () => {
 }
 
 const GameLab = () => {
-  const state = useGameState()
-  const { cardDeck, dices } = state
+  const cardDeck = useCardDeck()
+  const dices = useDices()
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
 
@@ -220,7 +216,7 @@ const useSetTotalScore = () => {
 }
 
 const useSetNextCard = () => {
-  const { cardDeck } = useGameState()
+  const cardDeck = useCardDeck()
   const dispatch = useGameDispatch()
   return (card) => {
     dispatch((state) => {

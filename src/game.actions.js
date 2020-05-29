@@ -1,4 +1,4 @@
-import { createGameAction } from "src/game.context.js"
+import { createGameAction } from "src/game.store.js"
 import { mixDeck } from "src/cards/cards.js"
 
 export const useDrawCard = createGameAction((state) => {
@@ -43,7 +43,6 @@ export const useMarkScore = createGameAction((state, score) => {
 
 export const useUnkeepDice = createGameAction((state, dice) => {
   const { diceKept, diceRolled } = state
-
   return {
     ...state,
     diceKept: diceKept.filter((diceCandidate) => diceCandidate.id !== dice.id),
@@ -53,7 +52,6 @@ export const useUnkeepDice = createGameAction((state, dice) => {
 
 export const useKeepDice = createGameAction((state, dice) => {
   const { diceRolled, diceKept } = state
-
   return {
     ...state,
     diceKept: [...diceKept, dice],

@@ -1,4 +1,4 @@
-import { createGameAction } from "src/game.context.js"
+import { createGameAction } from "src/game.store.js"
 import {
   DICE_SKULL_FROM_CARD_ONE_SKULL,
   DICE_SKULL_1_FROM_CARD_TWO_SKULLS,

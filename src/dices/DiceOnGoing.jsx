@@ -1,15 +1,15 @@
 import React from "react"
-import { useGameState, useGameNodeCallback } from "src/game.context.js"
-import { keepDiceAllowedSelector } from "src/game.selectors.js"
+import { useGameNodeCallback, useDiceRolled } from "src/game.store.js"
+import { useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice } from "src/game.actions.js"
+
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
 
 // eslint-disable-next-line react/display-name
 export const DiceOnGoing = () => {
-  const state = useGameState()
-  const { diceRolled } = state
-  const keepDiceAllowed = keepDiceAllowedSelector(state)
+  const diceRolled = useDiceRolled()
+  const keepDiceAllowed = useKeepDiceAllowed()
   const keepDice = useKeepDice()
 
   return (

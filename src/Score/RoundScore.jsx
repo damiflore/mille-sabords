@@ -1,22 +1,20 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
-import { roundScoreSelector } from "src/game.selectors.js"
+import { useRollIndex } from "src/game.store.js"
+import { useRoundScore } from "src/game.selectors.js"
 
 export const RoundScore = () => {
-  const { rollIndex } = useGameState()
+  const rollIndex = useRollIndex()
   return <div className="score-area">{rollIndex === -1 ? null : <ScoreDisplay />}</div>
 }
 
 const ScoreDisplay = () => {
-  const state = useGameState()
+  const roundScore = useRoundScore()
 
   // const { isOnSkullIsland } = state
   // if (isOnSkullIsland) {
   //   return <span>Skull Island!</span>
   // }
-
-  const roundScore = roundScoreSelector(state)
 
   return (
     <>

@@ -1,10 +1,7 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
-import {
-  unkeepDiceAllowedSelector,
-  threeSkullOrMoreInCursedAreaSelector,
-} from "src/game.selectors.js"
+import { useDiceKept } from "src/game.store.js"
+import { useUnkeepDiceAllowed, useThreeSkullOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
@@ -12,9 +9,8 @@ import { isDiamondDiceFromCard, isCoinDiceFromCard } from "src/cards/cards.js"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {
-  const state = useGameState()
-  const { diceKept } = state
-  const unkeepDiceAllowed = unkeepDiceAllowedSelector(state)
+  const diceKept = useDiceKept()
+  const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
 
   return (
@@ -47,9 +43,9 @@ export const DiceKept = () => {
 }
 
 const CursedCover = () => {
-  const state = useGameState()
+  const threeSkullOrMoreInCursedArea = useThreeSkullOrMoreInCursedArea()
 
-  if (!threeSkullOrMoreInCursedAreaSelector(state)) {
+  if (!threeSkullOrMoreInCursedArea) {
     return null
   }
 
