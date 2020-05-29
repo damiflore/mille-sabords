@@ -1,13 +1,69 @@
 import React from "react"
 
-import { diceIsOnSkull } from "src/dices/dices.js"
-import { isWitchCard, isChestCard } from "src/cards/cards.js"
+import {
+  useRollIndex,
+  useWitchUncursedDiceId,
+  useCard,
+  useScoreMarked,
+  useDicesRolled,
+  useDicesCursed,
+  useDicesKept,
+  useCardDrawn,
+} from "src/game.store.js"
+import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
+import {
+  isWitchCard,
+  isChestCard,
+  isCoinCard,
+  isDiamondCard,
+  isOneSkullCard,
+  isTwoSkullsCard,
+} from "src/cards/cards.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
+import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
 
-export const rollDiceAllowedSelector = (state) => {
-  const { rollIndex, diceRolled, cardDrawn, scoreMarked } = state
+export const useSymbolsFromCard = ({ card = useCard() } = {}) => {
+  if (isCoinCard(card)) return [SYMBOL_COIN]
+  if (isDiamondCard(card)) return [SYMBOL_DIAMOND]
+  if (isOneSkullCard(card)) return [SYMBOL_SKULL]
+  if (isTwoSkullsCard(card)) return [SYMBOL_SKULL, SYMBOL_SKULL]
+  return []
+}
+
+export const useSymbolsFromDicesKept = ({ dicesKept = useDicesKept() } = {}) => {
+  return dicesKept.map((dice) => diceToVisibleSymbol(dice))
+}
+
+export const useRemainingSpotInCursedArea = ({
+  skullCountInCursedArea = useSkullCountInCursedArea(),
+} = {}) => {
+  return 3 - skullCountInCursedArea
+}
+
+export const useHasDicesToCurse = ({ dicesToCurse = useDicesToCurse() } = {}) => {
+  return dicesToCurse.length > 0
+}
+
+export const useDicesToCurse = ({
+  dicesRolled = useDicesRolled(),
+  witchUncursedDiceId = useWitchUncursedDiceId(),
+  remainingSpotInCursedArea = useRemainingSpotInCursedArea(),
+} = {}) => {
+  return dicesRolled
+    .filter((dice) => diceIsOnSkull(dice) && dice.id !== witchUncursedDiceId)
+    .slice(0, remainingSpotInCursedArea)
+}
+
+export const useRollDiceAllowed = ({
+  cardDrawn = useCardDrawn(),
+  rollIndex = useRollIndex(),
+  dicesRolled = useDicesRolled(),
+  scoreMarked = useScoreMarked(),
+  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
+  hasDicesToCurse = useHasDicesToCurse(),
+} = {}) => {
   if (!cardDrawn) {
     return false
   }
@@ -20,46 +76,44 @@ export const rollDiceAllowedSelector = (state) => {
     return true
   }
 
-  if (threeSkullOrMoreInCursedAreaSelector(state)) {
+  if (threeSkullsOrMoreInCursedArea) {
     return false
   }
 
-  if (hasSkullsInRolledAreaSelector(state)) {
+  if (hasDicesToCurse) {
     return false
   }
 
-  if (diceRolled.length < 2) {
+  if (dicesRolled.length < 2) {
     return false
   }
 
   return true
 }
 
-export const remainingSpotInCursedAreaSelector = (state) =>
-  3 - skullCountInCursedAreaSelector(state)
-
-export const hasSkullsInRolledAreaSelector = (state) => skullsInRolledAreaSelector(state).length > 0
-
-export const skullsInRolledAreaSelector = (state) => {
-  const { diceRolled, witchUncursedDiceId } = state
-  return diceRolled.filter((dice) => diceIsOnSkull(dice) && dice.id !== witchUncursedDiceId)
+export const useThreeSkullsOrMoreInCursedArea = ({
+  skullCountInCursedArea = useSkullCountInCursedArea(),
+} = {}) => {
+  return skullCountInCursedArea > 2
 }
 
-export const threeSkullOrMoreInCursedAreaSelector = (state) =>
-  skullCountInCursedAreaSelector(state) > 2
-
-export const skullCountInCursedAreaSelector = (state) => {
-  const { diceCursed } = state
-  return diceCursed.length
+export const useSkullCountInCursedArea = ({
+  dicesCursed = useDicesCursed(),
+  symbolsFromCard = useSymbolsFromCard(),
+} = {}) => {
+  return dicesCursed.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol))
 }
 
-export const removeSkullAllowedSelector = (state) => {
-  const { witchUncursedDiceId, card, diceCursed } = state
+export const useRemoveSkullAllowed = ({
+  witchUncursedDiceId = useWitchUncursedDiceId(),
+  card = useCard(),
+  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
+} = {}) => {
   if (!isWitchCard(card)) {
     return false
   }
 
-  if (diceCursed.length > 2) {
+  if (threeSkullsOrMoreInCursedArea) {
     return false
   }
 
@@ -70,40 +124,48 @@ export const removeSkullAllowedSelector = (state) => {
   return true
 }
 
-export const keepDiceAllowedSelector = (state) => {
-  const { scoreMarked } = state
+export const useKeepDiceAllowed = ({
+  scoreMarked = useScoreMarked(),
+  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
+} = {}) => {
   if (scoreMarked) {
     return false
   }
 
-  if (threeSkullOrMoreInCursedAreaSelector(state)) {
+  if (threeSkullsOrMoreInCursedArea) {
     return false
   }
 
   return true
 }
 
-export const unkeepDiceAllowedSelector = (state) => {
-  const { scoreMarked } = state
+export const useUnkeepDiceAllowed = ({
+  scoreMarked = useScoreMarked(),
+  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
+} = {}) => {
   if (scoreMarked) {
     return false
   }
 
-  if (threeSkullOrMoreInCursedAreaSelector(state)) {
+  if (threeSkullsOrMoreInCursedArea) {
     return false
   }
 
   return true
 }
 
-export const markScoreAllowedSelector = (state) => {
-  const { rollIndex, scoreMarked, card } = state
-
+export const useMarkScoreAllowed = ({
+  rollIndex = useRollIndex(),
+  scoreMarked = useScoreMarked(),
+  card = useCard(),
+  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
+  hasDicesToCurse = useHasDicesToCurse(),
+} = {}) => {
   if (scoreMarked) {
     return false
   }
 
-  if (threeSkullOrMoreInCursedAreaSelector(state)) {
+  if (threeSkullsOrMoreInCursedArea) {
     if (isChestCard(card) && rollIndex > 0) {
       return true
     }
@@ -111,48 +173,42 @@ export const markScoreAllowedSelector = (state) => {
     return false
   }
 
-  if (hasSkullsInRolledAreaSelector(state)) {
+  if (hasDicesToCurse) {
     return false
   }
 
   return true
 }
 
-export const startNextRoundAllowedSelector = (state) => {
-  const { rollIndex } = state
-  if (rollIndex === -1) {
-    return false
-  }
-
-  const rollDiceAllowed = rollDiceAllowedSelector(state)
+export const useStartNextRoundAllowed = ({
+  rollDiceAllowed = useRollDiceAllowed(),
+  markScoreAllowed = useMarkScoreAllowed(),
+} = {}) => {
   if (rollDiceAllowed) {
     return false
   }
 
-  const markScoreAllowed = markScoreAllowedSelector(state)
   if (markScoreAllowed) {
-    return false
-  }
-
-  if (threeSkullOrMoreInCursedAreaSelector(state)) return true
-  if (hasSkullsInRolledAreaSelector(state)) {
     return false
   }
 
   return true
 }
 
-export const roundScoreSelector = (state) => {
-  const { card, diceKept, scoreMarked } = state
-  const markScoreAllowed = markScoreAllowedSelector(state)
+export const useRoundScore = ({
+  card = useCard(),
+  symbolsFromDicesKept = useSymbolsFromDicesKept(),
+  scoreMarked = useScoreMarked(),
+  markScoreAllowed = useMarkScoreAllowed(),
+} = {}) => {
   return useMemo(
     () =>
       computeRoundScore({
         card,
-        diceKept,
+        symbolsFromDicesKept,
         scoreMarked,
         markScoreAllowed,
       }),
-    [card, diceKept, scoreMarked, markScoreAllowed],
+    [card, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
   )
 }

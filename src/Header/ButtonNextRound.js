@@ -1,10 +1,9 @@
 import React from "react"
-import { useGameState, createGameAction } from "src/game.context.js"
-import { startNextRoundAllowedSelector } from "src/game.selectors.js"
+import { createGameAction } from "src/game.store.js"
+import { useStartNextRoundAllowed } from "src/game.selectors.js"
 
 export const ButtonNextRound = () => {
-  const state = useGameState()
-  const startNextRoundAllowed = startNextRoundAllowedSelector(state)
+  const startNextRoundAllowed = useStartNextRoundAllowed()
   const startNextRound = useStartNextRound()
 
   if (startNextRoundAllowed) {
@@ -23,9 +22,9 @@ const useStartNextRound = createGameAction((state) => {
     ...state,
     witchUncursedDiceId: null,
     rollIndex: -1,
-    diceRolled: [],
-    diceKept: [],
-    diceCursed: [],
+    dicesRolled: [],
+    dicesCursed: [],
+    dicesKept: [],
     scoreMarked: false,
     cardDrawn: false,
     isOnSkullIsland: false,

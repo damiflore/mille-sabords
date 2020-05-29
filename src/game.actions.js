@@ -1,4 +1,4 @@
-import { createGameAction } from "src/game.context.js"
+import { createGameAction } from "src/game.store.js"
 import { mixDeck } from "src/cards/cards.js"
 
 export const useDrawCard = createGameAction((state) => {
@@ -14,21 +14,39 @@ export const useDrawCard = createGameAction((state) => {
 })
 
 export const useCurseDice = createGameAction((state, dice) => {
-  const { diceRolled, diceCursed } = state
+  const { dicesRolled, dicesCursed } = state
   return {
     ...state,
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceCursed: [...diceCursed, dice],
+    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
+    dicesCursed: [...dicesCursed, dice],
   }
 })
 
 export const useUncurseDice = createGameAction((state, dice) => {
-  const { diceCursed, diceRolled } = state
+  const { dicesRolled, dicesCursed } = state
   return {
     ...state,
     witchUncursedDiceId: dice.id,
-    diceCursed: diceCursed.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceRolled: [...diceRolled, dice],
+    dicesRolled: [...dicesRolled, dice],
+    dicesCursed: dicesCursed.filter((diceCursed) => diceCursed.id !== dice.id),
+  }
+})
+
+export const useUnkeepDice = createGameAction((state, dice) => {
+  const { dicesRolled, dicesKept } = state
+  return {
+    ...state,
+    dicesRolled: [...dicesRolled, dice],
+    dicesKept: dicesKept.filter((diceKept) => diceKept.id !== dice.id),
+  }
+})
+
+export const useKeepDice = createGameAction((state, dice) => {
+  const { dicesRolled, dicesKept } = state
+  return {
+    ...state,
+    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
+    dicesKept: [...dicesKept, dice],
   }
 })
 
@@ -38,26 +56,6 @@ export const useMarkScore = createGameAction((state, score) => {
     ...state,
     totalScore: Math.max(totalScore + score, 0),
     scoreMarked: true,
-  }
-})
-
-export const useUnkeepDice = createGameAction((state, dice) => {
-  const { diceKept, diceRolled } = state
-
-  return {
-    ...state,
-    diceKept: diceKept.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceRolled: [...diceRolled, dice],
-  }
-})
-
-export const useKeepDice = createGameAction((state, dice) => {
-  const { diceRolled, diceKept } = state
-
-  return {
-    ...state,
-    diceKept: [...diceKept, dice],
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
   }
 })
 

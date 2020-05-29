@@ -1,6 +1,8 @@
 /**
 
 https://github.com/reactjs/rfcs/pull/119
+https://github.com/dai-shi/lets-compare-global-state-with-react-hooks
+https://github.com/dai-shi/react-hooks-global-state/blob/4ce3e5a43fc0fdb4030718d726f82b17988c1899/src/createContainer.ts#L41
 https://github.com/dai-shi/use-context-selector
 https://github.com/diegohaz/constate
 https://github.com/facebook/react/tree/master/packages/use-subscription

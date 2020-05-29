@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SKULL,
-} from "src/constants.js"
+} from "src/symbols/symbols.js"
 
 export const faces = [
   SYMBOL_COIN,

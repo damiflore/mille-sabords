@@ -1,33 +1,30 @@
 import React from "react"
 
-import { useGameState } from "src/game.context.js"
-import {
-  unkeepDiceAllowedSelector,
-  threeSkullOrMoreInCursedAreaSelector,
-} from "src/game.selectors.js"
+import { useCard, useDicesKept } from "src/game.store.js"
+import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
+import { isCoinCard, isDiamondCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
-import { isDiamondDiceFromCard, isCoinDiceFromCard } from "src/cards/cards.js"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {
-  const state = useGameState()
-  const { diceKept } = state
-  const unkeepDiceAllowed = unkeepDiceAllowedSelector(state)
+  const card = useCard()
+  const dicesKept = useDicesKept()
+  const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
 
   return (
     <div className="dice-kept">
       <div className="dice-area">
         <div className="box">
-          {diceKept.map((dice) => (
+          {isCoinCard(card) ? <ExtraCoin /> : null}
+          {isDiamondCard(card) ? <ExtraDiamond /> : null}
+          {dicesKept.map((dice) => (
             <Dice
               key={dice.id}
               dice={dice}
-              disabled={
-                isDiamondDiceFromCard(dice) || isCoinDiceFromCard(dice) || !unkeepDiceAllowed
-              }
+              disabled={!unkeepDiceAllowed}
               onClickAction={(dice) => {
                 unkeepDice(dice)
               }}
@@ -46,10 +43,34 @@ export const DiceKept = () => {
   )
 }
 
-const CursedCover = () => {
-  const state = useGameState()
+const ExtraCoin = () => {
+  return (
+    <img
+      src={`src/dices/assets/dice_coin.png`}
+      style={{
+        width: "32",
+        height: "32",
+      }}
+    />
+  )
+}
 
-  if (!threeSkullOrMoreInCursedAreaSelector(state)) {
+const ExtraDiamond = () => {
+  return (
+    <img
+      src={`src/dices/assets/dice_diamond.png`}
+      style={{
+        width: "32",
+        height: "32",
+      }}
+    />
+  )
+}
+
+const CursedCover = () => {
+  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+
+  if (!threeSkullsOrMoreInCursedArea) {
     return null
   }
 

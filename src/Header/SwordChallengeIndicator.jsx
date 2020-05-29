@@ -1,5 +1,7 @@
 import React from "react"
 
+import { useCard, useCardDrawn } from "src/game.store.js"
+import { useSymbolsFromDicesKept } from "src/game.selectors.js"
 import {
   isSwordChallengeCard,
   isTwoSwordsChallengeCard,
@@ -9,12 +11,10 @@ import {
   THREE_SWORDS_CHALLENGE_GAMBLE,
   FOUR_SWORDS_CHALLENGE_GAMBLE,
 } from "src/cards/cards.js"
-import { SYMBOL_SWORD } from "src/constants.js"
-import { countSymbol, diceArrayToSymbolArray } from "src/Score/computeRoundScore.js"
-import { useGameState } from "src/game.context.js"
+import { SYMBOL_SWORD } from "src/symbols/symbols.js"
+import { countSymbol } from "src/Score/computeRoundScore.js"
 
-export const swordQuantityRequiredSelector = (state) => {
-  const { card } = state
+export const useSwordQuantityRequired = ({ card = useCard() } = {}) => {
   if (isTwoSwordsChallengeCard(card)) return TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
   if (isThreeSwordsChallengeCard(card)) return THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
   if (isFourSwordsChallengeCard(card)) return FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
@@ -22,16 +22,16 @@ export const swordQuantityRequiredSelector = (state) => {
 }
 
 export const SwordChallengeIndicator = () => {
-  const state = useGameState()
-  const { card, cardDrawn, diceKept } = state
+  const card = useCard()
+  const cardDrawn = useCardDrawn()
+  const symbolsFromDicesKept = useSymbolsFromDicesKept()
+  const quantityRequired = useSwordQuantityRequired()
 
   if (!isSwordChallengeCard(card) || !cardDrawn) {
     return null
   }
 
-  const symbolArrayFromDiceKept = diceArrayToSymbolArray(diceKept)
-  const quantityKept = countSymbol(symbolArrayFromDiceKept, SYMBOL_SWORD)
-  const quantityRequired = swordQuantityRequiredSelector(state)
+  const quantityKept = countSymbol(symbolsFromDicesKept, SYMBOL_SWORD)
   const quantityRequiredArray = new Array(quantityRequired).fill("")
 
   return (

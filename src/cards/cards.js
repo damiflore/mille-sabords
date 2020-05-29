@@ -1,6 +1,3 @@
-import { SYMBOL_SKULL, SYMBOL_DIAMOND, SYMBOL_COIN } from "src/constants.js"
-import { faces, createDice } from "src/dices/dices.js"
-
 export const CARD_ANIMALS = "animals"
 export const CARD_CHEST = "chest"
 export const CARD_COIN = "coin"
@@ -13,42 +10,14 @@ export const CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge"
 export const CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge"
 export const CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge"
 
-export const DICE_SKULL_FROM_CARD_ONE_SKULL = createDice({
-  fromCard: CARD_ONE_SKULL,
-  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
-})
-
-export const DICE_SKULL_1_FROM_CARD_TWO_SKULLS = createDice({
-  fromCard: CARD_TWO_SKULLS,
-  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
-})
-
-export const DICE_SKULL_2_FROM_CARD_TWO_SKULLS = createDice({
-  fromCard: CARD_TWO_SKULLS,
-  visibleFaceIndex: faces.indexOf(SYMBOL_SKULL),
-})
-
-export const DICE_COIN_FROM_CARD_COIN = createDice({
-  fromCard: CARD_COIN,
-  visibleFaceIndex: faces.indexOf(SYMBOL_COIN),
-})
-
-export const DICE_DIAMOND_FROM_CARD_DIAMOND = createDice({
-  fromCard: CARD_DIAMOND,
-  visibleFaceIndex: faces.indexOf(SYMBOL_DIAMOND),
-})
-
-export const isDiamondDiceFromCard = (dice) => dice.fromCard === CARD_DIAMOND
-export const isCoinDiceFromCard = (dice) => dice.fromCard === CARD_COIN
-export const isSkullDiceFromCard = (dice) =>
-  dice.fromCard === CARD_ONE_SKULL || dice.fromCard === CARD_TWO_SKULLS
-
 export const createDeck = (repartition) => {
   const cards = []
 
   Object.keys(repartition).forEach((cardType) => {
     const quantity = repartition[cardType]
     for (var i = 0; i < quantity; i++) {
+      // card should have ids, {id: cards.length + 1, value: cardType}
+      // but it means lot of updates, will do later
       const card = cardType
       cards.push(card)
     }

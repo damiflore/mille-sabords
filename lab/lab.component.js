@@ -1,11 +1,14 @@
 import React from "react"
 
+import { GameContextProvider } from "src/GameContextProvider.js"
 import {
-  GameContextProvider,
-  useGameState,
+  useCardDeck,
+  useDicesRolled,
+  useDicesCursed,
+  useDicesKept,
   useGameDispatch,
-  useGameNode,
-} from "src/game.context.js"
+  useDiceNode,
+} from "src/game.store.js"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -13,7 +16,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "src/constants.js"
+} from "src/symbols/symbols.js"
 import { faces } from "src/dices/dices.js"
 import {
   CARD_ANIMALS,
@@ -28,7 +31,7 @@ import {
   CARD_TWO_SKULLS,
   CARD_WITCH,
 } from "src/cards/cards.js"
-import { createDiceOnSkull } from "src/test/test.material.js"
+// import { createSkullFromDice } from "src/test/test.material.js"
 import { Game } from "src/game.component.js"
 
 const link = document.createElement("link")
@@ -39,7 +42,7 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
+    totalScore: 100,
   }
 
   return (
@@ -53,8 +56,10 @@ export const Lab = () => {
 }
 
 const GameLab = () => {
-  const state = useGameState()
-  const { cardDeck, dices } = state
+  const cardDeck = useCardDeck()
+  const dicesRolled = useDicesRolled()
+  const dicesKept = useDicesKept()
+  const dicesCursed = useDicesCursed()
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
 
@@ -111,8 +116,20 @@ const GameLab = () => {
         }}
       >
         <fieldset>
-          <legend>Dices</legend>
-          {dices.map((dice) => {
+          <legend>Dices rolled</legend>
+          {dicesRolled.map((dice) => {
+            return <DiceVariants key={dice.id} dice={dice} />
+          })}
+        </fieldset>
+        <fieldset>
+          <legend>Dices cursed</legend>
+          {dicesCursed.map((dice) => {
+            return <DiceVariants key={dice.id} dice={dice} />
+          })}
+        </fieldset>
+        <fieldset>
+          <legend>Dices kept</legend>
+          {dicesKept.map((dice) => {
             return <DiceVariants key={dice.id} dice={dice} />
           })}
         </fieldset>
@@ -139,7 +156,7 @@ const VARIANTS = [
 ]
 
 const DiceVariants = ({ dice }) => {
-  const diceNode = useGameNode(dice.id)
+  const diceNode = useDiceNode(dice.id)
 
   return (
     <div className="dice-variants">
@@ -180,9 +197,16 @@ const DiceVariant = ({ dice, variant }) => {
         } else {
           dice.faces = dice.faces.map(() => variant)
         }
-        console.log(dice)
+        // force re-render of rolled, cursed and kept area
+        // (in theory we could optimize to render depening where the dice is)
         dispatch((state) => {
-          return { ...state }
+          const { dicesRolled, dicesCursed, dicesKept } = state
+          return {
+            ...state,
+            dicesRolled: [...dicesRolled],
+            dicesCursed: [...dicesCursed],
+            dicesKept: [...dicesKept],
+          }
         })
       }}
     >
@@ -220,7 +244,7 @@ const useSetTotalScore = () => {
 }
 
 const useSetNextCard = () => {
-  const { cardDeck } = useGameState()
+  const cardDeck = useCardDeck()
   const dispatch = useGameDispatch()
   return (card) => {
     dispatch((state) => {
