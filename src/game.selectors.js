@@ -101,7 +101,7 @@ export const useSkullCountInCursedArea = ({
   dicesCursed = useDicesCursed(),
   symbolsFromCard = useSymbolsFromCard(),
 } = {}) => {
-  return dicesCursed.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol))
+  return dicesCursed.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
 }
 
 export const useRemoveSkullAllowed = ({
