@@ -65,11 +65,11 @@ export const computeRoundScore = ({
   }
 
   if (isCoinCard(card)) {
-    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_COIN])
+    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_COIN], 9)
   }
 
   if (isDiamondCard(card)) {
-    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_DIAMOND])
+    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_DIAMOND], 9)
   }
 
   return computeScoreForSymbols(symbolsFromDicesKept)
@@ -87,7 +87,7 @@ export const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
 }
 
-const computeScoreForSymbols = (symbols) => {
+const computeScoreForSymbols = (symbols, perfectCount = 8) => {
   let score = 0
   let usefullSymbol = 0
 
@@ -115,7 +115,7 @@ const computeScoreForSymbols = (symbols) => {
     }
   })
 
-  if (usefullSymbol === symbols.length) score += 500
+  if (usefullSymbol === perfectCount) score += 500
 
   return score
 }

@@ -1,5 +1,5 @@
 import { assert } from "@jsenv/assert"
-import { CARD_COIN, DICE_COIN_FROM_CARD_COIN } from "src/cards/cards.js"
+import { CARD_COIN } from "src/cards/cards.js"
 import {
   createCoinFromDice,
   createSwordFromDice,
@@ -13,7 +13,6 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
   const actual = computeRoundScore({
     card: CARD_COIN,
     symbolsFromDicesKept: [
-      DICE_COIN_FROM_CARD_COIN,
       createSwordFromDice(),
       createSwordFromDice(),
       createParrotFromDice(),
@@ -32,7 +31,6 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
   const actual = computeRoundScore({
     card: CARD_COIN,
     symbolsFromDicesKept: [
-      DICE_COIN_FROM_CARD_COIN,
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),
