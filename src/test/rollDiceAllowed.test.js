@@ -1,6 +1,6 @@
 import { assert } from "@jsenv/assert"
 import { useRollDiceAllowed } from "src/game.selectors.js"
-import { createDiceOnCoin } from "src/test/test.material.js"
+import { createCoinFromDice } from "src/test/test.material.js"
 
 // card not drawn
 {
@@ -9,8 +9,8 @@ import { createDiceOnCoin } from "src/test/test.material.js"
     rollIndex: -1,
     diceRolled: [],
     scoreMarked: false,
-    hasSkullsInRolledArea: false,
-    threeSkullOrMoreInCursedArea: false,
+    hasDicesToCurse: false,
+    threeSkullsOrMoreInCursedArea: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -23,8 +23,8 @@ import { createDiceOnCoin } from "src/test/test.material.js"
     rollIndex: -1,
     diceRolled: [],
     scoreMarked: false,
-    hasSkullsInRolledArea: false,
-    threeSkullOrMoreInCursedArea: false,
+    hasDicesToCurse: false,
+    threeSkullsOrMoreInCursedArea: false,
   })
   const expected = true
   assert({ actual, expected })
@@ -37,8 +37,8 @@ import { createDiceOnCoin } from "src/test/test.material.js"
     rollIndex: 0,
     diceRolled: [],
     scoreMarked: false,
-    hasSkullsInRolledArea: true,
-    threeSkullOrMoreInCursedArea: false,
+    hasDicesToCurse: true,
+    threeSkullsOrMoreInCursedArea: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -49,10 +49,10 @@ import { createDiceOnCoin } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: 0,
-    diceRolled: [createDiceOnCoin()],
+    diceRolled: [createCoinFromDice()],
     scoreMarked: false,
-    hasSkullsInRolledArea: false,
-    threeSkullOrMoreInCursedArea: false,
+    hasDicesToCurse: false,
+    threeSkullsOrMoreInCursedArea: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -63,10 +63,10 @@ import { createDiceOnCoin } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: 0,
-    diceRolled: [createDiceOnCoin(), createDiceOnCoin()],
+    diceRolled: [createCoinFromDice(), createCoinFromDice()],
     scoreMarked: false,
-    hasSkullsInRolledArea: false,
-    threeSkullOrMoreInCursedArea: true,
+    hasDicesToCurse: false,
+    threeSkullsOrMoreInCursedArea: true,
   })
   const expected = false
   assert({ actual, expected })

@@ -8,8 +8,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 0,
     scoreMarked: false,
     card: CARD_ANIMALS,
-    threeSkullOrMoreInCursedArea: true,
-    hasSkullsInRolledArea: false,
+    threeSkullsOrMoreInCursedArea: true,
+    hasDicesToCurse: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -21,8 +21,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 0,
     scoreMarked: true,
     card: CARD_ANIMALS,
-    threeSkullOrMoreInCursedArea: false,
-    hasSkullsInRolledArea: false,
+    threeSkullsOrMoreInCursedArea: false,
+    hasDicesToCurse: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -34,8 +34,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 0,
     scoreMarked: false,
     card: CARD_CHEST,
-    threeSkullOrMoreInCursedArea: true,
-    hasSkullsInRolledArea: false,
+    threeSkullsOrMoreInCursedArea: true,
+    hasDicesToCurse: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -47,8 +47,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 1,
     scoreMarked: false,
     card: CARD_CHEST,
-    threeSkullOrMoreInCursedArea: true,
-    hasSkullsInRolledArea: false,
+    threeSkullsOrMoreInCursedArea: true,
+    hasDicesToCurse: false,
   })
   const expected = true
   assert({ actual, expected })
@@ -60,8 +60,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 1,
     scoreMarked: false,
     card: CARD_CHEST,
-    threeSkullOrMoreInCursedArea: false,
-    hasSkullsInRolledArea: false,
+    threeSkullsOrMoreInCursedArea: false,
+    hasDicesToCurse: false,
   })
   const expected = true
   assert({ actual, expected })
@@ -73,8 +73,8 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
     rollIndex: 0,
     scoreMarked: false,
     card: CARD_ANIMALS,
-    threeSkullOrMoreInCursedArea: false,
-    hasSkullsInRolledArea: true,
+    threeSkullsOrMoreInCursedArea: false,
+    hasDicesToCurse: true,
   })
   const expected = false
   assert({ actual, expected })

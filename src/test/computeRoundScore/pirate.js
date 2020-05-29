@@ -1,11 +1,10 @@
 import { assert } from "@jsenv/assert"
 import { CARD_PIRATE } from "src/cards/cards.js"
 import {
-  createDiceOnCoin,
-  createDiceOnSkull,
-  createDiceOnSword,
-  createDiceOnMonkey,
-  createDiceOnParrot,
+  createCoinFromDice,
+  createSwordFromDice,
+  createMonkeyFromDice,
+  createParrotFromDice,
 } from "src/test/test.material.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
@@ -13,14 +12,13 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
-    diceKept: [
-      createDiceOnSword(),
-      createDiceOnSword(),
-      createDiceOnParrot(),
-      createDiceOnParrot(),
-      createDiceOnMonkey(),
-      createDiceOnMonkey(),
+    symbolsFromDiceKept: [
+      createSwordFromDice(),
+      createSwordFromDice(),
+      createParrotFromDice(),
+      createParrotFromDice(),
+      createMonkeyFromDice(),
+      createMonkeyFromDice(),
     ],
     markScoreAllowed: true,
   })
@@ -32,15 +30,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    diceCursed: [createDiceOnSkull()],
-    diceKept: [
-      createDiceOnCoin(),
-      createDiceOnCoin(),
-      createDiceOnCoin(),
-      createDiceOnMonkey(),
-      createDiceOnMonkey(),
-      createDiceOnParrot(),
-      createDiceOnParrot(),
+    symbolsFromDiceKept: [
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createMonkeyFromDice(),
+      createMonkeyFromDice(),
+      createParrotFromDice(),
+      createParrotFromDice(),
     ],
     markScoreAllowed: true,
   })
@@ -52,16 +49,15 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    diceCursed: [],
-    diceKept: [
-      createDiceOnCoin(),
-      createDiceOnCoin(),
-      createDiceOnCoin(),
-      createDiceOnSword(),
-      createDiceOnSword(),
-      createDiceOnSword(),
-      createDiceOnSword(),
-      createDiceOnSword(),
+    symbolsFromDiceKept: [
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createSwordFromDice(),
+      createSwordFromDice(),
+      createSwordFromDice(),
+      createSwordFromDice(),
+      createSwordFromDice(),
     ],
     markScoreAllowed: true,
   })

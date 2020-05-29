@@ -1,12 +1,11 @@
 import { assert } from "@jsenv/assert"
 import { CARD_ANIMALS } from "src/cards/cards.js"
 import {
-  createDiceOnCoin,
-  createDiceOnDiamond,
-  createDiceOnSkull,
-  createDiceOnSword,
-  createDiceOnMonkey,
-  createDiceOnParrot,
+  createCoinFromDice,
+  createDiamondFromDice,
+  createSwordFromDice,
+  createMonkeyFromDice,
+  createParrotFromDice,
 } from "src/test/test.material.js"
 import { computeRoundScore } from "src/Score/computeRoundScore.js"
 
@@ -14,14 +13,13 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
-    diceKept: [
-      createDiceOnParrot(),
-      createDiceOnMonkey(),
-      createDiceOnSword(),
-      createDiceOnSword(),
-      createDiceOnCoin(),
-      createDiceOnDiamond(),
+    symbolsFromDiceKept: [
+      createParrotFromDice(),
+      createMonkeyFromDice(),
+      createSwordFromDice(),
+      createSwordFromDice(),
+      createCoinFromDice(),
+      createDiamondFromDice(),
     ],
     markScoreAllowed: true,
   })
@@ -33,14 +31,13 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
-    diceKept: [
-      createDiceOnMonkey(),
-      createDiceOnMonkey(),
-      createDiceOnMonkey(),
-      createDiceOnParrot(),
-      createDiceOnParrot(),
-      createDiceOnSword(),
+    symbolsFromDiceKept: [
+      createMonkeyFromDice(),
+      createMonkeyFromDice(),
+      createMonkeyFromDice(),
+      createParrotFromDice(),
+      createParrotFromDice(),
+      createSwordFromDice(),
     ],
     markScoreAllowed: true,
   })

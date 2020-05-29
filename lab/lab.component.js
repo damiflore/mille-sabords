@@ -9,7 +9,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "src/constants.js"
+} from "src/symbols/symbols.js"
 import { faces } from "src/dices/dices.js"
 import {
   CARD_ANIMALS,
@@ -24,7 +24,7 @@ import {
   CARD_TWO_SKULLS,
   CARD_WITCH,
 } from "src/cards/cards.js"
-import { createDiceOnSkull } from "src/test/test.material.js"
+// import { createSkullFromDice } from "src/test/test.material.js"
 import { Game } from "src/game.component.js"
 
 const link = document.createElement("link")
@@ -35,7 +35,7 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    diceCursed: [createDiceOnSkull(), createDiceOnSkull()],
+    // diceCursed: [createSkullFromDice(), createSkullFromDice()],
   }
 
   return (

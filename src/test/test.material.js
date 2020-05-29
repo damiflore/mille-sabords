@@ -5,18 +5,11 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "src/constants.js"
-import { faces, createDice } from "src/dices/dices.js"
+} from "src/symbols/symbols.js"
 
-const createDiceOnSymbol = (symbol) => {
-  return createDice({
-    visibleFaceIndex: faces.indexOf(symbol),
-  })
-}
-
-export const createDiceOnCoin = () => createDiceOnSymbol(SYMBOL_COIN)
-export const createDiceOnDiamond = () => createDiceOnSymbol(SYMBOL_DIAMOND)
-export const createDiceOnMonkey = () => createDiceOnSymbol(SYMBOL_MONKEY)
-export const createDiceOnParrot = () => createDiceOnSymbol(SYMBOL_PARROT)
-export const createDiceOnSkull = () => createDiceOnSymbol(SYMBOL_SKULL)
-export const createDiceOnSword = () => createDiceOnSymbol(SYMBOL_SWORD)
+export const createCoinFromDice = () => SYMBOL_COIN
+export const createDiamondFromDice = () => SYMBOL_DIAMOND
+export const createMonkeyFromDice = () => SYMBOL_MONKEY
+export const createParrotFromDice = () => SYMBOL_PARROT
+export const createSkullFromDice = () => SYMBOL_SKULL
+export const createSwordFromDice = () => SYMBOL_SWORD
