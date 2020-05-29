@@ -16,8 +16,7 @@ export const rollDices = (dices, { diceParentElement }) => {
       yMin,
       yMax,
     })
-    Object.assign(dice, diceRolled)
-    dicesRolled.push(dice.id)
+    dicesRolled.push(diceRolled)
   })
   return dicesRolled
 }
