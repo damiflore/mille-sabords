@@ -1,13 +1,12 @@
 import React from "react"
 
-import { useDiceCursed } from "src/game.store.js"
-import { useRemoveSkullAllowed } from "src/game.selectors.js"
+import { useDicesInCursedArea, useRemoveSkullAllowed } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
 
 export const SkullIsland = () => {
-  const diceCursed = useDiceCursed()
+  const dicesInCursedArea = useDicesInCursedArea()
   const removeSkullAllowed = useRemoveSkullAllowed()
   const uncurseDice = useUncurseDice()
 
@@ -15,7 +14,7 @@ export const SkullIsland = () => {
     <div className="skull-island">
       <div className="bottle">
         <div className="area">
-          {diceCursed.map((dice) => (
+          {dicesInCursedArea.map((dice) => (
             <Dice
               key={dice.id}
               dice={dice}

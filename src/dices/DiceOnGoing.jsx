@@ -1,14 +1,13 @@
 import React from "react"
-import { useGameNodeCallback, useDiceRolled } from "src/game.store.js"
-import { useKeepDiceAllowed } from "src/game.selectors.js"
+import { useGameNodeCallback } from "src/game.store.js"
+import { useDicesInRolledArea, useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice } from "src/game.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
 
-// eslint-disable-next-line react/display-name
 export const DiceOnGoing = () => {
-  const diceRolled = useDiceRolled()
+  const dicesInRolledArea = useDicesInRolledArea()
   const keepDiceAllowed = useKeepDiceAllowed()
   const keepDice = useKeepDice()
 
@@ -16,7 +15,7 @@ export const DiceOnGoing = () => {
     <div className="dice-ongoing">
       <div className="map"></div>
       <div className="area" ref={useGameNodeCallback("dice-rolled-area")}>
-        {diceRolled.map((dice) => (
+        {dicesInRolledArea.map((dice) => (
           <Dice
             key={dice.id}
             dice={dice}

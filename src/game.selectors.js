@@ -45,6 +45,10 @@ export const useDicesInRolledArea = ({ diceRolled = useDiceRolled(), dices = use
   return diceRolled.map((diceRolledId) => dices.find((dice) => dice.id === diceRolledId))
 }
 
+export const useDicesInCursedArea = ({ diceCursed = useDiceCursed(), dices = useDices() } = {}) => {
+  return diceCursed.map((diceCursedId) => dices.find((dice) => dice.id === diceCursedId))
+}
+
 export const useRemainingSpotInCursedArea = ({
   skullCountInCursedArea = useSkullCountInCursedArea(),
 } = {}) => {

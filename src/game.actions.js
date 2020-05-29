@@ -17,8 +17,8 @@ export const useCurseDice = createGameAction((state, dice) => {
   const { diceRolled, diceCursed } = state
   return {
     ...state,
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceCursed: [...diceCursed, dice],
+    diceRolled: diceRolled.filter((diceRolledId) => diceRolledId !== dice.id),
+    diceCursed: [...diceCursed, dice.id],
   }
 })
 
@@ -27,8 +27,26 @@ export const useUncurseDice = createGameAction((state, dice) => {
   return {
     ...state,
     witchUncursedDiceId: dice.id,
-    diceCursed: diceCursed.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceRolled: [...diceRolled, dice],
+    diceRolled: [...diceRolled, dice.id],
+    diceCursed: diceCursed.filter((diceCurseId) => diceCurseId !== dice.id),
+  }
+})
+
+export const useUnkeepDice = createGameAction((state, dice) => {
+  const { diceKept, diceRolled } = state
+  return {
+    ...state,
+    diceRolled: [...diceRolled, dice.id],
+    diceKept: diceKept.filter((diceKeptId) => diceKeptId !== dice.id),
+  }
+})
+
+export const useKeepDice = createGameAction((state, dice) => {
+  const { diceRolled, diceKept } = state
+  return {
+    ...state,
+    diceRolled: diceRolled.filter((diceRolledId) => diceRolledId !== dice.id),
+    diceKept: [...diceKept, dice.id],
   }
 })
 
@@ -38,24 +56,6 @@ export const useMarkScore = createGameAction((state, score) => {
     ...state,
     totalScore: Math.max(totalScore + score, 0),
     scoreMarked: true,
-  }
-})
-
-export const useUnkeepDice = createGameAction((state, dice) => {
-  const { diceKept, diceRolled } = state
-  return {
-    ...state,
-    diceKept: diceKept.filter((diceCandidate) => diceCandidate.id !== dice.id),
-    diceRolled: [...diceRolled, dice],
-  }
-})
-
-export const useKeepDice = createGameAction((state, dice) => {
-  const { diceRolled, diceKept } = state
-  return {
-    ...state,
-    diceKept: [...diceKept, dice],
-    diceRolled: diceRolled.filter((diceCandidate) => diceCandidate.id !== dice.id),
   }
 })
 
