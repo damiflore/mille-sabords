@@ -17,9 +17,9 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 const { useMemo } = React
 
 export const useRollDiceAllowed = ({
+  cardDrawn = useCardDrawn(),
   rollIndex = useRollIndex(),
   diceRolled = useDiceRolled(),
-  cardDrawn = useCardDrawn(),
   scoreMarked = useScoreMarked(),
   threeSkullOrMoreInCursedArea = useThreeSkullOrMoreInCursedArea(),
   hasSkullsInRolledArea = useHasSkullsInRolledArea(),
@@ -61,6 +61,9 @@ export const useHasSkullsInRolledArea = ({ skullsInRolledArea = useSkullsInRolle
   return skullsInRolledArea.length > 0
 }
 
+// TODO: rename this into hasSkullToCurse or something similar
+// because witch cards means you can have a skull in the rolled area
+// but there is no need to curse it
 export const useSkullsInRolledArea = ({
   diceRolled = useDiceRolled(),
   witchUncursedDiceId = useWitchUncursedDiceId(),
@@ -155,29 +158,14 @@ export const useMarkScoreAllowed = ({
 }
 
 export const useStartNextRoundAllowed = ({
-  rollIndex = useRollIndex(),
   rollDiceAllowed = useRollDiceAllowed(),
   markScoreAllowed = useMarkScoreAllowed(),
-  threeSkullOrMoreInCursedArea = useThreeSkullOrMoreInCursedArea(),
-  hasSkullsInRolledArea = useHasSkullsInRolledArea(),
 } = {}) => {
-  if (rollIndex === -1) {
-    return false
-  }
-
   if (rollDiceAllowed) {
     return false
   }
 
   if (markScoreAllowed) {
-    return false
-  }
-
-  if (threeSkullOrMoreInCursedArea) {
-    return true
-  }
-
-  if (hasSkullsInRolledArea) {
     return false
   }
 

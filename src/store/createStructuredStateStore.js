@@ -14,9 +14,8 @@ export const createStructuredStateStore = (
   { name = "global", effect = () => {} } = {},
 ) => {
   const StateContextMap = {}
-  Object.keys(defaultState).forEach((key) => {
-    // we could pass defaultState[key], we don't really need the check on wrapped by provider or not
-    // because we control that (we are passing the provider ourselves)
+  const stateKeys = Object.keys(defaultState)
+  stateKeys.forEach((key) => {
     const KeyedStateContext = createContext(defaultState[key])
     StateContextMap[key] = KeyedStateContext
     KeyedStateContext.Provider.displayName = `${name}.state.${key}.Provider`
@@ -49,7 +48,7 @@ export const createStructuredStateStore = (
 
     // nested provider info: https://github.com/facebook/react/issues/14620
     const element = <DispatchProvider value={dispatch}>{children}</DispatchProvider>
-    return Object.keys(defaultState).reduce((element, key) => {
+    return stateKeys.reduce((element, key) => {
       const KeyedStateProvider = StateContextMap[key].Provider
       return <KeyedStateProvider value={state[key]}>{element}</KeyedStateProvider>
     }, element)
