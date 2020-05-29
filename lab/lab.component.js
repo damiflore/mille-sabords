@@ -1,7 +1,14 @@
 import React from "react"
 
 import { GameContextProvider } from "src/GameContextProvider.js"
-import { useCardDeck, useDices, useGameDispatch, useDiceNode } from "src/game.store.js"
+import {
+  useCardDeck,
+  useDicesRolled,
+  useDicesCursed,
+  useDicesKept,
+  useGameDispatch,
+  useDiceNode,
+} from "src/game.store.js"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -50,7 +57,9 @@ export const Lab = () => {
 
 const GameLab = () => {
   const cardDeck = useCardDeck()
-  const dices = useDices()
+  const dicesRolled = useDicesRolled()
+  const dicesKept = useDicesKept()
+  const dicesCursed = useDicesCursed()
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
 
@@ -107,8 +116,20 @@ const GameLab = () => {
         }}
       >
         <fieldset>
-          <legend>Dices</legend>
-          {dices.map((dice) => {
+          <legend>Dices rolled</legend>
+          {dicesRolled.map((dice) => {
+            return <DiceVariants key={dice.id} dice={dice} />
+          })}
+        </fieldset>
+        <fieldset>
+          <legend>Dices cursed</legend>
+          {dicesCursed.map((dice) => {
+            return <DiceVariants key={dice.id} dice={dice} />
+          })}
+        </fieldset>
+        <fieldset>
+          <legend>Dices kept</legend>
+          {dicesKept.map((dice) => {
             return <DiceVariants key={dice.id} dice={dice} />
           })}
         </fieldset>
@@ -176,9 +197,16 @@ const DiceVariant = ({ dice, variant }) => {
         } else {
           dice.faces = dice.faces.map(() => variant)
         }
-        console.log(dice)
+        // force re-render of rolled, cursed and kept area
+        // (in theory we could optimize to render depening where the dice is)
         dispatch((state) => {
-          return { ...state }
+          const { dicesRolled, dicesCursed, dicesKept } = state
+          return {
+            ...state,
+            dicesRolled: [...dicesRolled],
+            dicesCursed: [...dicesCursed],
+            dicesKept: [...dicesKept],
+          }
         })
       }}
     >

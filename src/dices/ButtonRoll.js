@@ -32,18 +32,18 @@ const useRoll = createGameAction((state, diceRolledAreaNode) => {
     return {
       ...state,
       rollIndex: 0,
-      diceRolled: rollDices(dices, {
+      dicesRolled: rollDices(dices, {
         diceParentElement: diceRolledAreaNode,
       }),
     }
   }
 
   // il me faut les dices in rolled area pour le coup
-  const { diceRolled } = state
+  const { dicesRolled } = state
   return {
     ...state,
     rollIndex: rollIndex + 1,
-    diceRolled: rollDices(diceRolled, {
+    dicesRolled: rollDices(dicesRolled, {
       diceParentElement: diceRolledAreaNode,
     }),
   }

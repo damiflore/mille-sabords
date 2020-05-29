@@ -7,7 +7,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: false,
     rollIndex: -1,
-    diceRolled: [],
+    dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: false,
     threeSkullsOrMoreInCursedArea: false,
@@ -21,7 +21,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: -1,
-    diceRolled: [],
+    dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: false,
     threeSkullsOrMoreInCursedArea: false,
@@ -35,7 +35,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: 0,
-    diceRolled: [],
+    dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: true,
     threeSkullsOrMoreInCursedArea: false,
@@ -49,7 +49,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: 0,
-    diceRolled: [createCoinFromDice()],
+    dicesRolled: [createCoinFromDice()],
     scoreMarked: false,
     hasDicesToCurse: false,
     threeSkullsOrMoreInCursedArea: false,
@@ -63,7 +63,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
   const actual = useRollDiceAllowed({
     cardDrawn: true,
     rollIndex: 0,
-    diceRolled: [createCoinFromDice(), createCoinFromDice()],
+    dicesRolled: [createCoinFromDice(), createCoinFromDice()],
     scoreMarked: false,
     hasDicesToCurse: false,
     threeSkullsOrMoreInCursedArea: true,
