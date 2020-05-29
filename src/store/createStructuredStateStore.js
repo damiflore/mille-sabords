@@ -1,3 +1,9 @@
+/**
+
+https://github.com/diegohaz/constate/blob/633f7f75a2e30f3ee036645d9e09f6026c734a77/src/index.tsx#L83
+
+*/
+
 import React from "react"
 
 const { createContext, useContext, useReducer, useEffect } = React
@@ -7,11 +13,13 @@ export const createStructuredStateStore = (
   init,
   { name = "global", effect = () => {} } = {},
 ) => {
-  const ContextMap = {}
+  const StateContextMap = {}
   Object.keys(defaultState).forEach((key) => {
-    const Context = createContext(defaultState[key])
-    ContextMap[key] = Context
-    Context.Provider.displayName = `${name}.state.${key}.Provider`
+    // we could pass defaultState[key], we don't really need the check on wrapped by provider or not
+    // because we control that (we are passing the provider ourselves)
+    const KeyedStateContext = createContext(defaultState[key])
+    StateContextMap[key] = KeyedStateContext
+    KeyedStateContext.Provider.displayName = `${name}.state.${key}.Provider`
   })
   const DispatchContext = createContext(null)
 
@@ -36,31 +44,20 @@ export const createStructuredStateStore = (
       if (effect) effect(state)
     }, [state])
 
-    // nested provider info: https://github.com/facebook/react/issues/14620
-    const KeyedStateProvider = ({ children }) => {
-      return Object.keys(state).reduce((element, key) => {
-        const KeyedContext = ContextMap[key]
-        const KeyedProvider = KeyedContext.Provider
-        return <KeyedProvider value={state[key]}>{element}</KeyedProvider>
-      }, children)
-    }
-    KeyedStateProvider.displayName = `${name}.state.Provider`
-
-    const DispatchProvider = ({ children }) => (
-      <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
-    )
+    const DispatchProvider = DispatchContext.Provider
     DispatchProvider.displayName = `${name}.dispatch.Provider`
 
-    return (
-      <DispatchProvider>
-        <KeyedStateProvider>{children}</KeyedStateProvider>
-      </DispatchProvider>
-    )
+    // nested provider info: https://github.com/facebook/react/issues/14620
+    const element = <DispatchProvider value={dispatch}>{children}</DispatchProvider>
+    return Object.keys(defaultState).reduce((element, key) => {
+      const KeyedStateProvider = StateContextMap[key].Provider
+      return <KeyedStateProvider value={state[key]}>{element}</KeyedStateProvider>
+    }, element)
   }
 
   const useState = () => getState()
 
-  const useKeyedState = (key) => useContext(ContextMap[key])
+  const useKeyedState = (key) => useContext(StateContextMap[key])
 
   const useDispatch = () => useContext(DispatchContext)
 
