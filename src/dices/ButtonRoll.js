@@ -1,11 +1,11 @@
 import React from "react"
-import { createGameAction, useGameNode } from "src/game.store.js"
+import { createGameAction, useRolledAreaNode } from "src/game.store.js"
 import { useRollDiceAllowed } from "src/game.selectors.js"
 import { rollDices } from "src/dices/rollDices.js"
 
 export const ButtonRoll = () => {
   const rollDiceAllowed = useRollDiceAllowed()
-  const diceRolledAreaNode = useGameNode("dice-rolled-area")
+  const diceRolledAreaNode = useRolledAreaNode()
   const roll = useRoll()
 
   if (rollDiceAllowed) {
@@ -38,6 +38,7 @@ const useRoll = createGameAction((state, diceRolledAreaNode) => {
     }
   }
 
+  // il me faut les dices in rolled area pour le coup
   const { diceRolled } = state
   return {
     ...state,

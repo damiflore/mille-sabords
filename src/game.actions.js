@@ -14,39 +14,39 @@ export const useDrawCard = createGameAction((state) => {
 })
 
 export const useCurseDice = createGameAction((state, dice) => {
-  const { diceRolled, diceCursed } = state
+  const { dicesRolled, dicesCursed } = state
   return {
     ...state,
-    diceRolled: diceRolled.filter((diceRolledId) => diceRolledId !== dice.id),
-    diceCursed: [...diceCursed, dice.id],
+    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
+    dicesCursed: [...dicesCursed, dice],
   }
 })
 
 export const useUncurseDice = createGameAction((state, dice) => {
-  const { diceCursed, diceRolled } = state
+  const { dicesRolled, dicesCursed } = state
   return {
     ...state,
     witchUncursedDiceId: dice.id,
-    diceRolled: [...diceRolled, dice.id],
-    diceCursed: diceCursed.filter((diceCurseId) => diceCurseId !== dice.id),
+    dicesRolled: [...dicesRolled, dice],
+    dicesCursed: dicesCursed.filter((diceCursed) => diceCursed.id !== dice.id),
   }
 })
 
 export const useUnkeepDice = createGameAction((state, dice) => {
-  const { diceKept, diceRolled } = state
+  const { dicesRolled, dicesKept } = state
   return {
     ...state,
-    diceRolled: [...diceRolled, dice.id],
-    diceKept: diceKept.filter((diceKeptId) => diceKeptId !== dice.id),
+    dicesRolled: [...dicesRolled, dice],
+    dicesKept: dicesKept.filter((diceKept) => diceKept.id !== dice.id),
   }
 })
 
 export const useKeepDice = createGameAction((state, dice) => {
-  const { diceRolled, diceKept } = state
+  const { dicesRolled, dicesKept } = state
   return {
     ...state,
-    diceRolled: diceRolled.filter((diceRolledId) => diceRolledId !== dice.id),
-    diceKept: [...diceKept, dice.id],
+    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
+    dicesKept: [...dicesKept, dice],
   }
 })
 

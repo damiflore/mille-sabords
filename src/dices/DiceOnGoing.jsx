@@ -1,21 +1,21 @@
 import React from "react"
-import { useGameNodeCallback } from "src/game.store.js"
-import { useDicesInRolledArea, useKeepDiceAllowed } from "src/game.selectors.js"
+import { useDicesRolled, useRolledAreaNodeCallback } from "src/game.store.js"
+import { useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice } from "src/game.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
 
 export const DiceOnGoing = () => {
-  const dicesInRolledArea = useDicesInRolledArea()
+  const dicesRolled = useDicesRolled()
   const keepDiceAllowed = useKeepDiceAllowed()
   const keepDice = useKeepDice()
 
   return (
     <div className="dice-ongoing">
       <div className="map"></div>
-      <div className="area" ref={useGameNodeCallback("dice-rolled-area")}>
-        {dicesInRolledArea.map((dice) => (
+      <div className="area" ref={useRolledAreaNodeCallback()}>
+        {dicesRolled.map((dice) => (
           <Dice
             key={dice.id}
             dice={dice}

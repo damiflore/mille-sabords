@@ -1,7 +1,7 @@
 import React from "react"
 
 import { GameContextProvider } from "src/GameContextProvider.js"
-import { useCardDeck, useDices, useGameDispatch, useGameNode } from "src/game.store.js"
+import { useCardDeck, useDices, useGameDispatch, useDiceNode } from "src/game.store.js"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -35,7 +35,7 @@ document.head.appendChild(link)
 
 export const Lab = () => {
   const gameState = {
-    // diceCursed: [createSkullFromDice(), createSkullFromDice()],
+    totalScore: 100,
   }
 
   return (
@@ -135,7 +135,7 @@ const VARIANTS = [
 ]
 
 const DiceVariants = ({ dice }) => {
-  const diceNode = useGameNode(dice.id)
+  const diceNode = useDiceNode(dice.id)
 
   return (
     <div className="dice-variants">

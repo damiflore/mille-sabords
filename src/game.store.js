@@ -17,9 +17,9 @@ const defaultState = {
   cardDrawn: false,
   card: null,
   witchUncursedDiceId: undefined,
-  diceRolled: [],
-  diceCursed: [],
-  diceKept: [],
+  dicesRolled: [],
+  dicesCursed: [],
+  dicesKept: [],
 }
 
 const logger = createLogger({ logLevel: "warn" })
@@ -60,13 +60,20 @@ export const useIsOnSkullIsland = () => gameStateStore.useKeyedState("isOnSkullI
 export const useCardDrawn = () => gameStateStore.useKeyedState("cardDrawn")
 export const useCard = () => gameStateStore.useKeyedState("card")
 export const useWitchUncursedDiceId = () => gameStateStore.useKeyedState("witchUncursedDiceId")
-export const useDiceRolled = () => gameStateStore.useKeyedState("diceRolled")
-export const useDiceCursed = () => gameStateStore.useKeyedState("diceCursed")
-export const useDiceKept = () => gameStateStore.useKeyedState("diceKept")
+export const useDicesRolled = () => gameStateStore.useKeyedState("dicesRolled")
+export const useDicesCursed = () => gameStateStore.useKeyedState("dicesCursed")
+export const useDicesKept = () => gameStateStore.useKeyedState("dicesKept")
 
 export const useGameDispatch = gameStateStore.useDispatch
 export const createGameAction = gameStateStore.createAction
 
-export const gameNodeStore = createDOMNodeStore()
-export const useGameNode = gameNodeStore.useDOMNode
-export const useGameNodeCallback = gameNodeStore.useDOMNodeCallback
+export const gameNodeStore = createDOMNodeStore({
+  "rolled-area": null,
+  ...DICES.reduce((obj, dice) => {
+    return { ...obj, [`dice-${dice.id}`]: null }
+  }, {}),
+})
+export const useRolledAreaNode = () => gameNodeStore.useDOMNode("rolled-area")
+export const useRolledAreaNodeCallback = () => gameNodeStore.useDOMNodeCallback("rolled-area")
+export const useDiceNode = (id) => gameNodeStore.useDOMNode(`dice-${id}`)
+export const useDiceNodeCallback = (id) => gameNodeStore.useDOMNodeCallback(`dice-${id}`)
