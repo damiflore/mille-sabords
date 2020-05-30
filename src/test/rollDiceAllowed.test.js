@@ -7,7 +7,7 @@ import { CARD_COIN } from "src/cards/cards.js"
 {
   const actual = useRollDiceAllowed({
     currentCard: null,
-    rollIndex: -1,
+    hasNeverRolled: true,
     dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: false,
@@ -21,7 +21,7 @@ import { CARD_COIN } from "src/cards/cards.js"
 {
   const actual = useRollDiceAllowed({
     currentCard: CARD_COIN,
-    rollIndex: -1,
+    hasNeverRolled: true,
     dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: false,
@@ -35,7 +35,7 @@ import { CARD_COIN } from "src/cards/cards.js"
 {
   const actual = useRollDiceAllowed({
     currentCard: CARD_COIN,
-    rollIndex: 0,
+    hasNeverRolled: false,
     dicesRolled: [],
     scoreMarked: false,
     hasDicesToCurse: true,
@@ -49,7 +49,7 @@ import { CARD_COIN } from "src/cards/cards.js"
 {
   const actual = useRollDiceAllowed({
     currentCard: CARD_COIN,
-    rollIndex: 0,
+    hasNeverRolled: false,
     dicesRolled: [createCoinFromDice()],
     scoreMarked: false,
     hasDicesToCurse: false,
@@ -63,7 +63,7 @@ import { CARD_COIN } from "src/cards/cards.js"
 {
   const actual = useRollDiceAllowed({
     currentCard: CARD_COIN,
-    rollIndex: 0,
+    hasNeverRolled: false,
     dicesRolled: [createCoinFromDice(), createCoinFromDice()],
     scoreMarked: false,
     hasDicesToCurse: false,

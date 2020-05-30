@@ -5,7 +5,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // with 3 skulls
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 0,
+    hasRolledMoreThanOnce: false,
     scoreMarked: false,
     card: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: true,
@@ -18,7 +18,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // no skull and user clicked on "Mark score"
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 0,
+    hasRolledMoreThanOnce: false,
     scoreMarked: true,
     card: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: false,
@@ -31,7 +31,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // with 3 skulls first roll + chest
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 0,
+    hasRolledMoreThanOnce: false,
     scoreMarked: false,
     card: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: true,
@@ -44,7 +44,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // with 3 skulls second roll + chest
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 1,
+    hasRolledMoreThanOnce: true,
     scoreMarked: false,
     card: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: true,
@@ -57,7 +57,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // less than 3 skulls, not clicked on mark score
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 1,
+    hasRolledMoreThanOnce: true,
     scoreMarked: false,
     card: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: false,
@@ -70,7 +70,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
 // skull in rolled area (= cursed animation ongoing)
 {
   const actual = useMarkScoreAllowed({
-    rollIndex: 0,
+    hasRolledMoreThanOnce: false,
     scoreMarked: false,
     card: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: false,

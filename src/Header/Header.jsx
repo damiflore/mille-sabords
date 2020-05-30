@@ -30,7 +30,7 @@ const SmallCard = () => {
 const TopDeckCard = () => {
   const currentCard = useCurrentCard()
 
-  return currentCard ? <BackCard /> : <Card card={currentCard} />
+  return currentCard ? <Card card={currentCard} /> : <BackCard />
 }
 
 const BackCard = () => {

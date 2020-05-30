@@ -1,11 +1,10 @@
 import React from "react"
 
-import { useRollIndex } from "src/game.store.js"
-import { useRoundScore } from "src/game.selectors.js"
+import { useHasRolledOnce, useRoundScore } from "src/game.selectors.js"
 
 export const RoundScore = () => {
-  const rollIndex = useRollIndex()
-  return <div className="score-area">{rollIndex === -1 ? null : <ScoreDisplay />}</div>
+  const hasRolledOnce = useHasRolledOnce()
+  return <div className="score-area">{hasRolledOnce ? <ScoreDisplay /> : null}</div>
 }
 
 const ScoreDisplay = () => {

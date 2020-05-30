@@ -1,8 +1,7 @@
 import React from "react"
 
-import { useRollIndex } from "src/game.store.js"
 import { useMarkScore } from "src/game.actions.js"
-import { useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
+import { useHasRolledOnce, useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
 import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
 
 import { ButtonRoll } from "src/dices/ButtonRoll.js"
@@ -25,13 +24,13 @@ export const Footer = () => {
 }
 
 const ButtonMarkScore = ({ onClick }) => {
-  const rollIndex = useRollIndex()
+  const hasRolledOnce = useHasRolledOnce()
   const markScoreAllowed = useMarkScoreAllowed()
   const roundScore = useRoundScore()
 
   const sign = roundScore < 0 ? "-" : "+"
 
-  if (markScoreAllowed && rollIndex !== -1)
+  if (markScoreAllowed && hasRolledOnce)
     return (
       <div className="collect-action">
         <button onClick={onClick}>

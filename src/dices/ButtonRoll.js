@@ -26,24 +26,11 @@ export const ButtonRoll = () => {
 }
 
 const useRoll = createGameAction((state, diceRolledAreaNode) => {
-  const { rollIndex, dices } = state
-
-  if (rollIndex === -1) {
-    return {
-      ...state,
-      rollIndex: 0,
-      dicesRolled: rollDices(dices, {
-        diceParentElement: diceRolledAreaNode,
-      }),
-    }
-  }
-
-  // il me faut les dices in rolled area pour le coup
-  const { dicesRolled } = state
+  const { rollCount, dices, dicesRolled } = state
   return {
     ...state,
-    rollIndex: rollIndex + 1,
-    dicesRolled: rollDices(dicesRolled, {
+    rollCount: rollCount + 1,
+    dicesRolled: rollDices(rollCount === 0 ? dices : dicesRolled, {
       diceParentElement: diceRolledAreaNode,
     }),
   }

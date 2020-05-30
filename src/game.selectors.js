@@ -1,7 +1,7 @@
 import React from "react"
 
 import {
-  useRollIndex,
+  useRollCount,
   useWitchUncursedDiceId,
   useCurrentCard,
   useScoreMarked,
@@ -22,6 +22,14 @@ import { computeRoundScore } from "src/Score/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
+
+export const useHasNeverRolled = ({ rollCount = useRollCount() } = {}) => rollCount === 0
+
+export const useHasRolledOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 0
+
+export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount === 1
+
+export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
 
 export const useSymbolsFromCard = ({ currentCard = useCurrentCard() } = {}) => {
   if (isCoinCard(currentCard)) return [SYMBOL_COIN]
@@ -57,7 +65,7 @@ export const useDicesToCurse = ({
 
 export const useRollDiceAllowed = ({
   currentCard = useCurrentCard(),
-  rollIndex = useRollIndex(),
+  hasNeverRolled = useHasNeverRolled(),
   dicesRolled = useDicesRolled(),
   scoreMarked = useScoreMarked(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
@@ -71,7 +79,7 @@ export const useRollDiceAllowed = ({
     return false
   }
 
-  if (rollIndex === -1) {
+  if (hasNeverRolled) {
     return true
   }
 
@@ -154,7 +162,7 @@ export const useUnkeepDiceAllowed = ({
 }
 
 export const useMarkScoreAllowed = ({
-  rollIndex = useRollIndex(),
+  hasRolledMoreThanOnce = useHasRolledMoreThanOnce(),
   scoreMarked = useScoreMarked(),
   currentCard = useCurrentCard(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
@@ -165,10 +173,9 @@ export const useMarkScoreAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(currentCard) && rollIndex > 0) {
+    if (isChestCard(currentCard) && hasRolledMoreThanOnce) {
       return true
     }
-
     return false
   }
 
