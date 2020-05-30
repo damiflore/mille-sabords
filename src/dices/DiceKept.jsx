@@ -6,7 +6,7 @@ import { useUnkeepDice } from "src/dices/dices.actions.js"
 
 import { isCoinCard, isDiamondCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
-import { RoundScore } from "src/Score/RoundScore.jsx"
+import { RoundScore } from "src/score/RoundScore.jsx"
 
 export const DiceKept = () => {
   const currentCard = useCurrentCard()

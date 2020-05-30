@@ -12,7 +12,7 @@ import {
   FOUR_SWORDS_CHALLENGE_GAMBLE,
 } from "src/cards/cards.js"
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
-import { countSymbol } from "src/Score/computeRoundScore.js"
+import { countSymbol } from "src/score/computeRoundScore.js"
 
 export const useSwordQuantityRequired = ({ currentCard = useCurrentCard() } = {}) => {
   if (isTwoSwordsChallengeCard(currentCard)) return TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords

@@ -18,7 +18,7 @@ import {
   isOneSkullCard,
   isTwoSkullsCard,
 } from "src/cards/cards.js"
-import { computeRoundScore } from "src/Score/computeRoundScore.js"
+import { computeRoundScore } from "src/score/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
