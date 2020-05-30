@@ -7,7 +7,7 @@ import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { DiceKept } from "src/dice-kept/DiceKept.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
-import { SkullIsland } from "src/skull-island/skullIsland.jsx"
+import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 
 const { useMemo } = React
 
