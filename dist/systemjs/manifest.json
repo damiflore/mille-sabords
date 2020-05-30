@@ -1,6 +1,5 @@
 {
-  "DiceHelpers.js": "DiceHelpers-4091a29e.js",
-  "index.js": "index-c0f7af46.js",
-  "main.js": "main.js",
-  "MilleSabordGameBoard.js": "MilleSabordGameBoard-fe7a19aa.js"
+  "game.component.js": "game.component-1756cc80.js",
+  "index.js": "index-345027eb.js",
+  "main.js": "main.js"
 }
