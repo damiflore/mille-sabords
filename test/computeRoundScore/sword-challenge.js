@@ -5,7 +5,7 @@ import {
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
-} from "src/test/test.material.js"
+} from "../test.material.js"
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 
 // 8 coin

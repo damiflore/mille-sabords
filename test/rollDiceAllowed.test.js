@@ -1,7 +1,7 @@
 import { assert } from "@jsenv/assert"
 import { useRollDiceAllowed } from "src/game.selectors.js"
-import { createCoinFromDice } from "src/test/test.material.js"
 import { CARD_COIN } from "src/cards/cards.js"
+import { createCoinFromDice } from "./test.material.js"
 
 // card not drawn
 {

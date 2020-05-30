@@ -1,17 +1,17 @@
 import { assert } from "@jsenv/assert"
-import { CARD_PIRATE } from "src/cards/cards.js"
+import { CARD_COIN } from "src/cards/cards.js"
 import {
   createCoinFromDice,
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
-} from "src/test/test.material.js"
+} from "../test.material.js"
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 
 // with nothing
 {
   const actual = computeRoundScore({
-    card: CARD_PIRATE,
+    card: CARD_COIN,
     symbolsFromDicesKept: [
       createSwordFromDice(),
       createSwordFromDice(),
@@ -22,51 +22,29 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
     ],
     markScoreAllowed: true,
   })
-  const expected = 0
+  const expected = 100
   assert({ actual, expected })
 }
 
-// with 3 coin
+// with 7 coin + 1 parrot
 {
   const actual = computeRoundScore({
-    card: CARD_PIRATE,
+    card: CARD_COIN,
     symbolsFromDicesKept: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),
-      createMonkeyFromDice(),
-      createMonkeyFromDice(),
-      createParrotFromDice(),
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createCoinFromDice(),
+      createCoinFromDice(),
       createParrotFromDice(),
     ],
     markScoreAllowed: true,
   })
-  const expected = 800
-  assert({ actual, expected })
-}
-
-// with 3 coin + 5 sword
-{
-  const actual = computeRoundScore({
-    card: CARD_PIRATE,
-    symbolsFromDicesKept: [
-      createCoinFromDice(),
-      createCoinFromDice(),
-      createCoinFromDice(),
-      createSwordFromDice(),
-      createSwordFromDice(),
-      createSwordFromDice(),
-      createSwordFromDice(),
-      createSwordFromDice(),
-    ],
-    markScoreAllowed: true,
-  })
-  // 300 from 3 coins
-  // 100 from 3 coins
-  // 500 from 5 swords
-  // 500 from "perfect" rule
-  // x2 from pirate
-  // -> 2800
-  const expected = 2800
+  // 4000 from "8 identic symbols"
+  // 800 from "coin = 100"
+  // -> 4800
+  const expected = 4800
   assert({ actual, expected })
 }

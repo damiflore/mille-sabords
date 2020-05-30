@@ -1,13 +1,13 @@
 import { assert } from "@jsenv/assert"
 import { CARD_ANIMALS } from "src/cards/cards.js"
+import { computeRoundScore } from "src/score/computeRoundScore.js"
 import {
   createCoinFromDice,
   createDiamondFromDice,
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
-} from "src/test/test.material.js"
-import { computeRoundScore } from "src/score/computeRoundScore.js"
+} from "../test.material.js"
 
 // with 1 coin and 1 diamond
 {
