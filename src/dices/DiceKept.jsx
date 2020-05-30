@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCard, useDicesKept } from "src/game.store.js"
+import { useCurrentCard, useDicesKept } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/game.actions.js"
 
@@ -9,7 +9,7 @@ import { Dice } from "src/dices/Dice.jsx"
 import { RoundScore } from "src/Score/RoundScore.jsx"
 
 export const DiceKept = () => {
-  const card = useCard()
+  const currentCard = useCurrentCard()
   const dicesKept = useDicesKept()
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
@@ -18,8 +18,8 @@ export const DiceKept = () => {
     <div className="dice-kept">
       <div className="dice-area">
         <div className="box">
-          {isCoinCard(card) ? <ExtraCoin /> : null}
-          {isDiamondCard(card) ? <ExtraDiamond /> : null}
+          {isCoinCard(currentCard) ? <ExtraCoin /> : null}
+          {isDiamondCard(currentCard) ? <ExtraDiamond /> : null}
           {dicesKept.map((dice) => (
             <Dice
               key={dice.id}

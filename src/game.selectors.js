@@ -3,12 +3,11 @@ import React from "react"
 import {
   useRollIndex,
   useWitchUncursedDiceId,
-  useCard,
+  useCurrentCard,
   useScoreMarked,
   useDicesRolled,
   useDicesCursed,
   useDicesKept,
-  useCardDrawn,
 } from "src/game.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
@@ -24,11 +23,11 @@ import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/sy
 
 const { useMemo } = React
 
-export const useSymbolsFromCard = ({ card = useCard() } = {}) => {
-  if (isCoinCard(card)) return [SYMBOL_COIN]
-  if (isDiamondCard(card)) return [SYMBOL_DIAMOND]
-  if (isOneSkullCard(card)) return [SYMBOL_SKULL]
-  if (isTwoSkullsCard(card)) return [SYMBOL_SKULL, SYMBOL_SKULL]
+export const useSymbolsFromCard = ({ currentCard = useCurrentCard() } = {}) => {
+  if (isCoinCard(currentCard)) return [SYMBOL_COIN]
+  if (isDiamondCard(currentCard)) return [SYMBOL_DIAMOND]
+  if (isOneSkullCard(currentCard)) return [SYMBOL_SKULL]
+  if (isTwoSkullsCard(currentCard)) return [SYMBOL_SKULL, SYMBOL_SKULL]
   return []
 }
 
@@ -57,14 +56,14 @@ export const useDicesToCurse = ({
 }
 
 export const useRollDiceAllowed = ({
-  cardDrawn = useCardDrawn(),
+  currentCard = useCurrentCard(),
   rollIndex = useRollIndex(),
   dicesRolled = useDicesRolled(),
   scoreMarked = useScoreMarked(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
-  if (!cardDrawn) {
+  if (!currentCard) {
     return false
   }
 
@@ -106,10 +105,10 @@ export const useSkullCountInCursedArea = ({
 
 export const useRemoveSkullAllowed = ({
   witchUncursedDiceId = useWitchUncursedDiceId(),
-  card = useCard(),
+  currentCard = useCurrentCard(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
 } = {}) => {
-  if (!isWitchCard(card)) {
+  if (!isWitchCard(currentCard)) {
     return false
   }
 
@@ -157,7 +156,7 @@ export const useUnkeepDiceAllowed = ({
 export const useMarkScoreAllowed = ({
   rollIndex = useRollIndex(),
   scoreMarked = useScoreMarked(),
-  card = useCard(),
+  currentCard = useCurrentCard(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
@@ -166,7 +165,7 @@ export const useMarkScoreAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(card) && rollIndex > 0) {
+    if (isChestCard(currentCard) && rollIndex > 0) {
       return true
     }
 
@@ -196,7 +195,7 @@ export const useStartNextRoundAllowed = ({
 }
 
 export const useRoundScore = ({
-  card = useCard(),
+  currentCard = useCurrentCard(),
   symbolsFromDicesKept = useSymbolsFromDicesKept(),
   scoreMarked = useScoreMarked(),
   markScoreAllowed = useMarkScoreAllowed(),
@@ -204,11 +203,11 @@ export const useRoundScore = ({
   return useMemo(
     () =>
       computeRoundScore({
-        card,
+        card: currentCard,
         symbolsFromDicesKept,
         scoreMarked,
         markScoreAllowed,
       }),
-    [card, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
+    [currentCard, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
   )
 }

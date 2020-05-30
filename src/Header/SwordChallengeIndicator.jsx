@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCard, useCardDrawn } from "src/game.store.js"
+import { useCurrentCard } from "src/game.store.js"
 import { useSymbolsFromDicesKept } from "src/game.selectors.js"
 import {
   isSwordChallengeCard,
@@ -14,20 +14,19 @@ import {
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { countSymbol } from "src/Score/computeRoundScore.js"
 
-export const useSwordQuantityRequired = ({ card = useCard() } = {}) => {
-  if (isTwoSwordsChallengeCard(card)) return TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
-  if (isThreeSwordsChallengeCard(card)) return THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
-  if (isFourSwordsChallengeCard(card)) return FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
+export const useSwordQuantityRequired = ({ currentCard = useCurrentCard() } = {}) => {
+  if (isTwoSwordsChallengeCard(currentCard)) return TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
+  if (isThreeSwordsChallengeCard(currentCard)) return THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
+  if (isFourSwordsChallengeCard(currentCard)) return FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
   return null
 }
 
 export const SwordChallengeIndicator = () => {
-  const card = useCard()
-  const cardDrawn = useCardDrawn()
+  const currentCard = useCurrentCard()
   const symbolsFromDicesKept = useSymbolsFromDicesKept()
   const quantityRequired = useSwordQuantityRequired()
 
-  if (!isSwordChallengeCard(card) || !cardDrawn) {
+  if (!currentCard || !isSwordChallengeCard(currentCard)) {
     return null
   }
 

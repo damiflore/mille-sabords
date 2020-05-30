@@ -26,7 +26,7 @@ const useStartNextRound = createGameAction((state) => {
     dicesCursed: [],
     dicesKept: [],
     scoreMarked: false,
-    cardDrawn: false,
+    currentCard: null,
     isOnSkullIsland: false,
   }
 })

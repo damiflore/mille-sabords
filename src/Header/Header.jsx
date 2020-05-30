@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCard, useCardDrawn, useCardDeck, useTotalScore } from "src/game.store.js"
+import { useCurrentCard, useCardDeck, useTotalScore } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
 
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
@@ -28,12 +28,9 @@ const SmallCard = () => {
 }
 
 const TopDeckCard = () => {
-  const card = useCard()
-  const cardDrawn = useCardDrawn()
+  const currentCard = useCurrentCard()
 
-  if (!card || !cardDrawn) return <BackCard />
-
-  return <CurrentCard />
+  return currentCard ? <BackCard /> : <Card card={currentCard} />
 }
 
 const BackCard = () => {
@@ -48,13 +45,7 @@ const BackCard = () => {
   )
 }
 
-const CurrentCard = () => {
-  const card = useCard()
-  const cardDrawn = useCardDrawn()
-
-  if (!card) return null
-  if (!cardDrawn) return null
-
+const Card = ({ card }) => {
   return (
     <div
       className="card current-card"
@@ -74,10 +65,10 @@ const CurrentCard = () => {
 }
 
 const DeckButton = () => {
-  const cardDrawn = useCardDrawn()
+  const currentCard = useCurrentCard()
   const cardDeck = useCardDeck()
 
-  if (cardDrawn) return null
+  if (currentCard) return null
 
   if (cardDeck.length === 0) return <ShuffleDeckButton />
 

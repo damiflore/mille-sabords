@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useDicesCursed, useCard } from "src/game.store.js"
+import { useDicesCursed, useCurrentCard } from "src/game.store.js"
 import { useRemoveSkullAllowed } from "src/game.selectors.js"
 import { useUncurseDice } from "src/game.actions.js"
 
@@ -8,7 +8,7 @@ import { isOneSkullCard, isTwoSkullsCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
 
 export const SkullIsland = () => {
-  const card = useCard()
+  const currentCard = useCurrentCard()
   const dicesCursed = useDicesCursed()
   const removeSkullAllowed = useRemoveSkullAllowed()
   const uncurseDice = useUncurseDice()
@@ -17,8 +17,8 @@ export const SkullIsland = () => {
     <div className="skull-island">
       <div className="bottle">
         <div className="area">
-          {isOneSkullCard(card) ? <ExtraSkull /> : null}
-          {isTwoSkullsCard(card) ? (
+          {isOneSkullCard(currentCard) ? <ExtraSkull /> : null}
+          {isTwoSkullsCard(currentCard) ? (
             <>
               <ExtraSkull />
               <ExtraSkull />

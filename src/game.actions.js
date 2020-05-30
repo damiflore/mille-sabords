@@ -6,10 +6,9 @@ export const useDrawCard = createGameAction((state) => {
   const cardDrawn = cardDeck[0]
   return {
     ...state,
-    cardDrawn: true,
     cardDeck: cardDeck.slice(1),
     cardsUsed: [...cardsUsed, cardDrawn],
-    card: cardDrawn,
+    currentCard: cardDrawn,
   }
 })
 

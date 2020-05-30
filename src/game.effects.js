@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useRollIndex, useCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
+import { useRollIndex, useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
 import {
   useThreeSkullsOrMoreInCursedArea,
   useDicesToCurse,
@@ -45,7 +45,7 @@ const useCurseDiceEffect = () => {
 
 // auto mark score for failed sword challenges
 const useFailSwordChallengeEffect = () => {
-  const card = useCard()
+  const currentCard = useCurrentCard()
   const scoreMarked = useScoreMarked()
   const markScore = useMarkScore()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
@@ -55,7 +55,7 @@ const useFailSwordChallengeEffect = () => {
     [threeSkullsOrMoreInCursedArea],
   )
   const roundScore = useRoundScore()
-  const swordChallengeCard = isSwordChallengeCard(card)
+  const swordChallengeCard = isSwordChallengeCard(currentCard)
 
   useEffect(() => {
     if (swordChallengeCard && !scoreMarked && threeSkullsOrMoreInCursedAreaBecomesTrue) {
@@ -67,7 +67,7 @@ const useFailSwordChallengeEffect = () => {
 // go to skull island if 4 skulls or more on first roll
 const useFourSkullsOrMoreOnFirstRollEffect = () => {
   const isOnSkullIsland = useIsOnSkullIsland()
-  const card = useCard()
+  const currentCard = useCurrentCard()
   const rollIndex = useRollIndex()
   const skullCountInCursedArea = useSkullCountInCursedArea()
   const sendToSkullIsland = useSendToSkullIsland()
@@ -77,10 +77,10 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
 
     if (isOnSkullIsland) return
 
-    if (isSwordChallengeCard(card)) return
+    if (isSwordChallengeCard(currentCard)) return
 
     if (skullCountInCursedArea < 4) return
 
     sendToSkullIsland()
-  }, [rollIndex, isOnSkullIsland, skullCountInCursedArea, card])
+  }, [rollIndex, isOnSkullIsland, currentCard, skullCountInCursedArea])
 }

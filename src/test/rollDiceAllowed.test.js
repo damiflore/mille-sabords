@@ -1,11 +1,12 @@
 import { assert } from "@jsenv/assert"
 import { useRollDiceAllowed } from "src/game.selectors.js"
 import { createCoinFromDice } from "src/test/test.material.js"
+import { CARD_COIN } from "src/cards/cards.js"
 
 // card not drawn
 {
   const actual = useRollDiceAllowed({
-    cardDrawn: false,
+    currentCard: null,
     rollIndex: -1,
     dicesRolled: [],
     scoreMarked: false,
@@ -19,7 +20,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
 // dice never rolled
 {
   const actual = useRollDiceAllowed({
-    cardDrawn: true,
+    currentCard: CARD_COIN,
     rollIndex: -1,
     dicesRolled: [],
     scoreMarked: false,
@@ -33,7 +34,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
 // skulls in rolled area
 {
   const actual = useRollDiceAllowed({
-    cardDrawn: true,
+    currentCard: CARD_COIN,
     rollIndex: 0,
     dicesRolled: [],
     scoreMarked: false,
@@ -47,7 +48,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
 // not enough dice to roll
 {
   const actual = useRollDiceAllowed({
-    cardDrawn: true,
+    currentCard: CARD_COIN,
     rollIndex: 0,
     dicesRolled: [createCoinFromDice()],
     scoreMarked: false,
@@ -61,7 +62,7 @@ import { createCoinFromDice } from "src/test/test.material.js"
 // too many skulls
 {
   const actual = useRollDiceAllowed({
-    cardDrawn: true,
+    currentCard: CARD_COIN,
     rollIndex: 0,
     dicesRolled: [createCoinFromDice(), createCoinFromDice()],
     scoreMarked: false,
