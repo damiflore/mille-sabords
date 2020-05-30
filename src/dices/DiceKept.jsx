@@ -2,7 +2,7 @@ import React from "react"
 
 import { useCurrentCard, useDicesKept } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
-import { useUnkeepDice } from "src/game.actions.js"
+import { useUnkeepDice } from "src/dices/dices.actions.js"
 
 import { isCoinCard, isDiamondCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"

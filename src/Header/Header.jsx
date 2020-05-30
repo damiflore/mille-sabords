@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useCurrentCard, useCardDeck, useTotalScore } from "src/game.store.js"
-import { useDrawCard, useShuffleDeck } from "src/game.actions.js"
+import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 import { SwordChallengeIndicator } from "src/Header/SwordChallengeIndicator.jsx"

@@ -9,7 +9,8 @@ import {
   useSkullCountInCursedArea,
   useRoundScore,
 } from "src/game.selectors.js"
-import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
+import { useMarkScore, useSendToSkullIsland } from "src/game.actions.js"
+import { useCurseDice } from "src/dices/dices.actions.js"
 import { isSwordChallengeCard } from "src/cards/cards.js"
 
 const { useEffect } = React

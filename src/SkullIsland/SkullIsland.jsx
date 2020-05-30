@@ -2,7 +2,7 @@ import React from "react"
 
 import { useDicesCursed, useCurrentCard } from "src/game.store.js"
 import { useRemoveSkullAllowed } from "src/game.selectors.js"
-import { useUncurseDice } from "src/game.actions.js"
+import { useUncurseDice } from "src/dices/dices.actions.js"
 
 import { isOneSkullCard, isTwoSkullsCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
