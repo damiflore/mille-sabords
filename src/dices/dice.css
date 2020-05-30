@@ -1,6 +1,3 @@
-@import "./dice-ongoing.css";
-@import "./dice-kept.css";
-
 .dice {
   overflow: hidden;
   padding: 0;

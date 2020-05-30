@@ -1,0 +1,17 @@
+.skull-island {
+  display: inline-block;
+}
+.skull-island .bottle {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 83px;
+  height: 244px;
+  margin-left: 20px;
+  background-image: url(./skull-bottle.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.skull-island .area {
+  margin-left: 11px;
+  margin-bottom: 13px;
+}

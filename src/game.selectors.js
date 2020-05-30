@@ -1,14 +1,13 @@
 import React from "react"
 
 import {
-  useRollIndex,
+  useRollCount,
   useWitchUncursedDiceId,
-  useCard,
+  useCurrentCard,
   useScoreMarked,
   useDicesRolled,
   useDicesCursed,
   useDicesKept,
-  useCardDrawn,
 } from "src/game.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
@@ -19,16 +18,24 @@ import {
   isOneSkullCard,
   isTwoSkullsCard,
 } from "src/cards/cards.js"
-import { computeRoundScore } from "src/Score/computeRoundScore.js"
+import { computeRoundScore } from "src/score/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
 
-export const useSymbolsFromCard = ({ card = useCard() } = {}) => {
-  if (isCoinCard(card)) return [SYMBOL_COIN]
-  if (isDiamondCard(card)) return [SYMBOL_DIAMOND]
-  if (isOneSkullCard(card)) return [SYMBOL_SKULL]
-  if (isTwoSkullsCard(card)) return [SYMBOL_SKULL, SYMBOL_SKULL]
+export const useHasNeverRolled = ({ rollCount = useRollCount() } = {}) => rollCount === 0
+
+export const useHasRolledOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 0
+
+export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount === 1
+
+export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
+
+export const useSymbolsFromCard = ({ currentCard = useCurrentCard() } = {}) => {
+  if (isCoinCard(currentCard)) return [SYMBOL_COIN]
+  if (isDiamondCard(currentCard)) return [SYMBOL_DIAMOND]
+  if (isOneSkullCard(currentCard)) return [SYMBOL_SKULL]
+  if (isTwoSkullsCard(currentCard)) return [SYMBOL_SKULL, SYMBOL_SKULL]
   return []
 }
 
@@ -57,14 +64,14 @@ export const useDicesToCurse = ({
 }
 
 export const useRollDiceAllowed = ({
-  cardDrawn = useCardDrawn(),
-  rollIndex = useRollIndex(),
+  currentCard = useCurrentCard(),
+  hasNeverRolled = useHasNeverRolled(),
   dicesRolled = useDicesRolled(),
   scoreMarked = useScoreMarked(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
-  if (!cardDrawn) {
+  if (!currentCard) {
     return false
   }
 
@@ -72,7 +79,7 @@ export const useRollDiceAllowed = ({
     return false
   }
 
-  if (rollIndex === -1) {
+  if (hasNeverRolled) {
     return true
   }
 
@@ -106,10 +113,10 @@ export const useSkullCountInCursedArea = ({
 
 export const useRemoveSkullAllowed = ({
   witchUncursedDiceId = useWitchUncursedDiceId(),
-  card = useCard(),
+  currentCard = useCurrentCard(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
 } = {}) => {
-  if (!isWitchCard(card)) {
+  if (!isWitchCard(currentCard)) {
     return false
   }
 
@@ -155,9 +162,9 @@ export const useUnkeepDiceAllowed = ({
 }
 
 export const useMarkScoreAllowed = ({
-  rollIndex = useRollIndex(),
+  hasRolledMoreThanOnce = useHasRolledMoreThanOnce(),
   scoreMarked = useScoreMarked(),
-  card = useCard(),
+  currentCard = useCurrentCard(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
@@ -166,10 +173,9 @@ export const useMarkScoreAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(card) && rollIndex > 0) {
+    if (isChestCard(currentCard) && hasRolledMoreThanOnce) {
       return true
     }
-
     return false
   }
 
@@ -196,7 +202,7 @@ export const useStartNextRoundAllowed = ({
 }
 
 export const useRoundScore = ({
-  card = useCard(),
+  currentCard = useCurrentCard(),
   symbolsFromDicesKept = useSymbolsFromDicesKept(),
   scoreMarked = useScoreMarked(),
   markScoreAllowed = useMarkScoreAllowed(),
@@ -204,11 +210,11 @@ export const useRoundScore = ({
   return useMemo(
     () =>
       computeRoundScore({
-        card,
+        card: currentCard,
         symbolsFromDicesKept,
         scoreMarked,
         markScoreAllowed,
       }),
-    [card, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
+    [currentCard, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
   )
 }

@@ -1,14 +1,16 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useRollIndex, useCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
+import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
 import {
+  useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
   useDicesToCurse,
   useSkullCountInCursedArea,
   useRoundScore,
 } from "src/game.selectors.js"
-import { useMarkScore, useCurseDice, useSendToSkullIsland } from "src/game.actions.js"
+import { useMarkScore, useSendToSkullIsland } from "src/game.actions.js"
+import { useCurseDice } from "src/dices/dices.actions.js"
 import { isSwordChallengeCard } from "src/cards/cards.js"
 
 const { useEffect } = React
@@ -45,7 +47,7 @@ const useCurseDiceEffect = () => {
 
 // auto mark score for failed sword challenges
 const useFailSwordChallengeEffect = () => {
-  const card = useCard()
+  const currentCard = useCurrentCard()
   const scoreMarked = useScoreMarked()
   const markScore = useMarkScore()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
@@ -55,7 +57,7 @@ const useFailSwordChallengeEffect = () => {
     [threeSkullsOrMoreInCursedArea],
   )
   const roundScore = useRoundScore()
-  const swordChallengeCard = isSwordChallengeCard(card)
+  const swordChallengeCard = isSwordChallengeCard(currentCard)
 
   useEffect(() => {
     if (swordChallengeCard && !scoreMarked && threeSkullsOrMoreInCursedAreaBecomesTrue) {
@@ -66,21 +68,21 @@ const useFailSwordChallengeEffect = () => {
 
 // go to skull island if 4 skulls or more on first roll
 const useFourSkullsOrMoreOnFirstRollEffect = () => {
+  const isFirstRoll = useIsFirstRoll()
+  const currentCard = useCurrentCard()
   const isOnSkullIsland = useIsOnSkullIsland()
-  const card = useCard()
-  const rollIndex = useRollIndex()
   const skullCountInCursedArea = useSkullCountInCursedArea()
   const sendToSkullIsland = useSendToSkullIsland()
 
   useEffect(() => {
-    if (rollIndex !== 0) return
+    if (!isFirstRoll) return
 
     if (isOnSkullIsland) return
 
-    if (isSwordChallengeCard(card)) return
+    if (isSwordChallengeCard(currentCard)) return
 
     if (skullCountInCursedArea < 4) return
 
     sendToSkullIsland()
-  }, [rollIndex, isOnSkullIsland, skullCountInCursedArea, card])
+  }, [isFirstRoll, isOnSkullIsland, currentCard, skullCountInCursedArea])
 }

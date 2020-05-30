@@ -1,0 +1,88 @@
+.dice-kept-and-skulls {
+  display: flex;
+  justify-content: space-around;
+}
+.dice-kept {
+  display: inline-block;
+  vertical-align: top;
+}
+.dice-kept .dice-area {
+  background-image: url(./wood-box.jpg);
+  box-shadow: inset 0px 0px 0px 9px rgba(94, 52, 29, 0.49),
+    inset 0px 0px 0px 19px rgba(94, 52, 29, 0.49);
+  border: 3px solid #2c1d00;
+  position: relative;
+  background-size: 100%;
+  padding: 30px;
+  height: 165px;
+  width: 165px;
+}
+
+/* CSS to draw the wood box */
+.dice-kept .dice-area .box {
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  position: relative;
+  left: -12px;
+  top: -13px;
+  border: 2px solid rgba(44, 29, 0, 0.8);
+}
+.dice-kept .top-left-corner {
+  width: 28px;
+  border-bottom: 2px solid rgb(44, 29, 0);
+  transform: rotate(42deg);
+  position: absolute;
+  transform-origin: top left;
+  left: 0;
+  top: -1px;
+}
+.dice-kept .top-right-corner {
+  width: 28px;
+  border-bottom: 2px solid rgb(44, 29, 0);
+  transform: rotate(-42deg);
+  position: absolute;
+  transform-origin: top right;
+  right: 0;
+  top: -1px;
+}
+.dice-kept .bottom-left-corner {
+  width: 28px;
+  border-bottom: 2px solid rgb(44, 29, 0);
+  transform: rotate(-42deg);
+  position: absolute;
+  transform-origin: bottom left;
+  left: 0;
+  bottom: 0px;
+}
+.dice-kept .bottom-right-corner {
+  width: 28px;
+  border-bottom: 2px solid rgb(44, 29, 0);
+  transform: rotate(42deg);
+  position: absolute;
+  transform-origin: bottom right;
+  right: 0;
+  bottom: 0px;
+}
+/* cursed cover */
+.cursed-cover {
+  width: 211px;
+  height: 211px;
+  position: relative;
+  left: -24px;
+  top: -213px;
+  animation: closeBox 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  transform: perspective(1200px) rotateX(90deg);
+  transform-origin: top;
+}
+@keyframes closeBox {
+  from {
+    transform: perspective(1200px) rotateX(90deg);
+  }
+  to {
+    transform: perspective(1200px) rotateX(0deg);
+  }
+}
+.cursed-cover img {
+  width: 100%;
+  height: 100%;
+}

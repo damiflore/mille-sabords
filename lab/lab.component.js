@@ -213,7 +213,7 @@ const DiceVariant = ({ dice, variant }) => {
       {variant === "random" ? (
         "?"
       ) : (
-        <img width="32" height="32" src={`src/dices/assets/dice_${variant}.png`} />
+        <img width="32" height="32" src={`src/dices/dice_${variant}.png`} />
       )}
     </button>
   )
