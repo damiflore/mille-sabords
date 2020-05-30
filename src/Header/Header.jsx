@@ -2,9 +2,9 @@ import React from "react"
 
 import { useCurrentCard, useCardDeck, useTotalScore } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
-
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
-import { SwordChallengeIndicator } from "src/Header/SwordChallengeIndicator.jsx"
+
+import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 export const Header = () => {
   return (
@@ -38,7 +38,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       style={{
-        backgroundImage: "url('src/cards/assets/card_default.png')",
+        backgroundImage: "url('src/cards/card_default.png')",
         backgroundSize: "217px",
       }}
     ></div>
@@ -55,7 +55,7 @@ const Card = ({ card }) => {
       }}
     >
       <img
-        src={`src/cards/assets/card_small-${
+        src={`src/cards/card_small-${
           isSwordChallengeCard(card) ? "sword-challenge" : card
         }.png`}
         alt={card}

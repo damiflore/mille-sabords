@@ -46,7 +46,7 @@ export const DiceKept = () => {
 const ExtraCoin = () => {
   return (
     <img
-      src={`src/dices/assets/dice_coin.png`}
+      src={`src/dices/dice_coin.png`}
       style={{
         width: "32",
         height: "32",
@@ -58,7 +58,7 @@ const ExtraCoin = () => {
 const ExtraDiamond = () => {
   return (
     <img
-      src={`src/dices/assets/dice_diamond.png`}
+      src={`src/dices/dice_diamond.png`}
       style={{
         width: "32",
         height: "32",
@@ -76,7 +76,7 @@ const CursedCover = () => {
 
   return (
     <div className="cursed-cover">
-      <img src={`src/dices/assets/cursed-cover.png`} alt="cursed-cover" />
+      <img src={`src/dice-kept/cursed-cover.png`} alt="cursed-cover" />
     </div>
   )
 }

@@ -3,11 +3,11 @@ import React from "react"
 
 import { GameEffects } from "src/game.effects.js"
 
-import { DiceOnGoing } from "src/dices/DiceOnGoing.jsx"
-import { DiceKept } from "src/dices/DiceKept.jsx"
-import { Header } from "./Header/Header.jsx"
-import { Footer } from "./Footer/Footer.jsx"
-import { SkullIsland } from "./SkullIsland/SkullIsland.jsx"
+import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
+import { DiceKept } from "src/dice-kept/DiceKept.jsx"
+import { Header } from "src/header/Header.jsx"
+import { Footer } from "src/footer/Footer.jsx"
+import { SkullIsland } from "src/skull-island/skullIsland.jsx"
 
 const { useMemo } = React
 

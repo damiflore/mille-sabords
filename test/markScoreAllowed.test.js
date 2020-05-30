@@ -7,7 +7,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: false,
     scoreMarked: false,
-    card: CARD_ANIMALS,
+    currentCard: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: true,
     hasDicesToCurse: false,
   })
@@ -20,7 +20,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: false,
     scoreMarked: true,
-    card: CARD_ANIMALS,
+    currentCard: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: false,
     hasDicesToCurse: false,
   })
@@ -33,7 +33,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: false,
     scoreMarked: false,
-    card: CARD_CHEST,
+    currentCard: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: true,
     hasDicesToCurse: false,
   })
@@ -46,7 +46,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: true,
     scoreMarked: false,
-    card: CARD_CHEST,
+    currentCard: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: true,
     hasDicesToCurse: false,
   })
@@ -59,7 +59,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: true,
     scoreMarked: false,
-    card: CARD_CHEST,
+    currentCard: CARD_CHEST,
     threeSkullsOrMoreInCursedArea: false,
     hasDicesToCurse: false,
   })
@@ -72,7 +72,7 @@ import { useMarkScoreAllowed } from "src/game.selectors.js"
   const actual = useMarkScoreAllowed({
     hasRolledMoreThanOnce: false,
     scoreMarked: false,
-    card: CARD_ANIMALS,
+    currentCard: CARD_ANIMALS,
     threeSkullsOrMoreInCursedArea: false,
     hasDicesToCurse: true,
   })

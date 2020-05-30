@@ -44,7 +44,7 @@ export const SkullIsland = () => {
 const ExtraSkull = () => {
   return (
     <img
-      src={`src/dices/assets/dice_skull.png`}
+      src={`src/dices/dice_skull.png`}
       style={{
         width: "32",
         height: "32",

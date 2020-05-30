@@ -2,9 +2,9 @@ import React from "react"
 
 import { useMarkScore } from "src/game.actions.js"
 import { useHasRolledOnce, useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
-import { ButtonNextRound } from "src/Header/ButtonNextRound.js"
+import { ButtonNextRound } from "src/header/ButtonNextRound.js"
 
-import { ButtonRoll } from "src/dices/ButtonRoll.js"
+import { ButtonRoll } from "./ButtonRoll.js"
 
 export const Footer = () => {
   const markScore = useMarkScore()

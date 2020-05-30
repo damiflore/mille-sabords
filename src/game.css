@@ -1,0 +1,53 @@
+@import "./cards/cards.css";
+@import "./dice-kept/dice-kept.css";
+@import "./dice-ongoing/dice-ongoing.css";
+@import "./dices/dice.css";
+@import "./footer/footer.css";
+@import "./header/header.css";
+@import "./score/score.css";
+@import "./skull-island/skull-island.css";
+
+body {
+  font-family: arial, sans;
+  color: #444444;
+  margin: 0;
+}
+#mille-sabord-container {
+  background-image: url("./wood.jpg");
+  color: white;
+  padding: 15px;
+  max-width: 680px;
+  margin: 0 auto;
+  overflow: hidden;
+  height: 100vh;
+}
+button {
+  background: white;
+  border: solid 1px currentColor;
+  padding: 3px 6px;
+  border-radius: 2px;
+  font-size: 15px;
+}
+button:disabled:hover {
+  cursor: default;
+}
+button:focus {
+  outline: none;
+}
+.title {
+  font-size: 23px;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.subtitle {
+  margin: 20px 0;
+  display: inline-block;
+  padding-right: 10px;
+  font-size: 20px;
+}
+@media only screen and (max-width: 680px) {
+  .subtitle {
+    font-size: 17px;
+  }
+}
