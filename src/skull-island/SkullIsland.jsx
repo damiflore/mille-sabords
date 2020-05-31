@@ -4,8 +4,9 @@ import { useDicesCursed, useCurrentCard } from "src/game.store.js"
 import { useRemoveSkullAllowed } from "src/game.selectors.js"
 import { useUncurseDice } from "src/dices/dices.actions.js"
 
-import { isOneSkullCard, isTwoSkullsCard } from "src/cards/cards.js"
+import { isOneSkullCard, isTwoSkullsCard, cardColors } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
+import { diceSize } from "src/dices/dicePosition.js"
 
 export const SkullIsland = () => {
   const currentCard = useCurrentCard()
@@ -17,13 +18,6 @@ export const SkullIsland = () => {
     <div className="skull-island">
       <div className="bottle">
         <div className="area">
-          {isOneSkullCard(currentCard) ? <ExtraSkull /> : null}
-          {isTwoSkullsCard(currentCard) ? (
-            <>
-              <ExtraSkull />
-              <ExtraSkull />
-            </>
-          ) : null}
           {dicesCursed.map((dice) => (
             <Dice
               key={dice.id}
@@ -35,20 +29,40 @@ export const SkullIsland = () => {
               specificStyle={{ margin: "1px 5px" }}
             />
           ))}
+          {isOneSkullCard(currentCard) ? <ExtraSkull card={currentCard} /> : null}
+          {isTwoSkullsCard(currentCard) ? (
+            <>
+              <ExtraSkull card={currentCard} />
+              <ExtraSkull card={currentCard} />
+            </>
+          ) : null}
         </div>
       </div>
     </div>
   )
 }
 
-const ExtraSkull = () => {
+const ExtraSkull = ({ card }) => {
   return (
-    <img
-      src={`src/dices/dice_skull.png`}
+    <button
+      className="dice"
       style={{
-        width: "32",
-        height: "32",
+        width: diceSize,
+        height: diceSize,
+        color: "#fcfcfc",
+        margin: "1px 5px",
+        backgroundColor: cardColors[card].color1,
+        borderColor: cardColors[card].color2,
+        borderWidth: "2px",
       }}
-    />
+    >
+      <img
+        src={`src/dices/dice_skull.png`}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    </button>
   )
 }

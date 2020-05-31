@@ -4,9 +4,10 @@ import { useCurrentCard, useDicesKept } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/dices/dices.actions.js"
 
-import { isCoinCard, isDiamondCard } from "src/cards/cards.js"
+import { isCoinCard, isDiamondCard, cardColors } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
 import { RoundScore } from "src/score/RoundScore.jsx"
+import { diceSize } from "src/dices/dicePosition.js"
 
 export const DiceKept = () => {
   const currentCard = useCurrentCard()
@@ -18,8 +19,8 @@ export const DiceKept = () => {
     <div className="dice-kept">
       <div className="dice-area">
         <div className="box">
-          {isCoinCard(currentCard) ? <ExtraCoin /> : null}
-          {isDiamondCard(currentCard) ? <ExtraDiamond /> : null}
+          {isCoinCard(currentCard) ? <ExtraCoin card={currentCard} /> : null}
+          {isDiamondCard(currentCard) ? <ExtraDiamond card={currentCard} /> : null}
           {dicesKept.map((dice) => (
             <Dice
               key={dice.id}
@@ -43,27 +44,55 @@ export const DiceKept = () => {
   )
 }
 
-const ExtraCoin = () => {
+const ExtraCoin = ({ card }) => {
   return (
-    <img
-      src={`src/dices/dice_coin.png`}
+    <button
+      className="dice"
       style={{
-        width: "32",
-        height: "32",
+        width: diceSize,
+        height: diceSize,
+        color: "#fcfcfc",
+        margin: "5px",
+        backgroundColor: cardColors[card].color1,
+        borderColor: cardColors[card].color2,
+        borderWidth: "2px",
+        borderStyle: "solid",
       }}
-    />
+    >
+      <img
+        src={`src/dices/dice_coin.png`}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    </button>
   )
 }
 
-const ExtraDiamond = () => {
+const ExtraDiamond = ({ card }) => {
   return (
-    <img
-      src={`src/dices/dice_diamond.png`}
+    <button
+      className="dice"
       style={{
-        width: "32",
-        height: "32",
+        width: diceSize,
+        height: diceSize,
+        color: "#fcfcfc",
+        margin: "5px",
+        backgroundColor: cardColors[card].color1,
+        borderColor: cardColors[card].color2,
+        borderWidth: "2px",
+        borderStyle: "solid",
       }}
-    />
+    >
+      <img
+        src={`src/dices/dice_diamond.png`}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    </button>
   )
 }
 

@@ -8,12 +8,12 @@
   display: block;
   border-right: 3px solid #c0c3b3;
   height: 10px;
-  width: 25px;
+  width: 32px;
   margin: 0 auto;
 }
 .score-area .round-score {
   display: inline-block;
-  min-width: 26px;
+  min-width: 38px;
   color: #2c1d00;
   font-weight: 600;
   padding: 4px 15px;
@@ -24,27 +24,38 @@
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 3px 5px 2px 0px rgba(0, 0, 0, 0.33),
     0px 3px 1px -2px rgba(65, 65, 65, 0.12);
 }
-.score-area button {
-  position: relative;
-  top: 4px;
-  left: -15px;
+.score-area .pirate-hook {
   width: 37px;
-  height: 36px;
-  background-color: #f7a23c;
-  border-color: #ffe7be;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 100%;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 3px 5px 2px 0px rgba(0, 0, 0, 0.33),
-    0px 3px 1px -2px rgba(65, 65, 65, 0.12);
+  height: 56px;
+  background-image: url("../dice-kept/pirate-hook.png");
+  background-size: contain;
+  display: inline-block;
+  position: absolute;
+  transform: translate(3px, -6px) rotate(28deg);
+  transform-origin: top;
+  z-index: 2;
+  opacity: 0;
+  animation: balance 0.4s cubic-bezier(0.4, 0, 1, 1) 0.4s forwards;
 }
-.score-area button svg {
-  stroke-width: 35;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10;
-  width: 20px;
-  height: 20px;
-  fill: none;
-  color: #ffe7be;
+@keyframes balance {
+  0% {
+    opacity: 0;
+    transform: translate(-14px, -17px) rotate(28deg);
+    background-image: url("../dice-kept/pirate-hook.png");
+  }
+  1% {
+    opacity: 1;
+    transform: translate(-14px, -17px) rotate(28deg);
+    background-image: url("../dice-kept/pirate-hook.png");
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-3px, -8px) rotate(-18deg);
+    background-image: url("../dice-kept/pirate-hook.png");
+  }
+  100% {
+    opacity: 1;
+    transform: translate(3px, -6px) rotate(28deg);
+    background-image: url("../dice-kept/pirate-hook-02.png");
+  }
 }
