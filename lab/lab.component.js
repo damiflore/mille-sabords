@@ -33,14 +33,8 @@ import {
   CARD_WITCH,
 } from "src/cards/cards.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
+import { HeadStyle } from "src/generic/HeadStyle.js"
 import { Game } from "src/game.component.js"
-
-const HeadLink = () => {
-  return ReactDOM.createPortal(
-    <link href="/lab/lab.css" rel="stylesheet" type="text/css" />,
-    document.head,
-  )
-}
 
 export const Lab = () => {
   const gameState = {
@@ -49,7 +43,7 @@ export const Lab = () => {
 
   return (
     <div id="lab">
-      <HeadLink />
+      <HeadStyle href="/lab/lab.css" />
       <GameContextProvider initialState={gameState}>
         <GameLab />
         <Game />
