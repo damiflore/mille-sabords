@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDOM from "react-dom"
 
 import { GameContextProvider } from "src/GameContextProvider.js"
 import {
@@ -34,11 +35,12 @@ import {
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Game } from "src/game.component.js"
 
-const link = document.createElement("link")
-link.rel = "stylesheet"
-link.type = "text/css"
-link.href = "/lab/lab.css"
-document.head.appendChild(link)
+const HeadLink = () => {
+  return ReactDOM.createPortal(
+    <link href="/lab/lab.css" rel="stylesheet" type="text/css" />,
+    document.head,
+  )
+}
 
 export const Lab = () => {
   const gameState = {
@@ -47,6 +49,7 @@ export const Lab = () => {
 
   return (
     <div id="lab">
+      <HeadLink />
       <GameContextProvider initialState={gameState}>
         <GameLab />
         <Game />
