@@ -40,7 +40,11 @@ const DIALOG_STYLE = {
 export const DialogBase = ({
   children,
   isOpen,
-  toggleDisplay = true, // when false dialog si removed from the DOM
+  // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
+  // ideally we should return null when isOpen is false and the dialog never rendered
+  // (to avoid putting the dialog in display none while it might never be used)
+  // (but that depends it's too early to know exactly what we want/need)
+  closeMethod = "display-none",
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
@@ -58,17 +62,19 @@ export const DialogBase = ({
     setRootElement(node)
   }
 
-  const isActive = toggleDisplay ? isOpen : Boolean(rootElement)
-  const becomesActive = useBecomes((isActivePrevious) => !isActivePrevious && isActive, [isActive])
+  const isVisible = closeMethod === "dom-remove" ? Boolean(rootElement) : isOpen
+  const becomesVisible = useBecomes((isActivePrevious) => !isActivePrevious && isVisible, [
+    isVisible,
+  ])
 
-  if (becomesActive) {
+  if (becomesVisible) {
     onAfterOpen()
   }
 
   // onFocusIn, onFocusOut implementation
   // https://github.com/facebook/react/issues/6410
   useEffect(() => {
-    if (!isActive) return () => {}
+    if (!isVisible) return () => {}
 
     const onDialogFocus = (focusEvent) => {
       onFocusIn(focusEvent)
@@ -85,11 +91,11 @@ export const DialogBase = ({
       rootElement.removeEventListener("focus", onDialogFocus, true)
       document.removeEventListener("focus", onDocumentFocus, true)
     }
-  }, [isActive, onFocusIn, onFocusOut])
+  }, [isVisible, onFocusIn, onFocusOut])
 
   // steal focus to move it into dialog when it opens
   useEffect(() => {
-    if (!isActive || !stealFocus) return () => {}
+    if (!isVisible || !stealFocus) return () => {}
 
     const nodeFocusedBeforeTransfer = document.activeElement
     const dialogElement = rootElementToDialogElement(rootElement)
@@ -106,19 +112,19 @@ export const DialogBase = ({
         }
       }
     }
-  }, [isActive, stealFocus])
+  }, [isVisible, stealFocus])
 
   // ttap focus inside dialog
   useEffect(() => {
-    if (!isActive || !trapFocus) return () => {}
+    if (!isVisible || !trapFocus) return () => {}
 
     const dialogElement = rootElementToDialogElement(rootElement)
     return trapFocusInside(dialogElement)
-  }, [isActive, trapFocus])
+  }, [isVisible, trapFocus])
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
-    if (!isActive) return () => {}
+    if (!isVisible) return () => {}
 
     const elementsToHide = []
     let previous = rootElement.previousSibling
@@ -138,24 +144,29 @@ export const DialogBase = ({
         element.removeAttribute("aria-hidden", "true")
       })
     }
-  }, [isActive])
+  }, [isVisible])
 
-  if (!isOpen && !toggleDisplay) return null
+  if (closeMethod === "dom-remove" && !isOpen) return null
 
   return ReactDOM.createPortal(
     <div
       style={{
         ...OVERLAY_STYLE,
-        ...(toggleDisplay ? { display: isOpen ? "block" : "none" } : {}),
+        ...(isOpen ? {} : getStyleForClose(closeMethod)),
         ...overlayProps.style,
       }}
+      hidden={isOpen || closeMethod !== "hidden-attribute" ? undefined : true}
       ref={(element) => {
         rootElementRefCallback(element)
         if (overlayProps.ref) overlayProps.ref(element)
       }}
       onClick={(clickEvent) => {
         if (requestCloseOnClickOutside) {
-          onRequestClose(clickEvent)
+          const dialogElement = rootElementToDialogElement(rootElement)
+          const { target } = clickEvent
+          if (target !== dialogElement && !dialogElement.contains(target)) {
+            onRequestClose(clickEvent)
+          }
         }
         if (overlayProps.onClick) overlayProps.onClick(clickEvent)
       }}
@@ -193,6 +204,16 @@ export const DialogBase = ({
     </div>,
     document.body,
   )
+}
+
+const getStyleForClose = (closeMethod) => {
+  if (closeMethod === "display-none") {
+    return { display: "none" }
+  }
+  if (closeMethod === "visibility-hidden") {
+    return { visibility: "hidden" }
+  }
+  return {}
 }
 
 // const rootElementToOverlayElement = (element) => element
