@@ -3,6 +3,7 @@ import React from "react"
 import { useCurrentCard, useCardDeck, useTotalScore } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
+import { Dialog } from "src/dialog/Dialog.jsx"
 
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
@@ -55,9 +56,7 @@ const Card = ({ card }) => {
       }}
     >
       <img
-        src={`src/cards/card_small-${
-          isSwordChallengeCard(card) ? "sword-challenge" : card
-        }.png`}
+        src={`src/cards/card_small-${isSwordChallengeCard(card) ? "sword-challenge" : card}.png`}
         alt={card}
       />
     </div>
@@ -96,10 +95,31 @@ const ShuffleDeckButton = () => {
 }
 
 const TotalScore = () => {
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+
+  const openDialog = () => {
+    setDialogIsOpen(true)
+  }
+
+  const closeDialog = () => {
+    setDialogIsOpen(false)
+  }
+
   const totalScore = useTotalScore()
   return (
     <div className="total-score">
-      <span className="score">{totalScore}</span>
+      {/* this span below should become a button now it has onClick behaviour */}
+      <span
+        onClick={() => {
+          openDialog()
+        }}
+        className="score"
+      >
+        {totalScore}
+      </span>
+      <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
+        Total score dialog content
+      </Dialog>
     </div>
   )
 }

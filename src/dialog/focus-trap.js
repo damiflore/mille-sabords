@@ -18,7 +18,11 @@ export const trapFocusInside = (element) => {
     return () => {}
   }
 
-  const isEventOutside = (event) => element.contains(event.target) === false
+  const isEventOutside = (event) => {
+    if (event.target === element) return false
+    if (element.contains(event.target)) return false
+    return true
+  }
 
   const getFirstTabbable = () => findFirstDescendant(element, isDiscoverableWithKeyboard)
 

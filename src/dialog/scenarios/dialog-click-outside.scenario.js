@@ -1,18 +1,9 @@
 /**
 
-this scenario is meant to test that
+This scenario is to test
 
-- dialog can be opened and closed
-- focus trap works (once opened tab works inly inside dialog)
-- focus is properly restored on the button opening the dialog
-- escape works (it closes dialog)
-
-
-more scenarios:
-
-- ensure click outside to close
-- ensure click outside focuses dialog (when focus trap is disable)
-- ensure focus out can be detected when focus trap is disabled
+- click outside to close
+- onFocusIn, onFocusOut is working
 
 */
 
@@ -22,6 +13,7 @@ import { Dialog } from "../Dialog.jsx"
 
 const App = () => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+  const [focusInside, setFocusInside] = React.useState(false)
 
   const openDialog = () => {
     setDialogIsOpen(true)
@@ -40,14 +32,26 @@ const App = () => {
       >
         Open dialog
       </button>
+      <span>
+        {
+          // eslint-disable-next-line no-nested-ternary
+          dialogIsOpen
+            ? focusInside
+              ? "focus is inside dialog"
+              : "focus is outside dialog"
+            : "dialog not opened "
+        }
+      </span>
       <Dialog
         isOpen={dialogIsOpen}
         onRequestClose={closeDialog}
+        trapFocus={false}
+        requestCloseOnClickOutside={true}
         onFocusIn={() => {
-          console.log("focusin")
+          setFocusInside(true)
         }}
         onFocusOut={() => {
-          console.log("focusout")
+          setFocusInside(false)
         }}
       >
         Hello world
