@@ -118,7 +118,7 @@ const TotalScore = () => {
         {totalScore}
       </span>
       <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
-        Total score dialog content
+        <div style={{ height: "2000px" }}>Total score dialog content</div>
       </Dialog>
     </div>
   )

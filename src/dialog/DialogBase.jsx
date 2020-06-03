@@ -16,6 +16,8 @@ https://fr.reactjs.org/docs/portals.html
 
 const OVERLAY_STYLE = {
   position: "fixed",
+  // prevent scrolling body when scrolling the overlay
+  touchAction: "none",
   top: 0,
   left: 0,
   right: 0,
@@ -30,8 +32,9 @@ const DIALOG_STYLE = {
   right: "40px",
   bottom: "40px",
   border: "1px solid rgb(204, 204, 204)",
-  // background: "rgb(255, 255, 255)",
   overflow: "auto",
+  // prevent body scrolling when scrolling the dialog content
+  overscrollBehavior: "contain",
   borderRadius: "4px",
   outline: "none",
   padding: "20px",
