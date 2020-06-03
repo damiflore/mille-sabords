@@ -6,6 +6,15 @@ import {
   findLastDescendant,
 } from "src/dom/traversal.js"
 
+export const firstFocusableDescendantOrSelf = (element) => {
+  const firstFocusableDescendant = findFirstDescendant(element, isFocusable)
+  if (firstFocusableDescendant) return firstFocusableDescendant
+
+  if (isFocusable(element)) return element
+
+  return null
+}
+
 export const trapFocusInside = (element) => {
   if (element.nodeType === 3) {
     console.warn("cannot trap focus inside a text node")
@@ -75,13 +84,6 @@ export const trapFocusInside = (element) => {
       }
     }
 
-    const ontouchstart = (event) => {
-      if (isEventOutside(event)) {
-        event.preventDefault()
-        event.stopImmediatePropagation()
-      }
-    }
-
     const onkeydown = (event) => {
       if (isTabEvent(event)) {
         event.preventDefault()
@@ -89,14 +91,12 @@ export const trapFocusInside = (element) => {
       }
     }
 
-    document.addEventListener("mousedown", onmousedown, true)
-    document.addEventListener("touchstart", ontouchstart, true)
-    document.addEventListener("keydown", onkeydown, true)
+    document.addEventListener("mousedown", onmousedown, { capture: true, passive: false })
+    document.addEventListener("keydown", onkeydown, { capture: true, passive: false })
 
     return () => {
-      document.removeEventListener("mousedown", onmousedown, true)
-      document.removeEventListener("touchstart", ontouchstart, true)
-      document.removeEventListener("keydown", onkeydown, true)
+      document.removeEventListener("mousedown", onmousedown, { capture: true, passive: false })
+      document.removeEventListener("keydown", onkeydown, { capture: true, passive: false })
     }
   }
 

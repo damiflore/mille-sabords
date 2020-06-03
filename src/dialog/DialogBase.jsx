@@ -2,9 +2,8 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import { useBecomes } from "src/hooks.js"
-import { findFirstDescendant } from "src/dom/traversal.js"
-import { isFocusable } from "src/dom/dom.js"
-import { trapFocusInside } from "./focus-trap.js"
+import { firstFocusableDescendantOrSelf, trapFocusInside } from "./focus-trap.js"
+import { trapScrollInside } from "./scroll-trap.js"
 
 const { useEffect } = React
 
@@ -16,8 +15,6 @@ https://fr.reactjs.org/docs/portals.html
 
 const OVERLAY_STYLE = {
   position: "fixed",
-  // prevent scrolling body when scrolling the overlay
-  touchAction: "none",
   top: 0,
   left: 0,
   right: 0,
@@ -96,6 +93,20 @@ export const DialogBase = ({
     }
   }, [isVisible, onFocusIn, onFocusOut])
 
+  // trap scroll inside dialog
+  useEffect(() => {
+    if (!isVisible) return () => {}
+    return trapScrollInside(rootElement)
+  }, [isVisible])
+
+  // trap focus inside dialog
+  useEffect(() => {
+    if (!isVisible || !trapFocus) return () => {}
+
+    const dialogElement = rootElementToDialogElement(rootElement)
+    return trapFocusInside(dialogElement)
+  }, [isVisible, trapFocus])
+
   // steal focus to move it into dialog when it opens
   useEffect(() => {
     if (!isVisible || !stealFocus) return () => {}
@@ -117,27 +128,50 @@ export const DialogBase = ({
     }
   }, [isVisible, stealFocus])
 
-  // ttap focus inside dialog
+  // mousedown on overlay -> transfer focus to dialog
   useEffect(() => {
-    if (!isVisible || !trapFocus) return () => {}
+    if (!isVisible) return () => {}
 
-    const dialogElement = rootElementToDialogElement(rootElement)
-    return trapFocusInside(dialogElement)
-  }, [isVisible, trapFocus])
+    const overlayElement = rootElementToOverlayElement(rootElement)
+    const onmousedown = (mousedownEvent) => {
+      // prevent mousedown on overlay from putting focus on document.body
+      mousedownEvent.preventDefault()
+      // instead foward focus to the dialog if not already inside
+      if (!hasOrContainsFocus(rootElement)) {
+        const dialogElement = rootElementToDialogElement(rootElement)
+        const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
+        if (firstFocusableElement) {
+          firstFocusableElement.focus()
+        }
+      }
+    }
+    overlayElement.addEventListener("mousedown", onmousedown, { passive: false })
+    return () => {
+      overlayElement.removeEventListener("mousedown", onmousedown, { passive: false })
+    }
+  }, [isVisible])
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
     if (!isVisible) return () => {}
 
     const elementsToHide = []
-    let previous = rootElement.previousSibling
-    while (previous) {
-      if (previous.nodeType === 1) {
-        elementsToHide.push(previous)
+    /*
+    we hide previous and next siblings
+    because when dialog is opened everything around it should be considered
+    hidden (you cannot have several modal visible at the same time).
+
+    Let's keep in mind we are talking about a dialog in the accessibility terms.
+    It should focus trap, prevent interaction with the rest of the page
+    and consider the rest as hidden.
+    This dialog is not meant to be used for tooltip and so on.
+    */
+    const parentChildren = Array.from(rootElement.parentNode.children)
+    parentChildren.forEach((child) => {
+      if (child !== rootElement) {
+        elementsToHide.push(child)
       }
-      previous = previous.previousSibling
-    }
-    console.log(elementsToHide)
+    })
 
     elementsToHide.forEach((element) => {
       element.setAttribute("aria-hidden", "true")
@@ -173,19 +207,6 @@ export const DialogBase = ({
         }
         if (overlayProps.onClick) overlayProps.onClick(clickEvent)
       }}
-      onMouseDown={(mousedownEvent) => {
-        // prevent mousedown on overlay from putting focus on document.body
-        mousedownEvent.preventDefault()
-        // instead foward focus to the dialog if not already inside
-        if (!hasOrContainsFocus(rootElement)) {
-          const dialogElement = rootElementToDialogElement(rootElement)
-          const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
-          if (firstFocusableElement) {
-            firstFocusableElement.focus()
-          }
-        }
-        if (rest.onMouseDown) rest.onMouseDown(mousedownEvent)
-      }}
       onKeyDown={(keydownEvent) => {
         if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
           onRequestClose(keydownEvent)
@@ -219,22 +240,13 @@ const getStyleForClose = (closeMethod) => {
   return {}
 }
 
-// const rootElementToOverlayElement = (element) => element
+const rootElementToOverlayElement = (element) => element
 
 const rootElementToDialogElement = (element) => element.firstChild
 
 const hasOrContainsFocus = (element) => {
   const { activeElement } = document
   return element === activeElement || element.contains(activeElement)
-}
-
-const firstFocusableDescendantOrSelf = (element) => {
-  const firstFocusableDescendant = findFirstDescendant(element, isFocusable)
-  if (firstFocusableDescendant) return firstFocusableDescendant
-
-  if (isFocusable(element)) return element
-
-  return null
 }
 
 const ESC_KEY = 27
