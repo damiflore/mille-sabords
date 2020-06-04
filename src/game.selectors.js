@@ -189,12 +189,17 @@ export const useMarkScoreAllowed = ({
 export const useStartNextRoundAllowed = ({
   rollDiceAllowed = useRollDiceAllowed(),
   markScoreAllowed = useMarkScoreAllowed(),
+  hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
   if (rollDiceAllowed) {
     return false
   }
 
   if (markScoreAllowed) {
+    return false
+  }
+
+  if (hasDicesToCurse) {
     return false
   }
 
