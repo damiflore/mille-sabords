@@ -19,7 +19,6 @@ body {
   max-width: 680px;
   margin: 0 auto;
   overflow: hidden;
-  height: 100vh;
 }
 button {
   background: white;
@@ -50,4 +49,42 @@ button:disabled:hover {
   .subtitle {
     font-size: 17px;
   }
+}
+
+/* global structure */
+body {
+  display: flex;
+}
+
+#app {
+  display: flex;
+  flex: 1;
+}
+
+#mille-sabord-container {
+  height: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+#mille-sabord-container .header {
+  height: 60px;
+}
+
+#mille-sabord-container .dice-kept-and-skulls {
+  height: 250px;
+  position: relative;
+  z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
+}
+
+#mille-sabord-container .dice-ongoing {
+  flex: 1;
+  min-height: 100px;
+  z-index: 0; /* z-index pour que la map reste en dessous */
+}
+
+#mille-sabord-container .actions {
+  position: relative;
+  z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
+  height: 60px;
 }
