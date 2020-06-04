@@ -6,10 +6,12 @@ startExploring({
   htmlFileRelativeUrl: "./index.dev.html",
   port: 3472,
   explorableConfig: {
-    "./index.js": true,
-    "./src/**/*.js": true,
-    "./test/**/*.js": true,
-    "./test-manual/**/*.js": true,
-    "./lab/lab.index.js": true,
+    any: {
+      "./index.js": true,
+      "./src/**/*.js": true,
+      "./test/**/*.js": true,
+      "./test-manual/**/*.js": true,
+      "./lab/lab.index.js": true,
+    },
   },
 })
