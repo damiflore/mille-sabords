@@ -16,6 +16,7 @@ body {
   background-image: url("./wood.jpg");
   color: white;
   padding: 15px;
+  width: 100%;
   max-width: 680px;
   margin: 0 auto;
   overflow: hidden;
