@@ -6,6 +6,7 @@ import { useStartNextRoundAllowed } from "src/game.selectors.js"
   const actual = useStartNextRoundAllowed({
     rollDiceAllowed: true,
     markScoreAllowed: false,
+    hasDicesToCurse: false,
   })
   const expected = false
   assert({ actual, expected })
@@ -16,6 +17,7 @@ import { useStartNextRoundAllowed } from "src/game.selectors.js"
   const actual = useStartNextRoundAllowed({
     rollDiceAllowed: false,
     markScoreAllowed: true,
+    hasDicesToCurse: false,
   })
   const expected = false
   assert({ actual, expected })
