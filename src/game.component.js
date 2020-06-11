@@ -2,6 +2,7 @@
 import React from "react"
 
 import { GameEffects } from "src/game.effects.js"
+import { PreloadImages } from "src/PreloadImages.jsx"
 
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { DiceKept } from "src/dice-kept/DiceKept.jsx"
@@ -26,6 +27,7 @@ export const Game = () => {
   return useMemo(() => (
     <div id="mille-sabord-container">
       <GameEffects />
+      <PreloadImages />
       <Header />
       <div className="dice-kept-and-skulls">
         <DiceKept />
