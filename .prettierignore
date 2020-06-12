@@ -1,4 +1,3 @@
-/.github/workflows/**/node_modules/
 /.jsenv/
 /node_modules/
 /coverage/

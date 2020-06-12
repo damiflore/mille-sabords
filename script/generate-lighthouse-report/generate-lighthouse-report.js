@@ -10,7 +10,7 @@ const run = async () => {
   const server = await serverPromise
 
   await generateLighthouseReport(server.origin, {
-    projectDirectoryUrl: new URL("../../../", import.meta.url),
+    projectDirectoryUrl: new URL("../../", import.meta.url),
     logLevel: "debug",
   })
 
