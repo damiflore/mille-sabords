@@ -5,5 +5,5 @@ import {
 
 reportLighthouseScoreMergeImpact({
   ...readGithubWorkflowEnv(),
-  generateCommand: "npm run generate-lighthouse-report",
+  jsonFileGenerateCommand: "npm run generate-lighthouse-report",
 })
