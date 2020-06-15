@@ -20,7 +20,7 @@ const OVERLAY_STYLE = {
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: "rgba(255, 255, 255, 0.75)",
+  backgroundColor: "rgba(0, 0, 0, 0.46)",
 }
 
 const DIALOG_STYLE = {
@@ -32,6 +32,8 @@ const DIALOG_STYLE = {
   // prevent body scrolling when scrolling the dialog content
   overscrollBehavior: "contain",
   outline: "none",
+  maxWidth: "620px",
+  margin: "0 auto",
 }
 
 export const DialogBase = ({

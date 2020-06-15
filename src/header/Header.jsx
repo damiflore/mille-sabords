@@ -3,18 +3,35 @@ import React from "react"
 import { useCurrentCard, useCardDeck, useTotalScore } from "src/game.store.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 export const Header = () => {
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+
+  const openDialog = () => {
+    setDialogIsOpen(true)
+  }
+
+  const closeDialog = () => {
+    setDialogIsOpen(false)
+  }
+
   return (
     <div className="header">
-      <div className="card-container">
+      <div
+        className="card-container"
+        onClick={() => {
+          openDialog()
+        }}
+      >
         <SmallCard />
         <SwordChallengeIndicator />
       </div>
       <TotalScore />
+      <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
   )
 }
@@ -95,31 +112,60 @@ const ShuffleDeckButton = () => {
 }
 
 const TotalScore = () => {
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+  // const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
 
-  const openDialog = () => {
-    setDialogIsOpen(true)
-  }
+  // const openDialog = () => {
+  //   setDialogIsOpen(true)
+  // }
 
-  const closeDialog = () => {
-    setDialogIsOpen(false)
-  }
+  // const closeDialog = () => {
+  //   setDialogIsOpen(false)
+  // }
 
   const totalScore = useTotalScore()
   return (
     <div className="total-score">
       {/* this span below should become a button now it has onClick behaviour */}
       <span
-        onClick={() => {
-          openDialog()
-        }}
+        // onClick={() => {
+        //   openDialog()
+        // }}
         className="score"
       >
         {totalScore}
       </span>
-      <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
+      {/* <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
         <div>Total score dialog content</div>
-      </Dialog>
+      </Dialog> */}
     </div>
+  )
+}
+
+const CardRulesDialog = ({ dialogIsOpen, closeDialog }) => {
+  const card = useCurrentCard()
+  return (
+    <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
+      <div className="border border-right"></div>
+      <div className="border border-left"></div>
+      <div className="border border-top"></div>
+      <div className="border border-bottom"></div>
+
+      <div className="dialog-title">Carte</div>
+
+      <div className="dialog-content card-rules-dialog">
+        <div className="dialog-body">
+          {cardsRules[card] && (
+            <>
+              <div className="dialog-label">Carte {cardsRules[card].name}</div>
+              <img className="current-card" src={`src/cards/card_${card}.png`} alt={card} />
+              <div className="text-rule">{cardsRules[card].rule}</div>
+              {cardsRules[card].more ? (
+                <div className="text-rule">{cardsRules[card].more}</div>
+              ) : null}
+            </>
+          )}
+        </div>
+      </div>
+    </Dialog>
   )
 }

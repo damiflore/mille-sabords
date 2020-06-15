@@ -74,3 +74,57 @@
     background-image: url("../dice-kept/pirate-hook-02.png");
   }
 }
+
+/* SCORE RULES DIALOG */
+.score-rules-dialog .dialog-box div {
+  padding: 5px 0;
+}
+.score-rules-dialog .columns {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0;
+}
+.score-rules-dialog .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  text-align: center;
+  width: 80px;
+}
+.score-rules-dialog .column-title {
+  font-size: 12px;
+}
+.score-rules-dialog span {
+  border: 2px solid grey;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-left: 3px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.score-rules-dialog .symbol-number {
+  width: 9px;
+  margin: 3px auto;
+  display: block;
+  border: 2px solid #e4920b;
+  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 44%);
+  background: #ffcd5d;
+  color: #c77c00;
+}
+.score-rules-dialog .points {
+  width: 50px;
+  margin: 3px auto;
+  display: block;
+  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
+}
+.score-rules-dialog img {
+  width: 32px;
+  height: 32px;
+  margin: 3px auto;
+  display: block;
+  border: 2px solid #c77c00;
+  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
+  background: #ffcd5d;
+  border-radius: 3px;
+}

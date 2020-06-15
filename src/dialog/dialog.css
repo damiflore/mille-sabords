@@ -35,7 +35,7 @@
 .dialog-content {
   background-color: #ffe7be;
   width: calc(100% - 66px);
-  height: calc(100% - 60px);
+  height: calc(100% - 55px);
   margin: -30px 33px;
   display: flex;
   flex-direction: column;
@@ -70,62 +70,17 @@
   color: #885708;
 }
 .dialog-box {
-  background: #f8bd64;
+  /* background: #f8bd64;
   border: 2px solid white;
   border-radius: 5px;
   padding: 10px 5px 15px;
   color: white;
+  font-size: 13px; */
+  padding: 10px 5px 15px;
+  color: #885708;
   font-size: 13px;
+  border-bottom: 2px solid #885708;
 }
-.dialog-box div {
-  padding: 5px 0;
-}
-.dialog-box .columns {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 0;
-}
-.dialog-box .column {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0;
-  text-align: center;
-  width: 80px;
-}
-.dialog-box .column-title {
-  font-size: 12px;
-}
-.dialog-box span {
-  border: 2px solid grey;
-  border-radius: 3px;
-  padding: 5px 10px;
-  margin-left: 3px;
-  font-size: 15px;
-  font-weight: 800;
-}
-.dialog-box .symbol-number {
-  width: 9px;
-  margin: 3px auto;
-  display: block;
-  border: 2px solid #e4920b;
-  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 44%);
-  background: #ffcd5d;
-  color: #c77c00;
-}
-.dialog-box .points {
-  width: 50px;
-  margin: 3px auto;
-  display: block;
-  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
-}
-.dialog-box img {
-  width: 32px;
-  height: 32px;
-  margin: 3px auto;
-  display: block;
-  border: 2px solid #c77c00;
-  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
-  background: #ffcd5d;
-  border-radius: 3px;
+.dialog-box.last {
+  border: none;
 }
