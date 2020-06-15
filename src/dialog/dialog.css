@@ -3,7 +3,7 @@
   position: absolute;
   background-position: center;
   background-size: contain;
-  border: 2px solid #42351a;
+  border: 2px solid #836019;
 }
 .dialog .border-top,
 .dialog .border-bottom {
@@ -25,11 +25,11 @@
   height: calc(100% - 4px);
 }
 .dialog .border-left {
-  margin-left: 3px;
+  margin-left: 7px;
   left: 0;
 }
 .dialog .border-right {
-  margin-right: 3px;
+  margin-right: 7px;
   right: 0;
 }
 .dialog-content {
@@ -45,21 +45,22 @@
   padding: 10px;
   margin: 0 auto;
   position: relative;
-  top: -20px;
+  top: -15px;
   background-image: url(./stone.png);
   background-size: cover;
-  color: white;
+  color: #e4e4e4;
   font-size: 26px;
   font-weight: 800;
   -webkit-text-stroke: 2px #42351a;
   text-align: center;
   text-transform: uppercase;
-  border: 2px solid #42351a;
+  border: 2px solid #817d75;
   border-radius: 5px;
 }
 .dialog-body {
   padding: 0 18px;
-  margin: 20px 0 10px;
+  padding-bottom: 10px;
+  margin: 20px 0 5px;
   overflow: scroll;
 }
 .dialog-label {
@@ -69,10 +70,10 @@
   color: #885708;
 }
 .dialog-box {
-  background: #f7a23c;
+  background: #f8bd64;
   border: 2px solid white;
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px 5px 15px;
   color: white;
   font-size: 13px;
 }
@@ -93,31 +94,34 @@
   width: 80px;
 }
 .dialog-box .column-title {
-  font-size: 11px;
+  font-size: 12px;
 }
 .dialog-box span {
   border: 2px solid grey;
   border-radius: 3px;
-  padding: 3px 7px;
+  padding: 5px 10px;
   margin-left: 3px;
+  font-size: 15px;
+  font-weight: 800;
 }
 .dialog-box .symbol-number {
   width: 9px;
   margin: 3px auto;
   display: block;
-  border: 2px solid #c77c00;
-  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
+  border: 2px solid #e4920b;
+  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 44%);
   background: #ffcd5d;
   color: #c77c00;
 }
 .dialog-box .points {
-  width: 40px;
+  width: 50px;
   margin: 3px auto;
   display: block;
+  box-shadow: inset 0px 0px 4px 0px rgb(73 73 73 / 55%);
 }
 .dialog-box img {
-  width: 21px;
-  height: 21px;
+  width: 32px;
+  height: 32px;
   margin: 3px auto;
   display: block;
   border: 2px solid #c77c00;

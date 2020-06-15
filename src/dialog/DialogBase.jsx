@@ -26,8 +26,8 @@ const OVERLAY_STYLE = {
 const DIALOG_STYLE = {
   position: "absolute",
   top: "10%",
-  left: "8%",
-  right: "8%",
+  left: "6%",
+  right: "6%",
   bottom: "8%",
   // prevent body scrolling when scrolling the dialog content
   overscrollBehavior: "contain",
