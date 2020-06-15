@@ -8,7 +8,8 @@ const projectDirectoryUrl = new URL("../../", import.meta.url)
 const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
 export const serverPromise = startServer({
-  protocol: "http",
+  logLevel: process.env.LOG_LEVEL || "info",
+  protocol: process.env.HTTPS ? "https" : "http",
   ip: "",
   port: process.env.PORT || 0,
   requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
