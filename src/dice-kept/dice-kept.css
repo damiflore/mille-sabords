@@ -1,6 +1,6 @@
 .dice-kept-and-skulls {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 .dice-kept {
   display: inline-block;

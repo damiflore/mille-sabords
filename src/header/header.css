@@ -59,6 +59,7 @@
 .total-score {
   flex: 1;
   text-align: right;
+  cursor: pointer;
 }
 .total-score .score {
   color: #ffe7be;

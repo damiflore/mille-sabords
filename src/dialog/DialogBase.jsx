@@ -25,17 +25,13 @@ const OVERLAY_STYLE = {
 
 const DIALOG_STYLE = {
   position: "absolute",
-  top: "40px",
-  left: "40px",
-  right: "40px",
-  bottom: "40px",
-  border: "1px solid rgb(204, 204, 204)",
-  overflow: "auto",
+  top: "10%",
+  left: "8%",
+  right: "8%",
+  bottom: "8%",
   // prevent body scrolling when scrolling the dialog content
   overscrollBehavior: "contain",
-  borderRadius: "4px",
   outline: "none",
-  padding: "20px",
 }
 
 export const DialogBase = ({

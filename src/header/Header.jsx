@@ -79,7 +79,7 @@ const DrawCardButton = () => {
 
   return (
     <button className="draw-card-btn" onClick={drawCard}>
-      Draw a card
+      Piocher
     </button>
   )
 }
@@ -118,7 +118,7 @@ const TotalScore = () => {
         {totalScore}
       </span>
       <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
-        <div style={{ height: "2000px" }}>Total score dialog content</div>
+        <div>Total score dialog content</div>
       </Dialog>
     </div>
   )

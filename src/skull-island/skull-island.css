@@ -6,7 +6,6 @@
   flex-direction: column-reverse;
   width: 83px;
   height: 244px;
-  margin-left: 20px;
   background-image: url(./skull-bottle.png);
   background-repeat: no-repeat;
   background-size: contain;
@@ -17,7 +16,7 @@
 }
 .witch-label {
   position: absolute;
-  transform: translate(17px, -50px) scale(0.7);
+  transform: translate(-3px, -50px) scale(0.7);
 }
 .witch-label img {
   width: 100%;

@@ -16,7 +16,7 @@ export const ButtonRoll = () => {
             roll(diceRolledAreaNode)
           }}
         >
-          Roll
+          Lancer
         </button>
       </div>
     )

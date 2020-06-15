@@ -34,7 +34,7 @@ const ButtonMarkScore = ({ onClick }) => {
     return (
       <div className="collect-action">
         <button onClick={onClick}>
-          <span>Collect</span>
+          <span>Collecter</span>
           <span className="score">
             {sign} {Math.abs(roundScore)}
           </span>
