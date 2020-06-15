@@ -6,12 +6,19 @@ startExploring({
   htmlFileRelativeUrl: "./index.dev.html",
   port: 3472,
   explorableConfig: {
-    any: {
+    "app": {
       "./index.js": true,
-      "./src/**/*.js": true,
-      "./test/**/*.js": true,
-      "./test-manual/**/*.js": true,
       "./lab/lab.index.js": true,
+    },
+    "source files": {
+      "./src/**/*.js": true,
+      "./test-manual/**/*.js": true,
+      "**/*.test.js": false,
+      "node_modules/": false,
+    },
+    "unit tests": {
+      "**/*.test.js": true,
+      "node_modules/": false,
     },
   },
 })
