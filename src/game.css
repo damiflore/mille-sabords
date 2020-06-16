@@ -3,7 +3,9 @@
 @import "./dice-ongoing/dice-ongoing.css";
 @import "./dices/dice.css";
 @import "./footer/footer.css";
+@import "./footer/draw-card-dialog.css";
 @import "./header/header.css";
+@import "./header/card-rules-dialog.css";
 @import "./score/score.css";
 @import "./skull-island/skull-island.css";
 

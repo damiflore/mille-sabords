@@ -36,11 +36,11 @@ export const cardsRules = {
   },
   "1skull": {
     name: "Tête de mort",
-    rule: "Le tour du joueur débute avec un symbole tête de mort",
+    rule: "Le tour du joueur débute avec un symbole tête de mort.",
   },
   "2skulls": {
     name: "2 têtes de mort",
-    rule: "Le tour du joueur débute avec 2 symboles tête de mort",
+    rule: "Le tour du joueur débute avec 2 symboles tête de mort.",
   },
   "2sword-challenge": {
     name: "Bateau pirate",

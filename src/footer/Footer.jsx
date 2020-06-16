@@ -2,13 +2,24 @@ import React from "react"
 
 import { useMarkScore } from "src/game.actions.js"
 import { useHasRolledOnce, useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
-import { ButtonNextRound } from "src/header/ButtonNextRound.js"
 
+import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
+import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { ButtonRoll } from "./ButtonRoll.js"
 
 export const Footer = () => {
   const markScore = useMarkScore()
   const roundScore = useRoundScore()
+
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+
+  const openDialog = () => {
+    setDialogIsOpen(true)
+  }
+
+  const closeDialog = () => {
+    setDialogIsOpen(false)
+  }
 
   return (
     <div className="actions">
@@ -18,7 +29,8 @@ export const Footer = () => {
           markScore(roundScore)
         }}
       />
-      <ButtonNextRound />
+      <ButtonNextRound openDialog={openDialog} />
+      <DrawCardDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
   )
 }
