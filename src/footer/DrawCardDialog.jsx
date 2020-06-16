@@ -40,7 +40,19 @@ const TopCard = () => {
   if (card)
     return (
       <div className="card current-card">
-        <img src={`src/cards/card_${card}.png`} alt={card} />
+        <div className="flip-card">
+          <div className="flip-card-inner">
+            <div className="flip-card-front">
+              <div
+                className="card default-card"
+                style={{ backgroundImage: "url('src/cards/card_default.png')" }}
+              ></div>
+            </div>
+            <div className="flip-card-back">
+              <img src={`src/cards/card_${card}.png`} alt={card} />
+            </div>
+          </div>
+        </div>
       </div>
     )
   return null
@@ -93,7 +105,7 @@ const ShuffleDeckButton = () => {
 
   return (
     <button className="draw-card-btn" onClick={shuffleDeck}>
-      Shuffle deck
+      Mélanger le paquet
     </button>
   )
 }
