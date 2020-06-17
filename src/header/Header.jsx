@@ -8,9 +8,10 @@ import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 export const Header = () => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+  const card = useCurrentCard()
 
   const openDialog = () => {
-    setDialogIsOpen(true)
+    if (card) setDialogIsOpen(true)
   }
 
   const closeDialog = () => {

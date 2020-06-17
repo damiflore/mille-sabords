@@ -72,6 +72,7 @@ const BackCard = () => {
   return (
     <div
       className="card default-card"
+      id="back-deck-card"
       style={{ backgroundImage: "url('src/cards/card_default.png')" }}
     >
       <div className="remaining-cards-number">{cardDeck.length}</div>
@@ -103,8 +104,15 @@ const DrawCardButton = () => {
 const ShuffleDeckButton = () => {
   const shuffleDeck = useShuffleDeck()
 
+  const shuffleDeckAnimation = () => {
+    document.getElementById("back-deck-card").setAttribute("shaking-deck", "")
+    setTimeout(() => {
+      document.getElementById("back-deck-card").removeAttribute("shaking-deck", "")
+      shuffleDeck()
+    }, 1000)
+  }
   return (
-    <button className="draw-card-btn" onClick={shuffleDeck}>
+    <button className="draw-card-btn" onClick={shuffleDeckAnimation}>
       Mélanger le paquet
     </button>
   )
