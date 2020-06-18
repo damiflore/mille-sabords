@@ -1,8 +1,19 @@
-import { reportSizeImpactIntoGithubPullRequest } from "@jsenv/github-pull-request-filesize-impact"
-import { projectDirectoryUrl } from "../../../jsenv.config.js"
+import {
+  reportFileSizeImpact,
+  readGithubWorkflowEnv,
+  none,
+  gzip,
+  brotli,
+} from "@jsenv/file-size-impact"
 
-reportSizeImpactIntoGithubPullRequest({
-  projectDirectoryUrl,
-  baseSnapshotFileRelativeUrl: process.argv[2],
-  headSnapshotFileRelativeUrl: process.argv[3],
+reportFileSizeImpact({
+  ...readGithubWorkflowEnv(),
+  buildCommand: "npm run dist",
+  trackingConfig: {
+    "dist/systemjs": {
+      "./dist/systemjs/**/*": true,
+      "./dist/systemjs/**/*.map": false,
+    },
+  },
+  transformations: { none, gzip, brotli },
 })
