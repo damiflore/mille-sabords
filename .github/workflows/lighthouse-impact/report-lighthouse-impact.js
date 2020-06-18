@@ -1,9 +1,6 @@
-import {
-  reportLighthouseScoreMergeImpact,
-  readGithubWorkflowEnv,
-} from "@jsenv/lighthouse-score-merge-impact"
+import { reportLighthouseScoreImpact, readGithubWorkflowEnv } from "@jsenv/lighthouse-score-impact"
 
-reportLighthouseScoreMergeImpact({
+reportLighthouseScoreImpact({
   ...readGithubWorkflowEnv(),
   jsonFileGenerateCommand: "npm run generate-lighthouse-report",
 })
