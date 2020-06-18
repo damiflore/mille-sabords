@@ -53,13 +53,13 @@
     "@babel/plugin-transform-react-jsx": "7.9.4",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.1",
-    "@jsenv/core": "13.3.3",
+    "@jsenv/core": "13.4.0",
     "@jsenv/eslint-config": "12.4.1",
     "@jsenv/file-size-impact": "4.0.0",
     "@jsenv/lighthouse-score-impact": "2.0.1",
     "@jsenv/node-module-import-map": "11.1.1",
     "@jsenv/prettier-check-project": "5.6.0",
-    "eslint": "7.1.0",
+    "eslint": "7.2.0",
     "playwright-chromium": "1.0.2",
     "prettier": "2.0.5"
   }
