@@ -1,4 +1,4 @@
-import { generateLighthouseReport } from "@jsenv/lighthouse-score-merge-impact"
+import { generateLighthouseReport } from "@jsenv/lighthouse-score-impact"
 
 const run = async () => {
   const { bundlePromise } = await import("../generate-systemjs-bundle/generate-systemjs-bundle.js")
