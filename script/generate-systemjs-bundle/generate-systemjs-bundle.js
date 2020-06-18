@@ -16,6 +16,9 @@ export const bundlePromise = generateImportMapForProjectPackage({
   return generateSystemJsBundle({
     ...jsenvConfig,
     bundleDirectoryClean: true,
+    formatInputOptions: {
+      preserveEntrySignatures: false,
+    },
     importMapFileRelativeUrl,
     minify: true,
     manifestFile: true,
