@@ -42,17 +42,6 @@ button:disabled:hover {
   font-weight: bold;
   margin-bottom: 15px;
 }
-.subtitle {
-  margin: 20px 0;
-  display: inline-block;
-  padding-right: 10px;
-  font-size: 20px;
-}
-@media only screen and (max-width: 680px) {
-  .subtitle {
-    font-size: 17px;
-  }
-}
 
 /* global structure */
 body {

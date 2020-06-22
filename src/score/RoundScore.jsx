@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCard } from "src/game.store.js"
+import { useCurrentCard, useRoundStarted } from "src/game.store.js"
 import { useRoundScore } from "src/game.selectors.js"
 
 import { isPirateCard } from "src/cards/cards.js"
@@ -49,7 +49,9 @@ const ScoreDisplay = () => {
 }
 
 const DoubleScoreIndicator = () => {
-  return <div className="pirate-hook"></div>
+  const roundStarted = useRoundStarted()
+  if (roundStarted) return <div className="pirate-hook"></div>
+  return <div style={{ display: "none" }} className="pirate-hook"></div>
 }
 
 const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (

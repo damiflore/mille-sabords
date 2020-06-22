@@ -7,16 +7,40 @@
   margin: 10px 0;
 }
 .draw-card-dialog .subtitle {
+  margin: 5px;
+  font-size: 19px;
+  color: #885708;
+  opacity: 0;
+  vertical-align: middle;
+  animation: appear 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.draw-card-dialog .moreInfoIcon {
+  border: none;
+  fill: #f7a23c;
+  background-color: #ffe7be;
+  vertical-align: middle;
+  animation: appear 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.draw-card-dialog .moreInfoIcon:focus {
+  outline: none;
+}
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+.draw-card-dialog .text-rule {
   margin: 15px;
   font-size: 15px;
   color: #885708;
 }
+.draw-card-dialog .card-description {
+  overflow: scroll;
+}
 .draw-card-dialog .dialog-actions {
-  position: absolute;
-  bottom: 0;
-  margin: 20px auto;
-  text-align: center;
-  width: 100%;
+  width: 90%;
+  margin-bottom: 20px;
+  margin: 0 auto 20px auto;
 }
 .draw-card-dialog .dialog-actions button {
   width: 90%;

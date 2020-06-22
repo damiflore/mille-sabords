@@ -26,6 +26,7 @@ const useStartNextRound = createGameAction((state) => {
   return {
     ...state,
     witchUncursedDiceId: null,
+    roundStarted: false,
     rollCount: 0,
     dicesRolled: [],
     dicesCursed: [],

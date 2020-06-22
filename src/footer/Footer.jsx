@@ -1,6 +1,7 @@
 import React from "react"
 
 import { useMarkScore } from "src/game.actions.js"
+// import { useRoundStarted } from "src/game.store.js"
 import { useHasRolledOnce, useMarkScoreAllowed, useRoundScore } from "src/game.selectors.js"
 
 import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
@@ -20,6 +21,10 @@ export const Footer = () => {
   const closeDialog = () => {
     setDialogIsOpen(false)
   }
+
+  // const roundStarted = useRoundStarted()
+  // if (!roundStarted && !dialogIsOpen) openDialog()
+  // TODO: fix bug in DialogBase: dialog cannot be instantiated open
 
   return (
     <div className="actions">
