@@ -61,7 +61,7 @@ export const DialogBase = ({
     setRootElement(node)
   }
 
-  const isVisible = closeMethod === "dom-remove" ? Boolean(rootElement) : isOpen
+  const isVisible = Boolean(rootElement)
   const becomesVisible = useBecomes((isActivePrevious) => !isActivePrevious && isVisible, [
     isVisible,
   ])

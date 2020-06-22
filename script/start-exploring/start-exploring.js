@@ -20,5 +20,9 @@ startExploring({
       "**/*.test.js": true,
       "node_modules/": false,
     },
+    "manual testing": {
+      "**/*.scenario.js": true,
+      "node_modules/": false,
+    },
   },
 })
