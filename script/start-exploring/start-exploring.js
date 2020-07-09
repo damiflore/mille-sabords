@@ -3,25 +3,24 @@ import * as jsenvConfig from "../../jsenv.config.js"
 
 startExploring({
   ...jsenvConfig,
-  htmlFileRelativeUrl: "./index.dev.html",
-  port: 3472,
+  compileServerPort: 3472,
   explorableConfig: {
     "app": {
-      "./index.js": true,
-      "./lab/lab.index.js": true,
+      "./index.dev.html": true,
+      "./lab/lab.index.html": true,
     },
     "source files": {
-      "./src/**/*.js": true,
-      "./test-manual/**/*.js": true,
-      "**/*.test.js": false,
+      "./src/**/*.html": true,
+      "./test-manual/**/*.html": true,
+      "**/*.test.html": false,
       "node_modules/": false,
     },
     "unit tests": {
-      "**/*.test.js": true,
+      "**/*.test.html": true,
       "node_modules/": false,
     },
     "manual testing": {
-      "**/*.scenario.js": true,
+      "**/*.scenario.html": true,
       "node_modules/": false,
     },
   },

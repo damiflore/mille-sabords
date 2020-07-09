@@ -44,23 +44,23 @@
   },
   "dependencies": {
     "@jsenv/logger": "3.3.1",
-    "@jsenv/server": "2.6.0",
+    "@jsenv/server": "3.0.0-alpha.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "systemjs": "6.3.2"
+    "systemjs": "6.3.3"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "7.9.4",
+    "@babel/plugin-transform-react-jsx": "7.10.4",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.1",
-    "@jsenv/core": "13.4.0",
+    "@jsenv/core": "14.0.0-alpha.1",
     "@jsenv/eslint-config": "12.4.1",
     "@jsenv/file-size-impact": "4.0.0",
     "@jsenv/lighthouse-score-impact": "2.0.1",
-    "@jsenv/node-module-import-map": "11.1.1",
+    "@jsenv/node-module-import-map": "11.1.2",
     "@jsenv/prettier-check-project": "5.6.0",
-    "eslint": "7.2.0",
-    "playwright-chromium": "1.0.2",
+    "eslint": "7.4.0",
+    "playwright-chromium": "1.2.0",
     "prettier": "2.0.5"
   }
 }
