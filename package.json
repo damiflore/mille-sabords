@@ -53,7 +53,7 @@
     "@babel/plugin-transform-react-jsx": "7.10.4",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.1",
-    "@jsenv/core": "14.0.0-alpha.2",
+    "@jsenv/core": "14.0.0-alpha.4",
     "@jsenv/eslint-config": "12.4.1",
     "@jsenv/file-size-impact": "4.0.0",
     "@jsenv/lighthouse-score-impact": "2.0.1",
