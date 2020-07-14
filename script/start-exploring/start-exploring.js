@@ -7,20 +7,10 @@ startExploring({
   explorableConfig: {
     "app": {
       "./index.dev.html": true,
-      "./lab/lab.index.html": true,
-    },
-    "source files": {
-      "./src/**/*.html": true,
-      "./test-manual/**/*.html": true,
-      "**/*.test.html": false,
-      "node_modules/": false,
+      "./index.lab.html": true,
     },
     "unit tests": {
       "**/*.test.html": true,
-      "node_modules/": false,
-    },
-    "manual testing": {
-      "**/*.scenario.html": true,
       "node_modules/": false,
     },
   },

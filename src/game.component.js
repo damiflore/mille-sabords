@@ -1,6 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
+import { HeadStyle } from "src/generic/HeadStyle.js"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
 
@@ -26,6 +27,7 @@ export const Game = () => {
   */
   return useMemo(() => (
     <div id="mille-sabord-container">
+      <HeadStyle href="/mille-sabord.css" />
       <GameEffects />
       <PreloadImages />
       <Header />
