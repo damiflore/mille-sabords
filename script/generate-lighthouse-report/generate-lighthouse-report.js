@@ -5,12 +5,13 @@ const run = async () => {
   await bundlePromise
 
   process.env.LOG_LEVEL = "warn"
-  process.env.HTTPS = true
+  // process.env.HTTPS = true
   const { serverPromise } = await import("../start/start.js")
   const server = await serverPromise
 
   await generateLighthouseReport(server.origin, {
     projectDirectoryUrl: new URL("../../", import.meta.url),
+    ignoreCertificateErrors: true,
   })
 
   server.stop("lighthouse report generated")
