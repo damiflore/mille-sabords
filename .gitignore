@@ -4,7 +4,7 @@
 /lighthouse/
 /node_modules/
 /env.json
-/importMap.json
+/import-map.importmap
 /jsconfig.json
 /package-lock.json
 /yarn.lock

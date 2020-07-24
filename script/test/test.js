@@ -4,12 +4,12 @@ import * as jsenvConfig from "../../jsenv.config.js"
 executeTestPlan({
   ...jsenvConfig,
   testPlan: {
-    "./src/**/*.test.js": {
+    "./src/**/*.test.html": {
       browser: {
         launch: launchChromiumTab,
       },
     },
-    "./test/**/*.test.js": {
+    "./test/**/*.test.html": {
       browser: {
         launch: launchChromiumTab,
       },

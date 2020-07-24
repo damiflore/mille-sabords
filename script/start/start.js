@@ -12,6 +12,7 @@ export const serverPromise = startServer({
   protocol: process.env.HTTPS ? "https" : "http",
   ip: "",
   port: process.env.PORT || 0,
+  redirectHttpToHttps: Boolean(process.env.HTTPS),
   requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
     if (ressource === "/") {
       ressource = "/index.prod.html"
