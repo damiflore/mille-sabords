@@ -16,10 +16,6 @@ body {
 #mille-sabord-container {
   background-image: url("./wood.jpg");
   color: white;
-  padding: 15px;
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto;
   overflow: hidden;
 }
 button {
@@ -43,8 +39,15 @@ button:disabled:hover {
 }
 
 /* global structure */
+html {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+}
+
 body {
   display: flex;
+  min-width: 100%;
 }
 
 #app {
@@ -52,10 +55,32 @@ body {
   flex: 1;
 }
 
-#mille-sabord-container {
-  height: stretch;
+#game-container {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* #game-container::before,
+#game-container::after {
+  content: "";
+  flex: 1;
+} */
+
+#mille-sabord-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  padding: 15px;
+  width: 100%;
+
+  max-width: 680px;
+  max-height: 700px;
+  /* margin: auto; */
 }
 
 #mille-sabord-container .header {

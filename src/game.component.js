@@ -26,17 +26,19 @@ export const Game = () => {
   There is no real need for useMemo here: it's kept as an example.
   */
   return useMemo(() => (
-    <div id="mille-sabord-container">
-      <HeadStyle href="/mille-sabord.css" />
-      <GameEffects />
-      <PreloadImages />
-      <Header />
-      <div className="dice-kept-and-skulls">
-        <DiceKept />
-        <SkullIsland />
+    <div id="game-container">
+      <div id="mille-sabord-container">
+        <HeadStyle href="/mille-sabord.css" />
+        <GameEffects />
+        <PreloadImages />
+        <Header />
+        <div className="dice-kept-and-skulls">
+          <DiceKept />
+          <SkullIsland />
+        </div>
+        <DiceOnGoing />
+        <Footer />
       </div>
-      <DiceOnGoing />
-      <Footer />
     </div>
   ))
 }
