@@ -9,9 +9,12 @@ startExploring({
       "./index.dev.html": true,
       "./index.lab.html": true,
     },
+    "manual tests": {
+      "src/**/*.scenario.html": true,
+    },
     "unit tests": {
-      "**/*.test.html": true,
-      "node_modules/": false,
+      "src/**/*.test.html": true,
+      "test/**/*.test.html": true,
     },
   },
 })
