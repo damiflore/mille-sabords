@@ -15,10 +15,14 @@ export const trapScrollInside = (element) => {
   const scrollableParent = getScrollableParent(element)
   elementsToScrollLock.push(scrollableParent)
   const cleanUpArray = elementsToScrollLock.map((element) => {
-    const prev = element.style.overflow || null
+    const prev = element.style.overflow
     element.style.overflow = "hidden"
     return () => {
-      element.style.overflow = prev
+      if (prev) {
+        element.style.overflow = prev
+      } else {
+        delete element.style.overflow
+      }
     }
   })
 
