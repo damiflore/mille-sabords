@@ -183,6 +183,10 @@ export const useMarkScoreAllowed = ({
     return false
   }
 
+  if (!currentCard) {
+    return false
+  }
+
   return true
 }
 

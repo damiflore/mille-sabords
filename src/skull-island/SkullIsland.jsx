@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useDicesCursed, useCurrentCard } from "src/game.store.js"
+import { useDicesCursed, useCurrentCard, useRoundStarted } from "src/game.store.js"
 import { useRemoveSkullAllowed } from "src/game.selectors.js"
 import { useUncurseDice } from "src/dices/dices.actions.js"
 
@@ -69,6 +69,11 @@ const ExtraSkull = ({ card }) => {
 }
 
 const UncurseDiceLabel = () => {
+  const roundStarted = useRoundStarted()
+
+  if (!roundStarted)
+    return <img style={{ display: "none" }} src={`src/skull-island/witch-label.png`} />
+
   return (
     <div className="witch-label">
       <img src={`src/skull-island/witch-label.png`} />

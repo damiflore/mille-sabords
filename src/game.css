@@ -1,9 +1,10 @@
-@import "./cards/cards.css";
 @import "./dice-kept/dice-kept.css";
 @import "./dice-ongoing/dice-ongoing.css";
 @import "./dices/dice.css";
 @import "./footer/footer.css";
+@import "./footer/draw-card-dialog.css";
 @import "./header/header.css";
+@import "./header/card-rules-dialog.css";
 @import "./score/score.css";
 @import "./skull-island/skull-island.css";
 
@@ -39,17 +40,6 @@ button:disabled:hover {
   display: block;
   font-weight: bold;
   margin-bottom: 15px;
-}
-.subtitle {
-  margin: 20px 0;
-  display: inline-block;
-  padding-right: 10px;
-  font-size: 20px;
-}
-@media only screen and (max-width: 680px) {
-  .subtitle {
-    font-size: 17px;
-  }
 }
 
 /* global structure */

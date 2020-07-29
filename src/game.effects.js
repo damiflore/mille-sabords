@@ -37,7 +37,7 @@ const useCurseDiceEffect = () => {
       dicesToCurse.forEach((dice) => {
         curseDice(dice)
       })
-    }, 1000)
+    }, 0) // 1000 timeout removes util we don't have the animation
 
     return () => {
       clearTimeout(timeout)

@@ -11,6 +11,7 @@ const defaultState = {
   cardsUsed: [],
   dices: DICES,
   // game round
+  roundStarted: false,
   rollCount: 0,
   currentCard: null,
   scoreMarked: false,
@@ -53,6 +54,7 @@ export const useTotalScore = () => gameStateStore.useKeyedState("totalScore")
 export const useCardDeck = () => gameStateStore.useKeyedState("cardDeck")
 export const useCardsUsed = () => gameStateStore.useKeyedState("cardsUsed")
 export const useDices = () => gameStateStore.useKeyedState("dices")
+export const useRoundStarted = () => gameStateStore.useKeyedState("roundStarted")
 export const useRollCount = () => gameStateStore.useKeyedState("rollCount")
 export const useScoreMarked = () => gameStateStore.useKeyedState("scoreMarked")
 export const useIsOnSkullIsland = () => gameStateStore.useKeyedState("isOnSkullIsland")

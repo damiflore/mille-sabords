@@ -58,9 +58,7 @@
   border-radius: 5px;
 }
 .dialog-body {
-  padding: 0 18px;
-  padding-bottom: 10px;
-  margin: 20px 0 5px;
+  margin: 20px 18px 15px;
   overflow: scroll;
 }
 .dialog-label {
@@ -70,12 +68,6 @@
   color: #885708;
 }
 .dialog-box {
-  /* background: #f8bd64;
-  border: 2px solid white;
-  border-radius: 5px;
-  padding: 10px 5px 15px;
-  color: white;
-  font-size: 13px; */
   padding: 10px 5px 15px;
   color: #885708;
   font-size: 13px;

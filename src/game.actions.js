@@ -1,7 +1,5 @@
 import { createGameAction } from "src/game.store.js"
 
-
-
 export const useMarkScore = createGameAction((state, score) => {
   const { totalScore } = state
   return {
@@ -15,5 +13,12 @@ export const useSendToSkullIsland = createGameAction((state) => {
   return {
     ...state,
     isOnSkullIsland: true,
+  }
+})
+
+export const useStartRound = createGameAction((state) => {
+  return {
+    ...state,
+    roundStarted: true,
   }
 })
