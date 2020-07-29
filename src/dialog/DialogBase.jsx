@@ -61,19 +61,17 @@ export const DialogBase = ({
     setRootElement(node)
   }
 
-  const isVisible = Boolean(rootElement)
-  const becomesVisible = useBecomes((isActivePrevious) => !isActivePrevious && isVisible, [
-    isVisible,
-  ])
+  const isInsideDocument = Boolean(rootElement)
+  const becomesOpen = useBecomes((isActivePrevious) => !isActivePrevious && isOpen, [isOpen])
 
-  if (becomesVisible) {
+  if (becomesOpen) {
     onAfterOpen()
   }
 
   // onFocusIn, onFocusOut implementation
   // https://github.com/facebook/react/issues/6410
   useEffect(() => {
-    if (!isVisible) return () => {}
+    if (!isOpen || !isInsideDocument) return () => {}
 
     const onDialogFocus = (focusEvent) => {
       onFocusIn(focusEvent)
@@ -90,25 +88,26 @@ export const DialogBase = ({
       rootElement.removeEventListener("focus", onDialogFocus, true)
       document.removeEventListener("focus", onDocumentFocus, true)
     }
-  }, [isVisible, onFocusIn, onFocusOut])
+  }, [isOpen, isInsideDocument, onFocusIn, onFocusOut])
 
   // trap scroll inside dialog
   useEffect(() => {
-    if (!isVisible) return () => {}
+    if (!isOpen || !isInsideDocument) return () => {}
+
     return trapScrollInside(rootElement)
-  }, [isVisible])
+  }, [isOpen, isInsideDocument])
 
   // trap focus inside dialog
   useEffect(() => {
-    if (!isVisible || !trapFocus) return () => {}
+    if (!isOpen || !isInsideDocument || !trapFocus) return () => {}
 
     const dialogElement = rootElementToDialogElement(rootElement)
     return trapFocusInside(dialogElement)
-  }, [isVisible, trapFocus])
+  }, [isOpen, isInsideDocument, trapFocus])
 
   // steal focus to move it into dialog when it opens
   useEffect(() => {
-    if (!isVisible || !stealFocus) return () => {}
+    if (!isOpen || !isInsideDocument || !stealFocus) return () => {}
 
     const nodeFocusedBeforeTransfer = document.activeElement
     const dialogElement = rootElementToDialogElement(rootElement)
@@ -125,11 +124,11 @@ export const DialogBase = ({
         }
       }
     }
-  }, [isVisible, stealFocus])
+  }, [isOpen, isInsideDocument, stealFocus])
 
   // mousedown on overlay -> transfer focus to dialog
   useEffect(() => {
-    if (!isVisible) return () => {}
+    if (!isOpen || !isInsideDocument) return () => {}
 
     const overlayElement = rootElementToOverlayElement(rootElement)
     const onmousedown = (mousedownEvent) => {
@@ -148,11 +147,11 @@ export const DialogBase = ({
     return () => {
       overlayElement.removeEventListener("mousedown", onmousedown, { passive: false })
     }
-  }, [isVisible])
+  }, [isOpen, isInsideDocument])
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
-    if (!isVisible) return () => {}
+    if (!isOpen || !isInsideDocument) return () => {}
 
     const elementsToHide = []
     /*
@@ -180,7 +179,7 @@ export const DialogBase = ({
         element.removeAttribute("aria-hidden", "true")
       })
     }
-  }, [isVisible])
+  }, [isOpen, isInsideDocument])
 
   if (closeMethod === "dom-remove" && !isOpen) return null
 
