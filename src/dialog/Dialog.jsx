@@ -1,5 +1,6 @@
 import React from "react"
 
+import { useDialogContainerNode } from "src/game.store.js"
 import { HeadStyle } from "src/generic/HeadStyle.js"
 
 import { DialogBase } from "./DialogBase.jsx"
@@ -9,6 +10,7 @@ export const Dialog = (props) => {
     <>
       <DialogHeadStyle />
       <DialogBase
+        container={useDialogContainerNode()}
         backdropProps={{
           className: "dialog--backdrop",
         }}

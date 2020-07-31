@@ -14,7 +14,7 @@ https://fr.reactjs.org/docs/portals.html
 */
 
 const DIALOG_STYLE = {
-  position: "fixed",
+  position: "absolute",
   top: "5%",
   left: "0",
   right: "0",
@@ -42,6 +42,7 @@ const BACKDROP_STYLE = {
 }
 
 export const DialogBase = ({
+  container = document.body,
   children,
   isOpen,
   // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
@@ -61,6 +62,7 @@ export const DialogBase = ({
   backdropProps = {},
   ...rest
 }) => {
+  if (!container) return null
   const [dialogElement, setDialogElement] = React.useState(null)
 
   const isInsideDocument = Boolean(dialogElement)
@@ -234,7 +236,7 @@ export const DialogBase = ({
         {children}
       </div>
     </>,
-    document.body,
+    container,
   )
 }
 
