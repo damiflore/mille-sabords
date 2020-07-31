@@ -13,27 +13,32 @@ https://github.com/reactjs/react-modal/blob/master/src/components/ModalPortal.js
 https://fr.reactjs.org/docs/portals.html
 */
 
-const OVERLAY_STYLE = {
+const DIALOG_STYLE = {
   position: "fixed",
-  zIndex: 1000,
+  top: "5%",
+  left: "0",
+  right: "0",
+  width: "fit-content",
+  height: "fit-content",
+  margin: "auto",
+  padding: "1em",
+
+  // prevent body scrolling when scrolling the dialog content
+  overscrollBehavior: "contain",
+  outline: "none",
+
+  background: "white",
+  color: "black",
+  border: "solid",
+}
+
+const BACKDROP_STYLE = {
+  position: "fixed",
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
   backgroundColor: "rgba(0, 0, 0, 0.46)",
-}
-
-const DIALOG_STYLE = {
-  position: "absolute",
-  top: "10%",
-  left: "6%",
-  right: "6%",
-  bottom: "8%",
-  // prevent body scrolling when scrolling the dialog content
-  overscrollBehavior: "contain",
-  outline: "none",
-  maxWidth: "620px",
-  margin: "0 auto",
 }
 
 export const DialogBase = ({
@@ -53,15 +58,12 @@ export const DialogBase = ({
   onRequestClose = () => {},
   onFocusIn = () => {},
   onFocusOut = () => {},
-  overlayProps = {},
+  backdropProps = {},
   ...rest
 }) => {
-  const [rootElement, setRootElement] = React.useState(null)
-  const rootElementRefCallback = (node) => {
-    setRootElement(node)
-  }
+  const [dialogElement, setDialogElement] = React.useState(null)
 
-  const isInsideDocument = Boolean(rootElement)
+  const isInsideDocument = Boolean(dialogElement)
   const becomesOpen = useBecomes((isActivePrevious) => !isActivePrevious && isOpen, [isOpen])
 
   if (becomesOpen) {
@@ -73,20 +75,38 @@ export const DialogBase = ({
   useEffect(() => {
     if (!isOpen || !isInsideDocument) return () => {}
 
+    let focusIsInsideDialog = hasOrContainsFocus(dialogElement)
+
+    const onDocumentBlur = (blurEvent) => {
+      // focus is leaving the document and it was inside dialog
+      if (!blurEvent.relatedTarget) {
+        if (focusIsInsideDialog) {
+          focusIsInsideDialog = false
+          onFocusOut(blurEvent)
+        }
+      }
+    }
+
     const onDialogFocus = (focusEvent) => {
       onFocusIn(focusEvent)
+      focusIsInsideDialog = true
     }
     const onDocumentFocus = (focusEvent) => {
-      if (!hasOrContainsFocus(rootElement)) {
+      if (hasOrContainsFocus(dialogElement)) {
+        focusIsInsideDialog = true
+      } else {
+        focusIsInsideDialog = false
         onFocusOut(focusEvent)
       }
     }
 
-    rootElement.addEventListener("focus", onDialogFocus, true)
+    dialogElement.addEventListener("focus", onDialogFocus, true)
     document.addEventListener("focus", onDocumentFocus, true)
+    document.addEventListener("blur", onDocumentBlur, true)
     return () => {
-      rootElement.removeEventListener("focus", onDialogFocus, true)
+      dialogElement.removeEventListener("focus", onDialogFocus, true)
       document.removeEventListener("focus", onDocumentFocus, true)
+      document.removeEventListener("blur", onDocumentBlur, true)
     }
   }, [isOpen, isInsideDocument, onFocusIn, onFocusOut])
 
@@ -94,14 +114,13 @@ export const DialogBase = ({
   useEffect(() => {
     if (!isOpen || !isInsideDocument) return () => {}
 
-    return trapScrollInside(rootElement)
+    return trapScrollInside(dialogElement)
   }, [isOpen, isInsideDocument])
 
   // trap focus inside dialog
   useEffect(() => {
     if (!isOpen || !isInsideDocument || !trapFocus) return () => {}
 
-    const dialogElement = rootElementToDialogElement(rootElement)
     return trapFocusInside(dialogElement)
   }, [isOpen, isInsideDocument, trapFocus])
 
@@ -110,7 +129,6 @@ export const DialogBase = ({
     if (!isOpen || !isInsideDocument || !stealFocus) return () => {}
 
     const nodeFocusedBeforeTransfer = document.activeElement
-    const dialogElement = rootElementToDialogElement(rootElement)
     const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
     if (firstFocusableElement) {
       firstFocusableElement.focus()
@@ -125,29 +143,6 @@ export const DialogBase = ({
       }
     }
   }, [isOpen, isInsideDocument, stealFocus])
-
-  // mousedown on overlay -> transfer focus to dialog
-  useEffect(() => {
-    if (!isOpen || !isInsideDocument) return () => {}
-
-    const overlayElement = rootElementToOverlayElement(rootElement)
-    const onmousedown = (mousedownEvent) => {
-      // prevent mousedown on overlay from putting focus on document.body
-      mousedownEvent.preventDefault()
-      // instead foward focus to the dialog if not already inside
-      if (!hasOrContainsFocus(rootElement)) {
-        const dialogElement = rootElementToDialogElement(rootElement)
-        const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
-        if (firstFocusableElement) {
-          firstFocusableElement.focus()
-        }
-      }
-    }
-    overlayElement.addEventListener("mousedown", onmousedown, { passive: false })
-    return () => {
-      overlayElement.removeEventListener("mousedown", onmousedown, { passive: false })
-    }
-  }, [isOpen, isInsideDocument])
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
@@ -164,9 +159,9 @@ export const DialogBase = ({
     and consider the rest as hidden.
     This dialog is not meant to be used for tooltip and so on.
     */
-    const parentChildren = Array.from(rootElement.parentNode.children)
+    const parentChildren = Array.from(dialogElement.parentNode.children)
     parentChildren.forEach((child) => {
-      if (child !== rootElement) {
+      if (child !== dialogElement) {
         elementsToHide.push(child)
       }
     })
@@ -184,47 +179,84 @@ export const DialogBase = ({
   if (closeMethod === "dom-remove" && !isOpen) return null
 
   return ReactDOM.createPortal(
-    <div
-      style={{
-        ...OVERLAY_STYLE,
-        ...(isOpen ? {} : getStyleForClose(closeMethod)),
-        ...overlayProps.style,
-      }}
-      hidden={isOpen || closeMethod !== "hidden-attribute" ? undefined : true}
-      ref={(element) => {
-        rootElementRefCallback(element)
-        if (overlayProps.ref) overlayProps.ref(element)
-      }}
-      onClick={(clickEvent) => {
-        if (requestCloseOnClickOutside) {
-          const dialogElement = rootElementToDialogElement(rootElement)
-          const { target } = clickEvent
-          if (target !== dialogElement && !dialogElement.contains(target)) {
-            onRequestClose(clickEvent)
-          }
-        }
-        if (overlayProps.onClick) overlayProps.onClick(clickEvent)
-      }}
-      onKeyDown={(keydownEvent) => {
-        if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
-          onRequestClose(keydownEvent)
-        }
-        if (overlayProps.onKeyDown) overlayProps.onKeyDown(keydownEvent)
-      }}
-      {...overlayProps}
-    >
+    <>
+      {isOpen ? (
+        <DialogBackDrop
+          {...backdropProps}
+          style={{
+            ...BACKDROP_STYLE,
+            ...backdropProps.style,
+          }}
+          // mousedown on backdrop -> transfer focus to dialog
+          onMouseDownPassive={(mousedownEvent) => {
+            // prevent mousedown on backdrop from putting focus on document.body
+            mousedownEvent.preventDefault()
+            // instead foward focus to the dialog if not already inside
+            if (!hasOrContainsFocus(dialogElement)) {
+              const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
+              if (firstFocusableElement) {
+                firstFocusableElement.focus()
+              }
+            }
+          }}
+          onClick={(clickEvent) => {
+            if (requestCloseOnClickOutside) {
+              const { target } = clickEvent
+              // dialogElement.firstChild?
+              if (target !== dialogElement && !dialogElement.contains(target)) {
+                onRequestClose(clickEvent)
+              }
+            }
+            if (backdropProps.onClick) backdropProps.onClick(clickEvent)
+          }}
+        />
+      ) : null}
       <div
-        tabIndex="-1"
+        {...rest}
         style={{
           ...DIALOG_STYLE,
           ...rest.style,
+          ...(isOpen ? {} : getStyleForClose(closeMethod)),
         }}
-        {...rest}
+        ref={(element) => {
+          setDialogElement(element)
+          if (rest.ref) rest.ref(element)
+        }}
+        onKeyDown={(keydownEvent) => {
+          if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
+            onRequestClose(keydownEvent)
+          }
+          if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
+        }}
+        hidden={closeMethod === "hidden-attribute" ? isOpen : undefined}
+        tabIndex="-1"
       >
         {children}
       </div>
-    </div>,
+    </>,
     document.body,
+  )
+}
+
+const DialogBackDrop = ({ onMouseDownPassive, ...props }) => {
+  const [backdropElement, setBackdropElement] = React.useState(null)
+  useEffect(() => {
+    if (!backdropElement) return () => {}
+
+    backdropElement.addEventListener("mousedown", onMouseDownPassive, { passive: false })
+    return () => {
+      backdropElement.removeEventListener("mousedown", onMouseDownPassive, { passive: false })
+    }
+  }, [backdropElement])
+
+  return (
+    <div
+      ref={(element) => {
+        setBackdropElement(element)
+        if (props.ref) props.ref(element)
+      }}
+      {...props}
+    ></div>
   )
 }
 
@@ -237,10 +269,6 @@ const getStyleForClose = (closeMethod) => {
   }
   return {}
 }
-
-const rootElementToOverlayElement = (element) => element
-
-const rootElementToDialogElement = (element) => element.firstChild
 
 const hasOrContainsFocus = (element) => {
   const { activeElement } = document

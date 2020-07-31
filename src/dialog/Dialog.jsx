@@ -9,8 +9,21 @@ export const Dialog = (props) => {
     <>
       <DialogHeadStyle />
       <DialogBase
-        overlayProps={{
-          className: "dialog--overlay",
+        backdropProps={{
+          className: "dialog--backdrop",
+        }}
+        style={{
+          top: "10%",
+          left: "6%",
+          right: "6%",
+          bottom: "8%",
+          height: "auto",
+          width: "auto",
+          padding: "0",
+          border: "none",
+          background: "none",
+          maxWidth: "620px",
+          margin: "0 auto",
         }}
         className={"dialog"}
         {...props}
