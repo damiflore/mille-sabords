@@ -20,7 +20,7 @@ focusable elements
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { Dialog } from "../Dialog.jsx"
+      import { DialogBase } from "../DialogBase.jsx"
 
       const App = () => {
         const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
@@ -42,9 +42,9 @@ focusable elements
             >
               Open dialog
             </button>
-            <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} trapFocus={true}>
+            <DialogBase isOpen={dialogIsOpen} onRequestClose={closeDialog} trapFocus={true}>
               Hello world
-            </Dialog>
+            </DialogBase>
           </>
         )
       }

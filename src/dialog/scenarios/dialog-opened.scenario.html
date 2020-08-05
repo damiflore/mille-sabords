@@ -25,7 +25,7 @@ This scenario is to test
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { Dialog } from "../Dialog.jsx"
+      import { DialogBase } from "../DialogBase.jsx"
 
       const App = () => {
         const [dialogIsOpen, setDialogIsOpen] = React.useState(true)
@@ -47,7 +47,7 @@ This scenario is to test
             >
               Open dialog
             </button>
-            <Dialog
+            <DialogBase
               isOpen={dialogIsOpen}
               onRequestClose={closeDialog}
               trapFocus={false}
@@ -55,7 +55,7 @@ This scenario is to test
             >
               Hello world
               <button onClick={closeDialog}>Close</button>
-            </Dialog>
+            </DialogBase>
           </>
         )
       }

@@ -1,6 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
+import { useDialogContainerCallback } from "src/game.store.js"
 import { HeadStyle } from "src/generic/HeadStyle.js"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
@@ -25,9 +26,11 @@ export const Game = () => {
 
   There is no real need for useMemo here: it's kept as an example.
   */
+  const dialogContainerCallback = useDialogContainerCallback()
+
   return useMemo(() => (
     <div id="game-container">
-      <div id="mille-sabord-container">
+      <div id="mille-sabord-container" ref={dialogContainerCallback}>
         <HeadStyle href="/mille-sabord.css" />
         <GameEffects />
         <PreloadImages />

@@ -69,10 +69,13 @@ export const createGameAction = gameStateStore.createAction
 
 export const gameNodeStore = createDOMNodeStore({
   "rolled-area": null,
+  "dialog-container": null,
   ...DICES.reduce((obj, dice) => {
     return { ...obj, [`dice-${dice.id}`]: null }
   }, {}),
 })
+export const useDialogContainerNode = () => gameNodeStore.useDOMNode("dialog-container")
+export const useDialogContainerCallback = () => gameNodeStore.useDOMNodeCallback("dialog-container")
 export const useRolledAreaNode = () => gameNodeStore.useDOMNode("rolled-area")
 export const useRolledAreaNodeCallback = () => gameNodeStore.useDOMNodeCallback("rolled-area")
 export const useDiceNode = (id) => gameNodeStore.useDOMNode(`dice-${id}`)

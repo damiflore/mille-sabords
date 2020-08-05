@@ -1,4 +1,4 @@
-import { getStyleValue } from "src/dom/dom.js"
+import { getStyleValue, isDocumentElement } from "src/dom/dom.js"
 
 export const trapScrollInside = (element) => {
   const elementsToScrollLock = []
@@ -175,7 +175,11 @@ const findScrollableParent = (element) => {
   const position = getStyleValue(element, "position")
   let parent = element.parentNode
   while (parent) {
+    if (isDocumentElement(parent)) {
+      return null
+    }
     if (position === "absolute" && getStyleValue(parent, "position") === "static") {
+      parent = parent.parentNode
       continue
     }
     if (isScrollable(parent)) {
