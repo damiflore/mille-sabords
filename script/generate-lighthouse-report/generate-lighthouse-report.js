@@ -11,6 +11,7 @@ const run = async () => {
 
   await generateLighthouseReport(server.origin, {
     projectDirectoryUrl: new URL("../../", import.meta.url),
+    runCount: 4,
     ignoreCertificateErrors: true,
   })
 
