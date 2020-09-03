@@ -19,7 +19,7 @@ export const DiceOnGoing = () => {
           <Dice
             key={dice.id}
             dice={dice}
-            disabled={diceIsOnSkull(dice) ? true : !keepDiceAllowed}
+            clickAllowed={diceIsOnSkull(dice) ? false : keepDiceAllowed}
             onClickAction={(dice) => {
               keepDice(dice)
             }}

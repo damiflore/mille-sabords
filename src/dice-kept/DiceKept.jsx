@@ -25,7 +25,7 @@ export const DiceKept = () => {
             <Dice
               key={dice.id}
               dice={dice}
-              disabled={!unkeepDiceAllowed}
+              clickAllowed={unkeepDiceAllowed}
               onClickAction={(dice) => {
                 unkeepDice(dice)
               }}

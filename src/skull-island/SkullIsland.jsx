@@ -23,7 +23,7 @@ export const SkullIsland = () => {
             <Dice
               key={dice.id}
               dice={dice}
-              disabled={!removeSkullAllowed}
+              clickAllowed={removeSkullAllowed}
               onClickAction={(dice) => {
                 uncurseDice(dice)
               }}

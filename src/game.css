@@ -97,7 +97,8 @@ body {
 #mille-sabord-container .dice-ongoing {
   flex: 1;
   min-height: 100px;
-  z-index: 0; /* z-index pour que la map reste en dessous */
+  /* z-index: 0; */
+  /* z-index pour que la map reste en dessous */
 }
 
 #mille-sabord-container .actions {
