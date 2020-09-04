@@ -112,7 +112,7 @@ const DiceNodesProvider = ({ children }) => {
   }, children)
 }
 export const useDiceNode = (id) => useContext(dicesContext[id])[0]
-export const useDiceNodeSetter = (id) => useContext(dicesContext[id])[0]
+export const useDiceNodeSetter = (id) => useContext(dicesContext[id])[1]
 
 // https://github.com/facebook/react/issues/14620
 export const GameContextProvider = ({ gameState, children }) => {
