@@ -29,17 +29,34 @@ export const gameStateStore = createStructuredStateStore(
   () => {
     if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(gameStateSessionStorageKey))
-      // TODO: when we will update the game
-      // previously stored data might be in an unexpected format
-      // we should also store a kind of version to be sure we are compatible
-      // with the data we try to restore
+
+      // Here we check for missing or extra key in case the stored game state is outdated.
+      // It happens when a new version of the game is released and the stored game state
+      // is not in sync with the new game state
+      // We could use a version instead but during dev we won't think to update the version
+      const missingKey = Object.keys(defaultState).find(
+        (key) => key in valueFromSessionStorage === false,
+      )
+      if (missingKey) {
+        logger.debug(
+          `stored game state is missing a property (${missingKey}) -> use initial game state instead`,
+        )
+        return defaultState
+      }
+      const extraKey = Object.keys(valueFromSessionStorage).find(
+        (key) => key in defaultState === false,
+      )
+      if (extraKey) {
+        logger.debug(
+          `stored game state contains an unknown property (${missingKey}) -> use initial game state instead`,
+        )
+        return defaultState
+      }
+
       logger.debug(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }
-    logger.debug(
-      `sessionStorage has nothing for ${gameStateSessionStorageKey}, use initial state`,
-      defaultState,
-    )
+    logger.debug(`no game state stored -> use initial game state`)
     return defaultState
   },
   {
