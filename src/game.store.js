@@ -1,8 +1,10 @@
+import React from "react"
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "./store/createStructuredStateStore.js"
-import { createStore } from "./store/createStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
+
+const { createContext, useContext, useState } = React
 
 const defaultState = {
   // persist accross a game round
@@ -84,17 +86,43 @@ export const useDicesKept = () => gameStateStore.useKeyedState("dicesKept")
 export const useGameDispatch = gameStateStore.useDispatch
 export const createGameAction = gameStateStore.createAction
 
-export const rolledAreaStore = createStore(undefined, "rolled-area")
-export const useRolledAreaNode = () => rolledAreaStore.useState()[0]
-export const useRolledAreaNodeSetter = () => rolledAreaStore.useState()[1]
+const GameStateProvider = gameStateStore.Provider
+GameStateProvider.displayName = "GameStateProvider"
 
-export const dialogContainerStore = createStore(undefined, "dialog-container")
-export const useDialogContainerNode = () => dialogContainerStore.useState()[0]
-export const useDialogContainerNodeSetter = () => dialogContainerStore.useState()[1]
+const rolledAreaContext = createContext()
+const RolledAreaProvider = rolledAreaContext.Provider
+// RolledAreaProvider.displayName = "RolledAreaNodeProvider"
+export const useRolledAreaNode = () => useContext(rolledAreaContext)[0]
+export const useRolledAreaNodeSetter = () => useContext(rolledAreaContext)[1]
 
-export const diceStores = {}
+const diceContainerContext = createContext()
+const DiceContainerProvider = diceContainerContext.Provider
+DiceContainerProvider.displayName = "DiceContainerNodeProvider"
+export const useDialogContainerNode = () => useContext(diceContainerContext)[0]
+export const useDialogContainerNodeSetter = () => useContext(diceContainerContext)[0]
+
+const dicesContext = {}
 DICES.forEach((dice) => {
-  diceStores[dice.id] = createStore(undefined, `dice-${dice.id}`)
+  dicesContext[dice.id] = createContext()
 })
-export const useDiceNode = (id) => diceStores[id].useState()[0]
-export const useDiceNodeSetter = (id) => diceStores[id].useState()[1]
+const diceProviders = Object.keys(dicesContext).map((key) => dicesContext[key].Provider)
+const DiceNodesProvider = ({ children }) => {
+  return diceProviders.reduceRight((prev, Next) => {
+    return <Next value={useState()}>{prev}</Next>
+  }, children)
+}
+export const useDiceNode = (id) => useContext(dicesContext[id])[0]
+export const useDiceNodeSetter = (id) => useContext(dicesContext[id])[0]
+
+// https://github.com/facebook/react/issues/14620
+export const GameContextProvider = ({ gameState, children }) => {
+  return (
+    <GameStateProvider initialState={gameState}>
+      <DiceContainerProvider value={useState()}>
+        <RolledAreaProvider value={useState()}>
+          <DiceNodesProvider>{children}</DiceNodesProvider>
+        </RolledAreaProvider>
+      </DiceContainerProvider>
+    </GameStateProvider>
+  )
+}
