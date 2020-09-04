@@ -1,6 +1,6 @@
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "./store/createStructuredStateStore.js"
-import { createDOMNodeStore } from "./store/createDOMNodeStore.js"
+import { createStore } from "./store/createStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
@@ -84,16 +84,17 @@ export const useDicesKept = () => gameStateStore.useKeyedState("dicesKept")
 export const useGameDispatch = gameStateStore.useDispatch
 export const createGameAction = gameStateStore.createAction
 
-export const gameNodeStore = createDOMNodeStore({
-  "rolled-area": null,
-  "dialog-container": null,
-  ...DICES.reduce((obj, dice) => {
-    return { ...obj, [`dice-${dice.id}`]: null }
-  }, {}),
+export const rolledAreaStore = createStore(undefined, "rolled-area")
+export const useRolledAreaNode = () => rolledAreaStore.useState()[0]
+export const useRolledAreaNodeSetter = () => rolledAreaStore.useState()[1]
+
+export const dialogContainerStore = createStore(undefined, "dialog-container")
+export const useDialogContainerNode = () => dialogContainerStore.useState()[0]
+export const useDialogContainerNodeSetter = () => dialogContainerStore.useState()[1]
+
+export const diceStores = {}
+DICES.forEach((dice) => {
+  diceStores[dice.id] = createStore(undefined, `dice-${dice.id}`)
 })
-export const useDialogContainerNode = () => gameNodeStore.useDOMNode("dialog-container")
-export const useDialogContainerCallback = () => gameNodeStore.useDOMNodeCallback("dialog-container")
-export const useRolledAreaNode = () => gameNodeStore.useDOMNode("rolled-area")
-export const useRolledAreaNodeCallback = () => gameNodeStore.useDOMNodeCallback("rolled-area")
-export const useDiceNode = (id) => gameNodeStore.useDOMNode(`dice-${id}`)
-export const useDiceNodeCallback = (id) => gameNodeStore.useDOMNodeCallback(`dice-${id}`)
+export const useDiceNode = (id) => diceStores[id].useState()[0]
+export const useDiceNodeSetter = (id) => diceStores[id].useState()[1]

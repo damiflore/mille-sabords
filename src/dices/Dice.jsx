@@ -1,5 +1,5 @@
 import React from "react"
-import { useDiceNode, useDiceNodeCallback } from "src/game.store.js"
+import { useDiceNode, useDiceNodeSetter } from "src/game.store.js"
 import { diceSize } from "./dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragAndDropGesture } from "src/drag-drop/drag-drop.js"
@@ -8,16 +8,17 @@ const { useEffect, useState } = React
 
 export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyle }) => {
   const onSkull = diceIsOnSkull(dice)
-  const diceDomNode = useDiceNode(dice.id)
+  const diceNode = useDiceNode(dice.id)
+  const diceNodeSetter = useDiceNodeSetter(dice.id)
 
   const [dragAndDropGesture, setDragAndDropGesture] = useState(null)
 
   useEffect(() => {
-    if (!diceDomNode) return () => {}
-    return enableDragAndDropGesture(diceDomNode, (gesture) => {
+    if (!diceNode) return () => {}
+    return enableDragAndDropGesture(diceNode, (gesture) => {
       setDragAndDropGesture(gesture)
     })
-  }, [diceDomNode])
+  }, [diceNode])
 
   // the issue right now is that the element is not in a fixed position in the page meaning
   // the position would not work
@@ -26,7 +27,7 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
     <button
       disabled={disabled}
       data-dice-id={dice.id}
-      ref={useDiceNodeCallback(dice.id)}
+      ref={diceNodeSetter}
       onClick={
         clickAllowed
           ? () => {

@@ -1,5 +1,5 @@
 import React from "react"
-import { useDicesRolled, useRolledAreaNodeCallback } from "src/game.store.js"
+import { useDicesRolled, useRolledAreaNodeSetter } from "src/game.store.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice } from "src/dices/dices.actions.js"
 
@@ -14,7 +14,7 @@ export const DiceOnGoing = () => {
   return (
     <div className="dice-ongoing">
       <div className="map"></div>
-      <div className="area" ref={useRolledAreaNodeCallback()}>
+      <div className="area" ref={useRolledAreaNodeSetter()}>
         {dicesRolled.map((dice) => (
           <Dice
             key={dice.id}
