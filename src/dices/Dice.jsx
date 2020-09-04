@@ -16,7 +16,8 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
 
   useEffect(() => {
     if (!diceNode) return () => {}
-    return enableDragGesture(diceNode, {
+    let dragIntentTimeout
+    const disableDragGesture = enableDragGesture(diceNode, {
       onGrip: () => {
         // nothing yet
       },
@@ -30,13 +31,17 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
         setMoveGesture({ x, y })
       },
       onRelease: () => {
-        setTimeout(() => setDragIntent(false))
+        dragIntentTimeout = setTimeout(() => setDragIntent(false))
       },
       onCancel: () => {
         setDragIntent(false)
         setDragIntent(null)
       },
     })
+    return () => {
+      disableDragGesture()
+      clearTimeout(dragIntentTimeout)
+    }
   }, [diceNode])
 
   return (
