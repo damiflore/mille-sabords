@@ -11,12 +11,31 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
   const diceNode = useDiceNode(dice.id)
   const diceNodeSetter = useDiceNodeSetter(dice.id)
 
-  const [dragGesture, setDragGesture] = useState(null)
+  const [dragIntent, setDragIntent] = useState(false)
+  const [moveGesture, setMoveGesture] = useState(null)
 
   useEffect(() => {
     if (!diceNode) return () => {}
-    return enableDragGesture(diceNode, (gesture) => {
-      setDragGesture(gesture)
+    return enableDragGesture(diceNode, {
+      onGrip: () => {
+        // nothing yet
+      },
+      onLongGrip: () => {
+        setDragIntent(true)
+      },
+      onMove: ({ x, y, relativeX, relativeY }) => {
+        if (Math.abs(relativeX) > 5 || Math.abs(relativeY) > 5) {
+          setDragIntent(true)
+        }
+        setMoveGesture({ x, y })
+      },
+      onRelease: () => {
+        setTimeout(() => setDragIntent(false))
+      },
+      onCancel: () => {
+        setDragIntent(false)
+        setDragIntent(null)
+      },
     })
   }, [diceNode])
 
@@ -25,7 +44,7 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
       disabled={disabled}
       data-dice-id={dice.id}
       ref={diceNodeSetter}
-      onClick={clickAllowed ? () => onClickAction(dice) : undefined}
+      onClick={onClickAction && clickAllowed && !dragIntent ? () => onClickAction(dice) : undefined}
       className="dice"
       style={{
         width: diceSize,
@@ -34,14 +53,13 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
         color: onSkull ? "black" : "#fcfcfc",
         borderColor: onSkull ? "black" : "#b9b9b9",
         ...specificStyle,
-        zIndex: 1000,
-        ...(dragGesture
+        ...(moveGesture
           ? {
               position: "fixed",
+              zIndex: 1000,
               transform: "none",
-
-              left: dragGesture.x,
-              top: dragGesture.y,
+              left: moveGesture.x,
+              top: moveGesture.y,
             }
           : {}),
       }}
