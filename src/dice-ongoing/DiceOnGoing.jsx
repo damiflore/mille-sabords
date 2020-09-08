@@ -27,16 +27,14 @@ export const DiceOnGoing = () => {
   const [diceOnGoingDomNode, diceOnGoingDomNodeSetter] = useState(null)
   const [hoveredByKeptDice, hoveredByKeptDiceSetter] = useState(false)
   useEffect(() => {
-    if (!diceOnGoingDomNode) {
-      return
-    }
-    hoveredByKeptDiceSetter(
-      isHoveredByKeptDice({
+    if (diceOnGoingDomNode) {
+      const hoveredByRolledDice = hoveredByKeptDiceGetter({
         dragDiceGesture,
         dicesKept,
         diceOnGoingDomNode,
-      }),
-    )
+      })
+      hoveredByKeptDiceSetter(hoveredByRolledDice)
+    }
   }, [dragDiceGesture, dicesKept, diceOnGoingDomNode])
 
   return (
@@ -71,7 +69,7 @@ export const DiceOnGoing = () => {
   )
 }
 
-const isHoveredByKeptDice = ({ dragDiceGesture, dicesKept, diceOnGoingDomNode }) => {
+const hoveredByKeptDiceGetter = ({ dragDiceGesture, dicesKept, diceOnGoingDomNode }) => {
   if (!dragDiceGesture) {
     return false
   }
