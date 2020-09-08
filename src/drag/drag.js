@@ -1,4 +1,5 @@
 import { createLogger } from "@jsenv/logger"
+import { throttle } from "src/helper/throttle.js"
 
 const logger = createLogger({ logLevel: "warn" })
 
@@ -27,9 +28,13 @@ export const enableDragGesture = (
     }
     handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
 
-    removeMoveListener = addDomEventListener(document, "mousemove", (mousemoveEvent) => {
-      handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
-    })
+    removeMoveListener = addDomEventListener(
+      document,
+      "mousemove",
+      throttle((mousemoveEvent) => {
+        handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
+      }),
+    )
     removeReleaseListener = addDomEventListener(document, "mouseup", (mouseupEvent) => {
       removeReleaseListener()
       removeMoveListener()
@@ -39,9 +44,13 @@ export const enableDragGesture = (
   const removeTouchstartListener = addDomEventListener(domNode, "touchstart", (touchstartEvent) => {
     handleGrip(touchEventToPagePosition(touchstartEvent), touchstartEvent)
 
-    removeMoveListener = addDomEventListener(document, "touchmove", (touchmoveEvent) => {
-      handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
-    })
+    removeMoveListener = addDomEventListener(
+      document,
+      "touchmove",
+      throttle((touchmoveEvent) => {
+        handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
+      }),
+    )
     removeReleaseListener = addDomEventListener(document, "touchend", (touchendEvent) => {
       removeReleaseListener()
       removeMoveListener()
