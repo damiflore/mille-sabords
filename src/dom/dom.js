@@ -113,30 +113,6 @@ export const elementToOwnerDocument = (element) => {
   return element.ownerDocument
 }
 
-export const getDomNodePageRect = (domNode) => {
-  const domNodeRect = domNode.getBoundingClientRect()
-  const documentScroll = getDocumentScroll(domNode)
-  const left = domNodeRect.left + documentScroll.x
-  const top = domNodeRect.top + documentScroll.y
-  const right = left + domNodeRect.width
-  const bottom = top + domNodeRect.height
-  return {
-    left: Math.floor(left),
-    top: Math.floor(top),
-    right: Math.floor(right),
-    bottom: Math.floor(bottom),
-  }
-}
-
-export const getDocumentScroll = (element) => {
-  const elementWindow = elementToOwnerWindow(element)
-  const elementDocument = elementToOwnerDocument(element)
-  return {
-    x: elementWindow.pageXOffset || elementDocument.documentElement.scrollLeft,
-    y: elementWindow.pageYOffset || elementDocument.documentElement.scrollTop,
-  }
-}
-
 /**
  * elementToOwnerIframe returns the iframe owning the element or null
  * when element is not inside an iframe.

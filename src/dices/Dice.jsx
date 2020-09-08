@@ -19,8 +19,7 @@ et non pas a la fin
 */
 
 import React from "react"
-import { getDomNodePageRect } from "src/dom/dom.js"
-import { keepRectangleContained } from "src/helper/rectangle.js"
+import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import {
   useDiceDomNode,
   useDiceDomNodeSetter,
@@ -68,12 +67,12 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
           top: y,
           bottom: y + diceSize,
         }
-        const gameDomNodeRect = getDomNodePageRect(gameDomNode)
-        const diceRect = keepRectangleContained(diceDesiredRect, gameDomNodeRect)
-        setDragGesture({ x: diceRect.left, y: diceRect.top })
+        const gameDomNodeRect = getDomNodeRectangle(gameDomNode)
+        const diceRectangle = rectangleInsideOf(diceDesiredRect, gameDomNodeRect)
+        setDragGesture({ x: diceRectangle.left, y: diceRectangle.top })
         setDragDiceGesture({
           dice,
-          diceRect,
+          diceRectangle,
           addDropHandler: (node, dropHandler) => {
             dropHandlerMap.set(node, dropHandler)
           },
@@ -84,7 +83,14 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
         setDragGesture(null)
         setDragDiceGesture(null)
-        dropHandlerMap.forEach((dropHandler) => dropHandler({ x, y }))
+
+        const diceRectangle = {
+          left: x,
+          right: x + diceSize,
+          top: y,
+          bottom: y + diceSize,
+        }
+        dropHandlerMap.forEach((dropHandler) => dropHandler({ diceRectangle }))
       },
       onCancel: () => {
         setDragIntent(false)

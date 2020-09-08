@@ -1,7 +1,11 @@
 import React from "react"
 
-import { getDomNodePageRect } from "src/dom/dom.js"
-import { rectangleCollides } from "src/helper/rectangle.js"
+import {
+  rectangleCollides,
+  rectangleRelativeTo,
+  rectangleInsideOf,
+  getDomNodeRectangle,
+} from "src/helper/rectangle.js"
 
 import {
   useDicesRolled,
@@ -39,21 +43,20 @@ export const DiceOnGoing = () => {
   const movedRolledDice = useMoveRolledDice()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.addDropHandler(rolledAreaDomNode, ({ x, y }) => {
-        if (hoveredByKeptDice) {
-          unkeepDice(diceDraggedOver)
-          const rolledAreaDomNodeReactangle = getDomNodePageRect(rolledAreaDomNode)
+      dragDiceGesture.addDropHandler(rolledAreaDomNode, ({ diceRectangle }) => {
+        if (hoveredByKeptDice || hoveredByRolledDice) {
+          const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
+          const diceRectangleRelative = rectangleRelativeTo(
+            rectangleInsideOf(diceRectangle, rolledAreaDomNodeRectangle),
+            rolledAreaDomNodeRectangle,
+          )
           movedRolledDice(diceDraggedOver, {
-            x: x - rolledAreaDomNodeReactangle.left,
-            y: y - rolledAreaDomNodeReactangle.top,
+            x: diceRectangleRelative.left,
+            y: diceRectangleRelative.top,
           })
-        } else if (hoveredByRolledDice) {
-          const rolledAreaDomNodeReactangle = getDomNodePageRect(rolledAreaDomNode)
-
-          movedRolledDice(diceDraggedOver, {
-            x: x - rolledAreaDomNodeReactangle.left,
-            y: y - rolledAreaDomNodeReactangle.top,
-          })
+          if (hoveredByKeptDice) {
+            unkeepDice(diceDraggedOver)
+          }
         }
       })
     }
@@ -95,8 +98,8 @@ const diceDraggedOverGetter = ({ dragDiceGesture, rolledAreaDomNode }) => {
   if (!dragDiceGesture) {
     return null
   }
-  const rolledAreaDomNodeRectangle = getDomNodePageRect(rolledAreaDomNode)
-  if (!rectangleCollides(dragDiceGesture.diceRect, rolledAreaDomNodeRectangle)) {
+  const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
+  if (!rectangleCollides(dragDiceGesture.diceRectangle, rolledAreaDomNodeRectangle)) {
     return null
   }
   return dragDiceGesture.dice

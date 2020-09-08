@@ -1,7 +1,6 @@
 import React from "react"
 
-import { getDomNodePageRect } from "src/dom/dom.js"
-import { rectangleCollides } from "src/helper/rectangle.js"
+import { getDomNodeRectangle, rectangleCollides } from "src/helper/rectangle.js"
 
 import { useCurrentCard, useDicesKept, useDicesRolled, useDragDiceGesture } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
@@ -91,8 +90,8 @@ const diceDraggedOverGetter = ({ dragDiceGesture, diceKeptAreaDomNode }) => {
   if (!dragDiceGesture) {
     return null
   }
-  const diceKeptAreaDomNodeRectangle = getDomNodePageRect(diceKeptAreaDomNode)
-  if (!rectangleCollides(dragDiceGesture.diceRect, diceKeptAreaDomNodeRectangle)) {
+  const diceKeptAreaDomNodeRectangle = getDomNodeRectangle(diceKeptAreaDomNode)
+  if (!rectangleCollides(dragDiceGesture.diceRectangle, diceKeptAreaDomNodeRectangle)) {
     return null
   }
   return dragDiceGesture.dice
