@@ -70,7 +70,10 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         const gameDomNodeRect = getDomNodePageRect(gameDomNode)
         const diceRect = keepRectangleContained(diceDesiredRect, gameDomNodeRect)
         setDragGesture({ x: diceRect.left, y: diceRect.top })
-        setDragDiceGesture({ dice, diceRect })
+        setDragDiceGesture({
+          dice,
+          diceRect,
+        })
       },
       onRelease: () => {
         dragIntentTimeout = setTimeout(() => setDragIntent(false))

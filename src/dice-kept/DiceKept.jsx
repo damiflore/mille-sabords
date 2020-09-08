@@ -3,7 +3,7 @@ import React from "react"
 import { getDomNodePageRect } from "src/dom/dom.js"
 import { rectangleCollides } from "src/helper/rectangle.js"
 
-import { useCurrentCard, useDicesKept, useDragDiceGesture } from "src/game.store.js"
+import { useCurrentCard, useDicesKept, useDicesRolled, useDragDiceGesture } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice } from "src/dices/dices.actions.js"
 
@@ -19,21 +19,23 @@ export const DiceKept = () => {
   const dicesKept = useDicesKept()
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
+  const dicesRolled = useDicesRolled()
 
   const [diceKeptDomNode, diceKeptDomNodeSetter] = useState(null)
-  const [hoveredByDice, hoveredByDiceSetter] = useState(false)
+  const [hoveredByRolledDice, hoveredByRolledDiceSetter] = useState(false)
   const dragDiceGesture = useDragDiceGesture()
 
   useEffect(() => {
     if (!diceKeptDomNode) {
       return
     }
-    if (dragDiceGesture) {
-      const diceKeptDomNodeRect = getDomNodePageRect(diceKeptDomNode)
-      hoveredByDiceSetter(rectangleCollides(dragDiceGesture.diceRect, diceKeptDomNodeRect))
-    } else {
-      hoveredByDiceSetter(false)
-    }
+    hoveredByRolledDiceSetter(
+      isHoveredByRolledDice({
+        dragDiceGesture,
+        dicesRolled,
+        diceKeptDomNode,
+      }),
+    )
   }, [dragDiceGesture, diceKeptDomNode])
 
   return (
@@ -41,7 +43,7 @@ export const DiceKept = () => {
       className="dice-kept"
       ref={diceKeptDomNodeSetter}
       style={{
-        ...(hoveredByDice ? { outline: "2px dotted" } : {}),
+        ...(hoveredByRolledDice ? { outline: "2px dotted" } : {}),
       }}
     >
       <div className="dice-area">
@@ -70,6 +72,23 @@ export const DiceKept = () => {
       <RoundScore />
     </div>
   )
+}
+
+const isHoveredByRolledDice = ({ dragDiceGesture, dicesRolled, diceKeptDomNode }) => {
+  if (!dragDiceGesture) {
+    return false
+  }
+
+  const draggedDice = dragDiceGesture.dice
+  const diceIsRolled = dicesRolled.includes(draggedDice)
+  if (!diceIsRolled) {
+    return false
+  }
+  const diceKeptDomNodeRect = getDomNodePageRect(diceKeptDomNode)
+  if (!rectangleCollides(dragDiceGesture.diceRect, diceKeptDomNodeRect)) {
+    return false
+  }
+  return true
 }
 
 const ExtraCoin = ({ card }) => {
