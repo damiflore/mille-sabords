@@ -21,13 +21,12 @@ export const enableDragGesture = (
 
   const removeMousedownListener = addDomEventListener(domNode, "mousedown", (mousedownEvent) => {
     const isRightClick = mousedownEvent.which === 3
-
     if (isRightClick) {
       logger.debug("ignore right click")
       return
     }
-    handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
 
+    handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
     removeMoveListener = addDomEventListener(
       document,
       "mousemove",
@@ -43,7 +42,6 @@ export const enableDragGesture = (
   })
   const removeTouchstartListener = addDomEventListener(domNode, "touchstart", (touchstartEvent) => {
     handleGrip(touchEventToPagePosition(touchstartEvent), touchstartEvent)
-
     removeMoveListener = addDomEventListener(
       document,
       "touchmove",

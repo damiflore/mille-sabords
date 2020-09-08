@@ -1,4 +1,4 @@
-export const throttle = (fn, ms = 60, { trailing = true } = {}) => {
+export const throttle = (fn, ms = 60, { trailing = false } = {}) => {
   let timeout
   let previousMs
 
@@ -27,6 +27,11 @@ export const throttle = (fn, ms = 60, { trailing = true } = {}) => {
       fn(...args)
     }
   }
+
+  const cancel = () => {
+    clearTimeout(timeout)
+  }
+  throttled.cancel = cancel
 
   return throttled
 }
