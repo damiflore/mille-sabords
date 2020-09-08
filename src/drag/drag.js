@@ -49,6 +49,7 @@ export const enableDragGesture = (
     })
   })
 
+  let pointerPositionPrevious
   let domNodeStartPosition
   let gripPointerPosition
   let longGripTimeout
@@ -57,6 +58,7 @@ export const enableDragGesture = (
     pendingGesture = true
     // gripTimestamp = Date.now()
     gripPointerPosition = pointerPosition
+    pointerPositionPrevious = pointerPosition
     domNodeStartPosition = domNodeToPagePosition(domNode)
 
     onGrip({
@@ -71,21 +73,29 @@ export const enableDragGesture = (
     onLongGrip()
   }
 
-  let lastMovePosition
   const handleMove = (pointerPosition, event) => {
+    if (
+      pointerPositionPrevious.x === pointerPosition.x &&
+      pointerPositionPrevious.y === pointerPosition.y
+    ) {
+      logger.debug("no real move")
+      return
+    }
+    pointerPositionPrevious = pointerPosition
+
     const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
     const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
-
-    lastMovePosition = {
+    const movePosition = {
       // il y a un décalage entre le bord de l'élément et l'endroit ou l'on l'attrape
       // ce décalage doit continuer d'exister pour savoir ou on place l'élément en position fixed
       x: pointerPosition.x - gripHorizontalShift,
       y: pointerPosition.y - gripVerticalShit,
     }
-    logger.debug("move node at", lastMovePosition)
+
+    logger.debug("move node at", movePosition)
     onDrag({
       event,
-      ...lastMovePosition,
+      ...movePosition,
 
       relativeX: pointerPosition.x - gripPointerPosition.x,
       relativeY: pointerPosition.y - gripPointerPosition.y,
