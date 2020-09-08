@@ -49,6 +49,7 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
     }
 
     let dragIntentTimeout
+    const dropHandlerMap = new Map()
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         // nothing yet
@@ -73,17 +74,21 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         setDragDiceGesture({
           dice,
           diceRect,
+          addDropHandler: (node, dropHandler) => {
+            dropHandlerMap.set(node, dropHandler)
+          },
         })
       },
       onRelease: () => {
+        // setTimeout is to ensure the click cannot happen just after mouseup
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
         setDragGesture(null)
         setDragDiceGesture(null)
+        dropHandlerMap.forEach((dropHandler) => dropHandler())
       },
       onCancel: () => {
-        setDragGesture(null)
         setDragIntent(false)
-        setDragIntent(null)
+        setDragGesture(null)
         setDragDiceGesture(null)
       },
     })

@@ -5,7 +5,7 @@ import { rectangleCollides } from "src/helper/rectangle.js"
 
 import { useCurrentCard, useDicesKept, useDicesRolled, useDragDiceGesture } from "src/game.store.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
-import { useUnkeepDice } from "src/dices/dices.actions.js"
+import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
 
 import { isCoinCard, isDiamondCard, cardColors } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
@@ -34,6 +34,17 @@ export const DiceKept = () => {
       hoveredByRolledDiceSetter(hoveredByRolledDice)
     }
   }, [dragDiceGesture, dicesRolled, diceKeptDomNode])
+
+  const keepDice = useKeepDice()
+  useEffect(() => {
+    if (dragDiceGesture) {
+      dragDiceGesture.addDropHandler(diceKeptDomNode, () => {
+        if (hoveredByRolledDice) {
+          keepDice(dragDiceGesture.dice)
+        }
+      })
+    }
+  }, [dragDiceGesture, diceKeptDomNode])
 
   return (
     <div

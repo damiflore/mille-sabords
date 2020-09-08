@@ -10,7 +10,7 @@ import {
   useDragDiceGesture,
 } from "src/game.store.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
-import { useKeepDice } from "src/dices/dices.actions.js"
+import { useKeepDice, useUnkeepDice } from "src/dices/dices.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
@@ -28,14 +28,25 @@ export const DiceOnGoing = () => {
   const [hoveredByKeptDice, hoveredByKeptDiceSetter] = useState(false)
   useEffect(() => {
     if (diceOnGoingDomNode) {
-      const hoveredByRolledDice = hoveredByKeptDiceGetter({
+      const hoveredByKeptDice = hoveredByKeptDiceGetter({
         dragDiceGesture,
         dicesKept,
         diceOnGoingDomNode,
       })
-      hoveredByKeptDiceSetter(hoveredByRolledDice)
+      hoveredByKeptDiceSetter(hoveredByKeptDice)
     }
   }, [dragDiceGesture, dicesKept, diceOnGoingDomNode])
+
+  const unkeepDice = useUnkeepDice()
+  useEffect(() => {
+    if (dragDiceGesture) {
+      dragDiceGesture.addDropHandler(diceOnGoingDomNode, () => {
+        if (hoveredByKeptDice) {
+          unkeepDice(dragDiceGesture.dice)
+        }
+      })
+    }
+  }, [dragDiceGesture, diceOnGoingDomNode])
 
   return (
     <div

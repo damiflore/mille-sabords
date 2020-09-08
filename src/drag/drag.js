@@ -19,42 +19,52 @@ export const enableDragGesture = (
 
   logger.debug("enable drag on", domNode)
 
-  const removeMousedownListener = addDomEventListener(domNode, "mousedown", (mousedownEvent) => {
-    const isRightClick = mousedownEvent.which === 3
-    if (isRightClick) {
-      logger.debug("ignore right click")
-      return
-    }
+  const removeMousedownListener = addDomEventListener(
+    domNode,
+    "mousedown",
+    (mousedownEvent) => {
+      const isRightClick = mousedownEvent.which === 3
+      if (isRightClick) {
+        logger.debug("ignore right click")
+        return
+      }
 
-    handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
-    removeMoveListener = addDomEventListener(
-      document,
-      "mousemove",
-      throttle((mousemoveEvent) => {
-        handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
-      }),
-    )
-    removeReleaseListener = addDomEventListener(document, "mouseup", (mouseupEvent) => {
-      removeReleaseListener()
-      removeMoveListener()
-      handleRelease(mouseEventToPagePosition(mouseupEvent), mouseupEvent)
-    })
-  })
-  const removeTouchstartListener = addDomEventListener(domNode, "touchstart", (touchstartEvent) => {
-    handleGrip(touchEventToPagePosition(touchstartEvent), touchstartEvent)
-    removeMoveListener = addDomEventListener(
-      document,
-      "touchmove",
-      throttle((touchmoveEvent) => {
-        handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
-      }),
-    )
-    removeReleaseListener = addDomEventListener(document, "touchend", (touchendEvent) => {
-      removeReleaseListener()
-      removeMoveListener()
-      handleRelease(touchEventToPagePosition(touchendEvent), touchendEvent)
-    })
-  })
+      handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
+      removeMoveListener = addDomEventListener(
+        document,
+        "mousemove",
+        throttle((mousemoveEvent) => {
+          handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
+        }),
+      )
+      removeReleaseListener = addDomEventListener(document, "mouseup", (mouseupEvent) => {
+        removeReleaseListener()
+        removeMoveListener()
+        handleRelease(mouseEventToPagePosition(mouseupEvent), mouseupEvent)
+      })
+    },
+    { passive: true },
+  )
+  const removeTouchstartListener = addDomEventListener(
+    domNode,
+    "touchstart",
+    (touchstartEvent) => {
+      handleGrip(touchEventToPagePosition(touchstartEvent), touchstartEvent)
+      removeMoveListener = addDomEventListener(
+        document,
+        "touchmove",
+        throttle((touchmoveEvent) => {
+          handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
+        }),
+      )
+      removeReleaseListener = addDomEventListener(document, "touchend", (touchendEvent) => {
+        removeReleaseListener()
+        removeMoveListener()
+        handleRelease(touchEventToPagePosition(touchendEvent), touchendEvent)
+      })
+    },
+    { passive: true },
+  )
 
   let pointerPositionPrevious
   let domNodeStartPosition
