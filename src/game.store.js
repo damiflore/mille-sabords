@@ -99,7 +99,7 @@ const gameDomNodeContext = createContext()
 const GameDomNodeProvider = gameDomNodeContext.Provider
 GameDomNodeProvider.displayName = "GameDomNodeProvider"
 export const useGameDomNode = () => useContext(gameDomNodeContext)[0]
-export const useGameDomNodeSetter = () => useContext(gameDomNodeContext)[0]
+export const useGameDomNodeSetter = () => useContext(gameDomNodeContext)[1]
 
 const diceDomNodeContexts = {}
 DICES.forEach((dice) => {

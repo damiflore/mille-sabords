@@ -19,7 +19,8 @@ et non pas a la fin
 */
 
 import React from "react"
-import { useDiceDomNode, useDiceDomNodeSetter } from "src/game.store.js"
+import { getDomNodePageRect } from "src/dom/dom.js"
+import { useDiceDomNode, useDiceDomNodeSetter, useGameDomNode } from "src/game.store.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
@@ -28,6 +29,7 @@ const { useEffect, useState } = React
 
 export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, specificStyle }) => {
   const onSkull = diceIsOnSkull(dice)
+  const gameDomNode = useGameDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
 
@@ -35,7 +37,10 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
   const [moveGesture, setMoveGesture] = useState(null)
 
   useEffect(() => {
-    if (!draggable || !diceDomNode) return () => {}
+    if (!draggable || !diceDomNode || !gameDomNode) {
+      return () => {}
+    }
+
     let dragIntentTimeout
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
@@ -48,7 +53,16 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         if (Math.abs(relativeX) > 5 || Math.abs(relativeY) > 5) {
           setDragIntent(true)
         }
-        setMoveGesture({ x, y })
+
+        const diceDesiredRect = {
+          left: x,
+          right: x + diceSize,
+          top: y,
+          bottom: y + diceSize,
+        }
+        const gameDomNodeRect = getDomNodePageRect(gameDomNode)
+        const diceRect = keepRectInsideRect(diceDesiredRect, gameDomNodeRect)
+        setMoveGesture({ x: diceRect.left, y: diceRect.top })
       },
       onRelease: () => {
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
@@ -62,7 +76,7 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       disableDragGesture()
       clearTimeout(dragIntentTimeout)
     }
-  }, [draggable, diceDomNode])
+  }, [draggable, diceDomNode, gameDomNode])
 
   return (
     <button
@@ -99,4 +113,35 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       />
     </button>
   )
+}
+
+const keepRectInsideRect = (rect, parentRect) => {
+  let left = rect.left
+  let right = rect.right
+  const width = right - left
+  if (left < parentRect.left) {
+    left = parentRect.left
+    right = left + width
+  } else if (right > parentRect.right) {
+    left = parentRect.right - width
+    right = left + width
+  }
+
+  let top = rect.top
+  let bottom = rect.bottom
+  const height = bottom - top
+  if (top < parentRect.top) {
+    top = parentRect.top
+    bottom = top + height
+  } else if (bottom > parentRect.bottom) {
+    top = parentRect.bottom - height
+    bottom = top + height
+  }
+
+  return {
+    left,
+    right,
+    top,
+    bottom,
+  }
 }
