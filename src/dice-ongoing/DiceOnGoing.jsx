@@ -6,8 +6,10 @@ import { rectangleCollides } from "src/helper/rectangle.js"
 import {
   useDicesRolled,
   useDicesKept,
+  useRolledAreaDomNode,
   useRolledAreaDomNodeSetter,
   useDragDiceGesture,
+  createGameAction,
 } from "src/game.store.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice, useUnkeepDice } from "src/dices/dices.actions.js"
@@ -21,43 +23,52 @@ export const DiceOnGoing = () => {
   const dicesRolled = useDicesRolled()
   const keepDiceAllowed = useKeepDiceAllowed()
   const keepDice = useKeepDice()
+  const rolledAreaDomNode = useRolledAreaDomNode()
 
   const dragDiceGesture = useDragDiceGesture()
-  const dicesKept = useDicesKept()
-  const [diceOnGoingDomNode, diceOnGoingDomNodeSetter] = useState(null)
-  const [hoveredByKeptDice, hoveredByKeptDiceSetter] = useState(false)
+  const [diceDraggedOver, diceDraggedOverSetter] = useState(false)
   useEffect(() => {
-    if (diceOnGoingDomNode) {
-      const hoveredByKeptDice = hoveredByKeptDiceGetter({
-        dragDiceGesture,
-        dicesKept,
-        diceOnGoingDomNode,
-      })
-      hoveredByKeptDiceSetter(hoveredByKeptDice)
-    }
-  }, [dragDiceGesture, dicesKept, diceOnGoingDomNode])
+    diceDraggedOverSetter(diceDraggedOverGetter({ dragDiceGesture, rolledAreaDomNode }))
+  }, [dragDiceGesture, rolledAreaDomNode])
+
+  const dicesKept = useDicesKept()
+  const hoveredByKeptDice = diceDraggedOver && dicesKept.includes(diceDraggedOver)
+  const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
 
   const unkeepDice = useUnkeepDice()
+  const movedRolledDice = useMoveRolledDice()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.addDropHandler(diceOnGoingDomNode, () => {
+      dragDiceGesture.addDropHandler(rolledAreaDomNode, ({ x, y }) => {
         if (hoveredByKeptDice) {
-          unkeepDice(dragDiceGesture.dice)
+          unkeepDice(diceDraggedOver)
+          const rolledAreaDomNodeReactangle = getDomNodePageRect(rolledAreaDomNode)
+          movedRolledDice(diceDraggedOver, {
+            x: x - rolledAreaDomNodeReactangle.left,
+            y: y - rolledAreaDomNodeReactangle.top,
+          })
+        } else if (hoveredByRolledDice) {
+          const rolledAreaDomNodeReactangle = getDomNodePageRect(rolledAreaDomNode)
+
+          movedRolledDice(diceDraggedOver, {
+            x: x - rolledAreaDomNodeReactangle.left,
+            y: y - rolledAreaDomNodeReactangle.top,
+          })
         }
       })
     }
-  }, [dragDiceGesture, diceOnGoingDomNode])
+  }, [dragDiceGesture, rolledAreaDomNode])
 
   return (
-    <div
-      className="dice-ongoing"
-      ref={diceOnGoingDomNodeSetter}
-      style={{
-        ...(hoveredByKeptDice ? { outline: "2px dotted" } : {}),
-      }}
-    >
+    <div className="dice-ongoing">
       <div className="map"></div>
-      <div className="area" ref={useRolledAreaDomNodeSetter()}>
+      <div
+        className="area"
+        ref={useRolledAreaDomNodeSetter()}
+        style={{
+          ...(hoveredByKeptDice ? { outline: "2px dotted" } : {}),
+        }}
+      >
         {dicesRolled.map((dice) => (
           <Dice
             key={dice.id}
@@ -80,19 +91,24 @@ export const DiceOnGoing = () => {
   )
 }
 
-const hoveredByKeptDiceGetter = ({ dragDiceGesture, dicesKept, diceOnGoingDomNode }) => {
+const diceDraggedOverGetter = ({ dragDiceGesture, rolledAreaDomNode }) => {
   if (!dragDiceGesture) {
-    return false
+    return null
   }
-
-  const draggedDice = dragDiceGesture.dice
-  const diceIsKept = dicesKept.includes(draggedDice)
-  if (!diceIsKept) {
-    return false
+  const rolledAreaDomNodeRectangle = getDomNodePageRect(rolledAreaDomNode)
+  if (!rectangleCollides(dragDiceGesture.diceRect, rolledAreaDomNodeRectangle)) {
+    return null
   }
-  const diceOnGoingDomNodeRect = getDomNodePageRect(diceOnGoingDomNode)
-  if (!rectangleCollides(dragDiceGesture.diceRect, diceOnGoingDomNodeRect)) {
-    return false
-  }
-  return true
+  return dragDiceGesture.dice
 }
+
+const useMoveRolledDice = createGameAction((state, dice, position) => {
+  const { dicesRolled } = state
+  dice.rotation = 0
+  dice.x = position.x
+  dice.y = position.y
+  return {
+    ...state,
+    dicesRolled: [...dicesRolled],
+  }
+})

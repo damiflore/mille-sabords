@@ -113,7 +113,6 @@ export const enableDragGesture = (
     onDrag({
       event,
       ...movePosition,
-
       relativeX: pointerPosition.x - gripPointerPosition.x,
       relativeY: pointerPosition.y - gripPointerPosition.y,
     })
@@ -122,9 +121,13 @@ export const enableDragGesture = (
   const handleRelease = (pointerPosition, event) => {
     logger.debug("releasing node")
     pendingGesture = false
+    const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
+    const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
     clearTimeout(longGripTimeout)
     onRelease({
       event,
+      x: pointerPositionPrevious.x - gripHorizontalShift,
+      y: pointerPositionPrevious.y - gripVerticalShit,
     })
   }
 

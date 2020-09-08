@@ -79,12 +79,12 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
           },
         })
       },
-      onRelease: () => {
+      onRelease: ({ x, y }) => {
         // setTimeout is to ensure the click cannot happen just after mouseup
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
         setDragGesture(null)
         setDragDiceGesture(null)
-        dropHandlerMap.forEach((dropHandler) => dropHandler())
+        dropHandlerMap.forEach((dropHandler) => dropHandler({ x, y }))
       },
       onCancel: () => {
         setDragIntent(false)
