@@ -15,16 +15,15 @@ import { diceSize } from "src/dices/dicePosition.js"
 const { useState, useEffect } = React
 
 export const DiceKept = () => {
-  const currentCard = useCurrentCard()
   const dicesKept = useDicesKept()
+  const currentCard = useCurrentCard()
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
-  const dicesRolled = useDicesRolled()
 
+  const dragDiceGesture = useDragDiceGesture()
+  const dicesRolled = useDicesRolled()
   const [diceKeptDomNode, diceKeptDomNodeSetter] = useState(null)
   const [hoveredByRolledDice, hoveredByRolledDiceSetter] = useState(false)
-  const dragDiceGesture = useDragDiceGesture()
-
   useEffect(() => {
     if (!diceKeptDomNode) {
       return
@@ -36,7 +35,7 @@ export const DiceKept = () => {
         diceKeptDomNode,
       }),
     )
-  }, [dragDiceGesture, diceKeptDomNode])
+  }, [dragDiceGesture, dicesRolled, diceKeptDomNode])
 
   return (
     <div

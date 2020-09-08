@@ -77,10 +77,12 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       },
       onRelease: () => {
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
+        setDragDiceGesture(null)
       },
       onCancel: () => {
         setDragIntent(false)
         setDragIntent(null)
+        setDragDiceGesture(null)
       },
     })
     return () => {
