@@ -1,3 +1,5 @@
+import { rectangleCollides } from "src/helper/rectangle.js"
+
 export const diceSize = 50
 
 // margin because of rotation
@@ -5,7 +7,7 @@ const diceSpacing = diceSize / 8
 
 export const detectCollision = (dicePosition, diceArray) => {
   return diceArray.some((otherDice) => {
-    return rectCollides(
+    return rectangleCollides(
       {
         top: dicePosition.y - diceSpacing,
         left: dicePosition.x - diceSpacing,
@@ -20,16 +22,4 @@ export const detectCollision = (dicePosition, diceArray) => {
       },
     )
   })
-}
-
-const rectCollides = (firstRect, secondRect) => {
-  // first left of second
-  if (firstRect.right <= secondRect.left) return false
-  // first right of second
-  if (firstRect.left >= secondRect.right) return false
-  // first above second
-  if (firstRect.bottom <= secondRect.top) return false
-  //  first below second
-  if (firstRect.top >= secondRect.bottom) return false
-  return true
 }

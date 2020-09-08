@@ -8,7 +8,7 @@ export const enableDragGesture = (
     onGrip = () => {},
     onLongGrip = () => {},
     onRelease = () => {},
-    onMove = () => {},
+    onDrag = () => {},
     onCancel = () => {},
   },
 ) => {
@@ -83,7 +83,7 @@ export const enableDragGesture = (
       y: pointerPosition.y - gripVerticalShit,
     }
     logger.debug("move node at", lastMovePosition)
-    onMove({
+    onDrag({
       event,
       ...lastMovePosition,
 

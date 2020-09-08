@@ -89,17 +89,17 @@ export const createGameAction = gameStateStore.createAction
 const GameStateProvider = gameStateStore.Provider
 GameStateProvider.displayName = "GameStateProvider"
 
-const rolledAreaDomNodeContext = createContext()
-const RolledAreaDomNodeProvider = rolledAreaDomNodeContext.Provider
+const RolledAreaDomNodeContext = createContext()
+const RolledAreaDomNodeProvider = RolledAreaDomNodeContext.Provider
 RolledAreaDomNodeProvider.displayName = "RolledAreaDomNodeProvider"
-export const useRolledAreaDomNode = () => useContext(rolledAreaDomNodeContext)[0]
-export const useRolledAreaDomNodeSetter = () => useContext(rolledAreaDomNodeContext)[1]
+export const useRolledAreaDomNode = () => useContext(RolledAreaDomNodeContext)[0]
+export const useRolledAreaDomNodeSetter = () => useContext(RolledAreaDomNodeContext)[1]
 
-const gameDomNodeContext = createContext()
-const GameDomNodeProvider = gameDomNodeContext.Provider
+const GameDomNodeContext = createContext()
+const GameDomNodeProvider = GameDomNodeContext.Provider
 GameDomNodeProvider.displayName = "GameDomNodeProvider"
-export const useGameDomNode = () => useContext(gameDomNodeContext)[0]
-export const useGameDomNodeSetter = () => useContext(gameDomNodeContext)[1]
+export const useGameDomNode = () => useContext(GameDomNodeContext)[0]
+export const useGameDomNodeSetter = () => useContext(GameDomNodeContext)[1]
 
 const diceDomNodeContexts = {}
 DICES.forEach((dice) => {
@@ -116,13 +116,21 @@ const DiceDomNodesProvider = ({ children }) => {
 export const useDiceDomNode = (id) => useContext(diceDomNodeContexts[id])[0]
 export const useDiceDomNodeSetter = (id) => useContext(diceDomNodeContexts[id])[1]
 
+const DragDiceGestureContext = createContext()
+const DragDiceGestureProvider = DragDiceGestureContext.Provider
+DragDiceGestureProvider.displayName = "DragDiceGestureProvider"
+export const useDragDiceGesture = () => useContext(DragDiceGestureContext)[0]
+export const useDragDiceGestureSetter = () => useContext(DragDiceGestureContext)[1]
+
 // https://github.com/facebook/react/issues/14620
 export const GameContextProvider = ({ gameState, children }) => {
   return (
     <GameStateProvider initialState={gameState}>
       <GameDomNodeProvider value={useState()}>
         <RolledAreaDomNodeProvider value={useState()}>
-          <DiceDomNodesProvider>{children}</DiceDomNodesProvider>
+          <DiceDomNodesProvider>
+            <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
+          </DiceDomNodesProvider>
         </RolledAreaDomNodeProvider>
       </GameDomNodeProvider>
     </GameStateProvider>

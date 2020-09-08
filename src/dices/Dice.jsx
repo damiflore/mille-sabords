@@ -20,7 +20,13 @@ et non pas a la fin
 
 import React from "react"
 import { getDomNodePageRect } from "src/dom/dom.js"
-import { useDiceDomNode, useDiceDomNodeSetter, useGameDomNode } from "src/game.store.js"
+import { keepRectangleContained } from "src/helper/rectangle.js"
+import {
+  useDiceDomNode,
+  useDiceDomNodeSetter,
+  useGameDomNode,
+  useDragDiceGestureSetter,
+} from "src/game.store.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
@@ -34,7 +40,8 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
 
   const [dragIntent, setDragIntent] = useState(false)
-  const [moveGesture, setMoveGesture] = useState(null)
+  const [dragGesture, setDragGesture] = useState(null)
+  const setDragDiceGesture = useDragDiceGestureSetter()
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !gameDomNode) {
@@ -49,7 +56,7 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       onLongGrip: () => {
         setDragIntent(true)
       },
-      onMove: ({ x, y, relativeX, relativeY }) => {
+      onDrag: ({ x, y, relativeX, relativeY }) => {
         if (Math.abs(relativeX) > 5 || Math.abs(relativeY) > 5) {
           setDragIntent(true)
         }
@@ -61,8 +68,9 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
           bottom: y + diceSize,
         }
         const gameDomNodeRect = getDomNodePageRect(gameDomNode)
-        const diceRect = keepRectInsideRect(diceDesiredRect, gameDomNodeRect)
-        setMoveGesture({ x: diceRect.left, y: diceRect.top })
+        const diceRect = keepRectangleContained(diceDesiredRect, gameDomNodeRect)
+        setDragGesture({ x: diceRect.left, y: diceRect.top })
+        setDragDiceGesture({ dice, diceRect })
       },
       onRelease: () => {
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
@@ -92,13 +100,13 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         color: onSkull ? "black" : "#fcfcfc",
         borderColor: onSkull ? "black" : "#b9b9b9",
         ...specificStyle,
-        ...(moveGesture
+        ...(dragGesture
           ? {
               position: "fixed",
               zIndex: 1000,
               transform: "none",
-              left: moveGesture.x,
-              top: moveGesture.y,
+              left: dragGesture.x,
+              top: dragGesture.y,
             }
           : {}),
       }}
@@ -113,35 +121,4 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       />
     </button>
   )
-}
-
-const keepRectInsideRect = (rect, parentRect) => {
-  let left = rect.left
-  let right = rect.right
-  const width = right - left
-  if (left < parentRect.left) {
-    left = parentRect.left
-    right = left + width
-  } else if (right > parentRect.right) {
-    left = parentRect.right - width
-    right = left + width
-  }
-
-  let top = rect.top
-  let bottom = rect.bottom
-  const height = bottom - top
-  if (top < parentRect.top) {
-    top = parentRect.top
-    bottom = top + height
-  } else if (bottom > parentRect.bottom) {
-    top = parentRect.bottom - height
-    bottom = top + height
-  }
-
-  return {
-    left,
-    right,
-    top,
-    bottom,
-  }
 }
