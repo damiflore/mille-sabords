@@ -20,42 +20,47 @@ export const DiceKept = () => {
   const unkeepDiceAllowed = useUnkeepDiceAllowed()
   const unkeepDice = useUnkeepDice()
 
+  const [diceKeptAreaDomNode, diceKeptAreaDomNodeSetter] = useState(null)
   const dragDiceGesture = useDragDiceGesture()
-  const dicesRolled = useDicesRolled()
-  const [diceKeptDomNode, diceKeptDomNodeSetter] = useState(null)
-  const [hoveredByRolledDice, hoveredByRolledDiceSetter] = useState(false)
+  const [diceDraggedOver, diceDraggedOverSetter] = useState(false)
   useEffect(() => {
-    if (diceKeptDomNode) {
-      const hoveredByRolledDice = hoveredByRolledDiceGetter({
-        dragDiceGesture,
-        dicesRolled,
-        diceKeptDomNode,
-      })
-      hoveredByRolledDiceSetter(hoveredByRolledDice)
-    }
-  }, [dragDiceGesture, dicesRolled, diceKeptDomNode])
+    diceDraggedOverSetter(diceDraggedOverGetter({ dragDiceGesture, diceKeptAreaDomNode }))
+  }, [dragDiceGesture, diceKeptAreaDomNode])
+
+  const dicesRolled = useDicesRolled()
+  const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
 
   const keepDice = useKeepDice()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.addDropHandler(diceKeptDomNode, () => {
+      dragDiceGesture.addDropHandler(diceKeptAreaDomNode, () => {
         if (hoveredByRolledDice) {
           keepDice(dragDiceGesture.dice)
         }
       })
     }
-  }, [dragDiceGesture, diceKeptDomNode])
+  }, [dragDiceGesture, diceKeptAreaDomNode])
 
   return (
-    <div
-      className="dice-kept"
-      ref={diceKeptDomNodeSetter}
-      style={{
-        ...(hoveredByRolledDice ? { outline: "2px dotted" } : {}),
-      }}
-    >
-      <div className="dice-area">
+    <div className="dice-kept">
+      <div
+        className="dice-area"
+        ref={diceKeptAreaDomNodeSetter}
+        style={{
+          ...(hoveredByRolledDice ? { outline: "2px dotted" } : {}),
+        }}
+      >
         <div className="box">
+          {/*
+        to get better use experience we should instantiate 9 elements even if the dices are not kept
+        these elements would be valid drop target
+        so that user can choose to put the dice where he wants in the dice kept area
+
+        beware though because we still want user to drop a dice
+        anywhere in the kept area and dice will choose to drop where it intersects most
+
+        to achieve this the most intersecting drop target should win (how to do that remains to be found)
+        */}
           {isCoinCard(currentCard) ? <ExtraCoin card={currentCard} /> : null}
           {isDiamondCard(currentCard) ? <ExtraDiamond card={currentCard} /> : null}
           {dicesKept.map((dice) => (
@@ -82,21 +87,15 @@ export const DiceKept = () => {
   )
 }
 
-const hoveredByRolledDiceGetter = ({ dragDiceGesture, dicesRolled, diceKeptDomNode }) => {
+const diceDraggedOverGetter = ({ dragDiceGesture, diceKeptAreaDomNode }) => {
   if (!dragDiceGesture) {
-    return false
+    return null
   }
-
-  const draggedDice = dragDiceGesture.dice
-  const diceIsRolled = dicesRolled.includes(draggedDice)
-  if (!diceIsRolled) {
-    return false
+  const diceKeptAreaDomNodeRectangle = getDomNodePageRect(diceKeptAreaDomNode)
+  if (!rectangleCollides(dragDiceGesture.diceRect, diceKeptAreaDomNodeRectangle)) {
+    return null
   }
-  const diceKeptDomNodeRect = getDomNodePageRect(diceKeptDomNode)
-  if (!rectangleCollides(dragDiceGesture.diceRect, diceKeptDomNodeRect)) {
-    return false
-  }
-  return true
+  return dragDiceGesture.dice
 }
 
 const ExtraCoin = ({ card }) => {
