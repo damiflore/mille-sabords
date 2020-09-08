@@ -1,14 +1,5 @@
 /**
 
-
-TODO:
-
-- si on lache un dé sur diceOnGoing alors il se place la (si il était keep il devient unkeep)
-et sa position est celle de la drag gesture
-- si on lache un dé sur diceKept alors il se range dans la boite
-si il était ongoing il devient keep
-- si on lache un dé hors de ces zones le dé se replace ou il était
-
 Nice to have
 - lorsqu'on drop dans diceKept le dé se met a la place la plus proche de la ou on drop
 et non pas a la fin
