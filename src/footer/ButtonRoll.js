@@ -1,11 +1,11 @@
 import React from "react"
-import { createGameAction, useRolledAreaNode } from "src/game.store.js"
+import { createGameAction, useRolledAreaDomNode } from "src/game.store.js"
 import { useRollDiceAllowed } from "src/game.selectors.js"
 import { rollDices } from "src/dices/rollDices.js"
 
 export const ButtonRoll = () => {
   const rollDiceAllowed = useRollDiceAllowed()
-  const diceRolledAreaNode = useRolledAreaNode()
+  const rolledAreaDomNode = useRolledAreaDomNode()
   const roll = useRoll()
 
   if (rollDiceAllowed) {
@@ -13,7 +13,7 @@ export const ButtonRoll = () => {
       <div className="roll-action">
         <button
           onClick={() => {
-            roll(diceRolledAreaNode)
+            roll(rolledAreaDomNode)
           }}
         >
           Lancer
@@ -25,13 +25,13 @@ export const ButtonRoll = () => {
   return null
 }
 
-const useRoll = createGameAction((state, diceRolledAreaNode) => {
+const useRoll = createGameAction((state, rolledAreaDomNode) => {
   const { rollCount, dices, dicesRolled } = state
   return {
     ...state,
     rollCount: rollCount + 1,
     dicesRolled: rollDices(rollCount === 0 ? dices : dicesRolled, {
-      diceParentElement: diceRolledAreaNode,
+      diceParentElement: rolledAreaDomNode,
     }),
   }
 })

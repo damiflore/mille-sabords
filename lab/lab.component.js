@@ -7,7 +7,7 @@ import {
   useDicesCursed,
   useDicesKept,
   useGameDispatch,
-  useDiceNode,
+  useDiceDomNode,
 } from "src/game.store.js"
 
 import {
@@ -153,17 +153,17 @@ const VARIANTS = [
 ]
 
 const DiceVariants = ({ dice }) => {
-  const diceNode = useDiceNode(dice.id)
+  const diceDomNode = useDiceDomNode(dice.id)
 
   return (
     <div className="dice-variants">
       <button
-        disabled={!diceNode}
+        disabled={!diceDomNode}
         onClick={() => {
-          const outline = diceNode.style.outline
-          diceNode.style.outline = "5px solid red"
+          const outline = diceDomNode.style.outline
+          diceDomNode.style.outline = "5px solid red"
           setTimeout(() => {
-            diceNode.style.outline = outline
+            diceDomNode.style.outline = outline
           }, 1000)
         }}
       >

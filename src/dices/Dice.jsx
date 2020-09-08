@@ -19,7 +19,7 @@ et non pas a la fin
 */
 
 import React from "react"
-import { useDiceNode, useDiceNodeSetter } from "src/game.store.js"
+import { useDiceDomNode, useDiceDomNodeSetter } from "src/game.store.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
@@ -28,16 +28,16 @@ const { useEffect, useState } = React
 
 export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, specificStyle }) => {
   const onSkull = diceIsOnSkull(dice)
-  const diceNode = useDiceNode(dice.id)
-  const diceNodeSetter = useDiceNodeSetter(dice.id)
+  const diceDomNode = useDiceDomNode(dice.id)
+  const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
 
   const [dragIntent, setDragIntent] = useState(false)
   const [moveGesture, setMoveGesture] = useState(null)
 
   useEffect(() => {
-    if (!draggable || !diceNode) return () => {}
+    if (!draggable || !diceDomNode) return () => {}
     let dragIntentTimeout
-    const disableDragGesture = enableDragGesture(diceNode, {
+    const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         // nothing yet
       },
@@ -62,13 +62,13 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       disableDragGesture()
       clearTimeout(dragIntentTimeout)
     }
-  }, [draggable, diceNode])
+  }, [draggable, diceDomNode])
 
   return (
     <button
       disabled={disabled}
       data-dice-id={dice.id}
-      ref={diceNodeSetter}
+      ref={diceDomNodeSetter}
       onClick={onClickAction && clickAllowed && !dragIntent ? () => onClickAction(dice) : undefined}
       className="dice"
       style={{

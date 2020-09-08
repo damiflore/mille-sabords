@@ -1,7 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useDialogContainerNodeSetter } from "src/game.store.js"
+import { useGameDomNodeSetter } from "src/game.store.js"
 import { HeadStyle } from "src/generic/HeadStyle.js"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
@@ -26,11 +26,11 @@ export const Game = () => {
 
   There is no real need for useMemo here: it's kept as an example.
   */
-  const dialogContainerNodeSetter = useDialogContainerNodeSetter()
+  const gameDomNodeSetter = useGameDomNodeSetter()
 
   return useMemo(() => (
     <div id="game-container">
-      <div id="mille-sabord-container" ref={dialogContainerNodeSetter}>
+      <div id="game" ref={gameDomNodeSetter}>
         <HeadStyle href="/mille-sabord.css" />
         <GameEffects />
         <PreloadImages />

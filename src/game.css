@@ -13,7 +13,7 @@ body {
   color: #444444;
   margin: 0;
 }
-#mille-sabord-container {
+#game {
   background-image: url("./wood.jpg");
   color: white;
   overflow: hidden;
@@ -28,7 +28,7 @@ button {
 button:disabled:hover {
   cursor: default;
 }
-#mille-sabord-container button:focus {
+#game button:focus {
   outline: none;
 }
 .title {
@@ -69,7 +69,7 @@ body {
   flex: 1;
 } */
 
-#mille-sabord-container {
+#game {
   position: relative;
   display: flex;
   flex: 1;
@@ -84,24 +84,24 @@ body {
   /* margin: auto; */
 }
 
-#mille-sabord-container .header {
+#game .header {
   height: 60px;
 }
 
-#mille-sabord-container .dice-kept-and-skulls {
+#game .dice-kept-and-skulls {
   height: 250px;
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
 }
 
-#mille-sabord-container .dice-ongoing {
+#game .dice-ongoing {
   flex: 1;
   min-height: 100px;
   /* z-index: 0; */
   /* z-index pour que la map reste en dessous */
 }
 
-#mille-sabord-container .actions {
+#game .actions {
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
   height: 60px;

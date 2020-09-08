@@ -89,40 +89,42 @@ export const createGameAction = gameStateStore.createAction
 const GameStateProvider = gameStateStore.Provider
 GameStateProvider.displayName = "GameStateProvider"
 
-const rolledAreaContext = createContext()
-const RolledAreaProvider = rolledAreaContext.Provider
-// RolledAreaProvider.displayName = "RolledAreaNodeProvider"
-export const useRolledAreaNode = () => useContext(rolledAreaContext)[0]
-export const useRolledAreaNodeSetter = () => useContext(rolledAreaContext)[1]
+const rolledAreaDomNodeContext = createContext()
+const RolledAreaDomNodeProvider = rolledAreaDomNodeContext.Provider
+RolledAreaDomNodeProvider.displayName = "RolledAreaDomNodeProvider"
+export const useRolledAreaDomNode = () => useContext(rolledAreaDomNodeContext)[0]
+export const useRolledAreaDomNodeSetter = () => useContext(rolledAreaDomNodeContext)[1]
 
-const diceContainerContext = createContext()
-const DiceContainerProvider = diceContainerContext.Provider
-DiceContainerProvider.displayName = "DiceContainerNodeProvider"
-export const useDialogContainerNode = () => useContext(diceContainerContext)[0]
-export const useDialogContainerNodeSetter = () => useContext(diceContainerContext)[0]
+const gameDomNodeContext = createContext()
+const GameDomNodeProvider = gameDomNodeContext.Provider
+GameDomNodeProvider.displayName = "GameDomNodeProvider"
+export const useGameDomNode = () => useContext(gameDomNodeContext)[0]
+export const useGameDomNodeSetter = () => useContext(gameDomNodeContext)[0]
 
-const dicesContext = {}
+const diceDomNodeContexts = {}
 DICES.forEach((dice) => {
-  dicesContext[dice.id] = createContext()
+  diceDomNodeContexts[dice.id] = createContext()
 })
-const diceProviders = Object.keys(dicesContext).map((key) => dicesContext[key].Provider)
-const DiceNodesProvider = ({ children }) => {
-  return diceProviders.reduceRight((prev, Next) => {
+const diceDomNodeProviders = Object.keys(diceDomNodeContexts).map(
+  (key) => diceDomNodeContexts[key].Provider,
+)
+const DiceDomNodesProvider = ({ children }) => {
+  return diceDomNodeProviders.reduceRight((prev, Next) => {
     return <Next value={useState()}>{prev}</Next>
   }, children)
 }
-export const useDiceNode = (id) => useContext(dicesContext[id])[0]
-export const useDiceNodeSetter = (id) => useContext(dicesContext[id])[1]
+export const useDiceDomNode = (id) => useContext(diceDomNodeContexts[id])[0]
+export const useDiceDomNodeSetter = (id) => useContext(diceDomNodeContexts[id])[1]
 
 // https://github.com/facebook/react/issues/14620
 export const GameContextProvider = ({ gameState, children }) => {
   return (
     <GameStateProvider initialState={gameState}>
-      <DiceContainerProvider value={useState()}>
-        <RolledAreaProvider value={useState()}>
-          <DiceNodesProvider>{children}</DiceNodesProvider>
-        </RolledAreaProvider>
-      </DiceContainerProvider>
+      <GameDomNodeProvider value={useState()}>
+        <RolledAreaDomNodeProvider value={useState()}>
+          <DiceDomNodesProvider>{children}</DiceDomNodesProvider>
+        </RolledAreaDomNodeProvider>
+      </GameDomNodeProvider>
     </GameStateProvider>
   )
 }
