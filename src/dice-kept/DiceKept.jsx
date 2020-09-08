@@ -25,6 +25,7 @@ export const DiceKept = () => {
             <Dice
               key={dice.id}
               dice={dice}
+              draggable={true}
               clickAllowed={unkeepDiceAllowed}
               onClickAction={(dice) => {
                 unkeepDice(dice)

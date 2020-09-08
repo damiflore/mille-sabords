@@ -3,7 +3,6 @@
 
 TODO:
 
-- seul les dés dans diceOnGoing et diceKept peuvents etre drag
 - si on lache un dé sur diceOnGoing alors il se place la (si il était keep il devient unkeep)
 et sa position est celle de la drag gesture
 - si on lache un dé sur diceKept alors il se range dans la boite
@@ -27,7 +26,7 @@ import { enableDragGesture } from "src/drag/drag.js"
 
 const { useEffect, useState } = React
 
-export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyle }) => {
+export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, specificStyle }) => {
   const onSkull = diceIsOnSkull(dice)
   const diceNode = useDiceNode(dice.id)
   const diceNodeSetter = useDiceNodeSetter(dice.id)
@@ -36,7 +35,7 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
   const [moveGesture, setMoveGesture] = useState(null)
 
   useEffect(() => {
-    if (!diceNode) return () => {}
+    if (!draggable || !diceNode) return () => {}
     let dragIntentTimeout
     const disableDragGesture = enableDragGesture(diceNode, {
       onGrip: () => {
@@ -63,7 +62,7 @@ export const Dice = ({ dice, clickAllowed, disabled, onClickAction, specificStyl
       disableDragGesture()
       clearTimeout(dragIntentTimeout)
     }
-  }, [diceNode])
+  }, [draggable, diceNode])
 
   return (
     <button

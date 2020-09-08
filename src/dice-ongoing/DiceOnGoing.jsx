@@ -23,6 +23,7 @@ export const DiceOnGoing = () => {
             onClickAction={(dice) => {
               keepDice(dice)
             }}
+            draggable={true}
             specificStyle={{
               left: `${dice.x}px`,
               top: `${dice.y}px`,
