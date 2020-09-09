@@ -1,11 +1,10 @@
 import { createLogger } from "@jsenv/logger"
 import { throttle } from "src/helper/throttle.js"
 
-const logger = createLogger({ logLevel: "warn" })
-
 export const enableDragGesture = (
   domNode,
   {
+    logLevel = "warn",
     onGrip = () => {},
     onLongGrip = () => {},
     onRelease = () => {},
@@ -13,6 +12,7 @@ export const enableDragGesture = (
     onCancel = () => {},
   },
 ) => {
+  const logger = createLogger({ logLevel })
   let pendingGesture
   let removeMoveListener = () => {}
   let removeReleaseListener = () => {}

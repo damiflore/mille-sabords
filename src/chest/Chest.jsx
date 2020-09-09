@@ -52,8 +52,9 @@ export const Chest = () => {
         const rectangleToChestSlotMap = new Map()
         const rectangleCandidates = []
         Object.keys(chestSlots).forEach((chestSlot) => {
-          const chestSlotIsEmpty = !chestSlots[chestSlot]
-          if (chestSlotIsEmpty) {
+          const chestSlotContent = chestSlots[chestSlot]
+          const chestSlotIsEmpty = !chestSlotContent
+          if (chestSlotIsEmpty || chestSlotContent.value === diceDraggedOver) {
             const chestSlotDomNode = chestDropAreaDomNode.querySelector(
               `[data-chest-slot="${chestSlot}"]`,
             )
@@ -63,11 +64,11 @@ export const Chest = () => {
           }
         })
         const closestRectangle = findClosestRectangle(diceRectangle, rectangleCandidates)
-        const closestEmptyChestSlot = rectangleToChestSlotMap.get(closestRectangle)
+        const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
         if (hoveredByRolledDice) {
-          keepDice(diceDraggedOver, closestEmptyChestSlot)
+          keepDice(diceDraggedOver, closestChestSlot)
         } else {
-          repositionDiceInChest(diceDraggedOver, closestEmptyChestSlot)
+          repositionDiceInChest(diceDraggedOver, closestChestSlot)
         }
       })
     }

@@ -63,39 +63,56 @@ export const rectangleRelativeTo = (rectangle, parentRectangle) => {
 }
 
 export const findClosestRectangle = (rectangle, rectangleCandidates) => {
-  let closestRectangle = null
-  let highestIntersectionRatio = -1
-  rectangleCandidates.forEach((rectangleCandidate) => {
-    const intersectionRatio = getRectangleIntersectionRatio(rectangle, rectangleCandidate)
-    if (intersectionRatio > highestIntersectionRatio) {
-      highestIntersectionRatio = intersectionRatio
-      closestRectangle = rectangleCandidate
+  let smallestDistance = getDistanceBetweenRectangles(rectangle, rectangleCandidates[0])
+  return rectangleCandidates.reduce((prev, rectangleCandidate) => {
+    const distance = getDistanceBetweenRectangles(rectangle, rectangleCandidate)
+    if (distance < smallestDistance) {
+      smallestDistance = distance
+      return rectangleCandidate
     }
+    return prev
   })
-  return closestRectangle
-}
-
-const getRectangleIntersectionRatio = (rectangle, otherRectangle) => {
-  if (!rectangleCollidesWith(rectangle, otherRectangle)) {
-    return 0
-  }
-
-  const overlapRectangle = {
-    left: rectangle.left < otherRectangle.left ? otherRectangle.left : rectangle.left,
-    right: rectangle.right < otherRectangle.right ? rectangle.right : otherRectangle.right,
-    top: rectangle.top < otherRectangle.top ? otherRectangle.top : rectangle.top,
-    bottom: rectangle.bottom < otherRectangle.bottom ? rectangle.bottom : otherRectangle.bottom,
-  }
-  const rectangleArea = getRectangleArea(rectangle)
-  const overlapArea = getRectangleArea(overlapRectangle)
-
-  return rectangleArea / overlapArea
 }
 
 const getRectangleArea = ({ left, right, top, bottom }) => {
   const width = right - left
   const height = bottom - top
   return width * height
+}
+
+const getRectangleCenterPoint = ({ left, right, top, bottom }) => {
+  return {
+    x: left + (right - left) / 2,
+    y: top + (bottom - top) / 2,
+  }
+}
+
+const getDistanceBetweenRectangles = (firstRectangle, secondRectangle) => {
+  const firstRectangleCenterPoint = getRectangleCenterPoint(firstRectangle)
+  const secondRectangleCenterPoint = getRectangleCenterPoint(secondRectangle)
+  return getDistanceBetweenTwoPoints(firstRectangleCenterPoint, secondRectangleCenterPoint)
+}
+
+const getDistanceBetweenTwoPoints = (firstPoint, secondPoint) => {
+  const horizontalDiff = firstPoint.x - secondPoint.x
+  const verticalDiff = firstPoint.y - secondPoint.y
+  return Math.sqrt(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff)
+}
+
+export const getRectangleIntersectionRatio = (firstRectangle, secondRectangle) => {
+  const firstRectangleArea = getRectangleArea(firstRectangle)
+  const overlapArea = getRectangleArea(rectangleOverlapping(firstRectangle, secondRectangle))
+  return firstRectangleArea / overlapArea
+}
+
+export const rectangleOverlapping = ({ left, right, top, bottom }, intersectingRectangle) => {
+  const overlapRectangle = {
+    left: left < intersectingRectangle.left ? intersectingRectangle.left : left,
+    right: right < intersectingRectangle.right ? right : intersectingRectangle.right,
+    top: top < intersectingRectangle.top ? intersectingRectangle.top : top,
+    bottom: bottom < intersectingRectangle.bottom ? bottom : intersectingRectangle.bottom,
+  }
+  return overlapRectangle
 }
 
 export const getDomNodeRectangle = (domNode) => {
