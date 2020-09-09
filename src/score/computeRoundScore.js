@@ -18,17 +18,12 @@ import {
   isDiamondCard,
 } from "src/cards/cards.js"
 
-export const computeRoundScore = ({
-  card,
-  symbolsFromDicesKept,
-  scoreMarked,
-  markScoreAllowed,
-}) => {
+export const computeRoundScore = ({ card, symbolsInChest, scoreMarked, markScoreAllowed }) => {
   if (isTwoSwordsChallengeCard(card)) {
     if (!scoreMarked && !markScoreAllowed) {
       return -TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
-    return computeScoreForSwordChallenge(symbolsFromDicesKept, {
+    return computeScoreForSwordChallenge(symbolsInChest, {
       goal: TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
       gamble: TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
@@ -38,7 +33,7 @@ export const computeRoundScore = ({
     if (!scoreMarked && !markScoreAllowed) {
       return -THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
-    return computeScoreForSwordChallenge(symbolsFromDicesKept, {
+    return computeScoreForSwordChallenge(symbolsInChest, {
       goal: THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
       gamble: THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
@@ -48,7 +43,7 @@ export const computeRoundScore = ({
     if (!scoreMarked && !markScoreAllowed) {
       return -FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount
     }
-    return computeScoreForSwordChallenge(symbolsFromDicesKept, {
+    return computeScoreForSwordChallenge(symbolsInChest, {
       goal: FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
       gamble: FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
     })
@@ -56,23 +51,23 @@ export const computeRoundScore = ({
 
   if (isAnimalsCard(card)) {
     return computeScoreForSymbols(
-      symbolsFromDicesKept.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
+      symbolsInChest.map((symbol) => (symbol === SYMBOL_PARROT ? SYMBOL_MONKEY : symbol)),
     )
   }
 
   if (isPirateCard(card)) {
-    return computeScoreForSymbols(symbolsFromDicesKept) * 2
+    return computeScoreForSymbols(symbolsInChest) * 2
   }
 
   if (isCoinCard(card)) {
-    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_COIN], 9)
+    return computeScoreForSymbols(symbolsInChest, 9)
   }
 
   if (isDiamondCard(card)) {
-    return computeScoreForSymbols([...symbolsFromDicesKept, SYMBOL_DIAMOND], 9)
+    return computeScoreForSymbols(symbolsInChest, 9)
   }
 
-  return computeScoreForSymbols(symbolsFromDicesKept)
+  return computeScoreForSymbols(symbolsInChest)
 }
 
 const computeScoreForSwordChallenge = (symbols, { goal, gamble }) => {

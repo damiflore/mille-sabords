@@ -27,7 +27,7 @@
 .score-area .pirate-hook {
   width: 37px;
   height: 56px;
-  background-image: url("../dice-kept/pirate-hook.png");
+  background-image: url("../chest/pirate-hook.png");
   background-size: contain;
   display: inline-block;
   position: absolute;
@@ -41,37 +41,37 @@
   0% {
     opacity: 0;
     transform: translate(-14px, -17px) rotate(62deg);
-    background-image: url("../dice-kept/pirate-hook.png");
+    background-image: url("../chest/pirate-hook.png");
   }
   1% {
     opacity: 1;
     transform: translate(-14px, -17px) rotate(62deg);
-    background-image: url("../dice-kept/pirate-hook.png");
+    background-image: url("../chest/pirate-hook.png");
   }
   25% {
     opacity: 1;
     transform: translate(-3px, -8px) rotate(-36deg);
-    background-image: url("../dice-kept/pirate-hook.png");
+    background-image: url("../chest/pirate-hook.png");
   }
   50% {
     opacity: 1;
     transform: translate(3px, -6px) rotate(42deg);
-    background-image: url("../dice-kept/pirate-hook.png");
+    background-image: url("../chest/pirate-hook.png");
   }
   75% {
     opacity: 1;
     transform: translate(-3px, -8px) rotate(-18deg);
-    background-image: url("../dice-kept/pirate-hook.png");
+    background-image: url("../chest/pirate-hook.png");
   }
   85% {
     opacity: 1;
     transform: translate(3px, -6px) rotate(35deg);
-    background-image: url("../dice-kept/pirate-hook-02.png");
+    background-image: url("../chest/pirate-hook-02.png");
   }
   100% {
     opacity: 1;
     transform: translate(3px, -6px) rotate(28deg);
-    background-image: url("../dice-kept/pirate-hook-02.png");
+    background-image: url("../chest/pirate-hook-02.png");
   }
 }
 

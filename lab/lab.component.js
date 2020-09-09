@@ -5,7 +5,7 @@ import {
   useCardDeck,
   useDicesRolled,
   useDicesCursed,
-  useDicesKept,
+  useChestSlots,
   useGameDispatch,
   useDiceDomNode,
 } from "src/game.store.js"
@@ -55,10 +55,14 @@ export const Lab = () => {
 const GameLab = () => {
   const cardDeck = useCardDeck()
   const dicesRolled = useDicesRolled()
-  const dicesKept = useDicesKept()
+  const chestSlots = useChestSlots()
   const dicesCursed = useDicesCursed()
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
+
+  const dicesKept = Object.keys(chestSlots)
+    .filter((key) => chestSlots[key].type === "dice")
+    .map((key) => chestSlots[key].value)
 
   return (
     <aside>

@@ -31,7 +31,7 @@ const useRoll = createGameAction((state, rolledAreaDomNode) => {
     ...state,
     rollCount: rollCount + 1,
     dicesRolled: rollDices(rollCount === 0 ? dices : dicesRolled, {
-      diceParentElement: rolledAreaDomNode,
+      rolledAreaDomNode,
     }),
   }
 })

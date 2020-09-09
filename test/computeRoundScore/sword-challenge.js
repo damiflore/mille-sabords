@@ -12,7 +12,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),
@@ -32,7 +32,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createSwordFromDice(),
       createSwordFromDice(),
       createMonkeyFromDice(),
@@ -50,7 +50,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createSwordFromDice(),
       createSwordFromDice(),
       createSwordFromDice(),
@@ -68,7 +68,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_TWO_SWORDS_CHALLENGE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),

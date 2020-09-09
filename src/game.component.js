@@ -7,7 +7,7 @@ import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
 
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
-import { DiceKept } from "src/dice-kept/DiceKept.jsx"
+import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
@@ -35,8 +35,8 @@ export const Game = () => {
         <GameEffects />
         <PreloadImages />
         <Header />
-        <div className="dice-kept-and-skulls">
-          <DiceKept />
+        <div className="chest-and-skulls">
+          <Chest />
           <SkullIsland />
         </div>
         <DiceOnGoing />

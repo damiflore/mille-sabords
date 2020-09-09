@@ -9,7 +9,7 @@ import {
 
 import {
   useDicesRolled,
-  useDicesKept,
+  useChestSlots,
   useRolledAreaDomNode,
   useRolledAreaDomNodeSetter,
   useDragDiceGesture,
@@ -35,8 +35,12 @@ export const DiceOnGoing = () => {
     diceDraggedOverSetter(diceDraggedOverGetter({ dragDiceGesture, rolledAreaDomNode }))
   }, [dragDiceGesture, rolledAreaDomNode])
 
-  const dicesKept = useDicesKept()
-  const hoveredByKeptDice = diceDraggedOver && dicesKept.includes(diceDraggedOver)
+  const chestSlots = useChestSlots()
+  const hoveredByKeptDice =
+    diceDraggedOver &&
+    Object.keys(chestSlots).some(
+      (key) => chestSlots[key] && chestSlots[key].value === diceDraggedOver,
+    )
   const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
 
   const unkeepDice = useUnkeepDice()
@@ -50,12 +54,17 @@ export const DiceOnGoing = () => {
             rectangleInsideOf(diceRectangle, rolledAreaDomNodeRectangle),
             rolledAreaDomNodeRectangle,
           )
-          movedRolledDice(diceDraggedOver, {
-            x: diceRectangleRelative.left,
-            y: diceRectangleRelative.top,
-          })
+
           if (hoveredByKeptDice) {
-            unkeepDice(diceDraggedOver)
+            unkeepDice(diceDraggedOver, {
+              x: diceRectangleRelative.left,
+              y: diceRectangleRelative.top,
+            })
+          } else {
+            movedRolledDice(diceDraggedOver, {
+              x: diceRectangleRelative.left,
+              y: diceRectangleRelative.top,
+            })
           }
         }
       })
@@ -78,12 +87,13 @@ export const DiceOnGoing = () => {
             dice={dice}
             clickAllowed={diceIsOnSkull(dice) ? false : keepDiceAllowed}
             onClickAction={(dice) => {
-              keepDice(dice)
+              const freeSlot = Object.keys(chestSlots).find((key) => !chestSlots[key])
+              keepDice(dice, freeSlot)
             }}
             draggable={true}
             specificStyle={{
-              left: `${dice.x}px`,
-              top: `${dice.y}px`,
+              left: `${dice.rolledAreaPosition.x}px`,
+              top: `${dice.rolledAreaPosition.y}px`,
               transform: `rotate(${dice.rotation}deg)`,
               position: "absolute",
             }}
@@ -108,8 +118,7 @@ const diceDraggedOverGetter = ({ dragDiceGesture, rolledAreaDomNode }) => {
 const useMoveRolledDice = createGameAction((state, dice, position) => {
   const { dicesRolled } = state
   dice.rotation = 0
-  dice.x = position.x
-  dice.y = position.y
+  dice.rolledAreaPosition = position
   return {
     ...state,
     dicesRolled: [...dicesRolled],

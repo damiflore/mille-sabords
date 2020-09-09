@@ -19,20 +19,31 @@ export const useUncurseDice = createGameAction((state, dice) => {
   }
 })
 
-export const useUnkeepDice = createGameAction((state, dice) => {
-  const { dicesRolled, dicesKept } = state
+export const useUnkeepDice = createGameAction((state, dice, rolledAreaPosition) => {
+  const { dicesRolled, chestSlots } = state
+  dice.rolledAreaPosition = rolledAreaPosition
   return {
     ...state,
     dicesRolled: [...dicesRolled, dice],
-    dicesKept: dicesKept.filter((diceKept) => diceKept.id !== dice.id),
+    chestSlots: {
+      ...chestSlots,
+      [dice.chestSlot]: null,
+    },
   }
 })
 
-export const useKeepDice = createGameAction((state, dice) => {
-  const { dicesRolled, dicesKept } = state
+export const useKeepDice = createGameAction((state, dice, chestSlot) => {
+  const { dicesRolled, chestSlots } = state
+  dice.chestSlot = chestSlot
   return {
     ...state,
     dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
-    dicesKept: [...dicesKept, dice],
+    chestSlots: {
+      ...chestSlots,
+      [chestSlot]: {
+        type: "dice",
+        value: dice,
+      },
+    },
   }
 })

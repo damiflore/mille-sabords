@@ -1,4 +1,4 @@
-@import "./dice-kept/dice-kept.css";
+@import "./chest/chest.css";
 @import "./dice-ongoing/dice-ongoing.css";
 @import "./dices/dice.css";
 @import "./footer/footer.css";
@@ -90,7 +90,7 @@ body {
   height: 60px;
 }
 
-#game .dice-kept-and-skulls {
+#game .box-and-skulls {
   height: 250px;
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */

@@ -18,10 +18,20 @@ const defaultState = {
   currentCard: null,
   scoreMarked: false,
   isOnSkullIsland: false,
-  witchUncursedDiceId: undefined,
+  witchUncursedDiceId: null,
   dicesRolled: [],
   dicesCursed: [],
-  dicesKept: [],
+  chestSlots: {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+  },
 }
 
 const logger = createLogger({ logLevel: "warn" })
@@ -40,7 +50,7 @@ export const gameStateStore = createStructuredStateStore(
         (key) => key in valueFromSessionStorage === false,
       )
       if (missingKey) {
-        logger.debug(
+        logger.warn(
           `stored game state is missing a property (${missingKey}) -> use initial game state instead`,
         )
         return defaultState
@@ -49,13 +59,13 @@ export const gameStateStore = createStructuredStateStore(
         (key) => key in defaultState === false,
       )
       if (extraKey) {
-        logger.debug(
+        logger.warn(
           `stored game state contains an unknown property (${missingKey}) -> use initial game state instead`,
         )
         return defaultState
       }
 
-      logger.debug(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
+      logger.info(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }
     logger.debug(`no game state stored -> use initial game state`)
@@ -81,7 +91,7 @@ export const useCurrentCard = () => gameStateStore.useKeyedState("currentCard")
 export const useWitchUncursedDiceId = () => gameStateStore.useKeyedState("witchUncursedDiceId")
 export const useDicesRolled = () => gameStateStore.useKeyedState("dicesRolled")
 export const useDicesCursed = () => gameStateStore.useKeyedState("dicesCursed")
-export const useDicesKept = () => gameStateStore.useKeyedState("dicesKept")
+export const useChestSlots = () => gameStateStore.useKeyedState("chestSlots")
 
 export const useGameDispatch = gameStateStore.useDispatch
 export const createGameAction = gameStateStore.createAction
