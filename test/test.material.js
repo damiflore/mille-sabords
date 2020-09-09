@@ -13,3 +13,5 @@ export const createMonkeyFromDice = () => SYMBOL_MONKEY
 export const createParrotFromDice = () => SYMBOL_PARROT
 export const createSkullFromDice = () => SYMBOL_SKULL
 export const createSwordFromDice = () => SYMBOL_SWORD
+export const createCoinFromCard = () => SYMBOL_COIN
+export const createDiamondFromCard = () => SYMBOL_DIAMOND
