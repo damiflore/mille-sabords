@@ -5,6 +5,7 @@ import {
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
+  createCoinFromCard,
 } from "../test.material.js"
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 
@@ -12,7 +13,9 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_COIN,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
+      createCoinFromCard(),
+
       createSwordFromDice(),
       createSwordFromDice(),
       createParrotFromDice(),
@@ -30,7 +33,9 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_COIN,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
+      createCoinFromCard(),
+
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),

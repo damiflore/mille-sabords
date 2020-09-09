@@ -7,7 +7,7 @@ import {
   useScoreMarked,
   useDicesRolled,
   useDicesCursed,
-  useDicesKept,
+  useChestSlots,
 } from "src/game.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
@@ -39,8 +39,16 @@ export const useSymbolsFromCard = ({ currentCard = useCurrentCard() } = {}) => {
   return []
 }
 
-export const useSymbolsFromDicesKept = ({ dicesKept = useDicesKept() } = {}) => {
-  return dicesKept.map((dice) => diceToVisibleSymbol(dice))
+export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
+  return Object.keys(chestSlots)
+    .filter((chestSlot) => chestSlots[chestSlot])
+    .map((chestSlot) => {
+      const chestSlotContent = chestSlots[chestSlot]
+      if (chestSlotContent.type === "symbol") {
+        return chestSlotContent.value
+      }
+      return diceToVisibleSymbol(chestSlotContent.value)
+    })
 }
 
 export const useRemainingSpotInCursedArea = ({
@@ -212,7 +220,7 @@ export const useStartNextRoundAllowed = ({
 
 export const useRoundScore = ({
   currentCard = useCurrentCard(),
-  symbolsFromDicesKept = useSymbolsFromDicesKept(),
+  symbolsInChest = useSymbolsInChest(),
   scoreMarked = useScoreMarked(),
   markScoreAllowed = useMarkScoreAllowed(),
 } = {}) => {
@@ -220,10 +228,10 @@ export const useRoundScore = ({
     () =>
       computeRoundScore({
         card: currentCard,
-        symbolsFromDicesKept,
+        symbolsInChest,
         scoreMarked,
         markScoreAllowed,
       }),
-    [currentCard, symbolsFromDicesKept, scoreMarked, markScoreAllowed],
+    [currentCard, symbolsInChest, scoreMarked, markScoreAllowed],
   )
 }

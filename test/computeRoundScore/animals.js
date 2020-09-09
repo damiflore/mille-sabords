@@ -13,7 +13,7 @@ import {
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createMonkeyFromDice(),
       createSwordFromDice(),
@@ -31,7 +31,7 @@ import {
 {
   const actual = computeRoundScore({
     card: CARD_ANIMALS,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createMonkeyFromDice(),
       createMonkeyFromDice(),
       createMonkeyFromDice(),

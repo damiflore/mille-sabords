@@ -2,6 +2,7 @@ import React from "react"
 
 import { useBecomes } from "src/hooks.js"
 import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
+import { isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
@@ -11,7 +12,7 @@ import {
 } from "src/game.selectors.js"
 import { useMarkScore, useSendToSkullIsland } from "src/game.actions.js"
 import { useCurseDice } from "src/dices/dices.actions.js"
-import { isSwordChallengeCard } from "src/cards/cards.js"
+import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
 
 const { useEffect } = React
 
@@ -24,6 +25,8 @@ export const useGameEffects = () => {
   useCurseDiceEffect()
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
+  useCoinCardEffect()
+  useDiamondCardEffect()
 }
 
 const useCurseDiceEffect = () => {
@@ -85,4 +88,34 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
 
     sendToSkullIsland()
   }, [isFirstRoll, isOnSkullIsland, currentCard, skullCountInCursedArea])
+}
+
+const useCoinCardEffect = () => {
+  const addExtraCoin = useAddExtraCoin()
+  const currentCard = useCurrentCard()
+  const drawCoinCard = useBecomes(
+    (currentCardPrevious) => !isCoinCard(currentCardPrevious) && isCoinCard(currentCard),
+    [currentCard],
+  )
+
+  useEffect(() => {
+    if (drawCoinCard) {
+      addExtraCoin()
+    }
+  }, [drawCoinCard])
+}
+
+const useDiamondCardEffect = () => {
+  const addExtraDiamond = useAddExtraDiamond()
+  const currentCard = useCurrentCard()
+  const drawDiamondCard = useBecomes(
+    (currentCardPrevious) => !isDiamondCard(currentCardPrevious) && isDiamondCard(currentCard),
+    [currentCard],
+  )
+
+  useEffect(() => {
+    if (drawDiamondCard) {
+      addExtraDiamond()
+    }
+  }, [drawDiamondCard])
 }

@@ -12,7 +12,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createSwordFromDice(),
       createSwordFromDice(),
       createParrotFromDice(),
@@ -30,7 +30,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),
@@ -49,7 +49,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_PIRATE,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),

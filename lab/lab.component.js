@@ -1,14 +1,15 @@
 import React from "react"
 
-import { GameContextProvider } from "src/GameContextProvider.js"
 import {
+  GameContextProvider,
   useCardDeck,
   useDicesRolled,
   useDicesCursed,
-  useDicesKept,
+  useChestSlots,
   useGameDispatch,
-  useDiceNode,
+  useDiceDomNode,
 } from "src/game.store.js"
+
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -54,10 +55,14 @@ export const Lab = () => {
 const GameLab = () => {
   const cardDeck = useCardDeck()
   const dicesRolled = useDicesRolled()
-  const dicesKept = useDicesKept()
+  const chestSlots = useChestSlots()
   const dicesCursed = useDicesCursed()
   const setTotalScore = useSetTotalScore()
   const nextCard = cardDeck[0]
+
+  const dicesKept = Object.keys(chestSlots)
+    .filter((key) => chestSlots[key].type === "dice")
+    .map((key) => chestSlots[key].value)
 
   return (
     <aside>
@@ -152,17 +157,17 @@ const VARIANTS = [
 ]
 
 const DiceVariants = ({ dice }) => {
-  const diceNode = useDiceNode(dice.id)
+  const diceDomNode = useDiceDomNode(dice.id)
 
   return (
     <div className="dice-variants">
       <button
-        disabled={!diceNode}
+        disabled={!diceDomNode}
         onClick={() => {
-          const outline = diceNode.style.outline
-          diceNode.style.outline = "5px solid red"
+          const outline = diceDomNode.style.outline
+          diceDomNode.style.outline = "5px solid red"
           setTimeout(() => {
-            diceNode.style.outline = outline
+            diceDomNode.style.outline = outline
           }, 1000)
         }}
       >
@@ -196,12 +201,12 @@ const DiceVariant = ({ dice, variant }) => {
         // force re-render of rolled, cursed and kept area
         // (in theory we could optimize to render depening where the dice is)
         dispatch((state) => {
-          const { dicesRolled, dicesCursed, dicesKept } = state
+          const { dicesRolled, dicesCursed, chestSlots } = state
           return {
             ...state,
             dicesRolled: [...dicesRolled],
             dicesCursed: [...dicesCursed],
-            dicesKept: [...dicesKept],
+            chestSlots: [...chestSlots],
           }
         })
       }}

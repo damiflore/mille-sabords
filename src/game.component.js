@@ -1,13 +1,13 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useDialogContainerCallback } from "src/game.store.js"
+import { useGameDomNodeSetter } from "src/game.store.js"
 import { HeadStyle } from "src/generic/HeadStyle.js"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
 
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
-import { DiceKept } from "src/dice-kept/DiceKept.jsx"
+import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
@@ -26,17 +26,17 @@ export const Game = () => {
 
   There is no real need for useMemo here: it's kept as an example.
   */
-  const dialogContainerCallback = useDialogContainerCallback()
+  const gameDomNodeSetter = useGameDomNodeSetter()
 
   return useMemo(() => (
     <div id="game-container">
-      <div id="mille-sabord-container" ref={dialogContainerCallback}>
+      <div id="game" ref={gameDomNodeSetter}>
         <HeadStyle href="/mille-sabord.css" />
         <GameEffects />
         <PreloadImages />
         <Header />
-        <div className="dice-kept-and-skulls">
-          <DiceKept />
+        <div className="chest-and-skulls">
+          <Chest />
           <SkullIsland />
         </div>
         <DiceOnGoing />

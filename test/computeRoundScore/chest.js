@@ -13,7 +13,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createMonkeyFromDice(),
@@ -31,7 +31,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -50,7 +50,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -70,7 +70,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -89,7 +89,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -109,7 +109,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -129,7 +129,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -152,7 +152,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -171,7 +171,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createDiamondFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -190,7 +190,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
       createCoinFromDice(),
@@ -212,7 +212,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),
@@ -236,7 +236,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 {
   const actual = computeRoundScore({
     card: CARD_CHEST,
-    symbolsFromDicesKept: [
+    symbolsInChest: [
       createParrotFromDice(),
       createParrotFromDice(),
       createParrotFromDice(),

@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useCurrentCard } from "src/game.store.js"
-import { useSymbolsFromDicesKept } from "src/game.selectors.js"
+import { useSymbolsInChest } from "src/game.selectors.js"
 import {
   isSwordChallengeCard,
   isTwoSwordsChallengeCard,
@@ -23,14 +23,14 @@ export const useSwordQuantityRequired = ({ currentCard = useCurrentCard() } = {}
 
 export const SwordChallengeIndicator = () => {
   const currentCard = useCurrentCard()
-  const symbolsFromDicesKept = useSymbolsFromDicesKept()
+  const symbolsInChest = useSymbolsInChest()
   const quantityRequired = useSwordQuantityRequired()
 
   if (!currentCard || !isSwordChallengeCard(currentCard)) {
     return null
   }
 
-  const quantityKept = countSymbol(symbolsFromDicesKept, SYMBOL_SWORD)
+  const quantityKept = countSymbol(symbolsInChest, SYMBOL_SWORD)
   const quantityRequiredArray = new Array(quantityRequired).fill("")
 
   return (

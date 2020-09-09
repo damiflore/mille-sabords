@@ -1,8 +1,10 @@
+import React from "react"
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "./store/createStructuredStateStore.js"
-import { createDOMNodeStore } from "./store/createDOMNodeStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
+
+const { createContext, useContext, useState } = React
 
 const defaultState = {
   // persist accross a game round
@@ -16,10 +18,20 @@ const defaultState = {
   currentCard: null,
   scoreMarked: false,
   isOnSkullIsland: false,
-  witchUncursedDiceId: undefined,
+  witchUncursedDiceId: null,
   dicesRolled: [],
   dicesCursed: [],
-  dicesKept: [],
+  chestSlots: {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+  },
 }
 
 const logger = createLogger({ logLevel: "warn" })
@@ -29,17 +41,34 @@ export const gameStateStore = createStructuredStateStore(
   () => {
     if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
       const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(gameStateSessionStorageKey))
-      // TODO: when we will update the game
-      // previously stored data might be in an unexpected format
-      // we should also store a kind of version to be sure we are compatible
-      // with the data we try to restore
-      logger.debug(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
+
+      // Here we check for missing or extra key in case the stored game state is outdated.
+      // It happens when a new version of the game is released and the stored game state
+      // is not in sync with the new game state
+      // We could use a version instead but during dev we won't think to update the version
+      const missingKey = Object.keys(defaultState).find(
+        (key) => key in valueFromSessionStorage === false,
+      )
+      if (missingKey) {
+        logger.warn(
+          `stored game state is missing a property (${missingKey}) -> use initial game state instead`,
+        )
+        return defaultState
+      }
+      const extraKey = Object.keys(valueFromSessionStorage).find(
+        (key) => key in defaultState === false,
+      )
+      if (extraKey) {
+        logger.warn(
+          `stored game state contains an unknown property (${extraKey}) -> use initial game state instead`,
+        )
+        return defaultState
+      }
+
+      logger.info(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }
-    logger.debug(
-      `sessionStorage has nothing for ${gameStateSessionStorageKey}, use initial state`,
-      defaultState,
-    )
+    logger.debug(`no game state stored -> use initial game state`)
     return defaultState
   },
   {
@@ -62,21 +91,58 @@ export const useCurrentCard = () => gameStateStore.useKeyedState("currentCard")
 export const useWitchUncursedDiceId = () => gameStateStore.useKeyedState("witchUncursedDiceId")
 export const useDicesRolled = () => gameStateStore.useKeyedState("dicesRolled")
 export const useDicesCursed = () => gameStateStore.useKeyedState("dicesCursed")
-export const useDicesKept = () => gameStateStore.useKeyedState("dicesKept")
+export const useChestSlots = () => gameStateStore.useKeyedState("chestSlots")
 
 export const useGameDispatch = gameStateStore.useDispatch
 export const createGameAction = gameStateStore.createAction
 
-export const gameNodeStore = createDOMNodeStore({
-  "rolled-area": null,
-  "dialog-container": null,
-  ...DICES.reduce((obj, dice) => {
-    return { ...obj, [`dice-${dice.id}`]: null }
-  }, {}),
+const GameStateProvider = gameStateStore.Provider
+GameStateProvider.displayName = "GameStateProvider"
+
+const RolledAreaDomNodeContext = createContext()
+const RolledAreaDomNodeProvider = RolledAreaDomNodeContext.Provider
+RolledAreaDomNodeProvider.displayName = "RolledAreaDomNodeProvider"
+export const useRolledAreaDomNode = () => useContext(RolledAreaDomNodeContext)[0]
+export const useRolledAreaDomNodeSetter = () => useContext(RolledAreaDomNodeContext)[1]
+
+const GameDomNodeContext = createContext()
+const GameDomNodeProvider = GameDomNodeContext.Provider
+GameDomNodeProvider.displayName = "GameDomNodeProvider"
+export const useGameDomNode = () => useContext(GameDomNodeContext)[0]
+export const useGameDomNodeSetter = () => useContext(GameDomNodeContext)[1]
+
+const diceDomNodeContexts = {}
+DICES.forEach((dice) => {
+  diceDomNodeContexts[dice.id] = createContext()
 })
-export const useDialogContainerNode = () => gameNodeStore.useDOMNode("dialog-container")
-export const useDialogContainerCallback = () => gameNodeStore.useDOMNodeCallback("dialog-container")
-export const useRolledAreaNode = () => gameNodeStore.useDOMNode("rolled-area")
-export const useRolledAreaNodeCallback = () => gameNodeStore.useDOMNodeCallback("rolled-area")
-export const useDiceNode = (id) => gameNodeStore.useDOMNode(`dice-${id}`)
-export const useDiceNodeCallback = (id) => gameNodeStore.useDOMNodeCallback(`dice-${id}`)
+const diceDomNodeProviders = Object.keys(diceDomNodeContexts).map(
+  (key) => diceDomNodeContexts[key].Provider,
+)
+const DiceDomNodesProvider = ({ children }) => {
+  return diceDomNodeProviders.reduceRight((prev, Next) => {
+    return <Next value={useState()}>{prev}</Next>
+  }, children)
+}
+export const useDiceDomNode = (id) => useContext(diceDomNodeContexts[id])[0]
+export const useDiceDomNodeSetter = (id) => useContext(diceDomNodeContexts[id])[1]
+
+const DragDiceGestureContext = createContext()
+const DragDiceGestureProvider = DragDiceGestureContext.Provider
+DragDiceGestureProvider.displayName = "DragDiceGestureProvider"
+export const useDragDiceGesture = () => useContext(DragDiceGestureContext)[0]
+export const useDragDiceGestureSetter = () => useContext(DragDiceGestureContext)[1]
+
+// https://github.com/facebook/react/issues/14620
+export const GameContextProvider = ({ gameState, children }) => {
+  return (
+    <GameStateProvider initialState={gameState}>
+      <GameDomNodeProvider value={useState()}>
+        <RolledAreaDomNodeProvider value={useState()}>
+          <DiceDomNodesProvider>
+            <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
+          </DiceDomNodesProvider>
+        </RolledAreaDomNodeProvider>
+      </GameDomNodeProvider>
+    </GameStateProvider>
+  )
+}
