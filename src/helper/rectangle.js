@@ -1,13 +1,15 @@
+// https://github.com/infusion/Rectangles.js/blob/master/rectangles.js
+
 import { elementToOwnerWindow, elementToOwnerDocument } from "src/dom/dom.js"
 
-export const rectangleCollides = (firstRect, secondRect) => {
+export const rectangleCollidesWith = (firstRect, secondRect) => {
   // first left of second
   if (firstRect.right <= secondRect.left) return false
   // first right of second
   if (firstRect.left >= secondRect.right) return false
   // first above second
   if (firstRect.bottom <= secondRect.top) return false
-  //  first below second
+  // first below second
   if (firstRect.top >= secondRect.bottom) return false
   return true
 }
@@ -58,6 +60,42 @@ export const rectangleRelativeTo = (rectangle, parentRectangle) => {
     top,
     bottom,
   }
+}
+
+export const findClosestRectangle = (rectangle, rectangleCandidates) => {
+  let closestRectangle = null
+  let highestIntersectionRatio = -1
+  rectangleCandidates.forEach((rectangleCandidate) => {
+    const intersectionRatio = getRectangleIntersectionRatio(rectangle, rectangleCandidate)
+    if (intersectionRatio > highestIntersectionRatio) {
+      highestIntersectionRatio = intersectionRatio
+      closestRectangle = rectangleCandidate
+    }
+  })
+  return closestRectangle
+}
+
+const getRectangleIntersectionRatio = (rectangle, otherRectangle) => {
+  if (!rectangleCollidesWith(rectangle, otherRectangle)) {
+    return 0
+  }
+
+  const overlapRectangle = {
+    left: rectangle.left < otherRectangle.left ? otherRectangle.left : rectangle.left,
+    right: rectangle.right < otherRectangle.right ? rectangle.right : otherRectangle.right,
+    top: rectangle.top < otherRectangle.top ? otherRectangle.top : rectangle.top,
+    bottom: rectangle.bottom < otherRectangle.bottom ? rectangle.bottom : otherRectangle.bottom,
+  }
+  const rectangleArea = getRectangleArea(rectangle)
+  const overlapArea = getRectangleArea(overlapRectangle)
+
+  return rectangleArea / overlapArea
+}
+
+const getRectangleArea = ({ left, right, top, bottom }) => {
+  const width = right - left
+  const height = bottom - top
+  return width * height
 }
 
 export const getDomNodeRectangle = (domNode) => {

@@ -1,8 +1,13 @@
 import React from "react"
 
-import { getDomNodeRectangle, rectangleCollides } from "src/helper/rectangle.js"
+import {
+  getDomNodeRectangle,
+  rectangleCollidesWith,
+  findClosestRectangle,
+} from "src/helper/rectangle.js"
 
 import {
+  createGameAction,
   useCurrentCard,
   useChestSlots,
   useDicesRolled,
@@ -30,19 +35,39 @@ export const Chest = () => {
 
   const dicesRolled = useDicesRolled()
   const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
+  const hoveredByKeptDice =
+    diceDraggedOver &&
+    Object.keys(chestSlots).some(
+      (key) => chestSlots[key] && chestSlots[key].value === diceDraggedOver,
+    )
 
   const keepDice = useKeepDice()
+  const repositionDiceInChest = useRepositionDiceInChest()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.setDropHandler(chestDropAreaDomNode, () => {
-        if (hoveredByRolledDice && !threeSkullsOrMoreInCursedArea) {
-          // ici faut décider le slot en fonction de ou on drop et prendre le premier dispo
-          // (tenir compte du fait qu'un slot peut etre pris par le extra coin ou extra diamond)
-          const freeSlot = Object.keys(chestSlots).find((key) => {
-            return !chestSlots[key]
-          })
-          const chestSlot = freeSlot
-          keepDice(diceDraggedOver, chestSlot)
+      dragDiceGesture.setDropHandler(chestDropAreaDomNode, ({ diceRectangle }) => {
+        if (threeSkullsOrMoreInCursedArea) return
+        if (!hoveredByRolledDice && !hoveredByKeptDice) return
+
+        const rectangleToChestSlotMap = new Map()
+        const rectangleCandidates = []
+        Object.keys(chestSlots).forEach((chestSlot) => {
+          const chestSlotIsEmpty = !chestSlots[chestSlot]
+          if (chestSlotIsEmpty) {
+            const chestSlotDomNode = chestDropAreaDomNode.querySelector(
+              `[data-chest-slot="${chestSlot}"]`,
+            )
+            const rectangle = getDomNodeRectangle(chestSlotDomNode)
+            rectangleToChestSlotMap.set(rectangle, chestSlot)
+            rectangleCandidates.push(rectangle)
+          }
+        })
+        const closestRectangle = findClosestRectangle(diceRectangle, rectangleCandidates)
+        const closestEmptyChestSlot = rectangleToChestSlotMap.get(closestRectangle)
+        if (hoveredByRolledDice) {
+          keepDice(diceDraggedOver, closestEmptyChestSlot)
+        } else {
+          repositionDiceInChest(diceDraggedOver, closestEmptyChestSlot)
         }
       })
     }
@@ -77,7 +102,7 @@ export const Chest = () => {
       >
         <div className="box">
           {Object.keys(chestSlots).map((chestSlot) => (
-            <div className="slot" key={chestSlot}>
+            <div className="slot" key={chestSlot} data-chest-slot={chestSlot}>
               <ChestSlot chestSlotContent={chestSlots[chestSlot]} />
             </div>
           ))}
@@ -149,7 +174,7 @@ const diceDraggedOverGetter = ({ dragDiceGesture, chestDropAreaDomNode }) => {
     return null
   }
   const chestDropAreaDomNodeRectangle = getDomNodeRectangle(chestDropAreaDomNode)
-  if (!rectangleCollides(dragDiceGesture.diceRectangle, chestDropAreaDomNodeRectangle)) {
+  if (!rectangleCollidesWith(dragDiceGesture.diceRectangle, chestDropAreaDomNodeRectangle)) {
     return null
   }
   return dragDiceGesture.dice
@@ -162,3 +187,17 @@ const CursedCover = () => {
     </div>
   )
 }
+
+const useRepositionDiceInChest = createGameAction((state, dice, chestSlot) => {
+  const { chestSlots } = state
+  const previousChestSlot = dice.chestSlot
+  dice.chestSlot = chestSlot
+  return {
+    ...state,
+    chestSlots: {
+      ...chestSlots,
+      [previousChestSlot]: null,
+      [chestSlot]: { type: "dice", value: dice },
+    },
+  }
+})

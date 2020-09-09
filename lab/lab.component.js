@@ -201,12 +201,12 @@ const DiceVariant = ({ dice, variant }) => {
         // force re-render of rolled, cursed and kept area
         // (in theory we could optimize to render depening where the dice is)
         dispatch((state) => {
-          const { dicesRolled, dicesCursed, dicesKept } = state
+          const { dicesRolled, dicesCursed, chestSlots } = state
           return {
             ...state,
             dicesRolled: [...dicesRolled],
             dicesCursed: [...dicesCursed],
-            dicesKept: [...dicesKept],
+            chestSlots: [...chestSlots],
           }
         })
       }}

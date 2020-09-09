@@ -60,7 +60,7 @@ export const gameStateStore = createStructuredStateStore(
       )
       if (extraKey) {
         logger.warn(
-          `stored game state contains an unknown property (${missingKey}) -> use initial game state instead`,
+          `stored game state contains an unknown property (${extraKey}) -> use initial game state instead`,
         )
         return defaultState
       }

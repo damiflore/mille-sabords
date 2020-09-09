@@ -1,5 +1,5 @@
-import { getDomNodeRectangle } from "src/helper/rectangle.js"
-import { diceSize, detectCollision } from "./dicePosition.js"
+import { getDomNodeRectangle, rectangleCollidesWith } from "src/helper/rectangle.js"
+import { diceSize } from "./dicePosition.js"
 
 export const rollDices = (dices, { rolledAreaDomNode }) => {
   const rolledAreaRectangle = getDomNodeRectangle(rolledAreaDomNode)
@@ -58,4 +58,26 @@ const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
 const getRandomDiceFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length - 1)
 
 const getRandomNumberBetweenInterval = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min) // min and max are included
+  Math.floor(Math.random() * (max - min + 1) + min)
+
+// margin because of rotation
+const diceSpacing = diceSize / 8
+
+const detectCollision = (dicePosition, diceArray) => {
+  return diceArray.some((otherDice) => {
+    return rectangleCollidesWith(
+      {
+        top: dicePosition.y - diceSpacing,
+        left: dicePosition.x - diceSpacing,
+        bottom: dicePosition.y + diceSize + diceSpacing,
+        right: dicePosition.x + diceSize + diceSpacing,
+      },
+      {
+        top: otherDice.rolledAreaPosition.y - diceSpacing,
+        left: otherDice.rolledAreaPosition.x - diceSpacing,
+        bottom: otherDice.rolledAreaPosition.y + diceSize + diceSpacing,
+        right: otherDice.rolledAreaPosition.x + diceSize + diceSpacing,
+      },
+    )
+  })
+}
