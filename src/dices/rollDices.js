@@ -28,13 +28,13 @@ const rollDice = (dice, { dicesRolled, xMin, xMax, yMin, yMax }) => {
     yMin,
     yMax,
   })
-  return {
-    ...dice,
+  Object.assign(dice, {
     visibleFaceIndex: getRandomDiceFace(dice),
     x,
     y,
     rotation: getDiceRotation(),
-  }
+  })
+  return dice
 }
 
 const getRandomCollisionFreeDicePosition = (dices, { xMin, xMax, yMin, yMax }) => {

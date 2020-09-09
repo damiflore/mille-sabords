@@ -64,8 +64,8 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
         setDragDiceGesture({
           dice,
           diceRectangle,
-          addDropHandler: (node, dropHandler) => {
-            dropHandlerMap.set(node, dropHandler)
+          setDropHandler: (domNode, dropHandler) => {
+            dropHandlerMap.set(domNode, dropHandler)
           },
         })
       },

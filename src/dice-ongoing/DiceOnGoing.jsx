@@ -43,7 +43,7 @@ export const DiceOnGoing = () => {
   const movedRolledDice = useMoveRolledDice()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.addDropHandler(rolledAreaDomNode, ({ diceRectangle }) => {
+      dragDiceGesture.setDropHandler(rolledAreaDomNode, ({ diceRectangle }) => {
         if (hoveredByKeptDice || hoveredByRolledDice) {
           const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
           const diceRectangleRelative = rectangleRelativeTo(

@@ -32,9 +32,9 @@ export const DiceKept = () => {
   const keepDice = useKeepDice()
   useEffect(() => {
     if (dragDiceGesture) {
-      dragDiceGesture.addDropHandler(diceKeptAreaDomNode, () => {
+      dragDiceGesture.setDropHandler(diceKeptAreaDomNode, () => {
         if (hoveredByRolledDice) {
-          keepDice(dragDiceGesture.dice)
+          keepDice(diceDraggedOver)
         }
       })
     }
