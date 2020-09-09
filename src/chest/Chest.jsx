@@ -120,6 +120,7 @@ const ChestSlot = ({ chestSlotContent }) => {
       >
         <img
           src={`src/dices/dice_${symbol}.png`}
+          draggable="false"
           style={{
             width: "100%",
             height: "100%",
