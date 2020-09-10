@@ -16,6 +16,7 @@ import {
   useDiceDomNodeSetter,
   useGameDomNode,
   useDragDiceGestureSetter,
+  useWitchUncursedDiceId,
 } from "src/game.store.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
@@ -23,15 +24,21 @@ import { enableDragGesture } from "src/drag/drag.js"
 
 const { useEffect, useState } = React
 
-export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, specificStyle }) => {
+export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, specificStyle, diceOnGoing }) => {
   const onSkull = diceIsOnSkull(dice)
   const gameDomNode = useGameDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
+  const witchUncursedDiceId = useWitchUncursedDiceId()
 
   const [dragIntent, setDragIntent] = useState(false)
   const [dragGesture, setDragGesture] = useState(null)
   const setDragDiceGesture = useDragDiceGestureSetter()
+
+  const skullDiceClass = (dice) => {
+    if (dice.id === witchUncursedDiceId) return "dice"
+    return diceOnGoing ? "dice dice-cursed-disapear" : "dice dice-cursed-appear"
+  }
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !gameDomNode) {
@@ -101,7 +108,7 @@ export const Dice = ({ dice, clickAllowed, disabled, draggable, onClickAction, s
       data-dice-id={dice.id}
       ref={diceDomNodeSetter}
       onClick={onClickAction && clickAllowed && !dragIntent ? () => onClickAction(dice) : undefined}
-      className="dice"
+      className={onSkull ? skullDiceClass(dice) : "dice"}
       style={{
         width: diceSize,
         height: diceSize,

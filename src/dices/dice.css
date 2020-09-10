@@ -12,9 +12,27 @@
 .dice img:focus {
   outline: none;
 }
-.diceWithCollision {
-  overflow: hidden;
-  padding: 2px;
-  position: absolute;
-  border: 1px solid red;
+.dice-cursed-disapear {
+  animation: diceDisapear 0.2s 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.dice-cursed-appear {
+  transform: scale(0);
+  animation: diceAppear 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes diceDisapear {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes diceAppear {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
