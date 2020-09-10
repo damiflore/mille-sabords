@@ -2,7 +2,7 @@ import React from "react"
 
 import {
   getDomNodeRectangle,
-  rectangleCollidesWith,
+  rectangleCollidesWithRectangle,
   findClosestRectangle,
 } from "src/helper/rectangle.js"
 
@@ -175,7 +175,9 @@ const diceDraggedOverGetter = ({ dragDiceGesture, chestDropAreaDomNode }) => {
     return null
   }
   const chestDropAreaDomNodeRectangle = getDomNodeRectangle(chestDropAreaDomNode)
-  if (!rectangleCollidesWith(dragDiceGesture.diceRectangle, chestDropAreaDomNodeRectangle)) {
+  if (
+    !rectangleCollidesWithRectangle(dragDiceGesture.diceRectangle, chestDropAreaDomNodeRectangle)
+  ) {
     return null
   }
   return dragDiceGesture.dice

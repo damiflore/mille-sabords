@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <style>
+      .rectangle {
+        width: 40px;
+        height: 40px;
+        background: grey;
+        cursor: move;
+        position: absolute;
+      }
+      .rectangle[data-colliding] {
+        background: red !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Rotated rectangle collision</h1>
+    <div>
+      <div
+        class="rectangle"
+        style="background: orange; left: 100px; top: 100px"
+        data-rotation="0"
+      ></div>
+      <div
+        class="rectangle"
+        style="background: purple; left: 100px; top: 200px"
+        data-rotation="0"
+      ></div>
+      <div
+        class="rectangle"
+        style="background: violet; left: 200px; top: 100px"
+        data-rotation="45"
+      ></div>
+      <div
+        class="rectangle"
+        style="background: green; left: 200px; top: 210px"
+        data-rotation="120"
+      ></div>
+    </div>
+
+    <script type="module">
+      import { assert } from "@jsenv/assert"
+      import { enableDragGesture } from "src/drag/drag.js"
+      import { getDomNodeRectangle, rectangleCollidesWithRectangle } from "src/helper/rectangle.js"
+
+      const rectangles = Array.from(document.querySelectorAll(".rectangle"))
+
+      rectangles.forEach((domNode) => {
+        const rotation = parseInt(domNode.getAttribute("data-rotation"))
+        domNode.style.transform = `rotate(${rotation}deg)`
+
+        enableDragGesture(domNode, {
+          onDrag: ({ x, y }) => {
+            domNode.style.left = `${x}px`
+            domNode.style.top = `${y}px`
+            detectCollision()
+          },
+        })
+
+        const detectCollision = () => {
+          rectangles.forEach((domNode) => {
+            const hasCollision = rectangles.some((candidate) => {
+              if (candidate === domNode) return false
+
+              const firstRotatedRectangle = getRotatedRectangle(domNode)
+              const secondRotatedRectangle = getRotatedRectangle(candidate)
+              if (rectangleCollidesWithRectangle(firstRotatedRectangle, secondRotatedRectangle)) {
+                return true
+              }
+              return false
+            })
+
+            if (hasCollision) {
+              domNode.setAttribute("data-colliding", "")
+            } else {
+              domNode.removeAttribute("data-colliding")
+            }
+          })
+        }
+
+        const getRotatedRectangle = (domNode) => {
+          return {
+            ...getDomNodeRectangle(domNode),
+            rotation: parseInt(domNode.getAttribute("data-rotation")),
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

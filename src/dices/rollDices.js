@@ -1,4 +1,4 @@
-import { getDomNodeRectangle, rectangleCollidesWith } from "src/helper/rectangle.js"
+import { getDomNodeRectangle, rectangleCollidesWithRectangle } from "src/helper/rectangle.js"
 import { diceSize } from "./dicePosition.js"
 
 export const rollDices = (dices, { rolledAreaDomNode }) => {
@@ -65,7 +65,7 @@ const diceSpacing = diceSize / 8
 
 const detectCollision = (dicePosition, diceArray) => {
   return diceArray.some((otherDice) => {
-    return rectangleCollidesWith(
+    return rectangleCollidesWithRectangle(
       {
         top: dicePosition.y - diceSpacing,
         left: dicePosition.x - diceSpacing,

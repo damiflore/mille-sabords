@@ -1,7 +1,7 @@
 import React from "react"
 
 import {
-  rectangleCollidesWith,
+  rectangleCollidesWithRectangle,
   rectangleRelativeTo,
   rectangleInsideOf,
   getDomNodeRectangle,
@@ -109,7 +109,7 @@ const diceDraggedOverGetter = ({ dragDiceGesture, rolledAreaDomNode }) => {
     return null
   }
   const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-  if (!rectangleCollidesWith(dragDiceGesture.diceRectangle, rolledAreaDomNodeRectangle)) {
+  if (!rectangleCollidesWithRectangle(dragDiceGesture.diceRectangle, rolledAreaDomNodeRectangle)) {
     return null
   }
   return dragDiceGesture.dice
