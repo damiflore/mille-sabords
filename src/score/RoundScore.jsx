@@ -1,10 +1,16 @@
 import React from "react"
 
 import { useCurrentCard, useRoundStarted } from "src/game.store.js"
-import { useRoundScore } from "src/game.selectors.js"
+import { useRoundScore, useSymbolsInChest } from "src/game.selectors.js"
 
-import { isPirateCard } from "src/cards/cards.js"
+import { isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { useBecomes } from "src/hooks.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
+import { SYMBOL_SWORD } from "src/symbols/symbols.js"
+import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
+import { countSymbol } from "src/score/computeRoundScore.js"
+
+const { useState, useEffect } = React
 
 export const RoundScore = () => {
   const currentCard = useCurrentCard()
@@ -16,7 +22,7 @@ const ScoreDisplay = () => {
   const roundScore = useRoundScore()
   const currentCard = useCurrentCard()
 
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const openDialog = () => {
     setDialogIsOpen(true)
@@ -33,7 +39,6 @@ const ScoreDisplay = () => {
 
   return (
     <>
-      <div className="bonds"></div>
       {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
       <div
         className="round-score"
@@ -43,6 +48,7 @@ const ScoreDisplay = () => {
       >
         {roundScore}
       </div>
+      {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
       <ScoreRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </>
   )
@@ -52,6 +58,64 @@ const DoubleScoreIndicator = () => {
   const roundStarted = useRoundStarted()
   if (roundStarted) return <div className="pirate-hook"></div>
   return <div style={{ display: "none" }} className="pirate-hook"></div>
+}
+
+const NegativeScoreSign = () => {
+  const roundScore = useRoundScore()
+
+  const symbolsInChest = useSymbolsInChest()
+  const quantityKept = countSymbol(symbolsInChest, SYMBOL_SWORD)
+  const quantityRequired = useSwordQuantityRequired()
+  const quantityRequiredArray = new Array(quantityRequired).fill("")
+  const challengeWon = quantityKept >= quantityRequired
+
+  const swordNumberIncreased = useBecomes(
+    (quantityKeptPrevious) => quantityKeptPrevious < quantityKept,
+    [quantityKept],
+  )
+
+  const [swordSliceAnimation, swordSliceAnimationSetter] = useState(false)
+
+  useEffect(() => {
+    if (swordNumberIncreased) {
+      swordSliceAnimationSetter(true)
+    }
+  }, [swordNumberIncreased])
+
+  useEffect(() => {
+    if (swordSliceAnimation) {
+      const timeout = setTimeout(() => {
+        swordSliceAnimationSetter(false)
+      }, 300)
+      return () => {
+        clearTimeout(timeout)
+      }
+    }
+    return () => {}
+  }, [swordSliceAnimation])
+
+  return (
+    <>
+      <div className={`ropes ${challengeWon ? "challenge-won" : ""}`}>
+        {quantityRequiredArray.map((value, index) => {
+          if (quantityKept >= index + 1)
+            return <div key={index} className={`rope rope-${index + 1} cut-rope`}></div>
+          return <div key={index} className={`rope rope-${index + 1}`}></div>
+        })}
+      </div>
+      {swordSliceAnimation ? (
+        <div className="sword-slice">
+          <div className="triangle-left"></div>
+          <div className="triangle-right"></div>
+        </div>
+      ) : null}
+      <div
+        className={`negative-round-score rotate-${quantityKept} ${challengeWon ? "removed" : ""}`}
+      >
+        {roundScore}
+      </div>
+    </>
+  )
 }
 
 const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (
