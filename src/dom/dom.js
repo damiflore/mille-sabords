@@ -113,6 +113,15 @@ export const elementToOwnerDocument = (element) => {
   return element.ownerDocument
 }
 
+export const getDocumentScroll = (element) => {
+  const elementWindow = elementToOwnerWindow(element)
+  const elementDocument = elementToOwnerDocument(element)
+  return {
+    x: elementWindow.pageXOffset || elementDocument.documentElement.scrollLeft,
+    y: elementWindow.pageYOffset || elementDocument.documentElement.scrollTop,
+  }
+}
+
 /**
  * elementToOwnerIframe returns the iframe owning the element or null
  * when element is not inside an iframe.
