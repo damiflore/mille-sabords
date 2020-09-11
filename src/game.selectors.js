@@ -169,6 +169,31 @@ export const useUnkeepDiceAllowed = ({
   return true
 }
 
+export const useMarkScoreButtonVisible = ({
+  hasRolledOnce = useHasRolledOnce(),
+  scoreMarked = useScoreMarked(),
+  currentCard = useCurrentCard(),
+  hasDicesToCurse = useHasDicesToCurse(),
+} = {}) => {
+  if (scoreMarked) {
+    return false
+  }
+
+  if (hasDicesToCurse) {
+    return false
+  }
+
+  if (!currentCard) {
+    return false
+  }
+
+  if (!hasRolledOnce) {
+    return false
+  }
+
+  return true
+}
+
 export const useMarkScoreAllowed = ({
   hasRolledMoreThanOnce = useHasRolledMoreThanOnce(),
   scoreMarked = useScoreMarked(),

@@ -19,6 +19,13 @@ export const SkullIsland = () => {
       {isWitchCard(currentCard) ? <UncurseDiceLabel /> : null}
       <div className="bottle">
         <div className="area">
+          {isOneSkullCard(currentCard) ? <ExtraSkull card={currentCard} /> : null}
+          {isTwoSkullsCard(currentCard) ? (
+            <>
+              <ExtraSkull card={currentCard} />
+              <ExtraSkull card={currentCard} />
+            </>
+          ) : null}
           {dicesCursed.map((dice) => (
             <Dice
               key={dice.id}
@@ -30,13 +37,6 @@ export const SkullIsland = () => {
               specificStyle={{ margin: "1px 5px" }}
             />
           ))}
-          {isOneSkullCard(currentCard) ? <ExtraSkull card={currentCard} /> : null}
-          {isTwoSkullsCard(currentCard) ? (
-            <>
-              <ExtraSkull card={currentCard} />
-              <ExtraSkull card={currentCard} />
-            </>
-          ) : null}
         </div>
       </div>
     </div>

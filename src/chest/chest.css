@@ -70,18 +70,26 @@
 /* cursed cover */
 .cursed-cover {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 0;
+  left: 0;
   animation: closeBox 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
-  transform: perspective(1200px) rotateX(90deg);
+  /* transform: perspective(1200px) rotateX(90deg); */
   transform-origin: top;
 }
 @keyframes closeBox {
-  from {
+  /* from {
     transform: perspective(1200px) rotateX(90deg);
   }
   to {
     transform: perspective(1200px) rotateX(0deg);
+  } */
+  from {
+    opacity: 0;
+    transform: rotate(15deg) scale(3);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
   }
 }
 .cursed-cover img {

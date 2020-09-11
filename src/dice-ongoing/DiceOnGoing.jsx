@@ -91,6 +91,7 @@ export const DiceOnGoing = () => {
               keepDice(dice, freeSlot)
             }}
             draggable={true}
+            diceOnGoing={true}
             specificStyle={{
               left: `${dice.rolledAreaPosition.x}px`,
               top: `${dice.rolledAreaPosition.y}px`,
