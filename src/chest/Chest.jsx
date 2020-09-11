@@ -184,7 +184,7 @@ const diceDraggedOverGetter = ({ dragDiceGesture, chestDropAreaDomNode }) => {
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img src={`src/chest/cursed-cover.png`} alt="cursed-cover" />
+      <img src={`src/chest/cursed-grid.png`} alt="cursed-cover" />
     </div>
   )
 }
