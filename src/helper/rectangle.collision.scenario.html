@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <style>
+      .rectangle {
+        width: 40px;
+        height: 40px;
+        background: grey;
+        cursor: move;
+        position: absolute;
+      }
+      .rectangle[data-colliding] {
+        background: red !important;
+      }
+
+      .point {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: yellow;
+        border: 1px solid red;
+        margin-left: -2px;
+        margin-top: -2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Rotated rectangle collision</h1>
+    <p>
+      Somehow works but I have trouble to retrieve the rotated rectangle coordinates.
+      <br />
+      Please note how a smallest rectangle is not considered colliding if fully inside the other
+    </p>
+    <div>
+      <div
+        class="rectangle"
+        id="rect-1"
+        style="background: orange; left: 100px; top: 200px"
+        data-rotation="0"
+      ></div>
+      <div
+        class="rectangle"
+        id="rect-2"
+        style="background: purple; left: 100px; top: 200px"
+        data-rotation="0"
+      ></div>
+      <div
+        class="rectangle"
+        id="rect-2"
+        style="background: blue; left: 100px; top: 300px; width: 30px; height: 30px"
+        data-rotation="0"
+      ></div>
+      <div
+        class="rectangle"
+        id="rect-3"
+        style="background: violet; left: 200px; top: 200px"
+        data-rotation="120"
+      ></div>
+      <div
+        class="rectangle"
+        id="rect-4"
+        style="background: green; left: 200px; top: 310px"
+        data-rotation="45"
+      ></div>
+    </div>
+
+    <script type="module">
+      import { assert } from "@jsenv/assert"
+      import { enableDragGesture } from "src/drag/drag.js"
+      import {
+        getDomNodePoints,
+        rotatedRectangleCollidesWithRotatedRectangle,
+      } from "src/helper/geometry.js"
+
+      const rectangles = Array.from(document.querySelectorAll(".rectangle"))
+
+      rectangles.forEach((domNode) => {
+        const rotation = parseInt(domNode.getAttribute("data-rotation"))
+        domNode.style.transform = `rotate(${rotation}deg)`
+
+        const domNodePoints = getDomNodePoints(domNode)
+        domNodePoints.forEach(({ x, y }) => {
+          const point = document.createElement("div")
+          point.className = "point"
+          point.style.left = `${x}px`
+          point.style.top = `${y}px`
+          document.body.appendChild(point)
+        })
+
+        enableDragGesture(domNode, {
+          onDrag: ({ x, y }) => {
+            domNode.style.left = `${x}px`
+            domNode.style.top = `${y}px`
+            detectCollision()
+          },
+        })
+
+        const detectCollision = () => {
+          rectangles.forEach((domNode) => {
+            const hasCollision = rectangles.some((candidate) => {
+              if (candidate === domNode) return false
+
+              const firstRotatedRectangle = getDomNodePoints(domNode)
+              const secondRotatedRectangle = getDomNodePoints(candidate)
+              if (
+                rotatedRectangleCollidesWithRotatedRectangle(
+                  firstRotatedRectangle,
+                  secondRotatedRectangle,
+                )
+              ) {
+                return true
+              }
+              return false
+            })
+
+            if (hasCollision) {
+              domNode.setAttribute("data-colliding", "")
+            } else {
+              domNode.removeAttribute("data-colliding")
+            }
+          })
+        }
+        detectCollision()
+      })
+    </script>
+  </body>
+</html>

@@ -61,8 +61,8 @@ const GameLab = () => {
   const nextCard = cardDeck[0]
 
   const dicesKept = Object.keys(chestSlots)
-    .filter((key) => chestSlots[key].type === "dice")
-    .map((key) => chestSlots[key].value)
+    .filter((chestSlot) => chestSlots[chestSlot] && chestSlots[chestSlot].type === "dice")
+    .map((chestSlot) => chestSlots[chestSlot].value)
 
   return (
     <aside>
@@ -206,7 +206,7 @@ const DiceVariant = ({ dice, variant }) => {
             ...state,
             dicesRolled: [...dicesRolled],
             dicesCursed: [...dicesCursed],
-            chestSlots: [...chestSlots],
+            chestSlots: { ...chestSlots },
           }
         })
       }}

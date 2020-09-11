@@ -1,16 +1,18 @@
 // https://github.com/infusion/Rectangles.js/blob/master/rectangles.js
 
-import { elementToOwnerWindow, elementToOwnerDocument } from "src/dom/dom.js"
+import { getDocumentScroll } from "src/dom/dom.js"
+import { getDistanceBetweenTwoPoints } from "./geometry.js"
 
-export const rectangleCollidesWith = (firstRect, secondRect) => {
+export const rectangleCollidesWithRectangle = (firstRectangle, secondRectangle) => {
   // first left of second
-  if (firstRect.right <= secondRect.left) return false
+  if (firstRectangle.right <= secondRectangle.left) return false
   // first right of second
-  if (firstRect.left >= secondRect.right) return false
+  if (firstRectangle.left >= secondRectangle.right) return false
   // first above second
-  if (firstRect.bottom <= secondRect.top) return false
+  if (firstRectangle.bottom <= secondRectangle.top) return false
   // first below second
-  if (firstRect.top >= secondRect.bottom) return false
+  if (firstRectangle.top >= secondRectangle.bottom) return false
+
   return true
 }
 
@@ -93,12 +95,6 @@ const getDistanceBetweenRectangles = (firstRectangle, secondRectangle) => {
   return getDistanceBetweenTwoPoints(firstRectangleCenterPoint, secondRectangleCenterPoint)
 }
 
-const getDistanceBetweenTwoPoints = (firstPoint, secondPoint) => {
-  const horizontalDiff = firstPoint.x - secondPoint.x
-  const verticalDiff = firstPoint.y - secondPoint.y
-  return Math.sqrt(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff)
-}
-
 export const getRectangleIntersectionRatio = (firstRectangle, secondRectangle) => {
   const firstRectangleArea = getRectangleArea(firstRectangle)
   const overlapArea = getRectangleArea(rectangleOverlapping(firstRectangle, secondRectangle))
@@ -122,19 +118,11 @@ export const getDomNodeRectangle = (domNode) => {
   const top = domNodeRect.top + documentScroll.y
   const right = left + domNodeRect.width
   const bottom = top + domNodeRect.height
+
   return {
     left: Math.floor(left),
     top: Math.floor(top),
     right: Math.floor(right),
     bottom: Math.floor(bottom),
-  }
-}
-
-const getDocumentScroll = (element) => {
-  const elementWindow = elementToOwnerWindow(element)
-  const elementDocument = elementToOwnerDocument(element)
-  return {
-    x: elementWindow.pageXOffset || elementDocument.documentElement.scrollLeft,
-    y: elementWindow.pageYOffset || elementDocument.documentElement.scrollTop,
   }
 }

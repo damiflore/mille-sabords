@@ -30,8 +30,12 @@ const useRoll = createGameAction((state, rolledAreaDomNode) => {
   return {
     ...state,
     rollCount: rollCount + 1,
-    dicesRolled: rollDices(rollCount === 0 ? dices : dicesRolled, {
-      rolledAreaDomNode,
-    }),
+    dicesRolled:
+      // [...] to ensure rolling dice re-render
+      [
+        ...rollDices(rollCount === 0 ? dices : dicesRolled, {
+          rolledAreaDomNode,
+        }),
+      ],
   }
 })
