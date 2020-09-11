@@ -1,6 +1,7 @@
 // https://github.com/infusion/Rectangles.js/blob/master/rectangles.js
 
 import { getDocumentScroll } from "src/dom/dom.js"
+import { getDistanceBetweenTwoPoints } from "./geometry.js"
 
 export const rectangleCollidesWithRectangle = (firstRectangle, secondRectangle) => {
   // first left of second
@@ -92,12 +93,6 @@ const getDistanceBetweenRectangles = (firstRectangle, secondRectangle) => {
   const firstRectangleCenterPoint = getRectangleCenterPoint(firstRectangle)
   const secondRectangleCenterPoint = getRectangleCenterPoint(secondRectangle)
   return getDistanceBetweenTwoPoints(firstRectangleCenterPoint, secondRectangleCenterPoint)
-}
-
-const getDistanceBetweenTwoPoints = (firstPoint, secondPoint) => {
-  const horizontalDiff = firstPoint.x - secondPoint.x
-  const verticalDiff = firstPoint.y - secondPoint.y
-  return Math.sqrt(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff)
 }
 
 export const getRectangleIntersectionRatio = (firstRectangle, secondRectangle) => {

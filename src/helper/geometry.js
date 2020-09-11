@@ -1,5 +1,111 @@
 import { getDocumentScroll, getStyleValue } from "src/dom/dom.js"
 
+export const rotatePoint = (origin, point, degrees) => {
+  const radians = degreesToRadians(degrees)
+  const cosinus = Math.cos(radians)
+  const sinus = Math.sin(radians)
+  const run = point.x - origin.x
+  const rise = point.y - origin.y
+
+  return {
+    x: Math.round(cosinus * run + sinus * rise + origin.x),
+    y: Math.round(cosinus * rise - sinus * run + origin.y),
+  }
+}
+
+export const getDistanceBetweenTwoPoints = (firstPoint, secondPoint) => {
+  const horizontalDiff = firstPoint.x - secondPoint.x
+  const verticalDiff = firstPoint.y - secondPoint.y
+  return Math.sqrt(horizontalDiff * horizontalDiff + verticalDiff * verticalDiff)
+}
+
+const getRectangleCenterPoint = ([topLeft, topRight, bottomRight, bottomLeft]) => {
+  return {
+    x: (topLeft.x + topRight.x + bottomRight.x + bottomLeft.x) / 4,
+    y: (topLeft.y + topRight.y + bottomRight.y + bottomLeft.y) / 4,
+  }
+}
+
+export const rotateRectangle = (points, degree, origin = getRectangleCenterPoint(points)) => {
+  return points.map((point) => rotatePoint(origin, point, degree))
+}
+
+const degreesToRadians = (degrees) => (degrees * Math.PI) / 180
+
+const radiansToDegree = (radians) => Math.round(radians * (180 / Math.PI))
+
+// https://github.com/davidfig/intersects/blob/master/lineToLine.js
+export const lineCollidesWithLine = (
+  [firstLineStartPoint, firstLineEndPoint],
+  [secondLineStartPoint, secondLineEndPoint],
+) => {
+  let unknownA =
+    (secondLineEndPoint.x - secondLineStartPoint.x) *
+      (firstLineStartPoint.y - secondLineStartPoint.y) -
+    (secondLineEndPoint.y - secondLineStartPoint.y) *
+      (firstLineStartPoint.x - secondLineStartPoint.x)
+  let unknownB =
+    (firstLineEndPoint.x - firstLineStartPoint.x) *
+      (firstLineStartPoint.y - secondLineStartPoint.y) -
+    (firstLineEndPoint.y - firstLineStartPoint.y) * (firstLineStartPoint.x - secondLineStartPoint.x)
+  const denominator =
+    (secondLineEndPoint.y - secondLineStartPoint.y) *
+      (firstLineEndPoint.x - firstLineStartPoint.x) -
+    (secondLineEndPoint.x - secondLineStartPoint.x) * (firstLineEndPoint.y - firstLineStartPoint.y)
+
+  // Test if Coincident
+  // If the denominator and numerator for the ua and ub are 0
+  // then the two lines are coincident.
+  if (unknownA === 0 && unknownB === 0 && denominator === 0) {
+    return false
+  }
+
+  // Test if Parallel
+  // If the denominator for the equations for ua and ub is 0
+  // then the two lines are parallel.
+  if (denominator === 0) {
+    return false
+  }
+
+  // test if line segments are colliding
+  unknownA /= denominator
+  unknownB /= denominator
+  const isIntersecting = unknownA >= 0 && unknownA <= 1 && unknownB >= 0 && unknownB <= 1
+
+  return isIntersecting
+}
+
+export const rotatedRectangleCollidesWithRotatedRectangle = (
+  firstRotatedRectangle,
+  secondRotatedRectangle,
+) =>
+  someRectangleSideLine(firstRotatedRectangle, (firstRotatedRectangleSideLine) =>
+    lineCollidesWithRectangle(firstRotatedRectangleSideLine, secondRotatedRectangle),
+  )
+
+// https://riptutorial.com/html5-canvas/example/17710/are-line-segment-and-rectangle-colliding-
+export const lineCollidesWithRectangle = (line, rectangle) => {
+  const lineIntersects = someRectangleSideLine(rectangle, (rectangleSideLine) =>
+    lineCollidesWithLine(line, rectangleSideLine),
+  )
+  if (lineIntersects) return true
+  // TODO: here we should check if line is contained inside the rectangle because in that case
+  // it's not intersecting but it's colliding
+  return false
+}
+
+const someRectangleSideLine = ([firstPoint, secondPoint, thirdPoint, fourthPoint], predicate) => {
+  const rectangleFirstLine = [firstPoint, secondPoint]
+  if (predicate(rectangleFirstLine)) return true
+  const rectangleSecondLine = [secondPoint, thirdPoint]
+  if (predicate(rectangleSecondLine)) return true
+  const rectangleThirdLine = [thirdPoint, fourthPoint]
+  if (predicate(rectangleThirdLine)) return true
+  const rectangleFourthLine = [fourthPoint, firstPoint]
+  if (predicate(rectangleFourthLine)) return true
+  return false
+}
+
 /**
 A matrix is an array composed by
 [
@@ -56,10 +162,7 @@ export const getDomNodePoints = (domNode) => {
     }
 
     const rotationInDegrees = matrixToRotationInDegrees(matrix)
-
-    return points.map((point) => {
-      return rotatePoint(rotateOrigin, point, rotationInDegrees)
-    })
+    return rotateRectangle(points, rotationInDegrees, rotateOrigin)
   }
 
   return points
@@ -82,101 +185,4 @@ export const transformPoint = ({ x, y }, [a, b, c, d, e, f]) => {
 
 export const transformPoints = (points, matrix) => {
   return points.map((point) => transformPoint(point, matrix))
-}
-
-export const rotatePoint = (origin, point, degrees) => {
-  const radians = degreesToRadians(degrees)
-  const cosinus = Math.cos(radians)
-  const sinus = Math.sin(radians)
-  const run = point.x - origin.x
-  const rise = point.y - origin.y
-
-  return {
-    x: cosinus * run + sinus * rise + origin.x,
-    y: cosinus * rise - sinus * run + origin.y,
-  }
-}
-
-// export const rotateRectangle = (points, degree, origin = getRectangleCenterPoint(points)) => {
-//   return points.map((point) => rotatePoint(origin, point, degree))
-// }
-
-const degreesToRadians = (degrees) => Math.round((degrees * Math.PI) / 180)
-
-const radiansToDegree = (radians) => Math.round(radians * (180 / Math.PI))
-
-export const lineCollidesWithLine = (firstLine, secondLine) => {
-  let unknownA =
-    (secondLine.end.x - secondLine.start.x) * (firstLine.start.y - secondLine.start.y) -
-    (secondLine.end.y - secondLine.start.y) * (firstLine.start.x - secondLine.start.x)
-  let unknownB =
-    (firstLine.end.x - firstLine.start.x) * (firstLine.start.y - secondLine.start.y) -
-    (firstLine.end.y - firstLine.start.y) * (firstLine.start.x - secondLine.start.x)
-  const denominator =
-    (secondLine.end.y - secondLine.start.y) * (firstLine.end.x - firstLine.start.x) -
-    (secondLine.end.x - secondLine.start.x) * (firstLine.end.y - firstLine.start.y)
-
-  // Test if Coincident
-  // If the denominator and numerator for the ua and ub are 0
-  // then the two lines are coincident.
-  if (unknownA === 0 && unknownB === 0 && denominator === 0) {
-    return false
-  }
-
-  // Test if Parallel
-  // If the denominator for the equations for ua and ub is 0
-  // then the two lines are parallel.
-  if (denominator === 0) {
-    return false
-  }
-
-  // test if line segments are colliding
-  unknownA /= denominator
-  unknownB /= denominator
-  const isIntersecting = unknownA >= 0 && unknownA <= 1 && unknownB >= 0 && unknownB <= 1
-
-  return isIntersecting
-}
-
-export const rotatedRectangleCollidesWithRotatedRectangle = (
-  firstRotatedRectangle,
-  secondRotatedRectangle,
-) =>
-  someRectangleSideLine(firstRotatedRectangle, (firstRotatedRectangleSideLine) =>
-    lineCollidesWithRectangle(firstRotatedRectangleSideLine, secondRotatedRectangle),
-  )
-
-// https://riptutorial.com/html5-canvas/example/17710/are-line-segment-and-rectangle-colliding-
-export const lineCollidesWithRectangle = (line, rectangle) => {
-  const lineIntersects = someRectangleSideLine(rectangle, (rectangleSideLine) =>
-    lineCollidesWithLine(line, rectangleSideLine),
-  )
-  if (lineIntersects) return true
-  // TODO: here we should check if line is contained inside the rectangle because in that case
-  // it's not intersecting but it's colliding
-  return false
-}
-
-const someRectangleSideLine = ([firstPoint, secondPoint, thirdPoint, fourthPoint], predicate) => {
-  const rectangleFirstLine = {
-    start: firstPoint,
-    end: secondPoint,
-  }
-  if (predicate(rectangleFirstLine)) return true
-  const rectangleSecondLine = {
-    start: secondPoint,
-    end: thirdPoint,
-  }
-  if (predicate(rectangleSecondLine)) return true
-  const rectangleThirdLine = {
-    start: thirdPoint,
-    end: fourthPoint,
-  }
-  if (predicate(rectangleThirdLine)) return true
-  const rectangleFourthLine = {
-    start: fourthPoint,
-    end: firstPoint,
-  }
-  if (predicate(rectangleFourthLine)) return true
-  return false
 }

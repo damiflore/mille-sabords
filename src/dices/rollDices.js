@@ -1,83 +1,97 @@
-import { getDomNodeRectangle, rectangleCollidesWithRectangle } from "src/helper/rectangle.js"
+import { getDomNodeRectangle } from "src/helper/rectangle.js"
+import {
+  rotateRectangle,
+  rotatedRectangleCollidesWithRotatedRectangle,
+} from "src/helper/geometry.js"
 import { diceSize } from "./dicePosition.js"
+
+// margin because of rotation
+const diceSpacing = diceSize / 8
 
 export const rollDices = (dices, { rolledAreaDomNode }) => {
   const rolledAreaRectangle = getDomNodeRectangle(rolledAreaDomNode)
   const rolledAreaWidth = rolledAreaRectangle.right - rolledAreaRectangle.left
   const rolledAreaHeight = rolledAreaRectangle.bottom - rolledAreaRectangle.top
   const rectangleAllowed = {
-    left: 0,
-    right: rolledAreaWidth - diceSize,
-    top: 0,
-    bottom: rolledAreaHeight - diceSize,
+    left: diceSpacing,
+    right: rolledAreaWidth - (diceSize + diceSpacing),
+    top: diceSpacing,
+    bottom: rolledAreaHeight - (diceSize + diceSpacing),
   }
 
-  const dicesRolled = []
-  dices.forEach((dice) => {
-    const diceRolled = rollDice(dice, {
-      dicesRolled,
-      rectangleAllowed,
-    })
-    dicesRolled.push(diceRolled)
-  })
-  return dicesRolled
-}
-
-const rollDice = (dice, { dicesRolled, rectangleAllowed }) => {
-  const rolledAreaPosition = getRandomAndCollisionFreeDicePosition(dicesRolled, rectangleAllowed)
-  Object.assign(dice, {
-    visibleFaceIndex: getRandomDiceFace(dice),
-    rolledAreaPosition,
-    rotation: getDiceRotation(),
-  })
-  return dice
-}
-
-const getRandomAndCollisionFreeDicePosition = (dices, { left, right, top, bottom }) => {
-  let count = 0
-  const nextPosition = () => {
-    const positionCandidate = {
-      x: getRandomNumberBetweenInterval(left, right),
-      y: getRandomNumberBetweenInterval(top, bottom),
-    }
-    if (detectCollision(positionCandidate, dices)) {
-      count++
-      if (count > 50) {
-        // better return a collisioning position than an infinite loop
-        return positionCandidate
+  const otherRotatedRectangles = []
+  const getRandomAndCollisionFreeInfo = (dice) => {
+    let count = 0
+    const next = () => {
+      const rectangleCandidate = getRandomDiceRectangle(dice, rectangleAllowed)
+      const rotation = getDiceRandomRotation()
+      const rotatedRectangleCandidate = rotateRectangle(rectangleCandidate, rotation)
+      const someOtherDiceCollides = otherRotatedRectangles.some((otherRotatedRectangle) =>
+        rotatedRectangleCollidesWithRotatedRectangle(
+          rotatedRectangleCandidate,
+          otherRotatedRectangle,
+        ),
+      )
+      if (
+        !someOtherDiceCollides ||
+        // better return a collisioning rectangle than an infinite loop
+        count > 50
+      ) {
+        return {
+          rectangle: rectangleCandidate,
+          rotation,
+          rotatedRectangle: rotatedRectangleCandidate,
+        }
       }
-      return nextPosition()
+      count++
+      return next()
     }
-    return positionCandidate
+    return next()
   }
-  return nextPosition()
+
+  dices.forEach((dice) => {
+    dice.visibleFaceIndex = getDiceRandomFace(dice)
+
+    const { rectangle, rotation, rotatedRectangle } = getRandomAndCollisionFreeInfo(dice)
+    otherRotatedRectangles.push(rotatedRectangle)
+
+    dice.rotation = rotation
+    dice.rolledAreaPosition = rectangle[0]
+  })
+
+  return dices
 }
 
-const getDiceRotation = () => getRandomNumberBetweenInterval(-35, 35)
+const getRandomDiceRectangle = (dice, rectangleAllowed) => {
+  const positionCandidate = {
+    x: getRandomNumberBetweenInterval(rectangleAllowed.left, rectangleAllowed.right),
+    y: getRandomNumberBetweenInterval(rectangleAllowed.top, rectangleAllowed.bottom),
+  }
 
-const getRandomDiceFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length - 1)
+  const topLeft = {
+    x: positionCandidate.x,
+    y: positionCandidate.y,
+  }
+  const topRight = {
+    x: positionCandidate.x + diceSize,
+    y: positionCandidate.y,
+  }
+  const bottomRight = {
+    x: positionCandidate.x + diceSize,
+    y: positionCandidate.y + diceSize,
+  }
+  const bottomLeft = {
+    x: positionCandidate.x,
+    y: positionCandidate.y + diceSize,
+  }
+
+  const diceRectangle = [topLeft, topRight, bottomRight, bottomLeft]
+  return diceRectangle
+}
+
+const getDiceRandomRotation = () => getRandomNumberBetweenInterval(-35, 35)
+
+const getDiceRandomFace = (dice) => getRandomNumberBetweenInterval(0, dice.faces.length - 1)
 
 const getRandomNumberBetweenInterval = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min)
-
-// margin because of rotation
-const diceSpacing = diceSize / 8
-
-const detectCollision = (dicePosition, diceArray) => {
-  return diceArray.some((otherDice) => {
-    return rectangleCollidesWithRectangle(
-      {
-        top: dicePosition.y - diceSpacing,
-        left: dicePosition.x - diceSpacing,
-        bottom: dicePosition.y + diceSize + diceSpacing,
-        right: dicePosition.x + diceSize + diceSpacing,
-      },
-      {
-        top: otherDice.rolledAreaPosition.y - diceSpacing,
-        left: otherDice.rolledAreaPosition.x - diceSpacing,
-        bottom: otherDice.rolledAreaPosition.y + diceSize + diceSpacing,
-        right: otherDice.rolledAreaPosition.x + diceSize + diceSpacing,
-      },
-    )
-  })
-}
