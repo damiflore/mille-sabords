@@ -18,6 +18,18 @@ export const RoundScore = () => {
   return <div className="score-area">{currentCard ? <ScoreDisplay /> : null}</div>
 }
 
+const swordChallengeOngoing = () => {
+  const currentCard = useCurrentCard()
+  const symbolsInChest = useSymbolsInChest()
+  const quantityKept = countSymbol(symbolsInChest, SYMBOL_SWORD)
+  const quantityRequired = useSwordQuantityRequired()
+
+  if (!isSwordChallengeCard(currentCard)) return false
+
+  const challengeWon = quantityKept >= quantityRequired
+  return !challengeWon
+}
+
 const ScoreDisplay = () => {
   const roundScore = useRoundScore()
   const currentCard = useCurrentCard()
@@ -41,7 +53,7 @@ const ScoreDisplay = () => {
     <>
       {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
       <div
-        className="round-score"
+        className={`round-score ${swordChallengeOngoing() ? "hidden" : ""}`}
         onClick={() => {
           openDialog()
         }}
@@ -103,7 +115,7 @@ const NegativeScoreSign = () => {
           return <div key={index} className={`rope rope-${index + 1}`}></div>
         })}
       </div>
-      {swordSliceAnimation ? (
+      {swordSliceAnimation && quantityKept <= quantityRequired ? (
         <div className="sword-slice">
           <div className="triangle-left"></div>
           <div className="triangle-right"></div>
