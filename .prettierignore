@@ -3,6 +3,5 @@
 /coverage/
 /dist/
 /lighthouse/
-/importMap.json
 /jsconfig.json
 /package-lock.json

@@ -1,8 +1,7 @@
 import { generateLighthouseReport } from "@jsenv/lighthouse-score-impact"
 
 const run = async () => {
-  const { bundlePromise } = await import("../generate-systemjs-bundle/generate-systemjs-bundle.js")
-  await bundlePromise
+  await import("../generate-systemjs-bundle/generate-systemjs-bundle.js")
 
   process.env.LOG_LEVEL = "warn"
   // process.env.HTTPS = true

@@ -13,10 +13,6 @@
   "module": "index.js",
   "browser": "dist/systemjs/main.js",
   "type": "module",
-  "imports": {
-    "src/": "./src/",
-    "lab/": "./lab/"
-  },
   "files": [
     "/dist/",
     "/src/",
@@ -27,15 +23,15 @@
     "test": "node ./script/test/test.js",
     "test-with-coverage": "npm run test -- --coverage",
     "eslint-check": "node ./node_modules/eslint/bin/eslint.js .",
-    "prettier-format": "node --no-warnings ./script/prettier-format/prettier-format.js",
+    "prettier-format": "node ./script/prettier-format/prettier-format.js",
     "prettier-format-stage": "npm run prettier-format -- --staged",
     "prettier-check": "npm run prettier-format -- --dry-run",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
-    "generate-systemjs-bundle": "node ./script/generate-systemjs-bundle/generate-systemjs-bundle.js",
-    "generate-import-map": "node ./script/generate-import-map/generate-import-map.js",
+    "generate-systemjs-bundle": "node --experimental-top-level-await ./script/generate-systemjs-bundle/generate-systemjs-bundle.js",
+    "generate-import-map": "node --experimental-top-level-await ./script/generate-import-map/generate-import-map.js",
     "generate-lighthouse-report": "node ./script/generate-lighthouse-report/generate-lighthouse-report.js",
     "build": "npm run dist",
-    "start": "node ./script/start/start.js",
+    "start": "node --experimental-top-level-await ./script/start/start.js",
     "postinstall": "npm run generate-import-map",
     "dist": "npm run generate-systemjs-bundle"
   },

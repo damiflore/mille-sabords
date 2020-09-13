@@ -5,11 +5,12 @@
     "@jsenv/logger": "./node_modules/@jsenv/logger/index.js",
     "@jsenv/server": "./node_modules/@jsenv/server/index.js",
     "mille-sabords": "./index.js",
+    "systemjs/s.js": "./node_modules/systemjs/dist/s.min.js",
     "react-dom": "./node_modules/react-dom/index.js",
     "systemjs": "./node_modules/systemjs/dist/system-node.cjs",
     "react": "./node_modules/react/index.js",
-    "lab/": "./lab/",
-    "src/": "./src/"
+    "src/": "./src/",
+    "lab/": "./lab/"
   },
   "scopes": {
     "./node_modules/@jsenv/server/node_modules/@jsenv/util/node_modules/@jsenv/cancellation/": {

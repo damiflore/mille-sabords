@@ -2,34 +2,35 @@ import { generateSystemJsBundle } from "@jsenv/core"
 import {
   generateImportMapForProject,
   getImportMapFromNodeModules,
+  getImportMapFromFile,
 } from "@jsenv/node-module-import-map"
 import * as jsenvConfig from "../../jsenv.config.js"
 
 // this is to get the production build of react
+// and to remove dev dependencies from importmap
 process.env.NODE_ENV = "production"
 
-// this is to avoid generating importMap for devDependencies
 const importMapFileRelativeUrl = "./dist/bundle.importmap"
 
-export const bundlePromise = generateImportMapForProject(
+await generateImportMapForProject(
   [
     getImportMapFromNodeModules({
       projectDirectoryUrl: jsenvConfig.projectDirectoryUrl,
     }),
+    getImportMapFromFile(new URL("./import-map-custom.importmap", jsenvConfig.projectDirectoryUrl)),
   ],
   {
     projectDirectoryUrl: jsenvConfig.projectDirectoryUrl,
     importMapFileRelativeUrl,
   },
-).then(() => {
-  return generateSystemJsBundle({
-    ...jsenvConfig,
-    bundleDirectoryClean: true,
-    formatInputOptions: {
-      preserveEntrySignatures: false,
-    },
-    importMapFileRelativeUrl,
-    minify: true,
-    manifestFile: true,
-  })
+)
+await generateSystemJsBundle({
+  ...jsenvConfig,
+  bundleDirectoryClean: true,
+  formatInputOptions: {
+    preserveEntrySignatures: false,
+  },
+  importMapFileRelativeUrl,
+  minify: true,
+  manifestFile: true,
 })
