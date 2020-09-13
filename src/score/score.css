@@ -1,13 +1,36 @@
 .score-area {
   text-align: center;
   position: relative;
+  top: -10px;
   height: 40px;
+  z-index: 1;
+}
+
+.score-area.animated {
+  animation: falling 0.8s ease-in-out forwards;
+  transform: perspective(1200px) rotateX(90deg);
+  transform-origin: top;
+}
+
+@keyframes falling {
+  0% {
+    transform: perspective(1200px) rotateX(90deg);
+  }
+  50% {
+    transform: perspective(1200px) rotateX(-45deg);
+  }
+  75% {
+    transform: perspective(1200px) rotateX(35deg);
+  }
+  100% {
+    transform: perspective(1200px) rotateX(0deg);
+  }
 }
 .score-area .round-score {
   margin-top: 5px;
   display: inline-block;
   position: relative;
-  top: 5px;
+  top: 15px;
   min-width: 38px;
   font-weight: 600;
   padding: 4px 15px;
@@ -34,7 +57,7 @@
   font-weight: 600;
   background-color: #dcc599;
   position: relative;
-  top: -138%;
+  top: -45px;
   width: 30%;
   display: block;
   margin: 0 auto;
@@ -67,7 +90,7 @@
   width: 33%;
   margin: 0 auto;
   position: relative;
-  top: -105%;
+  top: -31px;
 }
 .score-area .ropes.challenge-won {
   opacity: 0;

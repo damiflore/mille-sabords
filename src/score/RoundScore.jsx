@@ -12,12 +12,6 @@ import { countSymbol } from "src/score/computeRoundScore.js"
 
 const { useState, useEffect } = React
 
-export const RoundScore = () => {
-  const currentCard = useCurrentCard()
-
-  return <div className="score-area">{currentCard ? <ScoreDisplay /> : null}</div>
-}
-
 const swordChallengeOngoing = () => {
   const currentCard = useCurrentCard()
   const symbolsInChest = useSymbolsInChest()
@@ -28,6 +22,16 @@ const swordChallengeOngoing = () => {
 
   const challengeWon = quantityKept >= quantityRequired
   return !challengeWon
+}
+
+export const RoundScore = () => {
+  const currentCard = useCurrentCard()
+
+  return (
+    <div className={`score-area ${swordChallengeOngoing() ? "animated" : ""}`}>
+      {currentCard ? <ScoreDisplay /> : null}
+    </div>
+  )
 }
 
 const ScoreDisplay = () => {
