@@ -1,9 +1,13 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useGameDomNodeSetter } from "src/game.store.js"
-import { useAllGameRessourceLoaded } from "src/hooks.js"
-import { HeadStyle } from "src/generic/HeadStyle.js"
+import {
+  useGameDomNodeSetter,
+  useRessourceTracking,
+  useAllResourceTracking,
+  useRessourceTracker,
+} from "src/game.store.js"
+import { HeadCSSLink } from "src/generic/HeadCSSLink.jsx"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
 
@@ -32,7 +36,7 @@ export const Game = () => {
   return useMemo(() => (
     <div id="game-container">
       <div id="game" ref={gameDomNodeSetter}>
-        <HeadStyle href="/mille-sabord.css" />
+        <HeadCSSLink href="/mille-sabord.css" />
         <GameEffects />
         <PreloadImages />
         <Header />
@@ -49,9 +53,33 @@ export const Game = () => {
 }
 
 const GameLoadedWatcher = () => {
-  const allLoaded = useAllGameRessourceLoaded()
-  if (allLoaded) {
-    window.removeSplashscreen()
-  }
+  // fake the loading of some ressource to ensure
+  // other components had time to register their own ressource loaded tracker
+  const endLoadingRessource = useRessourceTracker("")
+  React.useEffect(() => {
+    endLoadingRessource()
+  }, [])
+
+  const ressourceTracking = useRessourceTracking("")
+  const allRessourceTracking = useAllResourceTracking()
+  React.useEffect(() => {
+    if (!ressourceTracking) {
+      return
+    }
+
+    const allLoaded = Object.keys(allRessourceTracking).every(
+      (url) => allRessourceTracking[url].status === "loaded",
+    )
+    // console.log(
+    //   "ressource tracked",
+    //   Object.keys(allRessourceTracking),
+    //   allLoaded,
+    //   allRessourceTracking,
+    // )
+    if (allLoaded) {
+      window.removeSplashscreen()
+    }
+  }, [ressourceTracking, allRessourceTracking])
+
   return null
 }

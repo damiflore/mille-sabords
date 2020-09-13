@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameRessourceLoaded } from "src/hooks.js"
+import { useRessourceTracker } from "src/game.store.js"
 import { cardList } from "src/cards/cards.js"
 import { addDomEventListener } from "src/dom/dom.js"
 
@@ -19,18 +19,16 @@ export const PreloadImages = () => {
 }
 
 const GameImage = ({ ref, src, ...props }) => {
-  const gameRessourceLoaded = useGameRessourceLoaded(src)
+  const endLoadingRessource = useRessourceTracker(src)
 
   const nodeRef = (domNode) => {
     if (!domNode) return () => {}
 
     if (domNode.complete) {
-      gameRessourceLoaded(true)
+      endLoadingRessource()
       return () => {}
     }
-    return addDomEventListener(domNode, "load", () => {
-      gameRessourceLoaded(true)
-    })
+    return addDomEventListener(domNode, "load", endLoadingRessource)
   }
 
   if (ref) {

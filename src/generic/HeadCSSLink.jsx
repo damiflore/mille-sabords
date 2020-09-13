@@ -1,14 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { useStartLoadingRessource, useEndLoadingRessource } from "src/game.store.js"
+import { useRessourceTracker } from "src/game.store.js"
 import { addDomEventListener } from "src/dom/dom.js"
 
 export const HeadCSSLink = ({ href }) => {
-  const startLoadingRessource = useStartLoadingRessource(href)
-  const endLoadingRessource = useEndLoadingRessource(href)
-  React.useEffect(() => {
-    startLoadingRessource()
-  }, [])
+  const endLoadingRessource = useRessourceTracker(href)
 
   return ReactDOM.createPortal(
     <link

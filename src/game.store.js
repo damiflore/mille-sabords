@@ -132,17 +132,56 @@ DragDiceGestureProvider.displayName = "DragDiceGestureProvider"
 export const useDragDiceGesture = () => useContext(DragDiceGestureContext)[0]
 export const useDragDiceGestureSetter = () => useContext(DragDiceGestureContext)[1]
 
+const AllRessourceTrackingContext = createContext()
+const AllRessourceTrackingProvider = AllRessourceTrackingContext.Provider
+AllRessourceTrackingProvider.displayName = "AllRessourceTrackingProvider"
+export const useAllResourceTracking = () => useContext(AllRessourceTrackingContext)[0]
+export const useRessourceTracking = (url) => useContext(AllRessourceTrackingContext)[0][url]
+export const useRessourceTracker = (url) => {
+  const dispatch = useContext(AllRessourceTrackingContext)[1]
+
+  React.useEffect(() => {
+    dispatch((state) => {
+      if (url in state) {
+        // console.log("start loading early return", url, state[url])
+        return state
+      }
+      // console.log("start loading", url)
+      return {
+        ...state,
+        [url]: { status: "loading" },
+      }
+    })
+  }, [])
+
+  return () => {
+    dispatch((state) => {
+      if (url in state && state[url].status === "loaded") {
+        // console.log("end loading early return", url, state[url])
+        return state
+      }
+      // console.log("end loading", url)
+      return {
+        ...state,
+        [url]: { status: "loaded" },
+      }
+    })
+  }
+}
+
 // https://github.com/facebook/react/issues/14620
 export const GameContextProvider = ({ gameState, children }) => {
   return (
     <GameStateProvider initialState={gameState}>
-      <GameDomNodeProvider value={useState()}>
-        <RolledAreaDomNodeProvider value={useState()}>
-          <DiceDomNodesProvider>
-            <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
-          </DiceDomNodesProvider>
-        </RolledAreaDomNodeProvider>
-      </GameDomNodeProvider>
+      <AllRessourceTrackingProvider value={React.useReducer((state, action) => action(state), {})}>
+        <GameDomNodeProvider value={useState()}>
+          <RolledAreaDomNodeProvider value={useState()}>
+            <DiceDomNodesProvider>
+              <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
+            </DiceDomNodesProvider>
+          </RolledAreaDomNodeProvider>
+        </GameDomNodeProvider>
+      </AllRessourceTrackingProvider>
     </GameStateProvider>
   )
 }
