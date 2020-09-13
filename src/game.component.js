@@ -77,8 +77,14 @@ const GameLoadedWatcher = () => {
     //   allRessourceTracking,
     // )
     if (allLoaded) {
-      console.info(`all game ressource loaded`, Object.keys(allRessourceTracking))
-      window.removeSplashscreen()
+      setTimeout(
+        () => {
+          console.info(`all game ressource loaded`, Object.keys(allRessourceTracking))
+          window.removeSplashscreen()
+        },
+        // give bit of time for the browser to render stuff
+        50,
+      )
     }
   }, [ressourceTracking, allRessourceTracking])
 

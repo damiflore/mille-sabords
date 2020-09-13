@@ -7,10 +7,12 @@ import { addDomEventListener } from "src/dom/dom.js"
 export const PreloadImages = () => {
   const images = [
     "src/wood.jpg",
-    "src/dice-ongoing/treasure-map.png",
-    "src/skull-island/witch-label.png",
     `src/chest/pirate-hook.png`,
     `src/chest/pirate-hook-02.png`,
+    "src/chest/wood-box.jpg",
+    "src/dice-ongoing/treasure-map.png",
+    "src/skull-island/witch-label.png",
+    "src/skull-island/skull-bottle.png",
     `src/cards/card_default.png`,
     ...cardList.map((card) => `src/cards/card_${card}.png`),
   ]
