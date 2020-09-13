@@ -9,10 +9,22 @@
   </head>
 
   <body>
-    <div id="splashscreen">
+    <div id="splashscreen" data-visible>
       <style>
-        #app {
+        #splashscreen[data-visible] + #app {
           visibility: hidden;
+          /*
+          avoid big image to create a scroll
+          or if the game is too big it will
+          increase splashscreen size
+          */
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
+        #splashscreen[data-visible] {
+          display: flex;
         }
 
         #splashscreen {
@@ -20,11 +32,11 @@
           z-index: 1000;
           left: 0;
           top: 0;
-          height: 100%;
-          width: 100%;
+          right: 0;
+          bottom: 0;
           background: black;
           color: white;
-          display: flex;
+          display: none;
           flex-direction: column;
           align-items: center;
         }
@@ -46,7 +58,7 @@
 
         window.removeSplashscreen = () => {
           clearTimeout(timeout)
-          document.querySelector("#splashscreen").style.display = "none"
+          document.querySelector("#splashscreen").removeAttribute("data-visible")
         }
       </script>
     </div>
