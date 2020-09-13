@@ -5,15 +5,21 @@ import { cardList } from "src/cards/cards.js"
 import { addDomEventListener } from "src/dom/dom.js"
 
 export const PreloadImages = () => {
+  const images = [
+    "src/wood.jpg",
+    "src/dice-ongoing/treasure-map.png",
+    "src/skull-island/witch-label.png",
+    `src/chest/pirate-hook.png`,
+    `src/chest/pirate-hook-02.png`,
+    `src/cards/card_default.png`,
+    ...cardList.map((card) => `src/cards/card_${card}.png`),
+  ]
+
   return (
     <div style={{ display: "none" }}>
-      <GameImage src={`src/skull-island/witch-label.png`} />
-      <GameImage src={`src/chest/pirate-hook.png`} />
-      <GameImage src={`src/chest/pirate-hook-02.png`} />
-      <GameImage src={`src/cards/card_default.png`} />
-      {cardList.map((card) => {
-        return <GameImage src={`src/cards/card_${card}.png`} alt={card} key={card} />
-      })}
+      {images.map((src) => (
+        <GameImage key={src} src={src} />
+      ))}
     </div>
   )
 }

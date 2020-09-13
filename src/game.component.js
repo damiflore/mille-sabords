@@ -77,6 +77,7 @@ const GameLoadedWatcher = () => {
     //   allRessourceTracking,
     // )
     if (allLoaded) {
+      console.info(`all game ressource loaded`, Object.keys(allRessourceTracking))
       window.removeSplashscreen()
     }
   }, [ressourceTracking, allRessourceTracking])
