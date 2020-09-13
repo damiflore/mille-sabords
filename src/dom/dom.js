@@ -1,5 +1,12 @@
 /* eslint-disable valid-jsdoc */
 
+export const addDomEventListener = (domNode, eventName, callback, options) => {
+  domNode.addEventListener(eventName, callback, options)
+  return () => {
+    domNode.removeEventListener(eventName, callback, options)
+  }
+}
+
 // checking if somthing is window is tricky
 // we could also use a.constructor.name === 'Window'
 // but it's safer to use approach below

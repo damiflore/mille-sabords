@@ -1,5 +1,6 @@
 import { createLogger } from "@jsenv/logger"
 import { throttle } from "src/helper/throttle.js"
+import { addDomEventListener } from "src/dom/dom.js"
 
 export const enableDragGesture = (
   domNode,
@@ -148,13 +149,6 @@ export const enableDragGesture = (
     removeReleaseListener()
     clearTimeout(longGripTimeout)
     handleCancel(event)
-  }
-}
-
-const addDomEventListener = (domNode, eventName, callback, options) => {
-  domNode.addEventListener(eventName, callback, options)
-  return () => {
-    domNode.removeEventListener(eventName, callback, options)
   }
 }
 

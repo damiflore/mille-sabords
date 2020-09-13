@@ -2,6 +2,7 @@
 import React from "react"
 
 import { useGameDomNodeSetter } from "src/game.store.js"
+import { useAllGameRessourceLoaded } from "src/hooks.js"
 import { HeadStyle } from "src/generic/HeadStyle.js"
 import { GameEffects } from "src/game.effects.js"
 import { PreloadImages } from "src/PreloadImages.jsx"
@@ -41,7 +42,16 @@ export const Game = () => {
         </div>
         <DiceOnGoing />
         <Footer />
+        <GameLoadedWatcher />
       </div>
     </div>
   ))
+}
+
+const GameLoadedWatcher = () => {
+  const allLoaded = useAllGameRessourceLoaded()
+  if (allLoaded) {
+    window.removeSplashscreen()
+  }
+  return null
 }
