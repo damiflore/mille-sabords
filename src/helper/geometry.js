@@ -1,4 +1,4 @@
-import { getDocumentScroll, getStyleValue } from "src/dom/dom.js"
+import { getDocumentScroll, getStyleValue } from "src/dom/dom.util.js"
 
 export const rotatePoint = (origin, point, degrees) => {
   const radians = degreesToRadians(degrees)

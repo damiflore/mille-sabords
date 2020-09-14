@@ -1,8 +1,8 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
 import { isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,

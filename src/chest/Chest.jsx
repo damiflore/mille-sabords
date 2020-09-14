@@ -6,13 +6,8 @@ import {
   findClosestRectangle,
 } from "src/helper/rectangle.js"
 
-import {
-  createGameAction,
-  useCurrentCard,
-  useChestSlots,
-  useDicesRolled,
-  useDragDiceGesture,
-} from "src/game.store.js"
+import { createGameAction, useCurrentCard, useChestSlots, useDicesRolled } from "src/game.store.js"
+import { useDragDiceGesture } from "src/drag/drag.main.js"
 import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
 import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
 

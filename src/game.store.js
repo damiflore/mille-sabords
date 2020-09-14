@@ -1,10 +1,7 @@
-import React from "react"
 import { createLogger } from "@jsenv/logger"
-import { createStructuredStateStore } from "./store/createStructuredStateStore.js"
+import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
-
-const { createContext, useContext, useState } = React
 
 const defaultState = {
   // persist accross a game round
@@ -36,7 +33,7 @@ const defaultState = {
 
 const logger = createLogger({ logLevel: "warn" })
 const gameStateSessionStorageKey = "game"
-export const gameStateStore = createStructuredStateStore(
+export const gameStore = createStructuredStateStore(
   defaultState,
   () => {
     if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
@@ -78,110 +75,21 @@ export const gameStateStore = createStructuredStateStore(
     },
   },
 )
+gameStore.Provider.displayName = "GameStoreProvider"
 
-export const useTotalScore = () => gameStateStore.useKeyedState("totalScore")
-export const useCardDeck = () => gameStateStore.useKeyedState("cardDeck")
-export const useCardsUsed = () => gameStateStore.useKeyedState("cardsUsed")
-export const useDices = () => gameStateStore.useKeyedState("dices")
-export const useRoundStarted = () => gameStateStore.useKeyedState("roundStarted")
-export const useRollCount = () => gameStateStore.useKeyedState("rollCount")
-export const useScoreMarked = () => gameStateStore.useKeyedState("scoreMarked")
-export const useIsOnSkullIsland = () => gameStateStore.useKeyedState("isOnSkullIsland")
-export const useCurrentCard = () => gameStateStore.useKeyedState("currentCard")
-export const useWitchUncursedDiceId = () => gameStateStore.useKeyedState("witchUncursedDiceId")
-export const useDicesRolled = () => gameStateStore.useKeyedState("dicesRolled")
-export const useDicesCursed = () => gameStateStore.useKeyedState("dicesCursed")
-export const useChestSlots = () => gameStateStore.useKeyedState("chestSlots")
+export const useGameDispatch = gameStore.useDispatch
+export const createGameAction = gameStore.createAction
 
-export const useGameDispatch = gameStateStore.useDispatch
-export const createGameAction = gameStateStore.createAction
-
-const GameStateProvider = gameStateStore.Provider
-GameStateProvider.displayName = "GameStateProvider"
-
-const RolledAreaDomNodeContext = createContext()
-const RolledAreaDomNodeProvider = RolledAreaDomNodeContext.Provider
-RolledAreaDomNodeProvider.displayName = "RolledAreaDomNodeProvider"
-export const useRolledAreaDomNode = () => useContext(RolledAreaDomNodeContext)[0]
-export const useRolledAreaDomNodeSetter = () => useContext(RolledAreaDomNodeContext)[1]
-
-const GameDomNodeContext = createContext()
-const GameDomNodeProvider = GameDomNodeContext.Provider
-GameDomNodeProvider.displayName = "GameDomNodeProvider"
-export const useGameDomNode = () => useContext(GameDomNodeContext)[0]
-export const useGameDomNodeSetter = () => useContext(GameDomNodeContext)[1]
-
-const diceDomNodeContexts = {}
-DICES.forEach((dice) => {
-  diceDomNodeContexts[dice.id] = createContext()
-})
-const diceDomNodeProviders = Object.keys(diceDomNodeContexts).map(
-  (key) => diceDomNodeContexts[key].Provider,
-)
-const DiceDomNodesProvider = ({ children }) => {
-  return diceDomNodeProviders.reduceRight((prev, Next) => {
-    return <Next value={useState()}>{prev}</Next>
-  }, children)
-}
-export const useDiceDomNode = (id) => useContext(diceDomNodeContexts[id])[0]
-export const useDiceDomNodeSetter = (id) => useContext(diceDomNodeContexts[id])[1]
-
-const DragDiceGestureContext = createContext()
-const DragDiceGestureProvider = DragDiceGestureContext.Provider
-DragDiceGestureProvider.displayName = "DragDiceGestureProvider"
-export const useDragDiceGesture = () => useContext(DragDiceGestureContext)[0]
-export const useDragDiceGestureSetter = () => useContext(DragDiceGestureContext)[1]
-
-const AllRessourceTrackingContext = createContext()
-const AllRessourceTrackingProvider = AllRessourceTrackingContext.Provider
-AllRessourceTrackingProvider.displayName = "AllRessourceTrackingProvider"
-export const useAllResourceTracking = () => useContext(AllRessourceTrackingContext)[0]
-export const useRessourceTracking = (url) => useContext(AllRessourceTrackingContext)[0][url]
-export const useRessourceTracker = (url) => {
-  const dispatch = useContext(AllRessourceTrackingContext)[1]
-
-  React.useEffect(() => {
-    dispatch((state) => {
-      if (url in state) {
-        // console.log("start loading early return", url, state[url])
-        return state
-      }
-      // console.log("start loading", url)
-      return {
-        ...state,
-        [url]: { status: "loading" },
-      }
-    })
-  }, [])
-
-  return () => {
-    dispatch((state) => {
-      if (url in state && state[url].status === "loaded") {
-        // console.log("end loading early return", url, state[url])
-        return state
-      }
-      // console.log("end loading", url)
-      return {
-        ...state,
-        [url]: { status: "loaded" },
-      }
-    })
-  }
-}
-
-// https://github.com/facebook/react/issues/14620
-export const GameContextProvider = ({ gameState, children }) => {
-  return (
-    <GameStateProvider initialState={gameState}>
-      <AllRessourceTrackingProvider value={React.useReducer((state, action) => action(state), {})}>
-        <GameDomNodeProvider value={useState()}>
-          <RolledAreaDomNodeProvider value={useState()}>
-            <DiceDomNodesProvider>
-              <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
-            </DiceDomNodesProvider>
-          </RolledAreaDomNodeProvider>
-        </GameDomNodeProvider>
-      </AllRessourceTrackingProvider>
-    </GameStateProvider>
-  )
-}
+export const useTotalScore = () => gameStore.useKeyedState("totalScore")
+export const useCardDeck = () => gameStore.useKeyedState("cardDeck")
+export const useCardsUsed = () => gameStore.useKeyedState("cardsUsed")
+export const useDices = () => gameStore.useKeyedState("dices")
+export const useRoundStarted = () => gameStore.useKeyedState("roundStarted")
+export const useRollCount = () => gameStore.useKeyedState("rollCount")
+export const useScoreMarked = () => gameStore.useKeyedState("scoreMarked")
+export const useIsOnSkullIsland = () => gameStore.useKeyedState("isOnSkullIsland")
+export const useCurrentCard = () => gameStore.useKeyedState("currentCard")
+export const useWitchUncursedDiceId = () => gameStore.useKeyedState("witchUncursedDiceId")
+export const useDicesRolled = () => gameStore.useKeyedState("dicesRolled")
+export const useDicesCursed = () => gameStore.useKeyedState("dicesCursed")
+export const useChestSlots = () => gameStore.useKeyedState("chestSlots")

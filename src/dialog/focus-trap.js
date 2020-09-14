@@ -1,10 +1,10 @@
-import { isFocusable } from "src/dom/dom.js"
+import { isFocusable } from "src/dom/dom.util.js"
 import {
   findAfter,
   findBefore,
   findFirstDescendant,
   findLastDescendant,
-} from "src/dom/traversal.js"
+} from "src/dom/dom.traversal.js"
 
 export const firstFocusableDescendantOrSelf = (element) => {
   const firstFocusableDescendant = findFirstDescendant(element, isFocusable)

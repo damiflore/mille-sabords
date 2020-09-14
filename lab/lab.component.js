@@ -1,14 +1,14 @@
 import React from "react"
 
 import {
-  GameContextProvider,
   useCardDeck,
   useDicesRolled,
   useDicesCursed,
   useChestSlots,
   useGameDispatch,
-  useDiceDomNode,
 } from "src/game.store.js"
+import { useDiceDomNode } from "src/dom/dom.main.js"
+import { GameContextProvider } from "src/game.context.js"
 
 import {
   SYMBOL_COIN,
@@ -33,7 +33,7 @@ import {
   CARD_WITCH,
 } from "src/cards/cards.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
-import { HeadCSSLink } from "src/generic/HeadCSSLink.jsx"
+import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Game } from "src/game.component.js"
 
 export const Lab = () => {
@@ -43,7 +43,7 @@ export const Lab = () => {
 
   return (
     <div id="lab">
-      <HeadCSSLink href="/lab/lab.css" />
+      <Stylesheet href="/lab/lab.css" />
       <GameContextProvider initialState={gameState}>
         <GameLab />
         <Game />

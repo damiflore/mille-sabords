@@ -1,8 +1,7 @@
 import React from "react"
 
-import { useRessourceTracker } from "src/game.store.js"
 import { cardList } from "src/cards/cards.js"
-import { addDomEventListener } from "src/dom/dom.js"
+import { Image } from "src/generic/Image.jsx"
 
 export const PreloadImages = () => {
   const images = [
@@ -20,34 +19,8 @@ export const PreloadImages = () => {
   return (
     <div style={{ display: "none" }}>
       {images.map((src) => (
-        <GameImage key={src} src={src} />
+        <Image key={src} src={src} />
       ))}
     </div>
   )
-}
-
-const GameImage = ({ ref, src, ...props }) => {
-  const endLoadingRessource = useRessourceTracker(src)
-
-  const nodeRef = (domNode) => {
-    if (!domNode) return () => {}
-
-    if (domNode.complete) {
-      endLoadingRessource()
-      return () => {}
-    }
-    return addDomEventListener(domNode, "load", endLoadingRessource)
-  }
-
-  if (ref) {
-    const oldRef = ref
-    ref = (node) => {
-      oldRef(node)
-      nodeRef(node)
-    }
-  } else {
-    ref = nodeRef
-  }
-
-  return <img {...props} src={src} ref={ref} />
 }

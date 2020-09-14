@@ -7,14 +7,9 @@ import {
   getDomNodeRectangle,
 } from "src/helper/rectangle.js"
 
-import {
-  useDicesRolled,
-  useChestSlots,
-  useRolledAreaDomNode,
-  useRolledAreaDomNodeSetter,
-  useDragDiceGesture,
-  createGameAction,
-} from "src/game.store.js"
+import { useDicesRolled, useChestSlots, createGameAction } from "src/game.store.js"
+import { useDragDiceGesture } from "src/drag/drag.main.js"
+import { useRolledAreaDomNode, useRolledAreaDomNodeSetter } from "src/dom/dom.main.js"
 import { useKeepDiceAllowed } from "src/game.selectors.js"
 import { useKeepDice, useUnkeepDice } from "src/dices/dices.actions.js"
 

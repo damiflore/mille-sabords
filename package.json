@@ -29,7 +29,7 @@
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
     "generate-systemjs-bundle": "node --experimental-top-level-await ./script/generate-systemjs-bundle/generate-systemjs-bundle.js",
     "generate-import-map": "node --experimental-top-level-await ./script/generate-import-map/generate-import-map.js",
-    "generate-lighthouse-report": "node ./script/generate-lighthouse-report/generate-lighthouse-report.js",
+    "generate-lighthouse-report": "node --experimental-top-level-await ./script/generate-lighthouse-report/generate-lighthouse-report.js",
     "build": "npm run dist",
     "start": "node --experimental-top-level-await ./script/start/start.js",
     "postinstall": "npm run generate-import-map",

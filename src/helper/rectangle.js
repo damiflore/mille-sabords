@@ -1,6 +1,6 @@
 // https://github.com/infusion/Rectangles.js/blob/master/rectangles.js
 
-import { getDocumentScroll } from "src/dom/dom.js"
+import { getDocumentScroll } from "src/dom/dom.util.js"
 import { getDistanceBetweenTwoPoints } from "./geometry.js"
 
 export const rectangleCollidesWithRectangle = (firstRectangle, secondRectangle) => {
