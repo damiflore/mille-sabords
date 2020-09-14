@@ -1,7 +1,7 @@
 import React from "react"
-import { addDomEventListener } from "src/dom/dom.js"
+import { addDomEventListener } from "src/dom/dom.util.js"
 
-const { createContext, useContext } = React
+const { createContext, useContext, useReducer } = React
 
 export const Booting = ({ onBoot, children }) => {
   // fake the loading of some ressource to ensure
@@ -86,9 +86,7 @@ const assetTrackingInitialState = {}
 
 export const AssetsTrackingProvider = ({ children }) => {
   return (
-    <AssetsContext.Provider
-      value={React.useReducer(assetTrackingReducer, assetTrackingInitialState)}
-    >
+    <AssetsContext.Provider value={useReducer(assetTrackingReducer, assetTrackingInitialState)}>
       {children}
     </AssetsContext.Provider>
   )

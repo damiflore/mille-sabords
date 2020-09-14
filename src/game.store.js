@@ -2,10 +2,10 @@ import React from "react"
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "./store/createStructuredStateStore.js"
 import { AssetsTrackingProvider } from "src/booting/booting.main.js"
+import { DomNodesProvider } from "src/dom/dom.main.js"
+import { DragDiceGestureProvider } from "src/drag/drag.main.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
-
-const { createContext, useContext, useState } = React
 
 const defaultState = {
   // persist accross a game round
@@ -100,51 +100,14 @@ export const createGameAction = gameStateStore.createAction
 const GameStateProvider = gameStateStore.Provider
 GameStateProvider.displayName = "GameStateProvider"
 
-const RolledAreaDomNodeContext = createContext()
-const RolledAreaDomNodeProvider = RolledAreaDomNodeContext.Provider
-RolledAreaDomNodeProvider.displayName = "RolledAreaDomNodeProvider"
-export const useRolledAreaDomNode = () => useContext(RolledAreaDomNodeContext)[0]
-export const useRolledAreaDomNodeSetter = () => useContext(RolledAreaDomNodeContext)[1]
-
-const GameDomNodeContext = createContext()
-const GameDomNodeProvider = GameDomNodeContext.Provider
-GameDomNodeProvider.displayName = "GameDomNodeProvider"
-export const useGameDomNode = () => useContext(GameDomNodeContext)[0]
-export const useGameDomNodeSetter = () => useContext(GameDomNodeContext)[1]
-
-const diceDomNodeContexts = {}
-DICES.forEach((dice) => {
-  diceDomNodeContexts[dice.id] = createContext()
-})
-const diceDomNodeProviders = Object.keys(diceDomNodeContexts).map(
-  (key) => diceDomNodeContexts[key].Provider,
-)
-const DiceDomNodesProvider = ({ children }) => {
-  return diceDomNodeProviders.reduceRight((prev, Next) => {
-    return <Next value={useState()}>{prev}</Next>
-  }, children)
-}
-export const useDiceDomNode = (id) => useContext(diceDomNodeContexts[id])[0]
-export const useDiceDomNodeSetter = (id) => useContext(diceDomNodeContexts[id])[1]
-
-const DragDiceGestureContext = createContext()
-const DragDiceGestureProvider = DragDiceGestureContext.Provider
-DragDiceGestureProvider.displayName = "DragDiceGestureProvider"
-export const useDragDiceGesture = () => useContext(DragDiceGestureContext)[0]
-export const useDragDiceGestureSetter = () => useContext(DragDiceGestureContext)[1]
-
 // https://github.com/facebook/react/issues/14620
 export const GameContextProvider = ({ gameState, children }) => {
   return (
     <GameStateProvider initialState={gameState}>
       <AssetsTrackingProvider>
-        <GameDomNodeProvider value={useState()}>
-          <RolledAreaDomNodeProvider value={useState()}>
-            <DiceDomNodesProvider>
-              <DragDiceGestureProvider value={useState()}>{children}</DragDiceGestureProvider>
-            </DiceDomNodesProvider>
-          </RolledAreaDomNodeProvider>
-        </GameDomNodeProvider>
+        <DomNodesProvider>
+          <DragDiceGestureProvider>{children}</DragDiceGestureProvider>
+        </DomNodesProvider>
       </AssetsTrackingProvider>
     </GameStateProvider>
   )

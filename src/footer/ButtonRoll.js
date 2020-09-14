@@ -1,6 +1,7 @@
 import React from "react"
-import { createGameAction, useRolledAreaDomNode } from "src/game.store.js"
+import { createGameAction } from "src/game.store.js"
 import { useRollDiceAllowed } from "src/game.selectors.js"
+import { useRolledAreaDomNode } from "src/dom/dom.main.js"
 import { rollDices } from "src/dices/rollDices.js"
 
 export const ButtonRoll = () => {

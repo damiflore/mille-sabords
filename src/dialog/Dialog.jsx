@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameDomNode } from "src/game.store.js"
+import { useGameDomNode } from "src/dom/dom.main.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 
 import { DialogBase } from "./DialogBase.jsx"

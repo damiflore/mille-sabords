@@ -1,8 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useGameDomNodeSetter } from "src/game.store.js"
-
+import { useGameDomNodeSetter } from "src/dom/dom.main.js"
 import { Booting } from "src/booting/booting.main.js"
 import { GameEffects } from "src/game.effects.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
