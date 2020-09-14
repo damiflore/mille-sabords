@@ -1,14 +1,14 @@
 import React from "react"
 
 import { useGameDomNode } from "src/game.store.js"
-import { HeadCSSLink } from "src/generic/HeadCSSLink.jsx"
+import { Stylesheet } from "src/generic/Stylesheet.jsx"
 
 import { DialogBase } from "./DialogBase.jsx"
 
 export const Dialog = (props) => {
   return (
     <>
-      <DialogHeadCSS />
+      <Stylesheet href="/src/dialog/dialog.css" />
       <DialogBase
         container={useGameDomNode()}
         backdropProps={{
@@ -33,6 +33,3 @@ export const Dialog = (props) => {
     </>
   )
 }
-
-let DialogHeadCSS = () => <HeadCSSLink href="/src/dialog/dialog.css" />
-DialogHeadCSS = React.memo(DialogHeadCSS)
