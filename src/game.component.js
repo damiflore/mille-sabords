@@ -15,7 +15,7 @@ import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 
 const { useMemo } = React
 
-export const Game = () => {
+const GameRaw = () => {
   /*
   https://github.com/facebook/react/issues/15156#issuecomment-474590693
 
@@ -29,40 +29,35 @@ export const Game = () => {
   */
   const gameDomNodeSetter = useGameDomNodeSetter()
 
-  return useMemo(
-    catchError(
-      () => (
-        <div id="game-container">
-          <div id="game" ref={gameDomNodeSetter}>
-            <Booting
-              onBoot={() => {
-                window.removeSplashscreen()
-              }}
-            >
-              <Stylesheet href="/mille-sabord.css" />
-              <GameEffects />
-              <PreloadImages />
-              <Header />
-              <div className="chest-and-skulls">
-                <Chest />
-                <SkullIsland />
-              </div>
-              <DiceOnGoing />
-              <Footer />
-            </Booting>
+  return useMemo(() => (
+    <div id="game-container">
+      <div id="game" ref={gameDomNodeSetter}>
+        <Booting
+          onBoot={() => {
+            window.removeSplashscreen()
+          }}
+        >
+          <Stylesheet href="/mille-sabord.css" />
+          <GameEffects />
+          <PreloadImages />
+          <Header />
+          <div className="chest-and-skulls">
+            <Chest />
+            <SkullIsland />
           </div>
-        </div>
-      ),
-      ({ error }) => {
-        return (
-          <div>
-            An error occured<pre>{error.stack}</pre>
-          </div>
-        )
-      },
-      () => {
-        window.removeSplashscreen()
-      },
-    ),
-  )
+          <DiceOnGoing />
+          <Footer />
+        </Booting>
+      </div>
+    </div>
+  ))
 }
+
+export const Game = catchError(GameRaw, ({ error }) => {
+  window.removeSplashscreen()
+  return (
+    <div>
+      An error occured<pre>{typeof error === "object" ? error.stack : error}</pre>
+    </div>
+  )
+})
