@@ -6,8 +6,8 @@ import {
   useDicesCursed,
   useChestSlots,
   useGameDispatch,
-  useDiceDomNode,
 } from "src/game.store.js"
+import { useDiceDomNode } from "src/dom/dom.main.js"
 import { GameContextProvider } from "src/game.context.js"
 
 import {
