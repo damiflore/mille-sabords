@@ -1,7 +1,6 @@
 import React from "react"
 
 import {
-  GameContextProvider,
   useCardDeck,
   useDicesRolled,
   useDicesCursed,
@@ -9,6 +8,7 @@ import {
   useGameDispatch,
   useDiceDomNode,
 } from "src/game.store.js"
+import { GameContextProvider } from "src/game.context.js"
 
 import {
   SYMBOL_COIN,
