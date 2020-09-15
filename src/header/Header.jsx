@@ -1,6 +1,7 @@
 import React from "react"
 
-import { useCurrentCard, useTotalScore } from "src/game.store.js"
+import { useCurrentCard } from "src/game.store.js"
+import { useCurrentPlayer } from "src/game.selectors.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
@@ -73,10 +74,10 @@ const Card = ({ card }) => {
 }
 
 const TotalScore = () => {
-  const totalScore = useTotalScore()
+  const currentPlayer = useCurrentPlayer()
   return (
     <div className="total-score">
-      <span className="score">{totalScore}</span>
+      <span className="score">{currentPlayer.score}</span>
     </div>
   )
 }

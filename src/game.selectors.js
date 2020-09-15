@@ -8,6 +8,8 @@ import {
   useDicesRolled,
   useDicesCursed,
   useChestSlots,
+  useCurrentPlayerId,
+  usePlayers,
 } from "src/game.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
@@ -22,6 +24,17 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
+
+export const useCurrentPlayer = ({
+  currentPlayerId = useCurrentPlayerId(),
+  players = usePlayers(),
+} = {}) => {
+  console.log(currentPlayerId, players)
+  return players.find((playerCandidate) => playerCandidate.id === currentPlayerId)
+}
+
+export const usePlayer = (playerId, { players = usePlayers() } = {}) =>
+  players.find((playerCandidate) => playerCandidate.id === playerId)
 
 export const useHasNeverRolled = ({ rollCount = useRollCount() } = {}) => rollCount === 0
 

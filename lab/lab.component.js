@@ -35,6 +35,7 @@ import {
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Game } from "src/game.component.js"
+import { useCurrentPlayer } from "src/game.selectors.js"
 
 export const Lab = () => {
   const gameState = {
@@ -57,7 +58,7 @@ const GameLab = () => {
   const dicesRolled = useDicesRolled()
   const chestSlots = useChestSlots()
   const dicesCursed = useDicesCursed()
-  const setTotalScore = useSetTotalScore()
+  const setCurrentPlayerScore = useSetCurrentPlayerScore()
   const nextCard = cardDeck[0]
 
   const dicesKept = Object.keys(chestSlots)
@@ -78,7 +79,7 @@ const GameLab = () => {
               <button
                 key={score}
                 onClick={() => {
-                  setTotalScore(score)
+                  setCurrentPlayerScore(score)
                 }}
               >
                 Set to {score}
@@ -235,11 +236,17 @@ const NextCardInput = ({ active, card }) => {
   )
 }
 
-const useSetTotalScore = () => {
+const useSetCurrentPlayerScore = () => {
   const dispatch = useGameDispatch()
-  return (totalScore) => {
+  return (score) => {
     dispatch((state) => {
-      return { ...state, totalScore }
+      const { currentPlayerId, players } = state
+      const currentPlayer = useCurrentPlayer(currentPlayerId, { players })
+      currentPlayer.score = score
+      return {
+        ...state,
+        players: [...players],
+      }
     })
   }
 }

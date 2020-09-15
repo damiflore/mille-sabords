@@ -2,13 +2,17 @@ import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
+import { createPlayers, CHARACTERS } from "src/players/players.main.js"
 
 const defaultState = {
+  players: createPlayers(CHARACTERS),
+  currentPlayerId: 1,
+
   // persist accross a game round
-  totalScore: 0,
   cardDeck: mixDeck(CARDS),
   cardsUsed: [],
   dices: DICES,
+
   // game round
   roundStarted: false,
   rollCount: 0,
@@ -80,7 +84,8 @@ gameStore.Provider.displayName = "GameStoreProvider"
 export const useGameDispatch = gameStore.useDispatch
 export const createGameAction = gameStore.createAction
 
-export const useTotalScore = () => gameStore.useKeyedState("totalScore")
+export const usePlayers = () => gameStore.useKeyedState("players")
+export const useCurrentPlayerId = () => gameStore.useKeyedState("currentPlayerId")
 export const useCardDeck = () => gameStore.useKeyedState("cardDeck")
 export const useCardsUsed = () => gameStore.useKeyedState("cardsUsed")
 export const useDices = () => gameStore.useKeyedState("dices")

@@ -1,10 +1,14 @@
 import { createGameAction } from "src/game.store.js"
 
 export const useMarkScore = createGameAction((state, score) => {
-  const { totalScore } = state
+  const { players, currentPlayerId } = state
+  const currentPlayer = players.find(({ id }) => id === currentPlayerId)
+  const nextScore = currentPlayer.score + score
+  currentPlayer.score = nextScore < 0 ? 0 : nextScore
+
   return {
     ...state,
-    totalScore: Math.max(totalScore + score, 0),
+    players: [...players],
     scoreMarked: true,
   }
 })
