@@ -176,7 +176,7 @@
   transform-origin: top;
   z-index: 2;
   opacity: 0;
-  animation: balance 0.7s cubic-bezier(0.4, 0, 1, 1) 0.4s forwards;
+  animation: balance 0.6s cubic-bezier(0.69, 0.69, 0.29, 1.31) 0.4s forwards;
 }
 @keyframes balance {
   0% {
@@ -189,29 +189,34 @@
     transform: translate(-14px, -17px) rotate(62deg);
     background-image: url("../chest/pirate-hook.png");
   }
+  24% {
+    opacity: 1;
+    transform: translate(-3px, 14px) rotate(-36deg);
+    background-image: url("../chest/pirate-hook.png");
+  }
   25% {
     opacity: 1;
-    transform: translate(-3px, -8px) rotate(-36deg);
-    background-image: url("../chest/pirate-hook.png");
+    transform: translate(-3px, 14px) rotate(-36deg);
+    background-image: url("../chest/pirate-hook-02.png");
   }
   50% {
     opacity: 1;
-    transform: translate(3px, -6px) rotate(42deg);
-    background-image: url("../chest/pirate-hook.png");
+    transform: translate(-3px, 14px) rotate(42deg);
+    background-image: url("../chest/pirate-hook-02.png");
   }
   75% {
     opacity: 1;
-    transform: translate(-3px, -8px) rotate(-18deg);
-    background-image: url("../chest/pirate-hook.png");
+    transform: translate(-3px, 14px) rotate(-18deg);
+    background-image: url("../chest/pirate-hook-02.png");
   }
   85% {
     opacity: 1;
-    transform: translate(3px, -6px) rotate(35deg);
+    transform: translate(-3px, 14px) rotate(20deg);
     background-image: url("../chest/pirate-hook-02.png");
   }
   100% {
     opacity: 1;
-    transform: translate(3px, -6px) rotate(28deg);
+    transform: translate(-3px, 14px) rotate(12deg);
     background-image: url("../chest/pirate-hook-02.png");
   }
 }
