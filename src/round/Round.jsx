@@ -1,9 +1,6 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useGameDomNodeSetter } from "src/dom/dom.main.js"
 import { GameEffects } from "src/round/round.effects.js"
-import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { PreloadImages } from "src/generic/PreloadImages.jsx"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
@@ -25,22 +22,18 @@ export const Round = () => {
 
   There is no real need for useMemo here: it's kept as an example.
   */
-  const gameDomNodeSetter = useGameDomNodeSetter()
 
   return useMemo(() => (
-    <div id="game-container">
-      <div id="game" ref={gameDomNodeSetter}>
-        <Stylesheet href="/mille-sabord.css" />
-        <GameEffects />
-        <PreloadImages />
-        <Header />
-        <div className="chest-and-skulls">
-          <Chest />
-          <SkullIsland />
-        </div>
-        <DiceOnGoing />
-        <Footer />
+    <>
+      <GameEffects />
+      <PreloadImages />
+      <Header />
+      <div className="chest-and-skulls">
+        <Chest />
+        <SkullIsland />
       </div>
-    </div>
+      <DiceOnGoing />
+      <Footer />
+    </>
   ))
 }

@@ -12,7 +12,7 @@ et non pas a la fin
 import React from "react"
 import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import { useWitchUncursedDiceId } from "src/main.store.js"
-import { useDiceDomNode, useDiceDomNodeSetter, useGameDomNode } from "src/dom/dom.main.js"
+import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { useDragDiceGestureSetter } from "src/drag/drag.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
@@ -30,7 +30,7 @@ export const Dice = ({
   diceOnGoing,
 }) => {
   const onSkull = diceIsOnSkull(dice)
-  const gameDomNode = useGameDomNode()
+  const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
   const witchUncursedDiceId = useWitchUncursedDiceId()
@@ -45,7 +45,7 @@ export const Dice = ({
   }
 
   useEffect(() => {
-    if (!draggable || !diceDomNode || !gameDomNode) {
+    if (!draggable || !diceDomNode || !mainDomNode) {
       return () => {}
     }
 
@@ -69,8 +69,8 @@ export const Dice = ({
           top: y,
           bottom: y + diceSize,
         }
-        const gameDomNodeRect = getDomNodeRectangle(gameDomNode)
-        const diceRectangle = rectangleInsideOf(diceDesiredRect, gameDomNodeRect)
+        const mainDomNodeRect = getDomNodeRectangle(mainDomNode)
+        const diceRectangle = rectangleInsideOf(diceDesiredRect, mainDomNodeRect)
         setDragGesture({ x: diceRectangle.left, y: diceRectangle.top })
         setDragDiceGesture({
           dice,
@@ -104,7 +104,7 @@ export const Dice = ({
       disableDragGesture()
       clearTimeout(dragIntentTimeout)
     }
-  }, [draggable, diceDomNode, gameDomNode])
+  }, [draggable, diceDomNode, mainDomNode])
 
   return (
     <button
