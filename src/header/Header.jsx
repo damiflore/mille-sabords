@@ -32,6 +32,7 @@ export const Header = () => {
         </div>
         <SwordChallengeIndicator />
       </div>
+      <CurrentPlayer />
       <TotalScore />
       <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
@@ -71,6 +72,11 @@ const Card = ({ card }) => {
       />
     </div>
   )
+}
+
+const CurrentPlayer = () => {
+  const currentPlayer = useCurrentPlayer()
+  return <span>Joueur actuel: {currentPlayer.character.name}</span>
 }
 
 const TotalScore = () => {

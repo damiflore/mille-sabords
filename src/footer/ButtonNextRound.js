@@ -23,8 +23,14 @@ export const ButtonNextRound = ({ openDialog }) => {
 }
 
 const useStartNextRound = createAction((state) => {
+  const { players, currentPlayerId } = state
+  const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayerId)
+  const nextPlayerId =
+    currentPlayerIndex === players.length - 1 ? players[0].id : players[currentPlayerIndex + 1].id
+
   return {
     ...state,
+    currentPlayerId: nextPlayerId,
     witchUncursedDiceId: null,
     roundStarted: false,
     rollCount: 0,
