@@ -4,9 +4,9 @@ import { DICES } from "src/dices/dices.js"
 
 const { createContext, useContext, useState } = React
 
-const GameDomNodeContext = createContext()
-export const useGameDomNode = () => useContext(GameDomNodeContext)[0]
-export const useGameDomNodeSetter = () => useContext(GameDomNodeContext)[1]
+const MainDomNodeContext = createContext()
+export const useMainDomNode = () => useContext(MainDomNodeContext)[0]
+export const useMainDomNodeSetter = () => useContext(MainDomNodeContext)[1]
 
 const diceDomNodeContexts = {}
 DICES.forEach((dice) => {
@@ -29,10 +29,10 @@ export const useRolledAreaDomNodeSetter = () => useContext(RolledAreaDomNodeCont
 
 export const DomNodesProvider = ({ children }) => {
   return (
-    <GameDomNodeContext.Provider value={useState()}>
+    <MainDomNodeContext.Provider value={useState()}>
       <RolledAreaDomNodeContext.Provider value={useState()}>
         <DiceDomNodesProvider>{children}</DiceDomNodesProvider>
       </RolledAreaDomNodeContext.Provider>
-    </GameDomNodeContext.Provider>
+    </MainDomNodeContext.Provider>
   )
 }

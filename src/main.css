@@ -13,7 +13,7 @@ body {
   color: #444444;
   margin: 0;
 }
-#game {
+#main {
   background-image: url("./wood.jpg");
   color: white;
   overflow: hidden;
@@ -28,7 +28,7 @@ button {
 button:disabled:hover {
   cursor: default;
 }
-#game button:focus {
+#main button:focus {
   outline: none;
 }
 .title {
@@ -55,7 +55,7 @@ body {
   flex: 1;
 }
 
-#game-container {
+#main-container {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -65,13 +65,13 @@ body {
   user-select: none;
 }
 
-/* #game-container::before,
-#game-container::after {
+/* #main-container::before,
+#main-container::after {
   content: "";
   flex: 1;
 } */
 
-#game {
+#main {
   position: relative;
   display: flex;
   flex: 1;
@@ -86,24 +86,24 @@ body {
   /* margin: auto; */
 }
 
-#game .header {
+#main .header {
   height: 60px;
 }
 
-#game .box-and-skulls {
+#main .box-and-skulls {
   height: 250px;
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
 }
 
-#game .dice-ongoing {
+#main .dice-ongoing {
   flex: 1;
   min-height: 100px;
   /* z-index: 0; */
   /* z-index pour que la map reste en dessous */
 }
 
-#game .actions {
+#main .actions {
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
   height: 60px;

@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useDicesCursed, useCurrentCard, useRoundStarted } from "src/game.store.js"
-import { useRemoveSkullAllowed } from "src/game.selectors.js"
+import { useDicesCursed, useCurrentCard, useRoundStarted } from "src/main.store.js"
+import { useRemoveSkullAllowed } from "src/round/round.selectors.js"
 import { useUncurseDice } from "src/dices/dices.actions.js"
 
 import { isOneSkullCard, isTwoSkullsCard, isWitchCard, cardColors } from "src/cards/cards.js"

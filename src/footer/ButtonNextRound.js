@@ -1,6 +1,6 @@
 import React from "react"
-import { createGameAction } from "src/game.store.js"
-import { useStartNextRoundAllowed } from "src/game.selectors.js"
+import { createAction } from "src/main.store.js"
+import { useStartNextRoundAllowed } from "src/round/round.selectors.js"
 
 export const ButtonNextRound = ({ openDialog }) => {
   const startNextRoundAllowed = useStartNextRoundAllowed()
@@ -22,9 +22,15 @@ export const ButtonNextRound = ({ openDialog }) => {
   return null
 }
 
-const useStartNextRound = createGameAction((state) => {
+const useStartNextRound = createAction((state) => {
+  const { players, currentPlayerId } = state
+  const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayerId)
+  const nextPlayerId =
+    currentPlayerIndex === players.length - 1 ? players[0].id : players[currentPlayerIndex + 1].id
+
   return {
     ...state,
+    currentPlayerId: nextPlayerId,
     witchUncursedDiceId: null,
     roundStarted: false,
     rollCount: 0,

@@ -1,8 +1,8 @@
-import { createGameAction } from "src/game.store.js"
+import { createAction } from "src/main.store.js"
 import { mixDeck } from "src/cards/cards.js"
 import { SYMBOL_COIN, SYMBOL_DIAMOND } from "src/symbols/symbols.js"
 
-export const useDrawCard = createGameAction((state) => {
+export const useDrawCard = createAction((state) => {
   const { cardDeck, cardsUsed } = state
   const cardDrawn = cardDeck[0]
   return {
@@ -13,7 +13,7 @@ export const useDrawCard = createGameAction((state) => {
   }
 })
 
-export const useAddExtraCoin = createGameAction((state) => {
+export const useAddExtraCoin = createAction((state) => {
   const { chestSlots } = state
   return {
     ...state,
@@ -27,7 +27,7 @@ export const useAddExtraCoin = createGameAction((state) => {
   }
 })
 
-export const useAddExtraDiamond = createGameAction((state) => {
+export const useAddExtraDiamond = createAction((state) => {
   const { chestSlots } = state
   return {
     ...state,
@@ -41,7 +41,7 @@ export const useAddExtraDiamond = createGameAction((state) => {
   }
 })
 
-export const useShuffleDeck = createGameAction((state) => {
+export const useShuffleDeck = createAction((state) => {
   const { cardsUsed } = state
   return {
     ...state,

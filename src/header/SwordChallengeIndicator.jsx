@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useCurrentCard } from "src/game.store.js"
-import { useSymbolsInChest } from "src/game.selectors.js"
+import { useCurrentCard } from "src/main.store.js"
+import { useSymbolsInChest } from "src/round/round.selectors.js"
 import {
   isSwordChallengeCard,
   isTwoSwordsChallengeCard,

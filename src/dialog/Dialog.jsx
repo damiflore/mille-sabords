@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useGameDomNode } from "src/dom/dom.main.js"
+import { useMainDomNode } from "src/dom/dom.main.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 
 import { DialogBase } from "./DialogBase.jsx"
@@ -10,7 +10,7 @@ export const Dialog = (props) => {
     <>
       <Stylesheet href="/src/dialog/dialog.css" />
       <DialogBase
-        container={useGameDomNode()}
+        container={useMainDomNode()}
         backdropProps={{
           className: "dialog--backdrop",
         }}

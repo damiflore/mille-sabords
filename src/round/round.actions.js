@@ -1,6 +1,6 @@
-import { createGameAction } from "src/game.store.js"
+import { createAction } from "src/main.store.js"
 
-export const useMarkScore = createGameAction((state, score) => {
+export const useMarkScore = createAction((state, score) => {
   const { players, currentPlayerId } = state
   const currentPlayer = players.find(({ id }) => id === currentPlayerId)
   const nextScore = currentPlayer.score + score
@@ -13,14 +13,14 @@ export const useMarkScore = createGameAction((state, score) => {
   }
 })
 
-export const useSendToSkullIsland = createGameAction((state) => {
+export const useSendToSkullIsland = createAction((state) => {
   return {
     ...state,
     isOnSkullIsland: true,
   }
 })
 
-export const useStartRound = createGameAction((state) => {
+export const useStartRound = createAction((state) => {
   return {
     ...state,
     roundStarted: true,

@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useCurrentCard } from "src/game.store.js"
-import { useCurrentPlayer } from "src/game.selectors.js"
+import { useCurrentCard } from "src/main.store.js"
+import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
@@ -32,6 +32,7 @@ export const Header = () => {
         </div>
         <SwordChallengeIndicator />
       </div>
+      <CurrentPlayer />
       <TotalScore />
       <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
@@ -71,6 +72,11 @@ const Card = ({ card }) => {
       />
     </div>
   )
+}
+
+const CurrentPlayer = () => {
+  const currentPlayer = useCurrentPlayer()
+  return <span>Joueur actuel: {currentPlayer.character.name}</span>
 }
 
 const TotalScore = () => {

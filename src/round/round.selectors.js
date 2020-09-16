@@ -10,7 +10,7 @@ import {
   useChestSlots,
   useCurrentPlayerId,
   usePlayers,
-} from "src/game.store.js"
+} from "src/main.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
   isWitchCard,
@@ -29,7 +29,6 @@ export const useCurrentPlayer = ({
   currentPlayerId = useCurrentPlayerId(),
   players = usePlayers(),
 } = {}) => {
-  console.log(currentPlayerId, players)
   return players.find((playerCandidate) => playerCandidate.id === currentPlayerId)
 }
 

@@ -1,15 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-import { GameContextProvider } from "src/game.context.js"
+import { ContextProvider } from "src/main.context.js"
 
 export const createMilleSabordGame = async ({ into }) => {
-  const { Game } = await import("./src/game.component.js")
+  const { Main } = await import("./src/main.component.js")
 
   ReactDOM.render(
-    <GameContextProvider>
-      <Game />
-    </GameContextProvider>,
+    <ContextProvider>
+      <Main />
+    </ContextProvider>,
     into,
   )
 }

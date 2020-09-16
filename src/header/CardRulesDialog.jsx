@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCard } from "src/game.store.js"
+import { useCurrentCard } from "src/main.store.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"

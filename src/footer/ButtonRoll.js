@@ -1,6 +1,6 @@
 import React from "react"
-import { createGameAction } from "src/game.store.js"
-import { useRollDiceAllowed } from "src/game.selectors.js"
+import { createAction } from "src/main.store.js"
+import { useRollDiceAllowed } from "src/round/round.selectors.js"
 import { useRolledAreaDomNode } from "src/dom/dom.main.js"
 import { rollDices } from "src/dices/rollDices.js"
 
@@ -26,7 +26,7 @@ export const ButtonRoll = () => {
   return null
 }
 
-const useRoll = createGameAction((state, rolledAreaDomNode) => {
+const useRoll = createAction((state, rolledAreaDomNode) => {
   const { rollCount, dices, dicesRolled } = state
   return {
     ...state,

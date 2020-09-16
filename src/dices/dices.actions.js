@@ -1,6 +1,6 @@
-import { createGameAction } from "src/game.store.js"
+import { createAction } from "src/main.store.js"
 
-export const useCurseDice = createGameAction((state, dice) => {
+export const useCurseDice = createAction((state, dice) => {
   const { dicesRolled, dicesCursed } = state
   return {
     ...state,
@@ -9,7 +9,7 @@ export const useCurseDice = createGameAction((state, dice) => {
   }
 })
 
-export const useUncurseDice = createGameAction((state, dice) => {
+export const useUncurseDice = createAction((state, dice) => {
   const { dicesRolled, dicesCursed } = state
   return {
     ...state,
@@ -19,7 +19,7 @@ export const useUncurseDice = createGameAction((state, dice) => {
   }
 })
 
-export const useUnkeepDice = createGameAction((state, dice, rolledAreaPosition) => {
+export const useUnkeepDice = createAction((state, dice, rolledAreaPosition) => {
   const { dicesRolled, chestSlots } = state
   dice.rolledAreaPosition = rolledAreaPosition
   return {
@@ -32,7 +32,7 @@ export const useUnkeepDice = createGameAction((state, dice, rolledAreaPosition) 
   }
 })
 
-export const useKeepDice = createGameAction((state, dice, chestSlot) => {
+export const useKeepDice = createAction((state, dice, chestSlot) => {
   const { dicesRolled, chestSlots } = state
   dice.chestSlot = chestSlot
   return {
