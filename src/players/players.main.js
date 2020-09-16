@@ -8,4 +8,8 @@ export const createPlayers = (characters) => {
   })
 }
 
-export const CHARACTERS = [{ name: "barbe rousse" }, { name: "ginette boulette" }]
+export const CHARACTERS = [
+  { id: 1, name: "Barbe Rousse" },
+  { id: 2, name: "Ginette Boulette" },
+  { id: 3, name: "Jack Sparrow" },
+]
