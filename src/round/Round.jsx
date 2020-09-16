@@ -13,7 +13,7 @@ import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 
 const { useMemo } = React
 
-export const Game = () => {
+export const Round = () => {
   /*
   https://github.com/facebook/react/issues/15156#issuecomment-474590693
 
