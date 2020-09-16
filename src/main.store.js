@@ -5,6 +5,8 @@ import { DICES } from "src/dices/dices.js"
 import { createPlayers, CHARACTERS } from "src/players/players.main.js"
 
 const defaultState = {
+  gameStarted: false,
+
   players: createPlayers(CHARACTERS),
   currentPlayerId: 1,
 
@@ -36,12 +38,15 @@ const defaultState = {
 }
 
 const logger = createLogger({ logLevel: "warn" })
-const gameStateSessionStorageKey = "game"
-export const gameStore = createStructuredStateStore(
+const stateSessionStorageKey = "game"
+export const store = createStructuredStateStore(
   defaultState,
   () => {
-    if (sessionStorage.hasOwnProperty(gameStateSessionStorageKey)) {
-      const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(gameStateSessionStorageKey))
+    if (sessionStorage.hasOwnProperty(stateSessionStorageKey)) {
+      const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(stateSessionStorageKey))
+
+      // idéalement on voudrait plus qu'un log ici
+      // on voudrait afficher un message dans la ui pour expliquer pourquoi la partie a été supprimée
 
       // Here we check for missing or extra key in case the stored game state is outdated.
       // It happens when a new version of the game is released and the stored game state
@@ -66,7 +71,7 @@ export const gameStore = createStructuredStateStore(
         return defaultState
       }
 
-      logger.info(`read sessionStorage ${gameStateSessionStorageKey} = `, valueFromSessionStorage)
+      logger.info(`read sessionStorage ${stateSessionStorageKey} = `, valueFromSessionStorage)
       return valueFromSessionStorage
     }
     logger.debug(`no game state stored -> use initial game state`)
@@ -74,27 +79,28 @@ export const gameStore = createStructuredStateStore(
   },
   {
     effect: (state) => {
-      logger.debug(`write sessionStorage ${gameStateSessionStorageKey} = `, state)
-      sessionStorage.setItem(gameStateSessionStorageKey, JSON.stringify(state))
+      logger.debug(`write sessionStorage ${stateSessionStorageKey} = `, state)
+      sessionStorage.setItem(stateSessionStorageKey, JSON.stringify(state))
     },
   },
 )
-gameStore.Provider.displayName = "GameStoreProvider"
+store.Provider.displayName = "storeProvider"
 
-export const useGameDispatch = gameStore.useDispatch
-export const createGameAction = gameStore.createAction
+export const useDispatch = store.useDispatch
+export const createAction = store.createAction
 
-export const usePlayers = () => gameStore.useKeyedState("players")
-export const useCurrentPlayerId = () => gameStore.useKeyedState("currentPlayerId")
-export const useCardDeck = () => gameStore.useKeyedState("cardDeck")
-export const useCardsUsed = () => gameStore.useKeyedState("cardsUsed")
-export const useDices = () => gameStore.useKeyedState("dices")
-export const useRoundStarted = () => gameStore.useKeyedState("roundStarted")
-export const useRollCount = () => gameStore.useKeyedState("rollCount")
-export const useScoreMarked = () => gameStore.useKeyedState("scoreMarked")
-export const useIsOnSkullIsland = () => gameStore.useKeyedState("isOnSkullIsland")
-export const useCurrentCard = () => gameStore.useKeyedState("currentCard")
-export const useWitchUncursedDiceId = () => gameStore.useKeyedState("witchUncursedDiceId")
-export const useDicesRolled = () => gameStore.useKeyedState("dicesRolled")
-export const useDicesCursed = () => gameStore.useKeyedState("dicesCursed")
-export const useChestSlots = () => gameStore.useKeyedState("chestSlots")
+export const useGameStarted = () => store.useKeyedState("gameStarted")
+export const usePlayers = () => store.useKeyedState("players")
+export const useCurrentPlayerId = () => store.useKeyedState("currentPlayerId")
+export const useCardDeck = () => store.useKeyedState("cardDeck")
+export const useCardsUsed = () => store.useKeyedState("cardsUsed")
+export const useDices = () => store.useKeyedState("dices")
+export const useRoundStarted = () => store.useKeyedState("roundStarted")
+export const useRollCount = () => store.useKeyedState("rollCount")
+export const useScoreMarked = () => store.useKeyedState("scoreMarked")
+export const useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland")
+export const useCurrentCard = () => store.useKeyedState("currentCard")
+export const useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId")
+export const useDicesRolled = () => store.useKeyedState("dicesRolled")
+export const useDicesCursed = () => store.useKeyedState("dicesCursed")
+export const useChestSlots = () => store.useKeyedState("chestSlots")

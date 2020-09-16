@@ -11,7 +11,7 @@ et non pas a la fin
 
 import React from "react"
 import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
-import { useWitchUncursedDiceId } from "src/game.store.js"
+import { useWitchUncursedDiceId } from "src/main.store.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useGameDomNode } from "src/dom/dom.main.js"
 import { useDragDiceGestureSetter } from "src/drag/drag.main.js"
 import { diceSize } from "src/dices/dicePosition.js"

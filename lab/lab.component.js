@@ -5,10 +5,10 @@ import {
   useDicesRolled,
   useDicesCursed,
   useChestSlots,
-  useGameDispatch,
-} from "src/game.store.js"
+  useDispatch,
+} from "src/main.store.js"
 import { useDiceDomNode } from "src/dom/dom.main.js"
-import { GameContextProvider } from "src/game.context.js"
+import { ContextProvider } from "src/main.context.js"
 
 import {
   SYMBOL_COIN,
@@ -34,8 +34,8 @@ import {
 } from "src/cards/cards.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
-import { Game } from "src/game.component.js"
-import { useCurrentPlayer } from "src/game.selectors.js"
+import { Main } from "src/main.component.js"
+import { useCurrentPlayer } from "src/game/game.selectors.js"
 
 export const Lab = () => {
   const gameState = {
@@ -45,10 +45,10 @@ export const Lab = () => {
   return (
     <div id="lab">
       <Stylesheet href="/lab/lab.css" />
-      <GameContextProvider initialState={gameState}>
+      <ContextProvider initialState={gameState}>
         <GameLab />
-        <Game />
-      </GameContextProvider>
+        <Main />
+      </ContextProvider>
     </div>
   )
 }
@@ -185,7 +185,7 @@ const diceIsCheated = (dice) => dice.faces[0] === dice.faces[1]
 
 const DiceVariant = ({ dice, variant }) => {
   const isCurrent = diceIsCheated(dice) ? dice.faces[0] === variant : variant === "random"
-  const dispatch = useGameDispatch()
+  const dispatch = useDispatch()
 
   return (
     <button
@@ -237,7 +237,7 @@ const NextCardInput = ({ active, card }) => {
 }
 
 const useSetCurrentPlayerScore = () => {
-  const dispatch = useGameDispatch()
+  const dispatch = useDispatch()
   return (score) => {
     dispatch((state) => {
       const { currentPlayerId, players } = state
@@ -253,7 +253,7 @@ const useSetCurrentPlayerScore = () => {
 
 const useSetNextCard = () => {
   const cardDeck = useCardDeck()
-  const dispatch = useGameDispatch()
+  const dispatch = useDispatch()
   return (card) => {
     dispatch((state) => {
       return {

@@ -1,8 +1,12 @@
 import React from "react"
 
-import { useMarkScore } from "src/game.actions.js"
+import { useMarkScore } from "src/game/game.actions.js"
 // import { useRoundStarted } from "src/game.store.js"
-import { useMarkScoreAllowed, useMarkScoreButtonVisible, useRoundScore } from "src/game.selectors.js"
+import {
+  useMarkScoreAllowed,
+  useMarkScoreButtonVisible,
+  useRoundScore,
+} from "src/game/game.selectors.js"
 
 import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
@@ -56,10 +60,7 @@ const ButtonMarkScore = ({ onClick }) => {
             {sign} {Math.abs(roundScore)}
           </span>
         </button>
-        {!markScoreAllowed && <img
-          src={`src/dices/dice_skull.png`}
-          className="skull-symbol"
-        />}
+        {!markScoreAllowed && <img src={`src/dices/dice_skull.png`} className="skull-symbol" />}
       </div>
     )
 

@@ -1,12 +1,10 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { catchError } from "src/error/error.main.js"
 import { useGameDomNodeSetter } from "src/dom/dom.main.js"
-import { Booting } from "src/booting/booting.main.js"
-import { GameEffects } from "src/game.effects.js"
+import { GameEffects } from "src/game/game.effects.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
-import { PreloadImages } from "src/PreloadImages.jsx"
+import { PreloadImages } from "src/generic/PreloadImages.jsx"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
@@ -15,7 +13,7 @@ import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 
 const { useMemo } = React
 
-const GameRaw = () => {
+export const Game = () => {
   /*
   https://github.com/facebook/react/issues/15156#issuecomment-474590693
 
@@ -32,32 +30,17 @@ const GameRaw = () => {
   return useMemo(() => (
     <div id="game-container">
       <div id="game" ref={gameDomNodeSetter}>
-        <Booting
-          onBoot={() => {
-            window.removeSplashscreen()
-          }}
-        >
-          <Stylesheet href="/mille-sabord.css" />
-          <GameEffects />
-          <PreloadImages />
-          <Header />
-          <div className="chest-and-skulls">
-            <Chest />
-            <SkullIsland />
-          </div>
-          <DiceOnGoing />
-          <Footer />
-        </Booting>
+        <Stylesheet href="/mille-sabord.css" />
+        <GameEffects />
+        <PreloadImages />
+        <Header />
+        <div className="chest-and-skulls">
+          <Chest />
+          <SkullIsland />
+        </div>
+        <DiceOnGoing />
+        <Footer />
       </div>
     </div>
   ))
 }
-
-export const Game = catchError(GameRaw, ({ error }) => {
-  window.removeSplashscreen()
-  return (
-    <div>
-      An error occured<pre>{typeof error === "object" ? error.stack : error}</pre>
-    </div>
-  )
-})

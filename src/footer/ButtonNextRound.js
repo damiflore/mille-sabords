@@ -1,6 +1,6 @@
 import React from "react"
-import { createGameAction } from "src/game.store.js"
-import { useStartNextRoundAllowed } from "src/game.selectors.js"
+import { createAction } from "src/main.store.js"
+import { useStartNextRoundAllowed } from "src/game/game.selectors.js"
 
 export const ButtonNextRound = ({ openDialog }) => {
   const startNextRoundAllowed = useStartNextRoundAllowed()
@@ -22,7 +22,7 @@ export const ButtonNextRound = ({ openDialog }) => {
   return null
 }
 
-const useStartNextRound = createGameAction((state) => {
+const useStartNextRound = createAction((state) => {
   return {
     ...state,
     witchUncursedDiceId: null,

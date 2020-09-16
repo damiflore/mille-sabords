@@ -1,16 +1,16 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
+import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
 import { isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
-import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/game.store.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
   useDicesToCurse,
   useSkullCountInCursedArea,
   useRoundScore,
-} from "src/game.selectors.js"
-import { useMarkScore, useSendToSkullIsland } from "src/game.actions.js"
+} from "src/game/game.selectors.js"
+import { useMarkScore, useSendToSkullIsland } from "src/game/game.actions.js"
 import { useCurseDice } from "src/dices/dices.actions.js"
 import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
 

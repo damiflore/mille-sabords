@@ -6,9 +6,9 @@ import {
   findClosestRectangle,
 } from "src/helper/rectangle.js"
 
-import { createGameAction, useCurrentCard, useChestSlots, useDicesRolled } from "src/game.store.js"
+import { createAction, useCurrentCard, useChestSlots, useDicesRolled } from "src/main.store.js"
 import { useDragDiceGesture } from "src/drag/drag.main.js"
-import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game.selectors.js"
+import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game/game.selectors.js"
 import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
 
 import { cardColors } from "src/cards/cards.js"
@@ -186,7 +186,7 @@ const CursedCover = () => {
   )
 }
 
-const useRepositionDiceInChest = createGameAction((state, dice, chestSlot) => {
+const useRepositionDiceInChest = createAction((state, dice, chestSlot) => {
   const { chestSlots } = state
   const previousChestSlot = dice.chestSlot
   dice.chestSlot = chestSlot
