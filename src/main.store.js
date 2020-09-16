@@ -36,12 +36,12 @@ const defaultState = {
 }
 
 const logger = createLogger({ logLevel: "warn" })
-const stateSessionStorageKey = "game"
+const stateStorageKey = "game"
 export const store = createStructuredStateStore(
   defaultState,
   () => {
-    if (sessionStorage.hasOwnProperty(stateSessionStorageKey)) {
-      const valueFromSessionStorage = JSON.parse(sessionStorage.getItem(stateSessionStorageKey))
+    if (localStorage.hasOwnProperty(stateStorageKey)) {
+      const valueFromStorage = JSON.parse(localStorage.getItem(stateStorageKey))
 
       // idéalement on voudrait plus qu'un log ici
       // on voudrait afficher un message dans la ui pour expliquer pourquoi la partie a été supprimée
@@ -50,18 +50,14 @@ export const store = createStructuredStateStore(
       // It happens when a new version of the game is released and the stored game state
       // is not in sync with the new game state
       // We could use a version instead but during dev we won't think to update the version
-      const missingKey = Object.keys(defaultState).find(
-        (key) => key in valueFromSessionStorage === false,
-      )
+      const missingKey = Object.keys(defaultState).find((key) => key in valueFromStorage === false)
       if (missingKey) {
         logger.warn(
           `stored game state is missing a property (${missingKey}) -> use initial game state instead`,
         )
         return defaultState
       }
-      const extraKey = Object.keys(valueFromSessionStorage).find(
-        (key) => key in defaultState === false,
-      )
+      const extraKey = Object.keys(valueFromStorage).find((key) => key in defaultState === false)
       if (extraKey) {
         logger.warn(
           `stored game state contains an unknown property (${extraKey}) -> use initial game state instead`,
@@ -69,16 +65,16 @@ export const store = createStructuredStateStore(
         return defaultState
       }
 
-      logger.info(`read sessionStorage ${stateSessionStorageKey} = `, valueFromSessionStorage)
-      return valueFromSessionStorage
+      logger.info(`read storage ${stateStorageKey} = `, valueFromStorage)
+      return valueFromStorage
     }
     logger.debug(`no game state stored -> use initial game state`)
     return defaultState
   },
   {
     effect: (state) => {
-      logger.debug(`write sessionStorage ${stateSessionStorageKey} = `, state)
-      sessionStorage.setItem(stateSessionStorageKey, JSON.stringify(state))
+      logger.debug(`store ${stateStorageKey} = `, state)
+      localStorage.setItem(stateStorageKey, JSON.stringify(state))
     },
   },
 )
