@@ -2,7 +2,7 @@ import React from "react"
 
 import { useCurrentCard, useCardDeck } from "src/main.store.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
-import { useStartRound } from "src/game/game.actions.js"
+import { useStartRound } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"

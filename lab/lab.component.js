@@ -35,7 +35,7 @@ import {
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Main } from "src/main.component.js"
-import { useCurrentPlayer } from "src/game/game.selectors.js"
+import { useCurrentPlayer } from "src/round/round.selectors.js"
 
 export const Lab = () => {
   const gameState = {

@@ -1,6 +1,6 @@
 import React from "react"
 import { createAction } from "src/main.store.js"
-import { useStartNextRoundAllowed } from "src/game/game.selectors.js"
+import { useStartNextRoundAllowed } from "src/round/round.selectors.js"
 
 export const ButtonNextRound = ({ openDialog }) => {
   const startNextRoundAllowed = useStartNextRoundAllowed()

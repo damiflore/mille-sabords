@@ -2,13 +2,11 @@ import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
 import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
-import { createPlayers, CHARACTERS } from "src/players/players.main.js"
 
 const defaultState = {
   gameStarted: false,
-
-  players: createPlayers(CHARACTERS),
-  currentPlayerId: 1,
+  players: [],
+  currentPlayerId: null,
 
   // persist accross a game round
   cardDeck: mixDeck(CARDS),

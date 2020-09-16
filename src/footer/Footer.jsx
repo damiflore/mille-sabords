@@ -1,12 +1,12 @@
 import React from "react"
 
-import { useMarkScore } from "src/game/game.actions.js"
+import { useMarkScore } from "src/round/round.actions.js"
 // import { useRoundStarted } from "src/game.store.js"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
   useRoundScore,
-} from "src/game/game.selectors.js"
+} from "src/round/round.selectors.js"
 
 import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"

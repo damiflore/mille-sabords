@@ -1,6 +1,6 @@
 import React from "react"
 import { createAction } from "src/main.store.js"
-import { useRollDiceAllowed } from "src/game/game.selectors.js"
+import { useRollDiceAllowed } from "src/round/round.selectors.js"
 import { useRolledAreaDomNode } from "src/dom/dom.main.js"
 import { rollDices } from "src/dices/rollDices.js"
 

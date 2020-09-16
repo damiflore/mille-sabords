@@ -10,7 +10,7 @@ import {
 import { useDicesRolled, useChestSlots, createAction } from "src/main.store.js"
 import { useDragDiceGesture } from "src/drag/drag.main.js"
 import { useRolledAreaDomNode, useRolledAreaDomNodeSetter } from "src/dom/dom.main.js"
-import { useKeepDiceAllowed } from "src/game/game.selectors.js"
+import { useKeepDiceAllowed } from "src/round/round.selectors.js"
 import { useKeepDice, useUnkeepDice } from "src/dices/dices.actions.js"
 
 import { Dice } from "src/dices/Dice.jsx"

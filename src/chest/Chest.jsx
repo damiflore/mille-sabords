@@ -8,7 +8,10 @@ import {
 
 import { createAction, useCurrentCard, useChestSlots, useDicesRolled } from "src/main.store.js"
 import { useDragDiceGesture } from "src/drag/drag.main.js"
-import { useUnkeepDiceAllowed, useThreeSkullsOrMoreInCursedArea } from "src/game/game.selectors.js"
+import {
+  useUnkeepDiceAllowed,
+  useThreeSkullsOrMoreInCursedArea,
+} from "src/round/round.selectors.js"
 import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
 
 import { cardColors } from "src/cards/cards.js"

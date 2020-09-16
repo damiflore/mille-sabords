@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useCurrentCard } from "src/main.store.js"
-import { useCurrentPlayer } from "src/game/game.selectors.js"
+import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"

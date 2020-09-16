@@ -1,7 +1,7 @@
 import React from "react"
 
 import { useCurrentCard, useRoundStarted } from "src/main.store.js"
-import { useRoundScore, useSymbolsInChest } from "src/game/game.selectors.js"
+import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
 import { isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useBecomes } from "src/hooks.js"

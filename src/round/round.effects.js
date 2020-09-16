@@ -9,8 +9,8 @@ import {
   useDicesToCurse,
   useSkullCountInCursedArea,
   useRoundScore,
-} from "src/game/game.selectors.js"
-import { useMarkScore, useSendToSkullIsland } from "src/game/game.actions.js"
+} from "src/round/round.selectors.js"
+import { useMarkScore, useSendToSkullIsland } from "src/round/round.actions.js"
 import { useCurseDice } from "src/dices/dices.actions.js"
 import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
 
