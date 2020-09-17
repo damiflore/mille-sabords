@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCard, useRoundStarted } from "src/main.store.js"
+import { useCurrentCard, useRoundStarted, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
 import { isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
@@ -9,6 +9,7 @@ import { Dialog } from "src/dialog/Dialog.jsx"
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
 import { countSymbol } from "src/score/computeRoundScore.js"
+import { StarRain } from "src/game-design/StarRain.jsx"
 
 const { useState, useEffect } = React
 
@@ -37,6 +38,7 @@ export const RoundScore = () => {
 const ScoreDisplay = () => {
   const roundScore = useRoundScore()
   const currentCard = useCurrentCard()
+  const scoreMarked = useScoreMarked()
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
@@ -56,6 +58,7 @@ const ScoreDisplay = () => {
   return (
     <>
       {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
+      {scoreMarked && <StarRain />}
       <div
         className={`round-score ${swordChallengeOngoing() ? "hidden" : ""}`}
         onClick={() => {
