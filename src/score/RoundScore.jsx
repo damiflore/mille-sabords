@@ -173,8 +173,8 @@ const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (
           <div className="columns">
             <div className="column">
               <div className="column-title">Symbol</div>
-              <img src={`src/dices/dice_coin.png`} />
-              <img src={`src/dices/dice_diamond.png`} />
+              <img src={`/src/dices/dice_coin.png`} />
+              <img src={`/src/dices/dice_diamond.png`} />
             </div>
             <div className="column">
               <div className="column-title">Points</div>

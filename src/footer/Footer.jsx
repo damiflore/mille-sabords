@@ -60,7 +60,7 @@ const ButtonMarkScore = ({ onClick }) => {
             {sign} {Math.abs(roundScore)}
           </span>
         </button>
-        {!markScoreAllowed && <img src={`src/dices/dice_skull.png`} className="skull-symbol" />}
+        {!markScoreAllowed && <img src={`/src/dices/dice_skull.png`} className="skull-symbol" />}
       </div>
     )
 

@@ -10,7 +10,8 @@ reportFileSizeImpact({
   ...readGithubWorkflowEnv(),
   buildCommand: "npm run dist",
   trackingConfig: {
-    "dist/systemjs": {
+    systemjs: {
+      "./index.prod.html": true,
       "./dist/systemjs/**/*": true,
       "./dist/systemjs/**/*.map": false,
     },

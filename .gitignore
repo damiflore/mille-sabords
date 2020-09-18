@@ -5,6 +5,7 @@
 /node_modules/
 /env.json
 /import-map.importmap
+/index.prod.html
 /jsconfig.json
 /package-lock.json
 /yarn.lock

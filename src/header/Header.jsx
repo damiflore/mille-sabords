@@ -50,7 +50,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       style={{
-        backgroundImage: "url('src/cards/card_default.png')",
+        backgroundImage: "url('/src/cards/card_default.png')",
         backgroundSize: "217px",
       }}
     ></div>
@@ -67,7 +67,7 @@ const Card = ({ card }) => {
       }}
     >
       <img
-        src={`src/cards/card_small-${isSwordChallengeCard(card) ? "sword-challenge" : card}.png`}
+        src={`/src/cards/card_small-${isSwordChallengeCard(card) ? "sword-challenge" : card}.png`}
         alt={card}
       />
     </div>

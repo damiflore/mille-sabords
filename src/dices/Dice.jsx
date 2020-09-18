@@ -132,7 +132,7 @@ export const Dice = ({
       }}
     >
       <img
-        src={`src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
+        src={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
         draggable="false"
         style={{
           width: "100%",

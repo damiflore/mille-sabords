@@ -58,7 +58,7 @@ const ExtraSkull = ({ card }) => {
       }}
     >
       <img
-        src={`src/dices/dice_skull.png`}
+        src={`/src/dices/dice_skull.png`}
         style={{
           width: "100%",
           height: "100%",
@@ -72,11 +72,11 @@ const UncurseDiceLabel = () => {
   const roundStarted = useRoundStarted()
 
   if (!roundStarted)
-    return <img style={{ display: "none" }} src={`src/skull-island/witch-label.png`} />
+    return <img style={{ display: "none" }} src={`/src/skull-island/witch-label.png`} />
 
   return (
     <div className="witch-label">
-      <img src={`src/skull-island/witch-label.png`} />
+      <img src={`/src/skull-island/witch-label.png`} />
       <svg x="0px" y="0px" width="156.083px" height="208.667px" viewBox="0 0 156.083 208.667">
         <path
           id="path_01"
