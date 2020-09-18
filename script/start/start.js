@@ -16,7 +16,7 @@ export const serverPromise = startServer({
   redirectHttpToHttps: Boolean(process.env.HTTPS),
   requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
     if (ressource === "/") {
-      ressource = "/index.prod.html"
+      ressource = "/dist/systemjs/index.html"
     }
     return serveFile(resolveUrl(ressource.slice(1), projectDirectoryUrl), {
       cancellationToken,

@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
+<!DOCTYPE html><html><head>
     <title>Mille sabords</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./favicon.png" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png">
     <script src="/node_modules/systemjs/dist/s.min.js"></script>
-    <script type="systemjs-importmap" src="/dist/bundle.importmap"></script>
+      <script type="systemjs-importmap" src="../../../dist/bundle.importmap"></script>
   </head>
 
   <body>
-    <div id="splashscreen" data-visible>
+    <div id="splashscreen" data-visible="">
       <style>
         #splashscreen[data-visible] + #app {
           visibility: hidden;
@@ -50,7 +48,7 @@
         }
       </style>
       <h1>Mille sabords</h1>
-      <div id="app-loading" hidden>Hey ça load</div>
+      <div id="app-loading" hidden="">Hey ça load</div>
       <script>
         const timeout = setTimeout(() => {
           // montre un loader ou quelque chose parce que le site met un peu de temps a se load
@@ -64,8 +62,7 @@
       </script>
     </div>
     <div id="app"></div>
-    <script>
-      System.import("/dist/systemjs/main.js")
-    </script>
-  </body>
-</html>
+    <script>window.System.import("./index-00c14db8.js")</script>
+  
+
+</body></html>

@@ -143,7 +143,7 @@ const ChestSlot = ({ chestSlotContent }) => {
         }}
       >
         <img
-          src={`src/dices/dice_${symbol}.png`}
+          src={`/src/dices/dice_${symbol}.png`}
           draggable="false"
           style={{
             width: "100%",
@@ -184,7 +184,7 @@ const diceDraggedOverGetter = ({ dragDiceGesture, chestDropAreaDomNode }) => {
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img src={`src/chest/cursed-grid.png`} alt="cursed-cover" />
+      <img src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
     </div>
   )
 }
