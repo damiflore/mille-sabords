@@ -32,7 +32,7 @@ await generateSystemJsBundle({
     preserveEntrySignatures: false,
   },
   entryPointMap: {
-    index: "./index.html",
+    "index.prod.html": "./index.html",
   },
   importMapFileRelativeUrl,
   minify: true,
