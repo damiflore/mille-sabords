@@ -1,7 +1,8 @@
 import React from "react"
 import { usePlayers, useCurrentPlayerId, createAction } from "src/main.store.js"
-import { Round } from "src/round/Round.jsx"
+// import { Round } from "src/round/Round.jsx"
 import { CHARACTERS } from "src/players/players.main.js"
+import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
 
 export const Game = () => {
   const players = usePlayers()
@@ -21,7 +22,8 @@ export const Game = () => {
     return <StartGameScreen />
   }
 
-  return <Round />
+  return <ScoreBoard />
+  // return <Round />
 }
 
 const PlayerCountSelection = () => {

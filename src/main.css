@@ -7,6 +7,7 @@
 @import "./header/card-rules-dialog.css";
 @import "./score/score.css";
 @import "./skull-island/skull-island.css";
+@import "./score-board/score-board.css";
 
 body {
   font-family: arial, sans;

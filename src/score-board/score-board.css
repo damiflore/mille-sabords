@@ -1,0 +1,81 @@
+.score-board-container {
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+
+/* PATH */
+.score-board-container .user-path {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+.score-board-container .path svg path {
+  fill: none;
+  stroke-width: 4px;
+  stroke: white;
+  stroke-dasharray: 825;
+  stroke-dashoffset: 825;
+}
+.score-board-container .path-foreground {
+  position: absolute;
+}
+.score-board-container .path-background svg path {
+  stroke: #d54141;
+  stroke-dasharray: 10px;
+}
+.score-board-container .score-indicator svg {
+  width: 20px;
+  height: 20px;
+}
+.score-board-container .score-indicator {
+  position: absolute;
+  offset-distance: 100%;
+}
+
+/* AVATAR */
+.score-board-container .user-avatar {
+  padding-top: 17px;
+  margin: 0 auto;
+  display: flex;
+}
+.score-board-container .user-avatar svg {
+  width: 70px;
+  height: 70px;
+}
+.score-board-container .user-avatar svg circle {
+  fill: none;
+  stroke-width: 7px;
+}
+.score-board-container .player-name {
+  position: absolute;
+  width: 70px;
+  text-align: center;
+  margin-top: 17px;
+  font-size: 14px;
+}
+
+/* SPEECH BUBBLES */
+.score-board-container .speech-bubble {
+  position: relative;
+  background: #00aabb;
+  border-radius: 0.4em;
+  padding: 7px 16px;
+  margin: 0 auto;
+  margin-top: 12px;
+}
+.score-board-container .speech-bubble:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #00aabb;
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -9px;
+}
