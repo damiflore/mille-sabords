@@ -22,7 +22,7 @@ export const CardRulesDialog = ({ dialogIsOpen, closeDialog }) => {
           {cardsRules[card] && (
             <>
               <div className="dialog-label">{cardsRules[card].name}</div>
-              <img className="current-card" src={`src/cards/card_${card}.png`} alt={card} />
+              <img className="current-card" src={`/src/cards/card_${card}.png`} alt={card} />
               <div className="text-rule">{cardsRules[card].rule}</div>
               {cardsRules[card].more ? (
                 <div className="text-rule">{cardsRules[card].more}</div>

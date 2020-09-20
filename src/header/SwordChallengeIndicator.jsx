@@ -45,12 +45,12 @@ export const SwordChallengeIndicator = () => {
 
 const SwordIconActivated = () => (
   <div className="sword-icon">
-    <img src={`src/dices/dice_sword.png`} />
+    <img src={`/src/dices/dice_sword.png`} />
   </div>
 )
 
 const SwordIconDisabled = () => (
   <div className="sword-icon disabled">
-    <img src={`src/header/swords-disabled.png`} />
+    <img src={`/src/header/swords-disabled.png`} />
   </div>
 )

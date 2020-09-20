@@ -1,6 +1,6 @@
 name: lighthouse-impact
 
-on: pull_request_target
+on: pull_request
 
 jobs:
   lighthouse-impact:

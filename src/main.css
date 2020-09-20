@@ -8,6 +8,7 @@
 @import "./score/score.css";
 @import "./skull-island/skull-island.css";
 @import "./score-board/score-board.css";
+@import "./game-design/star-rain.css";
 
 body {
   font-family: arial, sans;

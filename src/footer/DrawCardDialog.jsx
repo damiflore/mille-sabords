@@ -54,11 +54,11 @@ const TopCard = () => {
             <div className="flip-card-front">
               <div
                 className="card default-card"
-                style={{ backgroundImage: "url('src/cards/card_default.png')" }}
+                style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
               ></div>
             </div>
             <div className="flip-card-back">
-              <img src={`src/cards/card_${card}.png`} alt={card} />
+              <img src={`/src/cards/card_${card}.png`} alt={card} />
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       id="back-deck-card"
-      style={{ backgroundImage: "url('src/cards/card_default.png')" }}
+      style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
     >
       <div className="remaining-cards-number">{cardDeck.length}</div>
     </div>

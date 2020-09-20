@@ -16,6 +16,7 @@ await generateImportMapForProject(
   [
     getImportMapFromNodeModules({
       projectDirectoryUrl: jsenvConfig.projectDirectoryUrl,
+      projectPackageDevDependenciesIncluded: false,
     }),
     getImportMapFromFile(new URL("./import-map-custom.importmap", jsenvConfig.projectDirectoryUrl)),
   ],
@@ -30,7 +31,13 @@ await generateSystemJsBundle({
   formatInputOptions: {
     preserveEntrySignatures: false,
   },
+  entryPointMap: {
+    "index.prod.html": "./index.html",
+  },
   importMapFileRelativeUrl,
+  systemJsScript: {
+    src: "/node_modules/systemjs/dist/s.js",
+  },
   minify: true,
   manifestFile: true,
 })
