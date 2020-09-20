@@ -1,9 +1,9 @@
 import React from "react"
 import { addDomEventListener } from "src/dom/dom.util.js"
 
-const { createContext, useContext, useReducer } = React
+const { createContext, useContext, useReducer, useState } = React
 
-export const watchBooting = (LowerLevelComponent, onBoot) => {
+export const watchBooting = (LowerLevelComponent) => {
   const Booting = (props) => {
     // fake the loading of some ressource to ensure
     // other components had time to register their own asset tracking
@@ -16,7 +16,7 @@ export const watchBooting = (LowerLevelComponent, onBoot) => {
     const assetsTracking = useAssetsTracking()
     React.useEffect(() => {
       if (!bootAssetTracking) {
-        return
+        return () => {}
       }
 
       const allLoaded = Object.keys(assetsTracking).every(
@@ -24,24 +24,31 @@ export const watchBooting = (LowerLevelComponent, onBoot) => {
       )
       // console.log("ressource tracked", Object.keys(assetsTracking), allLoaded, assetsTracking)
       if (allLoaded) {
-        setTimeout(
+        // give bit of time for the browser to render stuff
+        const callbackRequestId = window.requestIdleCallback(
           () => {
+            props.bootedSetter(true)
             // console.info(`all game ressource loaded`, Object.keys(assetsTracking))
-            onBoot()
           },
-          // give bit of time for the browser to render stuff
-          50,
+
+          { timeout: 400 },
         )
+        return () => {
+          window.cancelIdleCallback(callbackRequestId)
+        }
       }
+      return () => {}
     }, [bootAssetTracking, assetsTracking])
 
     return <LowerLevelComponent {...props} />
   }
 
   const BootingWithAssetTrackingProvider = () => {
+    const [booted, bootedSetter] = useState(false)
+
     return (
       <AssetsTrackingProvider>
-        <Booting />
+        <Booting booted={booted} bootedSetter={bootedSetter} />
       </AssetsTrackingProvider>
     )
   }
