@@ -181,16 +181,14 @@ const UserPath = ({ previousScore, newScore, player }) => {
 }
 
 const Avatar = ({ player }) => (
-  <>
-    <img
-      className="player-img"
-      src={`src/score-board/${player && player.character.img}`}
-      alt="player"
-      style={{
-        borderColor: (player && player.character.color) || "white",
-      }}
-    />
-  </>
+  <img
+    className="player-img"
+    src={`src/score-board/${player && player.character.img}`}
+    alt="player"
+    style={{
+      borderColor: (player && player.character.color) || "white",
+    }}
+  />
 )
 
 const Path = ({ coordinates, pathId, player, ScoreIndicatorId }) => (

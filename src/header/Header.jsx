@@ -80,15 +80,27 @@ const Card = ({ card }) => {
 }
 
 const CurrentPlayer = () => {
-  const currentPlayer = useCurrentPlayer()
-  return <span>Joueur actuel: {currentPlayer.character.name}</span>
+  const player = useCurrentPlayer()
+  const openScoreBoard = useOpenScoreBoard()
+
+  return (
+    <img
+      onClick={openScoreBoard}
+      className="avatar"
+      src={`src/score-board/${player && player.character.img}`}
+      alt="player"
+      style={{
+        borderColor: (player && player.character.color) || "white",
+      }}
+    />
+  )
 }
 
 const TotalScore = () => {
-  const currentPlayer = useCurrentPlayer()
+  const player = useCurrentPlayer()
   const openScoreBoard = useOpenScoreBoard()
 
-  const totalScore = currentPlayer.score
+  const totalScore = player.score
   const totalScorePrevious = usePrevious(totalScore)
 
   const [totalScoreAnimated, totalScoreAnimatedSetter] = useState(null)
@@ -127,7 +139,14 @@ const TotalScore = () => {
 
   return (
     <div className="total-score" onClick={openScoreBoard}>
-      <span className="score">{totalScoreDisplayed}</span>
+      <span
+        className="score"
+        style={{
+          backgroundColor: (player && player.character.color) || "white",
+        }}
+      >
+        {totalScoreDisplayed}
+      </span>
     </div>
   )
 }
