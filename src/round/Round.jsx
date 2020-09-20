@@ -24,7 +24,7 @@ export const Round = () => {
   */
 
   return useMemo(() => (
-    <>
+    <div className="round-container">
       <GameEffects />
       <PreloadImages />
       <Header />
@@ -34,6 +34,6 @@ export const Round = () => {
       </div>
       <DiceOnGoing />
       <Footer />
-    </>
+    </div>
   ))
 }

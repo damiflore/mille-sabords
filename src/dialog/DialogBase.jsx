@@ -148,7 +148,7 @@ export const DialogBase = ({
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
-    if (!isOpen || !isInsideDocument) return () => {}
+    if (!isOpen || !dialogElement || !dialogElement.parentNode) return () => {}
 
     const elementsToHide = []
     /*
@@ -176,7 +176,7 @@ export const DialogBase = ({
         element.removeAttribute("aria-hidden", "true")
       })
     }
-  }, [isOpen, isInsideDocument])
+  }, [isOpen, dialogElement])
 
   if (closeMethod === "dom-remove" && !isOpen) return null
 

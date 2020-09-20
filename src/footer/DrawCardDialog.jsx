@@ -6,6 +6,7 @@ import { useStartRound } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
+import { useCloseScoreBoard } from "src/game/Game.jsx"
 
 export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
   const cardDeck = useCardDeck()
@@ -171,10 +172,12 @@ const ShuffleDeckButton = () => {
 const StartButton = ({ closeDialog }) => {
   const currentCard = useCurrentCard()
   const startRound = useStartRound()
+  const closeScoreBoard = useCloseScoreBoard()
 
   const start = () => {
     startRound()
     closeDialog()
+    closeScoreBoard()
   }
 
   if (currentCard) {

@@ -9,7 +9,7 @@ export const createPlayers = (characters) => {
 }
 
 export const CHARACTERS = [
-  { id: 1, name: "Barbe Rousse", color: "red" },
-  { id: 2, name: "Ginette Boulette", color: "green" },
-  { id: 3, name: "Jack Sparrow", color: "blue" },
+  { id: 1, name: "Luffy", color: "#ef9620", img: "Luffy.jpg" },
+  { id: 2, name: "Miss Fortune", color: "#d90f1b", img: "MissFortune.jpg" },
+  { id: 3, name: "Jack Sparrow", color: "#007033", img: "JackSparrow.jpg" },
 ]

@@ -4,9 +4,11 @@ import { CARDS, mixDeck } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
 const defaultState = {
+  gameCreated: false,
   gameStarted: false,
   players: [],
   currentPlayerId: null,
+  scoreBoardOpened: false,
 
   // persist accross a game round
   cardDeck: mixDeck(CARDS),
@@ -14,6 +16,7 @@ const defaultState = {
   dices: DICES,
 
   // game round
+  currentPlayerGettingReady: false,
   roundStarted: false,
   rollCount: 0,
   currentCard: null,
@@ -83,13 +86,16 @@ store.Provider.displayName = "storeProvider"
 export const useDispatch = store.useDispatch
 export const createAction = store.createAction
 
+export const useGameCreated = () => store.useKeyedState("gameCreated")
 export const useGameStarted = () => store.useKeyedState("gameStarted")
 export const usePlayers = () => store.useKeyedState("players")
+export const useScoreBoardOpened = () => store.useKeyedState("scoreBoardOpened")
 export const useCurrentPlayerId = () => store.useKeyedState("currentPlayerId")
 export const useCardDeck = () => store.useKeyedState("cardDeck")
 export const useCardsUsed = () => store.useKeyedState("cardsUsed")
 export const useDices = () => store.useKeyedState("dices")
 export const useRoundStarted = () => store.useKeyedState("roundStarted")
+export const useCurrentPlayerGettingReady = () => store.useKeyedState("currentPlayerGettingReady")
 export const useRollCount = () => store.useKeyedState("rollCount")
 export const useScoreMarked = () => store.useKeyedState("scoreMarked")
 export const useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland")

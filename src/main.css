@@ -79,7 +79,6 @@ body {
   flex-direction: column;
 
   box-sizing: border-box;
-  padding: 15px;
   width: 100%;
 
   max-width: 680px;
@@ -108,4 +107,15 @@ body {
   position: relative;
   z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
   height: 60px;
+}
+
+#main .round-container {
+  padding: 15px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 680px;
+  max-height: 900px;
 }

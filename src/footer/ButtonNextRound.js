@@ -1,20 +1,25 @@
 import React from "react"
-import { createAction } from "src/main.store.js"
 import { useStartNextRoundAllowed } from "src/round/round.selectors.js"
+import { useOpenScoreBoard } from "src/game/Game.jsx"
+import { createAction } from "src/main.store.js"
 
-export const ButtonNextRound = ({ openDialog }) => {
+export const ButtonNextRound = () => {
   const startNextRoundAllowed = useStartNextRoundAllowed()
-  const startNextRound = useStartNextRound()
 
-  const openNextRoundDialog = () => {
-    openDialog(true)
-    startNextRound()
-  }
+  const openScoreBoard = useOpenScoreBoard()
+  const endRound = useEndRound()
 
   if (startNextRoundAllowed) {
     return (
       <div className="next-round-action">
-        <button onClick={openNextRoundDialog}>Tour suivant</button>
+        <button
+          onClick={() => {
+            openScoreBoard()
+            endRound()
+          }}
+        >
+          Terminer mon tour
+        </button>
       </div>
     )
   }
@@ -22,33 +27,10 @@ export const ButtonNextRound = ({ openDialog }) => {
   return null
 }
 
-const useStartNextRound = createAction((state) => {
-  const { players, currentPlayerId } = state
-  const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayerId)
-  const nextPlayerId =
-    currentPlayerIndex === players.length - 1 ? players[0].id : players[currentPlayerIndex + 1].id
-
+const useEndRound = createAction((state) => {
   return {
     ...state,
-    currentPlayerId: nextPlayerId,
-    witchUncursedDiceId: null,
     roundStarted: false,
-    rollCount: 0,
-    dicesRolled: [],
-    dicesCursed: [],
-    chestSlots: {
-      1: null,
-      2: null,
-      3: null,
-      4: null,
-      5: null,
-      6: null,
-      7: null,
-      8: null,
-      9: null,
-    },
-    scoreMarked: false,
     currentCard: null,
-    isOnSkullIsland: false,
   }
 })

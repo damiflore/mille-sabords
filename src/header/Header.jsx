@@ -3,9 +3,9 @@ import React from "react"
 import { useCurrentCard } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
-
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
+import { useOpenScoreBoard } from "src/game/Game.jsx"
 
 export const Header = () => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
@@ -81,8 +81,10 @@ const CurrentPlayer = () => {
 
 const TotalScore = () => {
   const currentPlayer = useCurrentPlayer()
+  const openScoreBoard = useOpenScoreBoard()
+
   return (
-    <div className="total-score">
+    <div className="total-score" onClick={openScoreBoard}>
       <span className="score">{currentPlayer.score}</span>
     </div>
   )
