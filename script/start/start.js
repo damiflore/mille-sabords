@@ -7,6 +7,11 @@ const projectDirectoryUrl = new URL("../../", import.meta.url)
 
 const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
+const bundleDirectoryUrl = resolveUrl("./dist/systemjs/", projectDirectoryUrl)
+
+const SECONDS_IN_30_DAYS = 60 * 60 * 24 * 30
+const BUNDLE_FILE_CACHE_VALIDITY_IN_SECONDS = SECONDS_IN_30_DAYS
+
 export const serverPromise = startServer({
   logLevel: process.env.LOG_LEVEL || "info",
   protocol: process.env.HTTPS ? "https" : "http",
@@ -18,10 +23,15 @@ export const serverPromise = startServer({
     if (ressource === "/") {
       ressource = "/index.prod.html"
     }
-    return serveFile(resolveUrl(ressource.slice(1), projectDirectoryUrl), {
+    const fileUrl = resolveUrl(ressource.slice(1), projectDirectoryUrl)
+    return serveFile(fileUrl, {
       cancellationToken,
       method,
       headers,
+      cacheControl: fileUrl.startsWith(bundleDirectoryUrl)
+        ? `private,max-age=${BUNDLE_FILE_CACHE_VALIDITY_IN_SECONDS},immutable`
+        : `private,max-age=0,must-revalidate`,
+      etagEnabled: true,
     })
   },
 })

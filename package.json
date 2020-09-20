@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@jsenv/logger": "3.3.1",
-    "@jsenv/server": "3.0.0",
+    "@jsenv/server": "4.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "systemjs": "6.6.1"
