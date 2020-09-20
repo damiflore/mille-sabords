@@ -1,7 +1,6 @@
 import React from "react"
 
 import { useMarkScore } from "src/round/round.actions.js"
-// import { useRoundStarted } from "src/game.store.js"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
@@ -9,22 +8,11 @@ import {
 } from "src/round/round.selectors.js"
 
 import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
-import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { ButtonRoll } from "./ButtonRoll.js"
 
 export const Footer = () => {
   const markScore = useMarkScore()
   const roundScore = useRoundScore()
-
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
-
-  const openDialog = () => {
-    setDialogIsOpen(true)
-  }
-
-  const closeDialog = () => {
-    setDialogIsOpen(false)
-  }
 
   // const roundStarted = useRoundStarted()
   // if (!roundStarted && !dialogIsOpen) openDialog()
@@ -33,13 +21,12 @@ export const Footer = () => {
   return (
     <div className="actions">
       <ButtonRoll />
-      <ButtonNextRound openDialog={openDialog} />
+      <ButtonNextRound />
       <ButtonMarkScore
         onClick={() => {
           markScore(roundScore)
         }}
       />
-      <DrawCardDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
   )
 }

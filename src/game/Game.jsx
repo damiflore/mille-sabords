@@ -1,11 +1,13 @@
 import React from "react"
-import { usePlayers, useCurrentPlayerId, createAction } from "src/main.store.js"
+import { usePlayers, createAction, useScoreBoardOpened, useGameStarted } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
 import { CHARACTERS } from "src/players/players.main.js"
+import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
 
 export const Game = () => {
   const players = usePlayers()
-  const currentPlayerId = useCurrentPlayerId()
+  const scoreBoardOpened = useScoreBoardOpened()
+  const gameStarted = useGameStarted()
   const needsToChooseNumberOfPlayers = players.length === 0
 
   if (needsToChooseNumberOfPlayers) {
@@ -17,8 +19,12 @@ export const Game = () => {
     return <CharacterSelection player={playerWithoutCharacter} players={players} />
   }
 
-  if (!currentPlayerId) {
+  if (!gameStarted) {
     return <StartGameScreen />
+  }
+
+  if (scoreBoardOpened) {
+    return <ScoreBoard />
   }
 
   return <Round />
@@ -97,14 +103,14 @@ const useSetPlayerCharacter = createAction((state, player, character) => {
 
 const StartGameScreen = () => {
   const players = usePlayers()
-  const startPlaying = useStartPlaying()
+  const openScoreBoard = useOpenScoreBoard()
+  const startGame = useStartGame()
 
   return (
     <div>
       <p>L&apos;équipage est au complet</p>
       <ul>
         {players.map((player) => {
-          console.log(player.id)
           return (
             <li key={player.id}>
               {player.character.name} (Joueur {player.number})
@@ -112,15 +118,42 @@ const StartGameScreen = () => {
           )
         })}
       </ul>
-      <button onClick={startPlaying}>Démarrer la partie</button>
+      <button
+        onClick={() => {
+          openScoreBoard()
+          startGame()
+        }}
+      >
+        Démarrer la partie
+      </button>
     </div>
   )
 }
 
-const useStartPlaying = createAction((state) => {
-  const { players } = state
+export const useStartPlaying = createAction((state, player) => {
   return {
     ...state,
-    currentPlayerId: players[0].id,
+    currentPlayerId: player.id,
+  }
+})
+
+export const useOpenScoreBoard = createAction((state) => {
+  return {
+    ...state,
+    scoreBoardOpened: true,
+  }
+})
+
+export const useCloseScoreBoard = createAction((state) => {
+  return {
+    ...state,
+    scoreBoardOpened: false,
+  }
+})
+
+const useStartGame = createAction((state) => {
+  return {
+    ...state,
+    gameStarted: true,
   }
 })

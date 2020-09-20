@@ -55,6 +55,17 @@
   height: 30px;
 }
 
+/* PLAYER AVATAR */
+.avatar {
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  right: 15px;
+  border-radius: 100%;
+  border: 3px solid black;
+  background-color: #ffe7be;
+}
+
 /* TOTAL SCORE */
 .total-score {
   flex: 1;
@@ -65,9 +76,11 @@
   color: #ffe7be;
   background: #f7a23c;
   border: 3px solid #ffe7be;
+  font-size: 12px;
   font-weight: 800;
   border-radius: 20px;
-  padding: 1px 20px;
+  padding: 1px 13px;
   position: relative;
   top: 4px;
+  right: 60px;
 }

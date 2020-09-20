@@ -10,14 +10,14 @@ export const Home = () => {
 }
 
 const ButtonNewGame = () => {
-  const startNewGame = useStartNewGame()
+  const createNewGame = useCreateNewGame()
 
-  return <button onClick={startNewGame}>Nouvelle partie</button>
+  return <button onClick={createNewGame}>Nouvelle partie</button>
 }
 
-const useStartNewGame = createAction((state) => {
+const useCreateNewGame = createAction((state) => {
   return {
     ...state,
-    gameStarted: true,
+    gameCreated: true,
   }
 })

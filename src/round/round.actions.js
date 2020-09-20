@@ -23,6 +23,24 @@ export const useSendToSkullIsland = createAction((state) => {
 export const useStartRound = createAction((state) => {
   return {
     ...state,
+    witchUncursedDiceId: null,
+    rollCount: 0,
+    dicesRolled: [],
+    dicesCursed: [],
+    chestSlots: {
+      1: null,
+      2: null,
+      3: null,
+      4: null,
+      5: null,
+      6: null,
+      7: null,
+      8: null,
+      9: null,
+    },
+    scoreMarked: false,
+    isOnSkullIsland: false,
     roundStarted: true,
+    currentPlayerGettingReady: false,
   }
 })

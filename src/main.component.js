@@ -1,5 +1,5 @@
 import React from "react"
-import { useGameStarted } from "src/main.store.js"
+import { useGameCreated } from "src/main.store.js"
 import { useMainDomNodeSetter } from "src/dom/dom.main.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Home } from "src/home/Home.jsx"
@@ -19,9 +19,9 @@ const MainRaw = () => {
 }
 
 const AppBody = () => {
-  const gameStarted = useGameStarted()
+  const gameCreated = useGameCreated()
 
-  if (gameStarted) {
+  if (gameCreated) {
     return <Game />
   }
 
