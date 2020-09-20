@@ -35,6 +35,9 @@ await generateSystemJsBundle({
     "index.prod.html": "./index.html",
   },
   importMapFileRelativeUrl,
+  systemJsScript: {
+    src: "/node_modules/systemjs/dist/s.js",
+  },
   minify: true,
   manifestFile: true,
 })
