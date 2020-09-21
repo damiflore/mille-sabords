@@ -6,13 +6,21 @@ import { Home } from "src/home/Home.jsx"
 import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
 import { watchBooting } from "src/booting/booting.main.js"
+import { PreloadImages } from "src/generic/PreloadImages.jsx"
 
-const MainRaw = () => {
+const MainRaw = ({ booted }) => {
+  React.useEffect(() => {
+    if (booted) {
+      window.removeSplashscreen()
+    }
+  }, [booted])
+
   return (
     <div id="main-container">
       <div id="main" ref={useMainDomNodeSetter()}>
         <Stylesheet href="/mille-sabord.css" />
         <AppBody />
+        {booted ? <PreloadImages /> : null}
       </div>
     </div>
   )
@@ -37,7 +45,4 @@ const ErrorScreen = ({ error }) => {
   )
 }
 
-export const Main = catchError(
-  watchBooting(MainRaw, () => window.removeSplashscreen()),
-  ErrorScreen,
-)
+export const Main = catchError(watchBooting(MainRaw), ErrorScreen)

@@ -1,7 +1,6 @@
 import React from "react"
 
 import { GameEffects } from "src/round/round.effects.js"
-import { PreloadImages } from "src/generic/PreloadImages.jsx"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
@@ -26,7 +25,6 @@ export const Round = () => {
   return useMemo(() => (
     <div className="round-container">
       <GameEffects />
-      <PreloadImages />
       <Header />
       <div className="chest-and-skulls">
         <Chest />
