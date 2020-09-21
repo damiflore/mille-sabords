@@ -23,7 +23,16 @@ export const useAnimateTransitionUsingJs = (value, { duration = 300, timingFunct
   return animatedValue
 }
 
-export const useAnimateTransition = (value, animate) => {
+export const useAnimateTransitionUsingWebAnimation = (value, animate) => {
+  useAnimateTransition(value, (from, to) => {
+    const animation = animate(from, to)
+    return () => {
+      animation.cancel()
+    }
+  })
+}
+
+const useAnimateTransition = (value, animate) => {
   const [transition, transitionSetter] = React.useState(null)
 
   const valuePrevious = usePrevious(value)

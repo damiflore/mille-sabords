@@ -125,6 +125,22 @@ const UserPath = ({ previousScore, newScore, player }) => {
   const pathElement = document.getElementById(pathId)
 
   if (pathElement) {
+    // useAnimateTransitionUsingWebAnimation(newScore, (from, to) => {
+    //   const pathLength = pathElement.getTotalLength()
+    //   // path-foreground line fill
+    //   pathElement.style.strokeDashoffset = `${pathLength - (from * (pathLength / 2)) / 3000}`
+    //   return pathElement.animate(
+    //     [
+    //       { strokeDashoffset: `${pathLength - (from * (pathLength / 2)) / 3000}` },
+    //       { strokeDashoffset: `${pathLength - (to * (pathLength / 2)) / 3000}` },
+    //     ],
+    //     {
+    //       duration: 1000,
+    //       fill: "forwards",
+    //     },
+    //   )
+    // })
+
     const pathLength = pathElement.getTotalLength()
     // path-foreground line fill
     pathElement.style.strokeDashoffset = `${pathLength - (previousScore * (pathLength / 2)) / 3000}`
