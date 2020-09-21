@@ -6,7 +6,7 @@ export const startJavaScriptAnimation = ({
   onComplete = () => {},
 }) => {
   if (isNaN(duration)) {
-    // console.warn(`duration must be a number, received ${duration}`)
+    console.warn(`duration must be a number, received ${duration}`)
     return () => {}
   }
   duration = parseInt(duration, 10)

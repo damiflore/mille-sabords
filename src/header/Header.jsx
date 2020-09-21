@@ -7,10 +7,7 @@ import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 import { useOpenScoreBoard } from "src/game/Game.jsx"
-import { startJavaScriptAnimation } from "src/helper/animation.js"
-import { usePrevious } from "../hooks.js"
-
-const { useEffect, useState } = React
+import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
 export const Header = () => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
@@ -99,43 +96,11 @@ const CurrentPlayer = () => {
 const TotalScore = () => {
   const player = useCurrentPlayer()
   const openScoreBoard = useOpenScoreBoard()
-
   const totalScore = player.score
-  const totalScorePrevious = usePrevious(totalScore)
-
-  const [totalScoreAnimated, totalScoreAnimatedSetter] = useState(null)
-  const [totalScoreTransition, totalScoreTransitionSetter] = useState(null)
-
-  useEffect(() => {
-    if (totalScore !== totalScorePrevious) {
-      totalScoreTransitionSetter({ from: totalScorePrevious, to: totalScore })
-    }
-  }, [totalScore, totalScorePrevious])
-
-  useEffect(() => {
-    if (totalScoreTransition) {
-      return startJavaScriptAnimation({
-        duration: 2000,
-        // easeOutQuint
-        timingFunction: (progress) => 1 - Math.pow(1 - progress, 5),
-        onProgress: ({ progress }) => {
-          totalScoreAnimatedSetter(
-            Math.round(
-              totalScoreTransition.from +
-                (totalScoreTransition.to - totalScoreTransition.from) * progress,
-            ),
-          )
-        },
-        onComplete: () => {
-          totalScoreTransitionSetter(null)
-          totalScoreAnimatedSetter(null)
-        },
-      })
-    }
-    return () => {}
-  }, [totalScoreTransition])
-
-  const totalScoreDisplayed = totalScoreAnimated === null ? totalScore : totalScoreAnimated
+  const totalScoreAnimation = useAnimateTransitionUsingJs(totalScore, {
+    duration: 2000,
+    timingFunction: (progress) => 1 - Math.pow(1 - progress, 5),
+  })
 
   return (
     <div className="total-score" onClick={openScoreBoard}>
@@ -145,7 +110,7 @@ const TotalScore = () => {
           backgroundColor: (player && player.character.color) || "white",
         }}
       >
-        {totalScoreDisplayed}
+        {totalScoreAnimation ? totalScoreAnimation.value : totalScore}
       </span>
     </div>
   )

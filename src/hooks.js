@@ -1,27 +1,39 @@
 import React from "react"
 
-const { useEffect, useRef } = React
-
 // https://stackoverflow.com/a/61680184/2634179
-export const useBecomes = (callback, deps) => {
-  const mountedRef = useRef(false)
-  useEffect(() => {
+export const useBecomes = (becomesPredicate, deps) => {
+  const transition = useTransition(becomesPredicate, deps)
+  return Boolean(transition)
+}
+
+export const useTransition = (transitionPredicate, deps) => {
+  const mountedRef = React.useRef(false)
+  React.useEffect(() => {
     if (mountedRef.current === false) {
       mountedRef.current = true
     }
   })
 
-  const depsRef = useRef(deps)
-  useEffect(() => {
+  const depsRef = React.useRef(deps)
+  React.useEffect(() => {
     depsRef.current = deps
   }, deps)
 
-  return mountedRef.current ? Boolean(callback(...depsRef.current)) : false
+  if (!mountedRef.current) {
+    return null
+  }
+  if (!transitionPredicate(...depsRef.current)) {
+    return null
+  }
+  return {
+    from: depsRef.current,
+    to: deps,
+  }
 }
 
 export const usePrevious = (value) => {
-  const ref = useRef(value)
-  useEffect(() => {
+  const ref = React.useRef(value)
+  React.useEffect(() => {
     ref.current = value
   }, [value])
   return ref.current
