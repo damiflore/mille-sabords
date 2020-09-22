@@ -3,6 +3,17 @@
   background-image: url("./sand.jpg");
   background-size: 400px;
 }
+.score-board-container .cross {
+  position: absolute;
+  right: 0;
+  margin: 20px;
+  font-size: 20px;
+}
+.score-board-container .score-board-action {
+  position: absolute;
+  left: 0;
+  margin: 20px;
+}
 .score-board-container .win-treasure-img {
   width: 50%;
   margin: 0 auto;
@@ -20,11 +31,11 @@
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: center;
 }
 .score-board-container .path svg {
-  width: 55%;
-  height: auto;
+  width: auto;
+  height: 55vh;
   overflow: visible;
 }
 .score-board-container .path svg path {
@@ -72,11 +83,9 @@
   font-size: 14px;
 }
 .score-board-container .player-img {
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: auto;
   border-radius: 100%;
-  position: absolute;
-  border: 3px solid black;
   background-color: #ffe7be;
 }
 

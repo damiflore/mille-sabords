@@ -1,8 +1,8 @@
 import React from "react"
 import { usePlayers, createAction, useScoreBoardOpened, useGameStarted } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
-import { CHARACTERS } from "src/players/players.main.js"
 import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
+import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
 export const Game = () => {
   const players = usePlayers()
@@ -62,42 +62,6 @@ const useSetPlayerCount = createAction((state, playerCount) => {
         score: 0,
       }
     }),
-  }
-})
-
-const CharacterSelection = ({ player, players }) => {
-  const setPlayerCharacter = useSetPlayerCharacter()
-
-  return (
-    <div>
-      <p>Choisissez un personnage pour le joueur {player.number}</p>
-      {CHARACTERS.map((character) => {
-        return (
-          <button
-            key={character.id}
-            disabled={!characterIsAvailable(character, players)}
-            onClick={() => {
-              setPlayerCharacter(player, character)
-            }}
-          >
-            {character.name}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
-
-const characterIsAvailable = (character, players) => {
-  return !players.some((player) => player.character === character)
-}
-
-const useSetPlayerCharacter = createAction((state, player, character) => {
-  const { players } = state
-  player.character = character
-  return {
-    ...state,
-    players: [...players],
   }
 })
 

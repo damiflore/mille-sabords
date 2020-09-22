@@ -7,8 +7,10 @@
 @import "./header/card-rules-dialog.css";
 @import "./score/score.css";
 @import "./skull-island/skull-island.css";
-@import "./score-board/score-board.css";
 @import "./game-design/star-rain.css";
+@import "./score-board/score-board.css";
+@import "./score-board/start-player-round-dialog.css";
+@import "./game/character-selection.css";
 
 body {
   font-family: arial, sans;
