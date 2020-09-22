@@ -1,14 +1,9 @@
 import React from "react"
-import {
-  usePlayers,
-  useRoundStarted,
-  useCurrentPlayerGettingReady,
-  createAction,
-} from "src/main.store.js"
+import { usePlayers, useRoundStarted, useCurrentPlayerGettingReady } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { useCloseScoreBoard, useStartPlaying } from "src/game/Game.jsx"
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { useCloseScoreBoard } from "src/game/Game.jsx"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
+import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 
 const pathList = {
   path1:
@@ -17,26 +12,8 @@ const pathList = {
     "M39.582,739.564c0-113.074-5.437-166.074-8.437-198.074s36-20.667,33.019-2c-1.796,11.248-24.583,13.333-23.699-22c1.229-49.158,22.68-111,23.68-169s-38-95-46-181S39.582,0,39.582,0",
   path3:
     "M39.582,739.564c0-71.926-15.437-155.074-17.437-253.074s30-185,31.087-217s-31.087-46-31.087-26s33,10,31-32s-31-110-31-144S39.582,0,39.582,0",
-}
-
-const StartPlayerRoundDialog = ({ openDrawCardDialog, closeDialog, dialogIsOpen, player }) => {
-  const startPlaying = useStartPlaying()
-  const setCurrentPlayerGettingReady = useSetCurrentPlayerGettingReady()
-  return (
-    <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
-      <div>Au tour de {player.character.name}</div>
-      <button
-        onClick={() => {
-          closeDialog()
-          setCurrentPlayerGettingReady()
-          startPlaying(player)
-          openDrawCardDialog()
-        }}
-      >
-        Jouer
-      </button>
-    </Dialog>
-  )
+  path4:
+    "M39.582,739.564c0-113.074-5.437-166.074-8.437-198.074s36-20.667,33.019-2c-1.796,11.248-24.583,13.333-23.699-22c1.229-49.158,22.68-111,23.68-169s-38-95-46-181S39.582,0,39.582,0",
 }
 
 export const ScoreBoard = () => {
@@ -78,12 +55,15 @@ export const ScoreBoard = () => {
 
   return (
     <div className="score-board-container">
-      <div className="cross" onClick={closeScoreBoard}>
-        X
-      </div>
+      {roundStarted && (
+        <div className="cross" onClick={closeScoreBoard}>
+          X
+        </div>
+      )}
 
       {!roundStarted && (
         <button
+          className="score-board-action"
           onClick={() => {
             openStartPlayerRoundDialog()
           }}
@@ -144,6 +124,7 @@ const UserPath = ({ previousScore, newScore, player }) => {
     const pathLength = pathElement.getTotalLength()
     // path-foreground line fill
     pathElement.style.strokeDashoffset = `${pathLength - (previousScore * (pathLength / 2)) / 3000}`
+    pathElement.style.strokeDasharray = pathLength
     pathElement.animate(
       [
         { strokeDashoffset: `${pathLength - (previousScore * (pathLength / 2)) / 3000}` },
@@ -202,13 +183,13 @@ const Avatar = ({ player }) => (
     src={`src/score-board/${player && player.character.img}`}
     alt="player"
     style={{
-      borderColor: (player && player.character.color) || "white",
+      boxShadow: `inset 0px 0px 0px 4px ${(player && player.character.color) || "black"}`,
     }}
   />
 )
 
 const Path = ({ coordinates, pathId, player, ScoreIndicatorId }) => (
-  <svg width="79.164px" height="739.564px" viewBox="0 0 79.164 739.564">
+  <svg viewBox="0 0 79.164 739.564">
     <path fill="#FFFFFF" d={coordinates} id={pathId ? pathId : "path"} />
     {player && (
       <circle
@@ -220,10 +201,3 @@ const Path = ({ coordinates, pathId, player, ScoreIndicatorId }) => (
     )}
   </svg>
 )
-
-const useSetCurrentPlayerGettingReady = createAction((state) => {
-  return {
-    ...state,
-    currentPlayerGettingReady: true,
-  }
-})

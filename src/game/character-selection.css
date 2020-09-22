@@ -1,0 +1,38 @@
+.character-selection-page {
+  height: 100%;
+  /* background-image: url("../score-board/sand.jpg");
+  background-size: 400px; */
+}
+.character-selection-page p {
+  padding: 30px;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+}
+.character-selection-page .characters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.character-selection-page .character {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.character-selection-page .character.disabled {
+  filter: grayscale(100%);
+}
+.character-selection-page .character span {
+  display: block;
+  margin: 0 auto;
+  padding-top: 15px;
+  font-size: 20px;
+  max-width: 100px;
+  text-align: center;
+}
+.character-selection-page .player-img {
+  width: 120px;
+  height: auto;
+  border-radius: 100%;
+  background-color: #ffe7be;
+}

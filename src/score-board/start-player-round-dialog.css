@@ -1,0 +1,56 @@
+.dialog-content.score-board-dialog {
+  background-color: #bee1ff;
+  width: calc(100% - 66px);
+  height: calc(50%);
+  margin: 25% 33px;
+  border-radius: 10px;
+}
+.score-board-dialog .cross {
+  position: absolute;
+  right: 33px;
+  margin: 20px;
+  font-size: 20px;
+}
+.score-board-dialog .dialog-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #082988;
+  text-align: center;
+  margin: 30px 18px 15px;
+}
+.score-board-dialog .dialog-label {
+  color: #082988;
+  font-size: 18px;
+}
+.score-board-dialog .player-img {
+  height: auto;
+  border-radius: 100%;
+  background-color: #ffe7be;
+  width: 100px;
+  margin-top: 20px;
+}
+.score-board-dialog .dialog-actions {
+  width: 90%;
+  margin-bottom: 20px;
+  margin: 0 auto 20px auto;
+}
+.score-board-dialog .dialog-actions button {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 7px 13px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #082988;
+  background-color: #8ec9fc;
+  border-color: #082988;
+  border-width: 3px;
+  border-style: solid;
+}
