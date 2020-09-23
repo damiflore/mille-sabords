@@ -40,16 +40,16 @@
   },
   "dependencies": {
     "@jsenv/logger": "3.3.1",
-    "@jsenv/server": "4.0.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "@jsenv/server": "4.0.3",
+    "react": "17.0.0-rc.0",
+    "react-dom": "17.0.0-rc.0",
     "systemjs": "6.6.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "7.10.4",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.2",
-    "@jsenv/core": "15.0.2",
+    "@jsenv/core": "15.0.3",
     "@jsenv/eslint-config": "12.5.0",
     "@jsenv/file-size-impact": "5.3.0",
     "@jsenv/lighthouse-score-impact": "2.4.0",

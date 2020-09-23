@@ -13,20 +13,19 @@
     "lab/": "./lab/"
   },
   "scopes": {
-    "./node_modules/@jsenv/server/node_modules/@jsenv/util/node_modules/@jsenv/cancellation/": {
-      "@jsenv/cancellation/": "./node_modules/@jsenv/server/node_modules/@jsenv/util/node_modules/@jsenv/cancellation/",
-      "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/util/node_modules/@jsenv/cancellation/index.js"
-    },
     "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/": {
       "@jsenv/cancellation/": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/",
       "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/index.js"
     },
     "./node_modules/@jsenv/server/node_modules/@jsenv/util/": {
-      "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/util/node_modules/@jsenv/cancellation/index.js",
+      "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/index.js",
       "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
       "@jsenv/url-meta": "./node_modules/@jsenv/url-meta/index.js",
       "@jsenv/util/": "./node_modules/@jsenv/server/node_modules/@jsenv/util/",
       "@jsenv/util": "./node_modules/@jsenv/server/node_modules/@jsenv/util/index.js"
+    },
+    "./node_modules/@jsenv/server/node_modules/node-fetch/": {
+      "node-fetch/": "./node_modules/@jsenv/server/node_modules/node-fetch/"
     },
     "./node_modules/@jsenv/node-signals/": {
       "@jsenv/node-signals/": "./node_modules/@jsenv/node-signals/",
@@ -53,7 +52,7 @@
       "@jsenv/server/": "./node_modules/@jsenv/server/",
       "@jsenv/util/": "./node_modules/@jsenv/server/node_modules/@jsenv/util/",
       "@jsenv/util": "./node_modules/@jsenv/server/node_modules/@jsenv/util/index.js",
-      "node-fetch": "./node_modules/node-fetch/lib/index.mjs",
+      "node-fetch": "./node_modules/@jsenv/server/node_modules/node-fetch/lib/index.mjs",
       "kill-port": "./node_modules/kill-port/index.js"
     },
     "./node_modules/get-them-args/": {
@@ -65,15 +64,6 @@
     "./node_modules/loose-envify/": {
       "loose-envify/": "./node_modules/loose-envify/",
       "js-tokens": "./node_modules/js-tokens/index.js"
-    },
-    "./node_modules/node-fetch/": {
-      "node-fetch/": "./node_modules/node-fetch/"
-    },
-    "./node_modules/prop-types/": {
-      "object-assign": "./node_modules/object-assign/index.js",
-      "loose-envify": "./node_modules/loose-envify/index.js",
-      "prop-types/": "./node_modules/prop-types/",
-      "react-is": "./node_modules/react-is/index.js"
     },
     "./node_modules/shell-exec/": {
       "shell-exec/": "./node_modules/shell-exec/"
@@ -89,7 +79,6 @@
     "./node_modules/react-dom/": {
       "object-assign": "./node_modules/object-assign/index.js",
       "loose-envify": "./node_modules/loose-envify/index.js",
-      "prop-types": "./node_modules/prop-types/index.js",
       "react-dom/": "./node_modules/react-dom/",
       "scheduler": "./node_modules/scheduler/index.js"
     },
@@ -98,16 +87,12 @@
       "loose-envify": "./node_modules/loose-envify/index.js",
       "scheduler/": "./node_modules/scheduler/"
     },
-    "./node_modules/react-is/": {
-      "react-is/": "./node_modules/react-is/"
-    },
     "./node_modules/systemjs/": {
       "systemjs/": "./node_modules/systemjs/"
     },
     "./node_modules/react/": {
       "object-assign": "./node_modules/object-assign/index.js",
       "loose-envify": "./node_modules/loose-envify/index.js",
-      "prop-types": "./node_modules/prop-types/index.js",
       "react/": "./node_modules/react/"
     }
   }
