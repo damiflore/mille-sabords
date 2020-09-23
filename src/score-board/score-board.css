@@ -43,13 +43,15 @@
 .score-board-container path.path-foreground {
   fill: none;
   stroke-width: 4px;
-  stroke: white;
   stroke-dasharray: 825;
   stroke-dashoffset: 825;
 }
 .score-board-container path.path-background {
   stroke: #756e63;
   stroke-dasharray: 10px;
+}
+.score-board-container path.path-foreground {
+  stroke: white;
 }
 
 /* SCORE INDICATOR */

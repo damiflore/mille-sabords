@@ -41,7 +41,7 @@ const useStartGame = createAction((state) => {
   }
 })
 
-export const CharacterSelection = ({ player, players }) => {
+export const CharacterSelection = ({ players }) => {
   const setPlayerCharacter = useSetPlayerCharacter()
   const openScoreBoard = useOpenScoreBoard()
   const startGame = useStartGame()
@@ -52,7 +52,7 @@ export const CharacterSelection = ({ player, players }) => {
       <CrewMembers />
       {playerWithoutCharacter && (
         <div className="characters">
-          <p>Joueur {player.number} : quel pirate êtes vous ?</p>
+          <p>Joueur {playerWithoutCharacter.number} : quel pirate êtes vous ?</p>
           {CHARACTERS.map((character) => {
             return (
               <div
@@ -61,7 +61,7 @@ export const CharacterSelection = ({ player, players }) => {
                 }`}
                 key={character.id}
                 onClick={() => {
-                  setPlayerCharacter(player, character)
+                  setPlayerCharacter(playerWithoutCharacter, character)
                 }}
               >
                 <img

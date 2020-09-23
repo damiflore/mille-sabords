@@ -1,29 +1,51 @@
 import React from "react"
-import { usePlayers, createAction, useScoreBoardOpened, useGameStarted } from "src/main.store.js"
+import { usePlayers, createAction, useGameStarted, useRoundStarted } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
 import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
 import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
 export const Game = () => {
   const players = usePlayers()
-  const scoreBoardOpened = useScoreBoardOpened()
+  const roundStarted = useRoundStarted()
   const gameStarted = useGameStarted()
   const needsToChooseNumberOfPlayers = players.length === 0
+  const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
+  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
 
   if (needsToChooseNumberOfPlayers) {
     return <PlayerCountSelection />
   }
 
-  const playerWithoutCharacter = players.find((player) => !player.character)
   if (!gameStarted) {
-    return <CharacterSelection player={playerWithoutCharacter} players={players} />
+    return <CharacterSelection players={players} />
   }
 
-  if (scoreBoardOpened) {
-    return <ScoreBoard />
+  if (!roundStarted || scoreboardOpenedByUser) {
+    return (
+      <ScoreBoard
+        openedByUser={scoreboardOpenedByUser}
+        closeScoreboard={() => {
+          scoreboardOpenedByUserSetter(false)
+        }}
+        scoreAnimation={scoreAnimation}
+      />
+    )
   }
 
-  return <Round />
+  return (
+    <Round
+      openScoreboard={() => {
+        scoreboardOpenedByUserSetter(true)
+      }}
+      onRoundOver={(roundOverPayload) => {
+        if (roundOverPayload.reason === "score-marked") {
+          scoreAnimationSetter({ newScore: roundOverPayload.value })
+        } else {
+          scoreAnimationSetter(null)
+        }
+      }}
+    />
+  )
 }
 
 const PlayerCountSelection = () => {
@@ -65,19 +87,6 @@ export const useStartPlaying = createAction((state, player) => {
   return {
     ...state,
     currentPlayerId: player.id,
-  }
-})
-
-export const useOpenScoreBoard = createAction((state) => {
-  return {
-    ...state,
-    scoreBoardOpened: true,
-  }
-})
-
-export const useCloseScoreBoard = createAction((state) => {
-  return {
-    ...state,
-    scoreBoardOpened: false,
+    currentCard: null,
   }
 })
