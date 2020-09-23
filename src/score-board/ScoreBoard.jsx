@@ -158,17 +158,18 @@ const UserPath = ({ previousScore, newScore, player }) => {
 
   return (
     <div className="user-path">
-      <div className="path path-background">
-        <Path coordinates={pathCoordinates} />
-      </div>
-      <div className="path path-foreground">
-        <Path
-          coordinates={pathCoordinates}
-          pathId={pathId}
-          player={player}
-          ScoreIndicatorId={ScoreIndicatorId}
-        />
-      </div>
+      <svg viewBox="0 0 79.164 739.564">
+        <path className="path-background" fill="#FFFFFF" d={pathCoordinates} />
+        <path className="path-foreground" fill="#FFFFFF" d={pathCoordinates} id={pathId} />
+        {player && (
+          <circle
+            className="score-indicator"
+            id={ScoreIndicatorId}
+            r="13"
+            fill={player.character.color || "white"}
+          />
+        )}
+      </svg>
       <div className="speech-bubble">{newScore}</div>
       <div className="user-avatar">
         <Avatar player={player} />
@@ -186,18 +187,4 @@ const Avatar = ({ player }) => (
       boxShadow: `inset 0px 0px 0px 4px ${(player && player.character.color) || "black"}`,
     }}
   />
-)
-
-const Path = ({ coordinates, pathId, player, ScoreIndicatorId }) => (
-  <svg viewBox="0 0 79.164 739.564">
-    <path fill="#FFFFFF" d={coordinates} id={pathId ? pathId : "path"} />
-    {player && (
-      <circle
-        className="score-indicator"
-        id={ScoreIndicatorId}
-        r="13"
-        fill={player.character.color || "white"}
-      />
-    )}
-  </svg>
 )
