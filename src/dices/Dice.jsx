@@ -153,13 +153,13 @@ export const Dice = ({
       >
         <rect
           className="dice-background"
-          fill={onSkull ? "black" : "#fcfcfc"}
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
+          width="100%"
+          height="100%"
           rx="5"
           ry="5"
+          fill={onSkull ? "black" : "#fcfcfc"}
+          stroke={onSkull ? "black" : "#b9b9b9"}
+          strokeWidth="1"
         ></rect>
         <image
           xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
