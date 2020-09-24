@@ -93,26 +93,6 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return firstAvailableChestSlot
   }
 
-  const moveDiceBackIntoRolledArea = (dice) => {
-    dice.rotation = dice.rolledAreaRotation
-    moveDice(dice, {
-      x: dice.rolledAreaPosition.x,
-      y: dice.rolledAreaPosition.y,
-    })
-  }
-
-  const moveDiceIntoRolledArea = (dice, requestedRectangle) => {
-    const rolledAreaDomNode = rolledAreaRef.current
-    const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-    const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
-    dice.rolledAreaPosition = { x: diceRectangle.left, y: diceRectangle.top }
-    dice.rotation = dice.rolledAreaRotation
-    moveDice(dice, {
-      x: diceRectangle.left,
-      y: diceRectangle.top,
-    })
-  }
-
   const moveDiceIntoChest = (dice, requestedRectangle) => {
     const chestDomNode = chestRef.current
     const rectangleToChestSlotMap = new Map()
@@ -138,6 +118,26 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       y: closestRectangle.top,
     })
     return closestChestSlot
+  }
+
+  const moveDiceBackIntoRolledArea = (dice) => {
+    dice.rotation = dice.rolledAreaRotation
+    moveDice(dice, {
+      x: dice.rolledAreaPosition.x,
+      y: dice.rolledAreaPosition.y,
+    })
+  }
+
+  const moveDiceIntoRolledArea = (dice, requestedRectangle) => {
+    const rolledAreaDomNode = rolledAreaRef.current
+    const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
+    const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
+    dice.rolledAreaPosition = { x: diceRectangle.left, y: diceRectangle.top }
+    dice.rotation = dice.rolledAreaRotation
+    moveDice(dice, {
+      x: diceRectangle.left,
+      y: diceRectangle.top,
+    })
   }
 
   const getDropIntent = (dice) => {
@@ -239,6 +239,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
           const dropIntent = getDropIntent(dice)
+          console.log("drop", { dice, diceKeptIds, diceRolledIds, dropIntent })
 
           if (dropIntent === "keep") {
             if (canKeepDice(dice)) {
