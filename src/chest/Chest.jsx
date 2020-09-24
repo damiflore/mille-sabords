@@ -7,14 +7,15 @@ import { cardIdToCard } from "src/cards/cards.js"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-export const Chest = ({ chestRef, chestDragOverGesture }) => {
+export const Chest = ({ chestRef, dragoverGesture }) => {
   const chestSlots = useChestSlots()
   const diceRolledIds = useDiceRolledIds()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
   const diceOverChest =
-    chestDragOverGesture &&
-    chestDragOverGesture.allowed &&
-    diceRolledIds.includes(chestDragOverGesture.dice.id)
+    dragoverGesture &&
+    dragoverGesture.dropTarget === chestRef.current &&
+    dragoverGesture.dropAllowed &&
+    diceRolledIds.includes(dragoverGesture.dropPayload.id)
 
   return (
     <div className="chest">

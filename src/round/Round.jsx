@@ -47,10 +47,10 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   const uncurseDice = useUncurseDice()
   const setDiceChestSlot = useSetDiceChestSlot()
 
-  const [rolledAreaDragOverGesture, rolledAreaDragOverGestureSetter] = React.useState(null)
-  const [chestDragOverGesture, chestDragOverGestureSetter] = React.useState(null)
   const rolledAreaRef = React.useRef(null)
   const chestRef = React.useRef(null)
+  const [dragoverGesture, dragoverGestureSetter] = React.useState(null)
+  const dropTargetRef = React.useRef(null)
 
   const canKeepDice = (dice) =>
     keepDiceAllowedGetter(dice, {
@@ -142,11 +142,11 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
 
   const getDropIntent = (dice) => {
     if (diceIsInRolledArea(dice)) {
-      if (rolledAreaDragOverGesture) {
+      if (dropTargetRef.current === rolledAreaRef.current) {
         return "reposition-in-rolled-area"
       }
 
-      if (chestDragOverGesture) {
+      if (dropTargetRef.current === chestRef.current) {
         return "keep"
       }
 
@@ -154,11 +154,11 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     }
 
     if (diceIsInChest(dice)) {
-      if (chestDragOverGesture) {
+      if (dropTargetRef.current === chestRef.current) {
         return "reposition-in-chest"
       }
 
-      if (rolledAreaDragOverGesture) {
+      if (dropTargetRef.current === rolledAreaRef.current) {
         return "unkeep"
       }
 
@@ -173,13 +173,10 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       <GameEffects />
       <Header openScoreboard={openScoreboard} />
       <div className="chest-and-skulls">
-        <Chest chestDragOverGesture={chestDragOverGesture} chestRef={chestRef} />
+        <Chest chestRef={chestRef} dragoverGesture={dragoverGesture} />
         <SkullIsland />
       </div>
-      <DiceOnGoing
-        rolledAreaDragOverGesture={rolledAreaDragOverGesture}
-        rolledAreaRef={rolledAreaRef}
-      />
+      <DiceOnGoing rolledAreaRef={rolledAreaRef} dragoverGesture={dragoverGesture} />
       <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
       <DiceContainer
         onDiceClick={(dice) => {
@@ -208,17 +205,18 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           }
         }}
         onDiceDrag={(dice, dragDiceGesture) => {
+          let dropAllowed = false
+          let dropTarget = null
+
           const chestDomNode = chestRef.current
           const chestDomNodeRectangle = getDomNodeRectangle(chestDomNode)
-          if (
-            rectangleCollidesWithRectangle(dragDiceGesture.diceRectangle, chestDomNodeRectangle)
-          ) {
-            chestDragOverGestureSetter({
-              dice,
-              allowed: canKeepDice(dice),
-            })
-          } else {
-            chestDragOverGestureSetter(null)
+          const diceIsOverChest = rectangleCollidesWithRectangle(
+            dragDiceGesture.diceRectangle,
+            chestDomNodeRectangle,
+          )
+          if (diceIsOverChest) {
+            dropTarget = chestDomNode
+            dropAllowed = canKeepDice(dice)
           }
 
           const rolledAreaDomNode = rolledAreaRef.current
@@ -228,20 +226,23 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
             rolledAreaDomNodeRectangle,
           )
           if (diceIsOverRolledArea) {
-            rolledAreaDragOverGestureSetter({
-              dice,
-              allowed: canUnkeepDice(dice),
-            })
-          } else {
-            rolledAreaDragOverGestureSetter(null)
+            dropTarget = rolledAreaDomNode
+            dropAllowed = canUnkeepDice(dice)
           }
+
+          dragoverGestureSetter({
+            dropPayload: dice,
+            dropTarget,
+            dropAllowed,
+          })
+          dropTargetRef.current = dropTarget
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
           const dropIntent = getDropIntent(dice)
 
           if (dropIntent === "keep") {
             if (canKeepDice(dice)) {
-              const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.rectangle)
+              const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.diceRectangle)
               setDiceChestSlot(dice, chestSlot)
               keepDice(dice, chestSlot)
             } else {
@@ -249,22 +250,22 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
             }
           } else if (dropIntent === "unkeep") {
             if (canUnkeepDice(dice)) {
-              moveDiceIntoRolledArea(dice, dropDiceGesture.rectangle)
+              moveDiceIntoRolledArea(dice, dropDiceGesture.diceRectangle)
               unkeepDice(dice)
             } else {
               // todo: animation pour replacer le dé a sa position pre drag
             }
           } else if (dropIntent === "reposition-in-rolled-area") {
-            moveDiceIntoRolledArea(dice, dropDiceGesture.rectangle)
+            moveDiceIntoRolledArea(dice, dropDiceGesture.diceRectangle)
           } else if (dropIntent === "reposition-in-chest") {
-            const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.rectangle)
+            const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.diceRectangle)
             setDiceChestSlot(dice, chestSlot)
           } else {
             // todo: animation pour replacer le dé a sa position pre drag
           }
-
-          chestDragOverGestureSetter(null)
-          rolledAreaDragOverGestureSetter(null)
+        }}
+        onDiceDragEnd={() => {
+          dragoverGestureSetter(null)
         }}
       />
     </div>

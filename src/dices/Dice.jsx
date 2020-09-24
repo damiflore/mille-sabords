@@ -28,6 +28,7 @@ export const Dice = ({
   onDiceClick,
   onDiceDrag,
   onDiceDrop,
+  onDiceDragEnd,
 }) => {
   // state from other contexts
   const mainDomNode = useMainDomNode()
@@ -93,11 +94,13 @@ export const Dice = ({
         onDiceDrop(dice, {
           diceRectangle,
         })
+        onDiceDragEnd(dice)
       },
       onCancel: () => {
         diceGrippedSetter(false)
         setDragIntent(false)
         setDragGesture(null)
+        onDiceDragEnd(dice)
       },
     })
     return () => {
