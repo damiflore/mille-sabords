@@ -26,14 +26,15 @@ export const ButtonRoll = ({ rolledAreaRef }) => {
 }
 
 const useRoll = createAction((state, rolledAreaDomNode) => {
-  const { rollCount, dices, diceRolledIds } = state
+  const { dices, rollCount, diceRolledIds } = state
   const dicesToRoll =
     rollCount === 0 ? dices : diceRolledIds.map((diceRolledId) => diceIdToDice(diceRolledId))
+  rollDices(dicesToRoll, { rolledAreaDomNode })
   return {
     ...state,
     rollCount: rollCount + 1,
     witchUncursedDiceId: null,
     diceRolledIds: dicesToRoll.map((dice) => dice.id),
-    dices: [...rollDices(dicesToRoll, { rolledAreaDomNode })],
+    dices: [...dices],
   }
 })
