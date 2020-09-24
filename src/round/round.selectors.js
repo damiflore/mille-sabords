@@ -131,56 +131,6 @@ export const useSkullCountInCursedArea = ({
   return dicesCursed.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
 }
 
-export const useRemoveSkullAllowed = ({
-  witchUncursedDiceId = useWitchUncursedDiceId(),
-  currentCard = useCurrentCard(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (!isWitchCard(currentCard)) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  if (witchUncursedDiceId) {
-    return false
-  }
-
-  return true
-}
-
-export const useKeepDiceAllowed = ({
-  scoreMarked = useScoreMarked(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
-}
-
-export const useUnkeepDiceAllowed = ({
-  scoreMarked = useScoreMarked(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
-}
-
 export const useMarkScoreButtonVisible = ({
   hasRolledOnce = useHasRolledOnce(),
   scoreMarked = useScoreMarked(),

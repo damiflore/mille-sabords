@@ -1,122 +1,24 @@
 import React from "react"
+import { useChestSlots } from "src/main.store.js"
+import { diceIsInChestGetter } from "src/dices/Dice.jsx"
 
-import {
-  rectangleCollidesWithRectangle,
-  rectangleRelativeTo,
-  rectangleInsideOf,
-  getDomNodeRectangle,
-} from "src/helper/rectangle.js"
-
-import { useDicesRolled, useChestSlots, createAction } from "src/main.store.js"
-import { useDragDiceGesture } from "src/drag/drag.main.js"
-import { useRolledAreaDomNode, useRolledAreaDomNodeSetter } from "src/dom/dom.main.js"
-import { useKeepDiceAllowed } from "src/round/round.selectors.js"
-import { useKeepDice, useUnkeepDice } from "src/dices/dices.actions.js"
-
-import { Dice } from "src/dices/Dice.jsx"
-import { diceIsOnSkull } from "src/dices/dices.js"
-
-const { useState, useEffect } = React
-
-export const DiceOnGoing = () => {
-  const dicesRolled = useDicesRolled()
-  const keepDiceAllowed = useKeepDiceAllowed()
-  const keepDice = useKeepDice()
-  const rolledAreaDomNode = useRolledAreaDomNode()
-
-  const dragDiceGesture = useDragDiceGesture()
-  const [diceDraggedOver, diceDraggedOverSetter] = useState(false)
-  useEffect(() => {
-    diceDraggedOverSetter(diceDraggedOverGetter({ dragDiceGesture, rolledAreaDomNode }))
-  }, [dragDiceGesture, rolledAreaDomNode])
-
+export const DiceOnGoing = ({ diceDraggedOverRolledArea, rolledAreaRef }) => {
   const chestSlots = useChestSlots()
-  const hoveredByKeptDice =
-    diceDraggedOver &&
-    Object.keys(chestSlots).some(
-      (key) => chestSlots[key] && chestSlots[key].value === diceDraggedOver,
-    )
-  const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
 
-  const unkeepDice = useUnkeepDice()
-  const repositionDiceInRolledArea = useRepositionDiceInRolledArea()
-  useEffect(() => {
-    if (dragDiceGesture) {
-      dragDiceGesture.setDropHandler(rolledAreaDomNode, ({ diceRectangle }) => {
-        if (!hoveredByKeptDice && !hoveredByRolledDice) return
-
-        const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-        const diceRectangleRelative = rectangleRelativeTo(
-          rectangleInsideOf(diceRectangle, rolledAreaDomNodeRectangle),
-          rolledAreaDomNodeRectangle,
-        )
-
-        if (hoveredByKeptDice) {
-          unkeepDice(diceDraggedOver, {
-            x: diceRectangleRelative.left,
-            y: diceRectangleRelative.top,
-          })
-        } else {
-          repositionDiceInRolledArea(diceDraggedOver, {
-            x: diceRectangleRelative.left,
-            y: diceRectangleRelative.top,
-          })
-        }
-      })
-    }
-  }, [dragDiceGesture, rolledAreaDomNode])
+  const diceDraggedOverIsInChest =
+    diceDraggedOverRolledArea &&
+    diceIsInChestGetter({ diceId: diceDraggedOverRolledArea.id, chestSlots })
 
   return (
     <div className="dice-ongoing">
       <div className="map"></div>
       <div
         className="area"
-        ref={useRolledAreaDomNodeSetter()}
+        ref={rolledAreaRef}
         style={{
-          ...(hoveredByKeptDice ? { outline: "2px dotted" } : {}),
+          ...(diceDraggedOverIsInChest ? { outline: "2px dotted" } : {}),
         }}
-      >
-        {dicesRolled.map((dice) => (
-          <Dice
-            key={dice.id}
-            dice={dice}
-            clickAllowed={diceIsOnSkull(dice) ? false : keepDiceAllowed}
-            onClickAction={(dice) => {
-              const freeSlot = Object.keys(chestSlots).find((key) => !chestSlots[key])
-              keepDice(dice, freeSlot)
-            }}
-            draggable={true}
-            diceOnGoing={true}
-            x={dice.rolledAreaPosition.x}
-            y={dice.rolledAreaPosition.y}
-            rotation={dice.rotation}
-            specificStyle={{
-              position: "absolute",
-            }}
-          />
-        ))}
-      </div>
+      ></div>
     </div>
   )
 }
-
-const diceDraggedOverGetter = ({ dragDiceGesture, rolledAreaDomNode }) => {
-  if (!dragDiceGesture) {
-    return null
-  }
-  const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-  if (!rectangleCollidesWithRectangle(dragDiceGesture.diceRectangle, rolledAreaDomNodeRectangle)) {
-    return null
-  }
-  return dragDiceGesture.dice
-}
-
-const useRepositionDiceInRolledArea = createAction((state, dice, position) => {
-  const { dicesRolled } = state
-  dice.rotation = 0
-  dice.rolledAreaPosition = position
-  return {
-    ...state,
-    dicesRolled: [...dicesRolled],
-  }
-})
