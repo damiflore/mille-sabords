@@ -148,6 +148,10 @@ export const Dice = ({
             rotate: rotation && !dragGesture ? rotation : 0,
             scale: diceGripped ? "1.2" : "1",
           }),
+          transitionProperty: "transform",
+          transitionDuration: "500ms",
+          // https://easings.net/#easeOutCirc
+          transitionTimingFunction: "cubic-bezier(0, 0.55, 0.45, 1)",
           transformOrigin: "center center",
         }}
       >
