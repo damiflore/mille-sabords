@@ -1,16 +1,8 @@
 .dice {
-  overflow: hidden;
-  padding: 0;
-  border-radius: 8px;
-  border-style: outset;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 3px 5px 2px 0px rgba(0, 0, 0, 0.33),
-    0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   touch-action: none; /* prevent pull to refresh while dragging dices */
   user-select: none; /* prevent accidental dice image selection while mousedown + mousemove near the dice */
-}
-.dice:focus,
-.dice img:focus {
-  outline: none;
+  overflow: visible;
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));
 }
 .dice-cursed-disapear {
   animation: diceDisapear 0.2s 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;

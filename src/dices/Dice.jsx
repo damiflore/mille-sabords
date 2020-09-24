@@ -28,6 +28,9 @@ export const Dice = ({
   onClickAction,
   specificStyle,
   diceOnGoing,
+  x = 0,
+  y = 0,
+  rotation,
 }) => {
   const onSkull = diceIsOnSkull(dice)
   const mainDomNode = useMainDomNode()
@@ -35,6 +38,10 @@ export const Dice = ({
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
   const witchUncursedDiceId = useWitchUncursedDiceId()
 
+  // a small move is a drag gesture but
+  // not yet a drag intent
+  // long grip or big enough move set drag intent to true
+  const [diceGripped, diceGrippedSetter] = useState(false)
   const [dragIntent, setDragIntent] = useState(false)
   const [dragGesture, setDragGesture] = useState(null)
   const setDragDiceGesture = useDragDiceGestureSetter()
@@ -53,7 +60,7 @@ export const Dice = ({
     const dropHandlerMap = new Map()
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
-        // nothing yet
+        diceGrippedSetter(true)
       },
       onLongGrip: () => {
         setDragIntent(true)
@@ -81,6 +88,7 @@ export const Dice = ({
         })
       },
       onRelease: ({ x, y }) => {
+        diceGrippedSetter(false)
         // setTimeout is to ensure the click cannot happen just after mouseup
         dragIntentTimeout = setTimeout(() => setDragIntent(false))
         setDragGesture(null)
@@ -95,6 +103,7 @@ export const Dice = ({
         dropHandlerMap.forEach((dropHandler) => dropHandler({ diceRectangle }))
       },
       onCancel: () => {
+        diceGrippedSetter(false)
         setDragIntent(false)
         setDragGesture(null)
         setDragDiceGesture(null)
@@ -106,39 +115,69 @@ export const Dice = ({
     }
   }, [draggable, diceDomNode, mainDomNode])
 
+  const left = dragGesture ? dragGesture.x : x
+  const top = dragGesture ? dragGesture.y : y
+
   return (
-    <button
-      disabled={disabled}
+    <svg
       data-dice-id={dice.id}
-      ref={diceDomNodeSetter}
-      onClick={onClickAction && clickAllowed && !dragIntent ? () => onClickAction(dice) : undefined}
+      onClick={
+        !disabled && onClickAction && clickAllowed && !dragIntent
+          ? () => onClickAction(dice)
+          : undefined
+      }
       className={onSkull ? skullDiceClass(dice) : "dice"}
       style={{
         width: diceSize,
         height: diceSize,
-        background: onSkull ? "black" : "#fcfcfc",
-        color: onSkull ? "black" : "#fcfcfc",
-        borderColor: onSkull ? "black" : "#b9b9b9",
+        left: `${left}px`,
+        top: `${top}px`,
         ...specificStyle,
         ...(dragGesture
           ? {
               position: "fixed",
               zIndex: 1000,
-              transform: "none",
-              left: dragGesture.x,
-              top: dragGesture.y,
             }
           : {}),
       }}
     >
-      <img
-        src={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
-        draggable="false"
+      <g
+        ref={diceDomNodeSetter}
         style={{
-          width: "100%",
-          height: "100%",
+          transform: stringifyTransformations({
+            rotate: rotation && !dragGesture ? rotation : 0,
+            scale: diceGripped ? "1.2" : "1",
+          }),
+          transformOrigin: "center center",
         }}
-      />
-    </button>
+      >
+        <rect
+          className="dice-background"
+          width="100%"
+          height="100%"
+          rx="5"
+          ry="5"
+          fill={onSkull ? "black" : "#fcfcfc"}
+          stroke={onSkull ? "black" : "#b9b9b9"}
+          strokeWidth="1"
+        ></rect>
+        <image
+          xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
+          draggable="false"
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      </g>
+    </svg>
   )
+}
+
+const stringifyTransformations = ({ rotate, scale, translate }) => {
+  return [
+    ...(rotate ? [`rotate(${rotate}deg)`] : []),
+    ...(scale && scale !== 1 ? [`scale(${scale})`] : []),
+    ...(translate ? [`translate(${translate})`] : []),
+  ].join("")
 }

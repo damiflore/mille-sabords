@@ -87,10 +87,10 @@ export const DiceOnGoing = () => {
             }}
             draggable={true}
             diceOnGoing={true}
+            x={dice.rolledAreaPosition.x}
+            y={dice.rolledAreaPosition.y}
+            rotation={dice.rotation}
             specificStyle={{
-              left: `${dice.rolledAreaPosition.x}px`,
-              top: `${dice.rolledAreaPosition.y}px`,
-              transform: `rotate(${dice.rotation}deg)`,
               position: "absolute",
             }}
           />
