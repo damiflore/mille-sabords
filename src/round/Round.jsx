@@ -108,14 +108,9 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   }
 
   const moveDiceBackIntoRolledArea = (dice) => {
-    // ici c'est délicat
-    const availableChestSlotInfo = getFirstAvailableChestSlotInfoForDice(dice, {
-      chestDomNode: chestRef.current,
-      chestSlots,
-    })
     moveDice(dice, {
-      x: availableChestSlotInfo.rectange.left,
-      y: availableChestSlotInfo.rectange.top,
+      x: dice.rolledAreaPosition.x,
+      y: dice.rolledAreaPosition.y,
     })
   }
 
@@ -123,6 +118,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     const rolledAreaDomNode = rolledAreaRef.current
     const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
     const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
+    dice.rolledAreaPosition = { x: diceRectangle.left, y: diceRectangle.top }
     moveDice(dice, {
       x: diceRectangle.left,
       y: diceRectangle.top,

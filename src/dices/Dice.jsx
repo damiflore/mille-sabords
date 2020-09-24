@@ -13,7 +13,6 @@ lorsqu'on drop un dé dans dice kept il se place avec animation + scale back ave
 import React from "react"
 import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
-import { useChestSlots, useDiceRolledIds, useDiceCursedIds } from "src/main.store.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIdToDice, diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
@@ -21,12 +20,16 @@ import { enableDragGesture } from "src/drag/drag.js"
 
 const { useEffect, useState } = React
 
-export const Dice = ({ diceId, onDiceClick, onDiceDrag, onDiceDrop }) => {
+export const Dice = ({
+  // todo: draggable n'est pas toujours true
+  // il faut changer ça
+  draggable = true,
+  diceId,
+  onDiceClick,
+  onDiceDrag,
+  onDiceDrop,
+}) => {
   const dice = diceIdToDice(diceId)
-  // state from global store context
-  const chestSlots = useChestSlots()
-  const diceRolledIds = useDiceRolledIds()
-  const diceCursedIds = useDiceCursedIds()
   // state from other contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
@@ -48,12 +51,6 @@ export const Dice = ({ diceId, onDiceClick, onDiceDrag, onDiceDrop }) => {
   const diceY = dragGesture ? dragGesture.y : 0
   const becomesCursed = false
   const becomesUncursed = false
-  const { diceIsInChest, diceIsInCursedArea, diceIsInRolledArea } = diceLocationGetter(dice, {
-    chestSlots,
-    diceRolledIds,
-    diceCursedIds,
-  })
-  const draggable = diceIsInChest || diceIsInRolledArea
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !mainDomNode) {

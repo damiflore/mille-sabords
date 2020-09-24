@@ -55,6 +55,8 @@ export const rollDices = (dices, { rolledAreaDomNode }) => {
 
     dice.rotation = rotation
     dice.rolledAreaPosition = rectangle[0]
+    dice.x = rectangle[0].x
+    dice.y = rectangle[0].y
   })
 
   return dices
