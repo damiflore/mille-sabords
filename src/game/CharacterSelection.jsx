@@ -1,49 +1,9 @@
 import React from "react"
 import { CHARACTERS } from "src/players/players.main.js"
 import { usePlayers, createAction } from "src/main.store.js"
-import { useOpenScoreBoard } from "src/game/Game.jsx"
-
-const CrewMembers = () => {
-  const players = usePlayers()
-
-  return (
-    <div className="crew">
-      <p>L&apos;équipage:</p>
-      <ul>
-        {players.map((player) => {
-          return (
-            <li key={player.id}>
-              {player.character ? (
-                <img
-                  className="crew-member-img"
-                  src={`src/score-board/${player.character && player.character.img}`}
-                  alt="player"
-                  style={{
-                    border: `4px solid ${(player.character && player.character.color) || "black"}`,
-                  }}
-                />
-              ) : (
-                <div className="placeholder-img"></div>
-              )}
-              <span>{player.character ? player.character.name : `Joueur${player.number}`}</span>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
-  )
-}
-
-const useStartGame = createAction((state) => {
-  return {
-    ...state,
-    gameStarted: true,
-  }
-})
 
 export const CharacterSelection = ({ players }) => {
   const setPlayerCharacter = useSetPlayerCharacter()
-  const openScoreBoard = useOpenScoreBoard()
   const startGame = useStartGame()
   const playerWithoutCharacter = players.find((player) => !player.character)
 
@@ -84,7 +44,6 @@ export const CharacterSelection = ({ players }) => {
           <p>Votre équipage est au complet !</p>
           <button
             onClick={() => {
-              openScoreBoard()
               startGame()
             }}
           >
@@ -95,6 +54,44 @@ export const CharacterSelection = ({ players }) => {
     </div>
   )
 }
+
+const CrewMembers = () => {
+  const players = usePlayers()
+
+  return (
+    <div className="crew">
+      <p>L&apos;équipage:</p>
+      <ul>
+        {players.map((player) => {
+          return (
+            <li key={player.id}>
+              {player.character ? (
+                <img
+                  className="crew-member-img"
+                  src={`src/score-board/${player.character && player.character.img}`}
+                  alt="player"
+                  style={{
+                    border: `4px solid ${(player.character && player.character.color) || "black"}`,
+                  }}
+                />
+              ) : (
+                <div className="placeholder-img"></div>
+              )}
+              <span>{player.character ? player.character.name : `Joueur${player.number}`}</span>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+}
+
+const useStartGame = createAction((state) => {
+  return {
+    ...state,
+    gameStarted: true,
+  }
+})
 
 const characterIsAvailable = (character, players) => {
   return !players.some((player) => player.character && player.character.name === character.name)
