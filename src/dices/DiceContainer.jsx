@@ -1,13 +1,13 @@
 import React from "react"
-import { useDiceIds } from "src/main.store.js"
+import { useDices } from "src/main.store.js"
 import { Dice } from "src/dices/Dice.jsx"
 
 export const DiceContainer = ({ onDiceClick, onDiceDrag, onDiceDrop }) => {
-  const diceIds = useDiceIds()
-  return diceIds.map((diceId) => (
+  const dices = useDices()
+  return dices.map((dice) => (
     <Dice
-      key={diceId}
-      diceId={diceId}
+      key={dice.id}
+      dice={dice}
       onDiceClick={onDiceClick}
       onDiceDrag={onDiceDrag}
       onDiceDrop={onDiceDrop}

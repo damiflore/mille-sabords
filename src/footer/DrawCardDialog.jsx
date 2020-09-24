@@ -1,15 +1,18 @@
 import React from "react"
 
-import { useCurrentCard, useCardDeck } from "src/main.store.js"
+import { useCurrentCardId } from "src/main.store.js"
+import { useCardDeck } from "src/round/round.selectors.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 import { useStartRound } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
+import { cardIdToCard } from "src/cards/cards.js"
 
 export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
   const cardDeck = useCardDeck()
-  const card = useCurrentCard()
+  const currentCardId = useCurrentCardId()
+  const currentCard = cardIdToCard(currentCardId) || null
 
   return (
     <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={false}>
@@ -23,75 +26,75 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
       <div className="dialog-content draw-card-dialog">
         <div className="dialog-body">
           <div className="dialog-label">
-            {cardDeck.length === 0 && !card
+            {cardDeck.length === 0 && !currentCardId
               ? "Paquet de cartes épuisé. Mélangez-le pour pouvoir piocher à nouveau."
               : "Piochez une carte pour le tour suivant."}
           </div>
           <div className="card-area">
-            <BackCard />
-            <TopCard />
+            <BackCard remainingCardCount={cardDeck.length} />
+            <TopCard currentCard={currentCard} />
           </div>
-          <CardDescription />
+          <CardDescription card={currentCard} />
         </div>
         <div className="dialog-actions">
-          <DeckButton />
-          <StartButton closeDialog={closeDialog} />
+          <DeckButton cardDeck={cardDeck} />
+          <StartButton currentCard={currentCard} closeDialog={closeDialog} />
         </div>
       </div>
     </Dialog>
   )
 }
 
-const TopCard = () => {
-  const card = useCurrentCard()
+const TopCard = ({ currentCard }) => {
+  if (!currentCard) {
+    return null
+  }
 
-  if (card)
-    return (
-      <div className="card current-card">
-        <div className="flip-card">
-          <div className="flip-card-inner">
-            <div className="flip-card-front">
-              <div
-                className="card default-card"
-                style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
-              ></div>
-            </div>
-            <div className="flip-card-back">
-              <img src={`/src/cards/card_${card}.png`} alt={card} />
-            </div>
+  return (
+    <div className="card current-card">
+      <div className="flip-card">
+        <div className="flip-card-inner">
+          <div className="flip-card-front">
+            <div
+              className="card default-card"
+              style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
+            ></div>
+          </div>
+          <div className="flip-card-back">
+            <img src={`/src/cards/card_${currentCard.type}.png`} alt={currentCard.type} />
           </div>
         </div>
       </div>
-    )
-  return null
+    </div>
+  )
 }
 
-const CardDescription = () => {
-  const card = useCurrentCard()
-
+const CardDescription = ({ card }) => {
   const [moreInfoVisible, setMoreInfoVisible] = React.useState(false)
   const toggleMoreInfoVisibility = () => {
     setMoreInfoVisible(!moreInfoVisible)
   }
 
-  if (card) {
-    return (
-      <div className="card-description">
-        <span className="subtitle">{cardsRules[card].name}</span>
-        <button className="moreInfoIcon" onClick={() => toggleMoreInfoVisibility()}>
-          {moreInfoVisible ? <IconMinus /> : <IconPlus />}
-        </button>
-        <MoreInfo moreInfoVisible={moreInfoVisible} />
-      </div>
-    )
+  if (!card) {
+    return null
   }
-  return null
+
+  return (
+    <div className="card-description">
+      <span className="subtitle">{cardsRules[card].name}</span>
+      <button className="moreInfoIcon" onClick={() => toggleMoreInfoVisibility()}>
+        {moreInfoVisible ? <IconMinus /> : <IconPlus />}
+      </button>
+      <MoreInfo card={card} moreInfoVisible={moreInfoVisible} />
+    </div>
+  )
 }
 
-const MoreInfo = ({ moreInfoVisible }) => {
-  const card = useCurrentCard()
+const MoreInfo = ({ card, moreInfoVisible }) => {
+  if (!moreInfoVisible) {
+    return null
+  }
 
-  if (!moreInfoVisible) return null
   if (cardsRules[card].more) {
     return (
       <>
@@ -100,6 +103,7 @@ const MoreInfo = ({ moreInfoVisible }) => {
       </>
     )
   }
+
   return <div className="text-rule">{cardsRules[card].rule}</div>
 }
 
@@ -117,26 +121,26 @@ const IconMinus = () => (
   </svg>
 )
 
-const BackCard = () => {
-  const cardDeck = useCardDeck()
+const BackCard = ({ remainingCardCount }) => {
   return (
     <div
       className="card default-card"
       id="back-deck-card"
       style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
     >
-      <div className="remaining-cards-number">{cardDeck.length}</div>
+      <div className="remaining-cards-number">{remainingCardCount}</div>
     </div>
   )
 }
 
-const DeckButton = () => {
-  const currentCard = useCurrentCard()
-  const cardDeck = useCardDeck()
+const DeckButton = ({ cardDeck, currentCard }) => {
+  if (currentCard) {
+    return null
+  }
 
-  if (currentCard) return null
-
-  if (cardDeck.length === 0) return <ShuffleDeckButton />
+  if (cardDeck.length === 0) {
+    return <ShuffleDeckButton />
+  }
 
   return <DrawCardButton />
 }
@@ -168,21 +172,22 @@ const ShuffleDeckButton = () => {
   )
 }
 
-const StartButton = ({ closeDialog }) => {
-  const currentCard = useCurrentCard()
+const StartButton = ({ currentCard, closeDialog }) => {
   const startRound = useStartRound()
 
-  const start = () => {
-    startRound()
-    closeDialog()
+  if (!currentCard) {
+    return null
   }
 
-  if (currentCard) {
-    return (
-      <button className="draw-card-btn" onClick={start}>
-        Commencer
-      </button>
-    )
-  }
-  return null
+  return (
+    <button
+      className="draw-card-btn"
+      onClick={() => {
+        startRound()
+        closeDialog()
+      }}
+    >
+      Commencer
+    </button>
+  )
 }

@@ -1,7 +1,7 @@
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
 import { cardIds, mixDeck } from "src/cards/cards.js"
-import { diceIds } from "src/dices/dices.js"
+import { DICES } from "src/dices/dices.js"
 
 const defaultState = {
   gameCreated: false,
@@ -12,7 +12,7 @@ const defaultState = {
   // persist accross a game round
   cardIds: mixDeck(cardIds),
   cardUsedIds: [],
-  diceIds,
+  dices: DICES,
 
   // game round
   currentPlayerGettingReady: false,
@@ -91,7 +91,7 @@ export const usePlayers = () => store.useKeyedState("players")
 export const useCurrentPlayerId = () => store.useKeyedState("currentPlayerId")
 export const useCardIds = () => store.useKeyedState("cardIds")
 export const useCardUsedIds = () => store.useKeyedState("cardUsedIds")
-export const useDiceIds = () => store.useKeyedState("diceIds")
+export const useDices = () => store.useKeyedState("dices")
 export const useRoundStarted = () => store.useKeyedState("roundStarted")
 export const useCurrentPlayerGettingReady = () => store.useKeyedState("currentPlayerGettingReady")
 export const useRollCount = () => store.useKeyedState("rollCount")

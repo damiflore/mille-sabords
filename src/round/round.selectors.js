@@ -5,7 +5,7 @@ import {
   useWitchUncursedDiceId,
   useCurrentCardId,
   useScoreMarked,
-  useDiceIds,
+  useCardIds,
   useDiceRolledIds,
   useDiceCursedIds,
   useChestSlots,
@@ -27,6 +27,10 @@ import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/sy
 
 const { useMemo } = React
 
+export const useCardDeck = ({ cardIds = useCardIds() } = {}) => {
+  return cardIds.map((cardId) => cardIdToCard(cardId))
+}
+
 export const useCurrentPlayer = ({
   currentPlayerId = useCurrentPlayerId(),
   players = usePlayers(),
@@ -45,10 +49,7 @@ export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount
 
 export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
 
-export const useSymbolsInChest = ({
-  diceIds = useDiceIds(),
-  chestSlots = useChestSlots(),
-} = {}) => {
+export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
   return Object.keys(chestSlots).reduce((previous, chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
 
@@ -58,7 +59,7 @@ export const useSymbolsInChest = ({
 
     if (chestSlotContent && chestSlotContent.type === "dice") {
       const diceId = chestSlotContent.value
-      const dice = diceIds.includes(diceId)
+      const dice = diceIdToDice(diceId)
       return [...previous, diceToVisibleSymbol(dice.value)]
     }
 

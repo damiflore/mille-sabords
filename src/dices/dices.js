@@ -29,7 +29,7 @@ const createDice = (props) => {
   }
 }
 
-const DICES = [
+export const DICES = [
   createDice(),
   createDice(),
   createDice(),
@@ -40,7 +40,6 @@ const DICES = [
   createDice(),
 ]
 
-export const diceIds = DICES.map((dice) => dice.id)
 export const diceIdToDice = (diceId) => DICES.find((diceCandidate) => diceCandidate.id === diceId)
 
 export const diceIsOnCoin = (dice) => diceToVisibleSymbol(dice) === SYMBOL_COIN

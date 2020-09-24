@@ -15,7 +15,7 @@ import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
-import { diceIdToDice, diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
+import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
 
 const { useEffect, useState } = React
@@ -24,12 +24,11 @@ export const Dice = ({
   // todo: draggable n'est pas toujours true
   // il faut changer ça
   draggable = true,
-  diceId,
+  dice,
   onDiceClick,
   onDiceDrag,
   onDiceDrop,
 }) => {
-  const dice = diceIdToDice(diceId)
   // state from other contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
