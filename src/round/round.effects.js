@@ -92,7 +92,7 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
 
 const useCoinCardEffect = () => {
   const addExtraCoin = useAddExtraCoin()
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const drawCoinCard = useBecomes(
     (currentCardPrevious) => !isCoinCard(currentCardPrevious) && isCoinCard(currentCard),
     [currentCard],

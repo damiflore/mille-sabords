@@ -37,7 +37,7 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
           <CardDescription card={currentCard} />
         </div>
         <div className="dialog-actions">
-          <DeckButton cardDeck={cardDeck} />
+          <DeckButton cardDeck={cardDeck} currentCard={currentCard} />
           <StartButton currentCard={currentCard} closeDialog={closeDialog} />
         </div>
       </div>
@@ -81,7 +81,7 @@ const CardDescription = ({ card }) => {
 
   return (
     <div className="card-description">
-      <span className="subtitle">{cardsRules[card].name}</span>
+      <span className="subtitle">{cardsRules[card.type].name}</span>
       <button className="moreInfoIcon" onClick={() => toggleMoreInfoVisibility()}>
         {moreInfoVisible ? <IconMinus /> : <IconPlus />}
       </button>
@@ -98,8 +98,8 @@ const MoreInfo = ({ card, moreInfoVisible }) => {
   if (cardsRules[card].more) {
     return (
       <>
-        <div className="text-rule">{cardsRules[card].rule}</div>
-        <div className="text-rule">{cardsRules[card].more}</div>
+        <div className="text-rule">{cardsRules[card.type].rule}</div>
+        <div className="text-rule">{cardsRules[card.type].more}</div>
       </>
     )
   }
@@ -139,13 +139,13 @@ const DeckButton = ({ cardDeck, currentCard }) => {
   }
 
   if (cardDeck.length === 0) {
-    return <ShuffleDeckButton />
+    return <ButtonShuffleDeck />
   }
 
-  return <DrawCardButton />
+  return <ButtonDrawCard />
 }
 
-const DrawCardButton = () => {
+const ButtonDrawCard = () => {
   const drawCard = useDrawCard()
 
   return (
@@ -155,7 +155,7 @@ const DrawCardButton = () => {
   )
 }
 
-const ShuffleDeckButton = () => {
+const ButtonShuffleDeck = () => {
   const shuffleDeck = useShuffleDeck()
 
   const shuffleDeckAnimation = () => {

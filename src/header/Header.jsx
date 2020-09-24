@@ -1,23 +1,23 @@
 import React from "react"
 
-import { useCurrentCard } from "src/main.store.js"
+import { useCurrentCardId } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
 export const Header = ({ openScoreboard }) => {
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
-  const card = useCurrentCard()
+  const [dialogIsOpen, dialogIsOpenSetter] = React.useState(false)
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   const openDialog = () => {
-    if (card) setDialogIsOpen(true)
+    if (currentCard) dialogIsOpenSetter(true)
   }
 
   const closeDialog = () => {
-    setDialogIsOpen(false)
+    dialogIsOpenSetter(false)
   }
 
   return (
@@ -41,7 +41,7 @@ export const Header = ({ openScoreboard }) => {
 }
 
 const TopDeckCard = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   return currentCard ? <Card card={currentCard} /> : <BackCard />
 }
@@ -63,13 +63,15 @@ const Card = ({ card }) => {
     <div
       className="card current-card"
       style={{
-        backgroundColor: cardColors[card].color1,
-        borderColor: cardColors[card].color2,
+        backgroundColor: card.color1,
+        borderColor: card.color2,
       }}
     >
       <img
-        src={`/src/cards/card_small-${isSwordChallengeCard(card) ? "sword-challenge" : card}.png`}
-        alt={card}
+        src={`/src/cards/card_small-${
+          isSwordChallengeCard(card) ? "sword-challenge" : card.type
+        }.png`}
+        alt={card.type}
       />
     </div>
   )

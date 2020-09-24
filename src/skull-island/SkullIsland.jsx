@@ -1,18 +1,11 @@
 import React from "react"
 
-import { useDicesCursed, useCurrentCard, useRoundStarted } from "src/main.store.js"
-import { useRemoveSkullAllowed } from "src/round/round.selectors.js"
-import { useUncurseDice } from "src/dices/dices.actions.js"
-
-import { isOneSkullCard, isTwoSkullsCard, isWitchCard, cardColors } from "src/cards/cards.js"
-import { Dice } from "src/dices/Dice.jsx"
+import { useCurrentCardId, useRoundStarted } from "src/main.store.js"
+import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
 
 export const SkullIsland = () => {
-  const currentCard = useCurrentCard()
-  const dicesCursed = useDicesCursed()
-  const removeSkullAllowed = useRemoveSkullAllowed()
-  const uncurseDice = useUncurseDice()
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   return (
     <div className="skull-island">
@@ -26,17 +19,6 @@ export const SkullIsland = () => {
               <ExtraSkull card={currentCard} />
             </>
           ) : null}
-          {dicesCursed.map((dice) => (
-            <Dice
-              key={dice.id}
-              dice={dice}
-              clickAllowed={removeSkullAllowed}
-              onClickAction={(dice) => {
-                uncurseDice(dice)
-              }}
-              specificStyle={{ margin: "1px 5px" }}
-            />
-          ))}
         </div>
       </div>
     </div>
@@ -52,8 +34,8 @@ const ExtraSkull = ({ card }) => {
         height: diceSize,
         color: "#fcfcfc",
         margin: "1px 5px",
-        backgroundColor: cardColors[card].color1,
-        borderColor: cardColors[card].color2,
+        backgroundColor: card.color1,
+        borderColor: card.color2,
         borderWidth: "2px",
       }}
     >

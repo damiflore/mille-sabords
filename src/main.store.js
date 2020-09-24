@@ -10,7 +10,7 @@ const defaultState = {
   currentPlayerId: null,
 
   // persist accross a game round
-  cardIds: mixDeck(cardIds),
+  cardIds,
   cardUsedIds: [],
   dices: DICES,
 

@@ -1,9 +1,9 @@
 import React from "react"
 
-import { useCurrentCard, useRoundStarted, useScoreMarked } from "src/main.store.js"
+import { useCurrentCardId, useRoundStarted, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
-import { isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useBecomes } from "src/hooks.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
@@ -14,7 +14,7 @@ import { StarRain } from "src/game-design/StarRain.jsx"
 const { useState, useEffect } = React
 
 const swordChallengeOngoing = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const symbolsInChest = useSymbolsInChest()
   const quantityKept = countSymbol(symbolsInChest, SYMBOL_SWORD)
   const quantityRequired = useSwordQuantityRequired()
@@ -26,7 +26,7 @@ const swordChallengeOngoing = () => {
 }
 
 export const RoundScore = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   return (
     <div className={`score-area ${swordChallengeOngoing() ? "animated" : ""}`}>
@@ -37,7 +37,7 @@ export const RoundScore = () => {
 
 const ScoreDisplay = () => {
   const roundScore = useRoundScore()
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false)

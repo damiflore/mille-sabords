@@ -1,6 +1,7 @@
 import React from "react"
 import { CHARACTERS } from "src/players/players.main.js"
 import { usePlayers, createAction } from "src/main.store.js"
+import { mixDeck } from "src/cards/cards.js"
 
 export const CharacterSelection = ({ players }) => {
   const setPlayerCharacter = useSetPlayerCharacter()
@@ -92,9 +93,11 @@ const CrewMembers = () => {
 }
 
 const useStartGame = createAction((state) => {
+  const { cardIds } = state
   return {
     ...state,
     gameStarted: true,
+    cardIds: mixDeck(cardIds),
   }
 })
 

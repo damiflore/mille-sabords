@@ -2,6 +2,7 @@ import React from "react"
 import { createAction } from "src/main.store.js"
 import { useRollDiceAllowed } from "src/round/round.selectors.js"
 import { rollDices } from "src/dices/rollDices.js"
+import { diceIdToDice } from "src/dices/dices.js"
 
 export const ButtonRoll = ({ rolledAreaDomNode }) => {
   const rollDiceAllowed = useRollDiceAllowed()
@@ -25,13 +26,9 @@ export const ButtonRoll = ({ rolledAreaDomNode }) => {
 }
 
 const useRoll = createAction((state, rolledAreaDomNode) => {
-  const { rollCount, dices, dicesRolled } = state
+  const { rollCount, dices, diceRolledIds } = state
   const dicesToRoll =
-    rollCount === 0
-      ? dices
-      : dicesRolled.map((diceRolledId) => {
-          return dices.find((diceCandidate) => diceCandidate.id === diceRolledId)
-        })
+    rollCount === 0 ? dices : diceRolledIds.map((diceRolledId) => diceIdToDice(diceRolledId))
   return {
     ...state,
     rollCount: rollCount + 1,

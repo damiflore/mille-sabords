@@ -1,12 +1,14 @@
 import React from "react"
 
-import { useCurrentCard } from "src/main.store.js"
+import { useCurrentCardId } from "src/main.store.js"
+import { cardIdToCard } from "src/cards/cards.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
 export const CardRulesDialog = ({ dialogIsOpen, closeDialog }) => {
-  const card = useCurrentCard()
+  const card = cardIdToCard(useCurrentCardId())
+  const cardRules = cardsRules[card.type]
 
   return (
     <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
@@ -19,14 +21,16 @@ export const CardRulesDialog = ({ dialogIsOpen, closeDialog }) => {
 
       <div className="dialog-content card-rules-dialog">
         <div className="dialog-body">
-          {cardsRules[card] && (
+          {cardRules && (
             <>
-              <div className="dialog-label">{cardsRules[card].name}</div>
-              <img className="current-card" src={`/src/cards/card_${card}.png`} alt={card} />
-              <div className="text-rule">{cardsRules[card].rule}</div>
-              {cardsRules[card].more ? (
-                <div className="text-rule">{cardsRules[card].more}</div>
-              ) : null}
+              <div className="dialog-label">{cardRules.name}</div>
+              <img
+                className="current-card"
+                src={`/src/cards/card_${card.type}.png`}
+                alt={card.type}
+              />
+              <div className="text-rule">{cardRules.rule}</div>
+              {cardRules.more ? <div className="text-rule">{cardRules.more}</div> : null}
             </>
           )}
         </div>

@@ -87,6 +87,6 @@ export const useStartPlaying = createAction((state, player) => {
   return {
     ...state,
     currentPlayerId: player.id,
-    currentCard: null,
+    currentCardId: null,
   }
 })
