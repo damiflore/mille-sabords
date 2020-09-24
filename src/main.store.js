@@ -1,7 +1,7 @@
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
-import { CARDS, mixDeck } from "src/cards/cards.js"
-import { DICES } from "src/dices/dices.js"
+import { cardIds, mixDeck } from "src/cards/cards.js"
+import { diceIds } from "src/dices/dices.js"
 
 const defaultState = {
   gameCreated: false,
@@ -10,20 +10,20 @@ const defaultState = {
   currentPlayerId: null,
 
   // persist accross a game round
-  cardDeck: mixDeck(CARDS),
-  cardsUsed: [],
-  dices: DICES,
+  cardIds: mixDeck(cardIds),
+  cardUsedIds: [],
+  diceIds,
 
   // game round
   currentPlayerGettingReady: false,
   roundStarted: false,
   rollCount: 0,
-  currentCard: null,
+  currentCardId: null,
   scoreMarked: false,
   isOnSkullIsland: false,
   witchUncursedDiceId: null,
-  dicesRolled: [],
-  dicesCursed: [],
+  diceRolledIds: [],
+  diceCursedIds: [],
   chestSlots: {
     1: null,
     2: null,
@@ -89,16 +89,16 @@ export const useGameCreated = () => store.useKeyedState("gameCreated")
 export const useGameStarted = () => store.useKeyedState("gameStarted")
 export const usePlayers = () => store.useKeyedState("players")
 export const useCurrentPlayerId = () => store.useKeyedState("currentPlayerId")
-export const useCardDeck = () => store.useKeyedState("cardDeck")
-export const useCardsUsed = () => store.useKeyedState("cardsUsed")
-export const useDices = () => store.useKeyedState("dices")
+export const useCardIds = () => store.useKeyedState("cardIds")
+export const useCardUsedIds = () => store.useKeyedState("cardUsedIds")
+export const useDiceIds = () => store.useKeyedState("diceIds")
 export const useRoundStarted = () => store.useKeyedState("roundStarted")
 export const useCurrentPlayerGettingReady = () => store.useKeyedState("currentPlayerGettingReady")
 export const useRollCount = () => store.useKeyedState("rollCount")
 export const useScoreMarked = () => store.useKeyedState("scoreMarked")
 export const useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland")
-export const useCurrentCard = () => store.useKeyedState("currentCard")
+export const useCurrentCardId = () => store.useKeyedState("currentCardId")
 export const useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId")
-export const useDicesRolled = () => store.useKeyedState("dicesRolled")
-export const useDicesCursed = () => store.useKeyedState("dicesCursed")
+export const useDiceRolledIds = () => store.useKeyedState("diceRolledIds")
+export const useDiceCursedIds = () => store.useKeyedState("diceCursedIds")
 export const useChestSlots = () => store.useKeyedState("chestSlots")

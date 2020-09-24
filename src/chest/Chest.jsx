@@ -1,9 +1,9 @@
 import React from "react"
 
-import { useCurrentCard, useChestSlots } from "src/main.store.js"
+import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
-import { cardColors } from "src/cards/cards.js"
+import { cardIdToCard } from "src/cards/cards.js"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
@@ -41,7 +41,7 @@ export const Chest = ({ chestRef, diceDraggedOverChest }) => {
 }
 
 const ChestSlot = ({ chestSlotContent }) => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   if (!chestSlotContent) {
     return null
@@ -57,8 +57,8 @@ const ChestSlot = ({ chestSlotContent }) => {
           height: diceSize,
           color: "#fcfcfc",
           margin: "5px",
-          backgroundColor: cardColors[currentCard].color1,
-          borderColor: cardColors[currentCard].color2,
+          backgroundColor: currentCard.color1,
+          borderColor: currentCard.color2,
           borderWidth: "2px",
           borderStyle: "solid",
         }}

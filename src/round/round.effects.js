@@ -1,8 +1,8 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
-import { isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { useCurrentCardId, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
+import { cardIdToCard, isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
@@ -50,7 +50,7 @@ const useCurseDiceEffect = () => {
 
 // auto mark score for failed sword challenges
 const useFailSwordChallengeEffect = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const markScore = useMarkScore()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
@@ -72,7 +72,7 @@ const useFailSwordChallengeEffect = () => {
 // go to skull island if 4 skulls or more on first roll
 const useFourSkullsOrMoreOnFirstRollEffect = () => {
   const isFirstRoll = useIsFirstRoll()
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const isOnSkullIsland = useIsOnSkullIsland()
   const skullCountInCursedArea = useSkullCountInCursedArea()
   const sendToSkullIsland = useSendToSkullIsland()
@@ -107,7 +107,7 @@ const useCoinCardEffect = () => {
 
 const useDiamondCardEffect = () => {
   const addExtraDiamond = useAddExtraDiamond()
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const drawDiamondCard = useBecomes(
     (currentCardPrevious) => !isDiamondCard(currentCardPrevious) && isDiamondCard(currentCard),
     [currentCard],

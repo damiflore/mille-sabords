@@ -1,9 +1,9 @@
 import React from "react"
 
 import {
-  useCardDeck,
-  useDicesRolled,
-  useDicesCursed,
+  useCardIds,
+  useDiceRolledIds,
+  useDiceCursedIds,
   useChestSlots,
   useDispatch,
 } from "src/main.store.js"
@@ -54,10 +54,10 @@ export const Lab = () => {
 }
 
 const GameLab = () => {
-  const cardDeck = useCardDeck()
-  const dicesRolled = useDicesRolled()
+  const cardDeck = useCardIds()
+  const dicesRolled = useDiceRolledIds()
   const chestSlots = useChestSlots()
-  const dicesCursed = useDicesCursed()
+  const dicesCursed = useDiceCursedIds()
   const setCurrentPlayerScore = useSetCurrentPlayerScore()
   const nextCard = cardDeck[0]
 
@@ -252,13 +252,13 @@ const useSetCurrentPlayerScore = () => {
 }
 
 const useSetNextCard = () => {
-  const cardDeck = useCardDeck()
+  const cardIds = useCardIds()
   const dispatch = useDispatch()
   return (card) => {
     dispatch((state) => {
       return {
         ...state,
-        cardDeck: [card, ...cardDeck.slice(1)],
+        cardDeck: [card.id, ...cardIds.slice(1)],
       }
     })
   }

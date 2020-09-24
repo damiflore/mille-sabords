@@ -1,14 +1,14 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useDices, useChestSlots, useDicesRolled } from "src/main.store.js"
+import { useDiceIds, useChestSlots, useDiceRolledIds } from "src/main.store.js"
 import { GameEffects } from "src/round/round.effects.js"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
-import { Dice, diceIsInChestGetter, diceIsInRolledAreaGetter } from "src/dices/Dice.jsx"
+import { Dice, diceIsInChestGetter } from "src/dices/Dice.jsx"
 import {
   useMoveDice,
   useKeepDice,
@@ -21,6 +21,7 @@ import {
   getDomNodeRectangle,
   findClosestRectangle,
 } from "src/helper/rectangle.js"
+import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 const { useMemo } = React
 
@@ -38,7 +39,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   */
 
   const chestSlots = useChestSlots()
-  const dicesRolled = useDicesRolled()
+  const diceRolledIds = useDiceRolledIds()
   const [diceDraggedOverRolledArea, diceDraggedOverRolledAreaSetter] = React.useState(null)
   const [diceDraggedOverChest, diceDraggedOverChestSetter] = React.useState(null)
   const rolledAreaRef = React.useRef(null)
@@ -48,6 +49,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   const keepDice = useKeepDice()
   const unkeepDice = useUnkeepDice()
   const setDiceChestSlot = useSetDiceChestSlot()
+  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
 
   return useMemo(() => (
     <div className="round-container">
@@ -138,7 +140,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
               rectangleCandidates,
             )
             const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
-            const diceIsInRolledArea = diceIsInRolledAreaGetter(dice, { dicesRolled })
+            const diceIsInRolledArea = diceRolledIds.includes(diceDraggedOverChest.id)
 
             // on met le dé aux coordonées les plus proches
             moveDice(dice, {
@@ -158,8 +160,8 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
 }
 
 const DiceContainer = ({ onDiceDrag, onDiceDrop }) => {
-  const dices = useDices()
-  return dices.map((dice) => (
-    <Dice key={dice.id} dice={dice} onDiceDrag={onDiceDrag} onDiceDrop={onDiceDrop} />
+  const diceIds = useDiceIds()
+  return diceIds.map((diceId) => (
+    <Dice key={diceId} diceId={diceId} onDiceDrag={onDiceDrag} onDiceDrop={onDiceDrop} />
   ))
 }

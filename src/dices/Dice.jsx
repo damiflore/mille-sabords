@@ -18,29 +18,30 @@ import { stringifyClassNames, stringifyTransformations } from "src/helper/render
 import {
   useWitchUncursedDiceId,
   useScoreMarked,
-  useCurrentCard,
+  useCurrentCardId,
   useChestSlots,
-  useDicesRolled,
-  useDicesCursed,
+  useDiceRolledIds,
+  useDiceCursedIds,
 } from "src/main.store.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 import { diceSize } from "src/dices/dicePosition.js"
-import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
+import { diceIdToDice, diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
-import { isWitchCard } from "src/cards/cards.js"
+import { isWitchCard, cardIdToCard } from "src/cards/cards.js"
 
 const { useEffect, useState } = React
 
-export const Dice = ({ dice, onDiceDrag }) => {
+export const Dice = ({ diceId, onDiceDrag }) => {
+  const dice = diceIdToDice(diceId)
   // state from global store context
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const witchUncursedDiceId = useWitchUncursedDiceId()
   const scoreMarked = useScoreMarked()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
   const chestSlots = useChestSlots()
-  const dicesRolled = useDicesRolled()
-  const dicesCursed = useDicesCursed()
+  const diceRolledIds = useDiceRolledIds()
+  const diceCursedIds = useDiceCursedIds()
   // state from other contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
@@ -63,8 +64,8 @@ export const Dice = ({ dice, onDiceDrag }) => {
   const becomesUncursed = false
   const { diceIsInChest, diceIsInCursedArea, diceIsInRolledArea } = diceLocationGetter(dice, {
     chestSlots,
-    dicesRolled,
-    dicesCursed,
+    diceRolledIds,
+    diceCursedIds,
   })
   const draggable = diceIsInChest || diceIsInRolledArea
 
@@ -217,7 +218,7 @@ export const Dice = ({ dice, onDiceDrag }) => {
   )
 }
 
-const diceLocationGetter = (dice, { chestSlots, dicesCursed, dicesRolled }) => {
+const diceLocationGetter = (dice, { chestSlots, diceCursedIds, diceRolledIds }) => {
   if (diceIsInChestGetter(dice, { chestSlots })) {
     return {
       diceIsChest: true,
@@ -225,15 +226,14 @@ const diceLocationGetter = (dice, { chestSlots, dicesCursed, dicesRolled }) => {
       diceIsInRolledArea: false,
     }
   }
-  const inCursedArea = dicesCursed.includes(dice.id)
-  if (inCursedArea) {
+  if (diceCursedIds.includes(dice.id)) {
     return {
       diceIsChest: false,
       diceIsInCursedArea: true,
       diceIsInRolledArea: false,
     }
   }
-  if (diceIsInRolledAreaGetter(dice, { dicesRolled })) {
+  if (diceRolledIds.include(dice.id)) {
     return {
       diceIsChest: false,
       diceIsInCursedArea: false,
@@ -255,8 +255,6 @@ export const diceIsInChestGetter = (dice, { chestSlots }) => {
 
 const diceIsInChestSlot = (dice, chestSlotContent) =>
   chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
-
-export const diceIsInRolledAreaGetter = (dice, { dicesRolled }) => dicesRolled.include(dice.id)
 
 const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
   if (scoreMarked) {

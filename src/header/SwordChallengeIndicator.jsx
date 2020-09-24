@@ -1,32 +1,27 @@
 import React from "react"
 
-import { useCurrentCard } from "src/main.store.js"
+import { useCurrentCardId } from "src/main.store.js"
 import { useSymbolsInChest } from "src/round/round.selectors.js"
-import {
-  isSwordChallengeCard,
-  isTwoSwordsChallengeCard,
-  isThreeSwordsChallengeCard,
-  isFourSwordsChallengeCard,
-  TWO_SWORDS_CHALLENGE_GAMBLE,
-  THREE_SWORDS_CHALLENGE_GAMBLE,
-  FOUR_SWORDS_CHALLENGE_GAMBLE,
-} from "src/cards/cards.js"
+import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { countSymbol } from "src/score/computeRoundScore.js"
 
-export const useSwordQuantityRequired = ({ currentCard = useCurrentCard() } = {}) => {
-  if (isTwoSwordsChallengeCard(currentCard)) return TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
-  if (isThreeSwordsChallengeCard(currentCard)) return THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
-  if (isFourSwordsChallengeCard(currentCard)) return FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords
+export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {
+  const card = cardIdToCard(currentCardId)
+  if (isSwordChallengeCard(card)) return card.numberOfSwords
   return null
 }
 
 export const SwordChallengeIndicator = () => {
-  const currentCard = useCurrentCard()
+  const currentCardId = useCurrentCardId()
   const symbolsInChest = useSymbolsInChest()
   const quantityRequired = useSwordQuantityRequired()
 
-  if (!currentCard || !isSwordChallengeCard(currentCard)) {
+  if (!currentCardId) {
+    return null
+  }
+  const currentCard = cardIdToCard(currentCardId)
+  if (!isSwordChallengeCard(currentCard)) {
     return null
   }
 
