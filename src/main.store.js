@@ -1,6 +1,6 @@
 import { createLogger } from "@jsenv/logger"
 import { createStructuredStateStore } from "src/store/createStructuredStateStore.js"
-import { cardIds, mixDeck } from "src/cards/cards.js"
+import { cardIds } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
 const defaultState = {

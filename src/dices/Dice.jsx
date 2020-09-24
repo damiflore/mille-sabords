@@ -44,10 +44,8 @@ export const Dice = ({
 
   const onSkull = diceIsOnSkull(dice)
   const diceRotation = dice.rotation
-  // peut avoir une position dans la rolledArea ou dans le chest etc mais c'est
-  // maintenant indépendant
-  const diceX = dragGesture ? dragGesture.x : 0
-  const diceY = dragGesture ? dragGesture.y : 0
+  const diceX = dragGesture ? dragGesture.x : dice.x
+  const diceY = dragGesture ? dragGesture.y : dice.y
   const becomesCursed = false
   const becomesUncursed = false
 

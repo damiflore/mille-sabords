@@ -1,13 +1,12 @@
 import React from "react"
-import { useChestSlots } from "src/main.store.js"
-import { diceIsInChestGetter } from "src/dices/Dice.jsx"
+import { useDiceKeptIds } from "src/round/round.selectors.js"
 
-export const DiceOnGoing = ({ diceDraggedOverRolledArea, rolledAreaRef }) => {
-  const chestSlots = useChestSlots()
-
-  const diceDraggedOverIsInChest =
-    diceDraggedOverRolledArea &&
-    diceIsInChestGetter({ diceId: diceDraggedOverRolledArea.id, chestSlots })
+export const DiceOnGoing = ({ rolledAreaDragOverGesture, rolledAreaRef }) => {
+  const diceKeptIds = useDiceKeptIds()
+  const diceOverRolledArea =
+    rolledAreaDragOverGesture &&
+    rolledAreaDragOverGesture.allowed &&
+    diceKeptIds.includes(rolledAreaDragOverGesture.dice.id)
 
   return (
     <div className="dice-ongoing">
@@ -16,7 +15,7 @@ export const DiceOnGoing = ({ diceDraggedOverRolledArea, rolledAreaRef }) => {
         className="area"
         ref={rolledAreaRef}
         style={{
-          ...(diceDraggedOverIsInChest ? { outline: "2px dotted" } : {}),
+          ...(diceOverRolledArea ? { outline: "2px dotted" } : {}),
         }}
       ></div>
     </div>

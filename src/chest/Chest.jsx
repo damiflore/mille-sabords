@@ -1,15 +1,20 @@
 import React from "react"
 
-import { useCurrentCardId, useChestSlots } from "src/main.store.js"
+import { useCurrentCardId, useChestSlots, useDiceRolledIds } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 import { cardIdToCard } from "src/cards/cards.js"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-export const Chest = ({ chestRef, diceDraggedOverChest }) => {
+export const Chest = ({ chestRef, chestDragOverGesture }) => {
   const chestSlots = useChestSlots()
+  const diceRolledIds = useDiceRolledIds()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const diceOverChest =
+    chestDragOverGesture &&
+    chestDragOverGesture.allowed &&
+    diceRolledIds.includes(chestDragOverGesture.dice.id)
 
   return (
     <div className="chest">
@@ -17,9 +22,7 @@ export const Chest = ({ chestRef, diceDraggedOverChest }) => {
         className="dice-area"
         ref={chestRef}
         style={{
-          ...(diceDraggedOverChest && !threeSkullsOrMoreInCursedArea
-            ? { outline: "2px dotted" }
-            : {}),
+          ...(diceOverChest ? { outline: "2px dotted" } : {}),
         }}
       >
         <div className="box">
