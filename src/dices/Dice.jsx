@@ -37,10 +37,6 @@ export const Dice = ({
 
   // local states
   const [diceGripped, diceGrippedSetter] = useState(false)
-  // a small move is a drag gesture but
-  // not yet a drag intent
-  // long grip or big enough move set drag intent to true
-  const [dragIntent, setDragIntent] = useState(false)
   const [dragGesture, setDragGesture] = useState(null)
 
   const onSkull = diceIsOnSkull(dice)
@@ -55,19 +51,14 @@ export const Dice = ({
       return () => {}
     }
 
-    let dragIntentTimeout
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         diceGrippedSetter(true)
       },
-      onLongGrip: () => {
-        setDragIntent(true)
+      onClick: (clickEvent) => {
+        onDiceClick(dice, clickEvent)
       },
-      onDrag: ({ x, y, relativeX, relativeY }) => {
-        if (Math.abs(relativeX) > 5 || Math.abs(relativeY) > 5) {
-          setDragIntent(true)
-        }
-
+      onDrag: ({ x, y }) => {
         const diceDesiredRect = {
           left: x,
           right: x + diceSize,
@@ -81,8 +72,6 @@ export const Dice = ({
       },
       onRelease: ({ x, y }) => {
         diceGrippedSetter(false)
-        // setTimeout is to ensure the click cannot happen just after mouseup
-        dragIntentTimeout = setTimeout(() => setDragIntent(false))
         setDragGesture(null)
 
         const diceRectangle = {
@@ -98,31 +87,24 @@ export const Dice = ({
       },
       onCancel: () => {
         diceGrippedSetter(false)
-        setDragIntent(false)
         setDragGesture(null)
         onDiceDragEnd(dice)
       },
     })
     return () => {
       disableDragGesture()
-      clearTimeout(dragIntentTimeout)
     }
   }, [draggable, diceDomNode, mainDomNode])
 
   return (
     <svg
       data-dice-id={dice.id}
-      onClick={() => {
-        if (dragIntent) {
-          return
-        }
-        onDiceClick(dice)
-      }}
       className={stringifyClassNames([
         "dice",
         ...(becomesCursed ? ["dice-cursed-disapear"] : []),
         ...(becomesUncursed ? ["dice-cursed-appear"] : []),
       ])}
+      onClick={draggable ? undefined : (clickEvent) => onDiceClick(dice, clickEvent)}
       style={{
         width: diceSize,
         height: diceSize,

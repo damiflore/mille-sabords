@@ -6,6 +6,8 @@ export const enableDragGesture = (
   domNode,
   {
     logLevel = "warn",
+    // in case it's passed we will call it only on fast and precise click
+    onClick = () => {},
     onGrip = () => {},
     onLongGrip = () => {},
     onRelease = () => {},
@@ -14,6 +16,11 @@ export const enableDragGesture = (
   },
 ) => {
   const logger = createLogger({ logLevel })
+  // a small move is a drag gesture but
+  // not yet a drag intent
+  // long grip or big enough move set drag intent to true
+  let dragIntent = false
+  let dragIntentTimeout
   let pendingGesture
   let removeMoveListener = () => {}
   let removeReleaseListener = () => {}
@@ -66,6 +73,11 @@ export const enableDragGesture = (
     },
     { passive: true },
   )
+  const removeClickListener = addDomEventListener(domNode, "click", (clickEvent) => {
+    if (!dragIntent) {
+      onClick(clickEvent)
+    }
+  })
 
   let pointerPositionPrevious
   let domNodeStartPosition
@@ -109,13 +121,16 @@ export const enableDragGesture = (
       x: pointerPosition.x - gripHorizontalShift,
       y: pointerPosition.y - gripVerticalShit,
     }
+    const relativeX = pointerPosition.x - gripPointerPosition.x
+    const relativeY = pointerPosition.y - gripPointerPosition.y
 
     logger.debug("move node at", movePosition)
+    if (Math.abs(relativeX) > 10 || Math.abs(relativeY) > 10) {
+      dragIntent = true
+    }
     onDrag({
       event,
       ...movePosition,
-      relativeX: pointerPosition.x - gripPointerPosition.x,
-      relativeY: pointerPosition.y - gripPointerPosition.y,
     })
   }
 
@@ -130,6 +145,10 @@ export const enableDragGesture = (
       x: pointerPositionPrevious.x - gripHorizontalShift,
       y: pointerPositionPrevious.y - gripVerticalShit,
     })
+    // setTimeout is to ensure the click cannot happen just after mouseup
+    dragIntentTimeout = setTimeout(() => {
+      dragIntent = false
+    })
   }
 
   const handleCancel = (event) => {
@@ -143,11 +162,13 @@ export const enableDragGesture = (
   }
 
   return (event) => {
+    removeClickListener()
     removeMousedownListener()
     removeTouchstartListener()
     removeMoveListener()
     removeReleaseListener()
     clearTimeout(longGripTimeout)
+    clearTimeout(dragIntentTimeout)
     handleCancel(event)
   }
 }
