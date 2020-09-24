@@ -76,6 +76,16 @@ export const useHasDicesToCurse = ({ dicesToCurse = useDicesToCurse() } = {}) =>
   return dicesToCurse.length > 0
 }
 
+export const useDiceKeptIds = ({ chestSlots = useChestSlots() } = {}) => {
+  return Object.keys(chestSlots).reduce((previous, chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    if (chestSlotContent && chestSlotContent.type === "dice") {
+      return [...previous, chestSlotContent.value]
+    }
+    return previous
+  }, [])
+}
+
 export const useDicesToCurse = ({
   diceRolledIds = useDiceRolledIds(),
   witchUncursedDiceId = useWitchUncursedDiceId(),

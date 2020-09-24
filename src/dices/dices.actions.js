@@ -15,7 +15,9 @@ export const useSetDiceChestSlot = createAction((state, dice, chestSlot) => {
   const { chestSlots } = state
   const previousChestSlot = Object.keys(chestSlots).find((chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
-    return chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
   })
   return {
     ...state,
@@ -48,12 +50,18 @@ export const useUncurseDice = createAction((state, dice) => {
 
 export const useUnkeepDice = createAction((state, dice) => {
   const { dicesRolled, chestSlots } = state
+  const previousChestSlot = Object.keys(chestSlots).find((chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
+  })
   return {
     ...state,
-    dicesRolled: [...dicesRolled, dice].id,
+    dicesRolled: [...dicesRolled, dice.id],
     chestSlots: {
       ...chestSlots,
-      [dice.chestSlot]: null,
+      [previousChestSlot]: null,
     },
   }
 })

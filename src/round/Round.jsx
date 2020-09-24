@@ -1,19 +1,28 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useDiceIds, useChestSlots, useDiceRolledIds } from "src/main.store.js"
+import {
+  useChestSlots,
+  useDiceRolledIds,
+  useDiceCursedIds,
+  useWitchUncursedDiceId,
+  useScoreMarked,
+  useCurrentCardId,
+} from "src/main.store.js"
+import { cardIdToCard, isWitchCard } from "src/cards/cards.js"
 import { GameEffects } from "src/round/round.effects.js"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
-import { Dice, diceIsInChestGetter } from "src/dices/Dice.jsx"
+import { DiceContainer } from "src/dices/DiceContainer.jsx"
 import {
   useMoveDice,
   useKeepDice,
   useUnkeepDice,
   useSetDiceChestSlot,
+  useUncurseDice,
 } from "src/dices/dices.actions.js"
 import {
   rectangleCollidesWithRectangle,
@@ -21,7 +30,7 @@ import {
   getDomNodeRectangle,
   findClosestRectangle,
 } from "src/helper/rectangle.js"
-import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
+import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 const { useMemo } = React
 
@@ -39,17 +48,140 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   */
 
   const chestSlots = useChestSlots()
+  const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
+  const diceCursedIds = useDiceCursedIds()
+  const currentCard = cardIdToCard(useCurrentCardId())
+  const witchUncursedDiceId = useWitchUncursedDiceId()
+  const scoreMarked = useScoreMarked()
+  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const moveDice = useMoveDice()
+  const keepDice = useKeepDice()
+  const unkeepDice = useUnkeepDice()
+  const uncurseDice = useUncurseDice()
+  const setDiceChestSlot = useSetDiceChestSlot()
+
   const [diceDraggedOverRolledArea, diceDraggedOverRolledAreaSetter] = React.useState(null)
   const [diceDraggedOverChest, diceDraggedOverChestSetter] = React.useState(null)
   const rolledAreaRef = React.useRef(null)
   const chestRef = React.useRef(null)
 
-  const moveDice = useMoveDice()
-  const keepDice = useKeepDice()
-  const unkeepDice = useUnkeepDice()
-  const setDiceChestSlot = useSetDiceChestSlot()
-  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const canKeepDice = (dice) =>
+    keepDiceAllowedGetter(dice, {
+      scoreMarked,
+      threeSkullsOrMoreInCursedArea,
+    })
+
+  const canUnkeepDice = (dice) =>
+    unkeepDiceAllowedGetter(dice, {
+      scoreMarked,
+      threeSkullsOrMoreInCursedArea,
+    })
+
+  const canUncurseDice = (dice) =>
+    uncurseDiceAllowedGetter(dice, {
+      scoreMarked,
+      threeSkullsOrMoreInCursedArea,
+      currentCard,
+      witchUncursedDiceId,
+    })
+
+  const diceIsInRolledArea = (dice) => diceRolledIds.includes(dice.id)
+  const diceIsInCursedArea = (dice) => diceCursedIds.includes(dice.id)
+  const diceIsInChest = (dice) => diceKeptIds.includes(dice.id)
+
+  const moveDiceIntoChestFirstAvailableSlot = (dice) => {
+    const chestDomNode = chestRef.current
+    const firstAvailableChestSlot = Object.keys(chestSlots).find((chestSlot) => {
+      const chestSlotContent = chestSlots[chestSlot]
+      return !chestSlotContent
+    })
+    const rectangle = getDomNodeRectangle(
+      chestDomNode.querySelector(`[data-chest-slot="${firstAvailableChestSlot}"]`),
+    )
+
+    moveDice(dice, {
+      x: rectangle.rectange.left,
+      y: rectangle.rectange.top,
+    })
+    return firstAvailableChestSlot
+  }
+
+  const moveDiceBackIntoRolledArea = (dice) => {
+    // ici c'est délicat
+    const availableChestSlotInfo = getFirstAvailableChestSlotInfoForDice(dice, {
+      chestDomNode: chestRef.current,
+      chestSlots,
+    })
+    moveDice(dice, {
+      x: availableChestSlotInfo.rectange.left,
+      y: availableChestSlotInfo.rectange.top,
+    })
+  }
+
+  const moveDiceIntoRolledArea = (dice, requestedRectangle) => {
+    const rolledAreaDomNode = rolledAreaRef.current
+    const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
+    const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
+    moveDice(dice, {
+      x: diceRectangle.left,
+      y: diceRectangle.top,
+    })
+  }
+
+  const moveDiceIntoChest = (dice, requestedRectangle) => {
+    const chestDomNode = chestRef.current
+    const rectangleToChestSlotMap = new Map()
+    const rectangleCandidates = []
+    Object.keys(chestSlots).forEach((chestSlot) => {
+      const chestSlotContent = chestSlots[chestSlot]
+      const chestSlotIsEmpty = !chestSlotContent
+      if (
+        chestSlotIsEmpty ||
+        (chestSlotContent.type === "dice" && chestSlotContent.value === diceDraggedOverChest.id)
+      ) {
+        const chestSlotDomNode = chestDomNode.querySelector(`[data-chest-slot="${chestSlot}"]`)
+        const rectangle = getDomNodeRectangle(chestSlotDomNode)
+        rectangleToChestSlotMap.set(rectangle, chestSlot)
+        rectangleCandidates.push(rectangle)
+      }
+    })
+    const closestRectangle = findClosestRectangle(requestedRectangle, rectangleCandidates)
+    const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
+    moveDice(dice, {
+      x: closestRectangle.left,
+      y: closestRectangle.top,
+    })
+    return closestChestSlot
+  }
+
+  const getDropIntent = (dice) => {
+    if (diceIsInRolledArea(dice)) {
+      if (diceDraggedOverRolledArea) {
+        return "reposition-in-rolled-area"
+      }
+
+      if (diceDraggedOverChest) {
+        return "keep"
+      }
+
+      return "none"
+    }
+
+    if (diceIsInChest(dice)) {
+      if (diceDraggedOverChest) {
+        return "reposition-in-chest"
+      }
+
+      if (diceDraggedOverRolledArea) {
+        return "unkeep"
+      }
+
+      return "none"
+    }
+
+    return "none"
+  }
 
   return useMemo(() => (
     <div className="round-container">
@@ -65,6 +197,31 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       />
       <Footer onRoundOver={onRoundOver} />
       <DiceContainer
+        onDiceClick={(dice) => {
+          if (diceIsInRolledArea(dice)) {
+            if (canKeepDice(dice)) {
+              const firstAvailableChestSlot = moveDiceIntoChestFirstAvailableSlot(dice)
+              keepDice(dice, firstAvailableChestSlot)
+            }
+            return
+          }
+
+          if (diceIsInChest(dice)) {
+            if (canUnkeepDice(dice)) {
+              moveDiceBackIntoRolledArea(dice)
+              unkeepDice(dice)
+            }
+            return
+          }
+
+          if (diceIsInCursedArea(dice)) {
+            if (canUncurseDice(dice)) {
+              moveDiceBackIntoRolledArea(dice)
+              uncurseDice(dice)
+            }
+            return
+          }
+        }}
         onDiceDrag={(dice, dragDiceGesture) => {
           const rolledAreaDomNode = rolledAreaRef.current
           const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
@@ -90,68 +247,30 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           }
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
-          if (diceDraggedOverRolledArea) {
-            const rolledAreaDomNode = rolledAreaRef.current
-            const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-            const diceRectangle = rectangleInsideOf(
-              dropDiceGesture.diceRectangle,
-              rolledAreaDomNodeRectangle,
-            )
-            moveDice(dice, {
-              x: diceRectangle.left,
-              y: diceRectangle.top,
-            })
+          const dropIntent = getDropIntent(dice)
 
-            // attention, seulement si c'est authorisé
-            const diceIsInChest = diceIsInChestGetter({ diceId: dice.id, chestSlots })
-            if (diceIsInChest) {
-              unkeepDice(dice)
-            }
-            return
-          }
-
-          if (diceDraggedOverChest) {
-            if (threeSkullsOrMoreInCursedArea) {
-              // il faudrait renvoyé le dé d'ou il provient
-              return
-            }
-
-            const chestDomNode = chestRef.current
-            const rectangleToChestSlotMap = new Map()
-            const rectangleCandidates = []
-            Object.keys(chestSlots).forEach((chestSlot) => {
-              const chestSlotContent = chestSlots[chestSlot]
-              const chestSlotIsEmpty = !chestSlotContent
-              if (
-                chestSlotIsEmpty ||
-                (chestSlotContent.type === "dice" &&
-                  chestSlotContent.value === diceDraggedOverChest.id)
-              ) {
-                const chestSlotDomNode = chestDomNode.querySelector(
-                  `[data-chest-slot="${chestSlot}"]`,
-                )
-                const rectangle = getDomNodeRectangle(chestSlotDomNode)
-                rectangleToChestSlotMap.set(rectangle, chestSlot)
-                rectangleCandidates.push(rectangle)
-              }
-            })
-            const closestRectangle = findClosestRectangle(
-              dropDiceGesture.diceRectangle,
-              rectangleCandidates,
-            )
-            const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
-            const diceIsInRolledArea = diceRolledIds.includes(diceDraggedOverChest.id)
-
-            // on met le dé aux coordonées les plus proches
-            moveDice(dice, {
-              x: closestRectangle.left,
-              y: closestRectangle.top,
-            })
-            if (diceIsInRolledArea) {
-              keepDice(diceDraggedOverChest, closestChestSlot)
+          if (dropIntent === "keep") {
+            if (canKeepDice(dice)) {
+              const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.rectangle)
+              setDiceChestSlot(diceDraggedOverChest, chestSlot)
+              keepDice(dice, chestSlot)
             } else {
-              setDiceChestSlot(diceDraggedOverChest, closestChestSlot)
+              // todo: animation pour repositionner le dé dans rolled area
             }
+          } else if (dropIntent === "unkeep") {
+            if (canUnkeepDice(dice)) {
+              moveDiceIntoRolledArea(dice, dropDiceGesture.rectangle)
+              unkeepDice(dice)
+            } else {
+              // todo: animation pour replacer le dé a sa position pre drag
+            }
+          } else if (dropIntent === "reposition-in-rolled-area") {
+            moveDiceIntoRolledArea(dice, dropDiceGesture.rectangle)
+          } else if (dropIntent === "reposition-in-chest") {
+            const chestSlot = moveDiceIntoChest(dice, dropDiceGesture.rectangle)
+            setDiceChestSlot(diceDraggedOverChest, chestSlot)
+          } else {
+            // todo: animation pour replacer le dé a sa position pre drag
           }
         }}
       />
@@ -159,9 +278,49 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   ))
 }
 
-const DiceContainer = ({ onDiceDrag, onDiceDrop }) => {
-  const diceIds = useDiceIds()
-  return diceIds.map((diceId) => (
-    <Dice key={diceId} diceId={diceId} onDiceDrag={onDiceDrag} onDiceDrop={onDiceDrop} />
-  ))
+const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
+  if (scoreMarked) {
+    return false
+  }
+
+  if (threeSkullsOrMoreInCursedArea) {
+    return false
+  }
+
+  return true
+}
+
+const unkeepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
+  if (scoreMarked) {
+    return false
+  }
+
+  if (threeSkullsOrMoreInCursedArea) {
+    return false
+  }
+
+  return true
+}
+
+const uncurseDiceAllowedGetter = (
+  dice,
+  { scoreMarked, threeSkullsOrMoreInCursedArea, currentCard, witchUncursedDiceId },
+) => {
+  if (scoreMarked) {
+    return false
+  }
+
+  if (threeSkullsOrMoreInCursedArea) {
+    return false
+  }
+
+  if (!isWitchCard(currentCard)) {
+    return false
+  }
+
+  if (witchUncursedDiceId !== dice.id) {
+    return false
+  }
+
+  return true
 }

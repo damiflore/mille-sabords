@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 /**
 
 Nice to have
@@ -9,36 +8,22 @@ todo:
 lorsqu'on drop un dé hors de dice kept il revient a sa place avec une animation et pas immédiatement
 lorsqu'on drop un dé dans dice kept il se place avec animation + scale back avec animation
 
-
 */
 
 import React from "react"
 import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
-import {
-  useWitchUncursedDiceId,
-  useScoreMarked,
-  useCurrentCardId,
-  useChestSlots,
-  useDiceRolledIds,
-  useDiceCursedIds,
-} from "src/main.store.js"
+import { useChestSlots, useDiceRolledIds, useDiceCursedIds } from "src/main.store.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
-import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIdToDice, diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
-import { isWitchCard, cardIdToCard } from "src/cards/cards.js"
 
 const { useEffect, useState } = React
 
-export const Dice = ({ diceId, onDiceDrag }) => {
+export const Dice = ({ diceId, onDiceClick, onDiceDrag, onDiceDrop }) => {
   const dice = diceIdToDice(diceId)
   // state from global store context
-  const currentCard = cardIdToCard(useCurrentCardId())
-  const witchUncursedDiceId = useWitchUncursedDiceId()
-  const scoreMarked = useScoreMarked()
-  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
   const chestSlots = useChestSlots()
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
@@ -46,6 +31,7 @@ export const Dice = ({ diceId, onDiceDrag }) => {
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
+
   // local states
   const [diceGripped, diceGrippedSetter] = useState(false)
   // a small move is a drag gesture but
@@ -75,7 +61,6 @@ export const Dice = ({ diceId, onDiceDrag }) => {
     }
 
     let dragIntentTimeout
-    const dropHandlerMap = new Map()
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         diceGrippedSetter(true)
@@ -111,7 +96,9 @@ export const Dice = ({ diceId, onDiceDrag }) => {
           top: y,
           bottom: y + diceSize,
         }
-        dropHandlerMap.forEach((dropHandler) => dropHandler({ diceRectangle }))
+        onDiceDrop(dice, {
+          diceRectangle,
+        })
       },
       onCancel: () => {
         diceGrippedSetter(false)
@@ -132,42 +119,7 @@ export const Dice = ({ diceId, onDiceDrag }) => {
         if (dragIntent) {
           return
         }
-
-        if (diceIsInRolledArea) {
-          const keepDiceAllowed = keepDiceAllowedGetter(dice, {
-            scoreMarked,
-            threeSkullsOrMoreInCursedArea,
-          })
-          if (!keepDiceAllowed) {
-            return
-          }
-          // faut trouver les coordonées du free slot de mettre le dé a cet endroit
-          const freeSlot = Object.keys(chestSlots).find((key) => !chestSlots[key])
-          keepDice(dice, freeSlot)
-        }
-
-        if (diceIsInChest) {
-          const unkeepDiceAllowed = unkeepDiceAllowedGetter(dice, {
-            scoreMarked,
-            threeSkullsOrMoreInCursedArea,
-          })
-          if (!unkeepDiceAllowed) {
-            return
-          }
-          // faut trouver les coordonées dispo dans rolled area et bouger le dé dedans
-        }
-        if (diceIsInCursedArea) {
-          const uncurseDiceAllowed = uncurseDiceAllowedGetter(dice, {
-            scoreMarked,
-            threeSkullsOrMoreInCursedArea,
-            currentCard,
-            witchUncursedDiceId,
-          })
-          if (!uncurseDiceAllowed) {
-            return
-          }
-          // trouver une place dans rolled area et le bouger la dedans
-        }
+        onDiceClick(dice)
       }}
       className={stringifyClassNames([
         "dice",
@@ -216,89 +168,4 @@ export const Dice = ({ diceId, onDiceDrag }) => {
       </g>
     </svg>
   )
-}
-
-const diceLocationGetter = (dice, { chestSlots, diceCursedIds, diceRolledIds }) => {
-  if (diceIsInChestGetter(dice, { chestSlots })) {
-    return {
-      diceIsChest: true,
-      diceIsInCursedArea: false,
-      diceIsInRolledArea: false,
-    }
-  }
-  if (diceCursedIds.includes(dice.id)) {
-    return {
-      diceIsChest: false,
-      diceIsInCursedArea: true,
-      diceIsInRolledArea: false,
-    }
-  }
-  if (diceRolledIds.include(dice.id)) {
-    return {
-      diceIsChest: false,
-      diceIsInCursedArea: false,
-      diceIsInRolledArea: true,
-    }
-  }
-
-  // happens at the begining of a round where the dice is somewhere, unvisible
-  return {
-    diceIsChest: false,
-    diceIsInCursedArea: false,
-    diceIsInRolledArea: false,
-  }
-}
-
-export const diceIsInChestGetter = (dice, { chestSlots }) => {
-  return Object.keys(chestSlots).some((chestSlot) => diceIsInChestSlot(dice, chestSlots[chestSlot]))
-}
-
-const diceIsInChestSlot = (dice, chestSlotContent) =>
-  chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
-
-const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
-}
-
-const unkeepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
-}
-
-const uncurseDiceAllowedGetter = (
-  dice,
-  { scoreMarked, threeSkullsOrMoreInCursedArea, currentCard, witchUncursedDiceId },
-) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  if (!isWitchCard(currentCard)) {
-    return false
-  }
-
-  if (witchUncursedDiceId !== dice.id) {
-    return false
-  }
-
-  return true
 }

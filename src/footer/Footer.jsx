@@ -18,9 +18,9 @@ export const Footer = ({ onRoundOver, rolledAreaDomNode }) => {
 
   return (
     <div className="actions">
-      <ButtonRoll />
+      <ButtonRoll rolledAreaDomNode={rolledAreaDomNode} />
       <ButtonMarkScore />
-      <ButtonEndRound onRoundOver={onRoundOver} rolledAreaDomNode={rolledAreaDomNode} />
+      <ButtonEndRound onRoundOver={onRoundOver} />
     </div>
   )
 }
