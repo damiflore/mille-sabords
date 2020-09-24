@@ -16,6 +16,7 @@
 }
 .score-board-container .win-treasure-img {
   width: 50%;
+  max-width: 230px;
   margin: 0 auto;
   display: block;
   padding-top: 10px;
@@ -84,7 +85,9 @@
 }
 .score-board-container .player-img {
   width: 100%;
+  max-width: 90px;
   height: auto;
+  margin-bottom: 15px;
   border-radius: 100%;
   background-color: #ffe7be;
 }

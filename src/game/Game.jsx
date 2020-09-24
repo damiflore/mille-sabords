@@ -15,12 +15,8 @@ export const Game = () => {
   }
 
   const playerWithoutCharacter = players.find((player) => !player.character)
-  if (playerWithoutCharacter) {
-    return <CharacterSelection player={playerWithoutCharacter} players={players} />
-  }
-
   if (!gameStarted) {
-    return <StartGameScreen />
+    return <CharacterSelection player={playerWithoutCharacter} players={players} />
   }
 
   if (scoreBoardOpened) {
@@ -65,35 +61,6 @@ const useSetPlayerCount = createAction((state, playerCount) => {
   }
 })
 
-const StartGameScreen = () => {
-  const players = usePlayers()
-  const openScoreBoard = useOpenScoreBoard()
-  const startGame = useStartGame()
-
-  return (
-    <div>
-      <p>L&apos;équipage est au complet</p>
-      <ul>
-        {players.map((player) => {
-          return (
-            <li key={player.id}>
-              {player.character.name} (Joueur {player.number})
-            </li>
-          )
-        })}
-      </ul>
-      <button
-        onClick={() => {
-          openScoreBoard()
-          startGame()
-        }}
-      >
-        Démarrer la partie
-      </button>
-    </div>
-  )
-}
-
 export const useStartPlaying = createAction((state, player) => {
   return {
     ...state,
@@ -112,12 +79,5 @@ export const useCloseScoreBoard = createAction((state) => {
   return {
     ...state,
     scoreBoardOpened: false,
-  }
-})
-
-const useStartGame = createAction((state) => {
-  return {
-    ...state,
-    gameStarted: true,
   }
 })
