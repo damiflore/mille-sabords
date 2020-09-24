@@ -6,10 +6,9 @@ import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
-import { useOpenScoreBoard } from "src/game/Game.jsx"
 import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
-export const Header = () => {
+export const Header = ({ openScoreboard }) => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
   const card = useCurrentCard()
 
@@ -34,7 +33,7 @@ export const Header = () => {
         </div>
         <SwordChallengeIndicator />
       </div>
-      <CurrentPlayer />
+      <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
       <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
     </div>
@@ -76,13 +75,12 @@ const Card = ({ card }) => {
   )
 }
 
-const CurrentPlayer = () => {
+const CurrentPlayer = ({ openScoreboard }) => {
   const player = useCurrentPlayer()
-  const openScoreBoard = useOpenScoreBoard()
 
   return (
     <img
-      onClick={openScoreBoard}
+      onClick={openScoreboard}
       className="avatar"
       src={`src/score-board/${player && player.character.img}`}
       alt="player"
@@ -95,7 +93,6 @@ const CurrentPlayer = () => {
 
 const TotalScore = () => {
   const player = useCurrentPlayer()
-  const openScoreBoard = useOpenScoreBoard()
   const totalScore = player.score
   const totalScoreAnimation = useAnimateTransitionUsingJs(totalScore, {
     duration: 2000,
@@ -103,7 +100,7 @@ const TotalScore = () => {
   })
 
   return (
-    <div className="total-score" onClick={openScoreBoard}>
+    <div className="total-score">
       <span
         className="score"
         style={{

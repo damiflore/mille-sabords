@@ -9,7 +9,7 @@ import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 
 const { useMemo } = React
 
-export const Round = () => {
+export const Round = ({ openScoreboard, onRoundOver }) => {
   /*
   https://github.com/facebook/react/issues/15156#issuecomment-474590693
 
@@ -25,13 +25,13 @@ export const Round = () => {
   return useMemo(() => (
     <div className="round-container">
       <GameEffects />
-      <Header />
+      <Header openScoreboard={openScoreboard} />
       <div className="chest-and-skulls">
         <Chest />
         <SkullIsland />
       </div>
       <DiceOnGoing />
-      <Footer />
+      <Footer onRoundOver={onRoundOver} />
     </div>
   ))
 }

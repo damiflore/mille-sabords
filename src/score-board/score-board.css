@@ -34,24 +34,24 @@
   flex-direction: column;
   align-items: center;
 }
-.score-board-container .path svg {
+.score-board-container .user-path svg {
   width: auto;
   height: 55vh;
   overflow: visible;
 }
-.score-board-container .path svg path {
+.score-board-container path.path-background,
+.score-board-container path.path-foreground {
   fill: none;
   stroke-width: 4px;
-  stroke: white;
   stroke-dasharray: 825;
   stroke-dashoffset: 825;
 }
-.score-board-container .path-foreground {
-  position: absolute;
-}
-.score-board-container .path-background svg path {
+.score-board-container path.path-background {
   stroke: #756e63;
   stroke-dasharray: 10px;
+}
+.score-board-container path.path-foreground {
+  stroke: white;
 }
 
 /* SCORE INDICATOR */

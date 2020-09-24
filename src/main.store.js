@@ -8,7 +8,6 @@ const defaultState = {
   gameStarted: false,
   players: [],
   currentPlayerId: null,
-  scoreBoardOpened: false,
 
   // persist accross a game round
   cardDeck: mixDeck(CARDS),
@@ -89,7 +88,6 @@ export const createAction = store.createAction
 export const useGameCreated = () => store.useKeyedState("gameCreated")
 export const useGameStarted = () => store.useKeyedState("gameStarted")
 export const usePlayers = () => store.useKeyedState("players")
-export const useScoreBoardOpened = () => store.useKeyedState("scoreBoardOpened")
 export const useCurrentPlayerId = () => store.useKeyedState("currentPlayerId")
 export const useCardDeck = () => store.useKeyedState("cardDeck")
 export const useCardsUsed = () => store.useKeyedState("cardsUsed")

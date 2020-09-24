@@ -4,16 +4,14 @@ import { useMarkScore } from "src/round/round.actions.js"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
+  useStartNextRoundAllowed,
   useRoundScore,
 } from "src/round/round.selectors.js"
+import { createAction } from "src/main.store.js"
 
-import { ButtonNextRound } from "src/footer/ButtonNextRound.js"
 import { ButtonRoll } from "./ButtonRoll.js"
 
-export const Footer = () => {
-  const markScore = useMarkScore()
-  const roundScore = useRoundScore()
-
+export const Footer = ({ onRoundOver }) => {
   // const roundStarted = useRoundStarted()
   // if (!roundStarted && !dialogIsOpen) openDialog()
   // TODO: fix bug in DialogBase: dialog cannot be instantiated open
@@ -21,27 +19,29 @@ export const Footer = () => {
   return (
     <div className="actions">
       <ButtonRoll />
-      <ButtonNextRound />
-      <ButtonMarkScore
-        onClick={() => {
-          markScore(roundScore)
-        }}
-      />
+      <ButtonMarkScore />
+      <ButtonEndRound onRoundOver={onRoundOver} />
     </div>
   )
 }
 
-const ButtonMarkScore = ({ onClick }) => {
+const ButtonMarkScore = () => {
+  const roundScore = useRoundScore()
+  const markScore = useMarkScore()
   const markScoreAllowed = useMarkScoreAllowed()
   const markScoreButtonVisible = useMarkScoreButtonVisible()
-  const roundScore = useRoundScore()
 
   const sign = roundScore < 0 ? "-" : "+"
 
-  if (markScoreButtonVisible)
+  if (markScoreButtonVisible) {
     return (
       <div className="collect-action">
-        <button onClick={onClick} disabled={!markScoreAllowed}>
+        <button
+          onClick={() => {
+            markScore(roundScore)
+          }}
+          disabled={!markScoreAllowed}
+        >
           <span>Collecter</span>
           <span className="score">
             {sign} {Math.abs(roundScore)}
@@ -50,6 +50,50 @@ const ButtonMarkScore = ({ onClick }) => {
         {!markScoreAllowed && <img src={`/src/dices/dice_skull.png`} className="skull-symbol" />}
       </div>
     )
+  }
 
   return null
 }
+
+const ButtonEndRound = ({ onRoundOver }) => {
+  const startNextRoundAllowed = useStartNextRoundAllowed()
+  const endRound = useEndRound()
+  const roundScore = useRoundScore()
+
+  if (startNextRoundAllowed) {
+    return (
+      <div className="next-round-action">
+        <button
+          onClick={() => {
+            // ici on sait que le round est terminé
+            // on peut dire a ceux que ça intéresse
+            // comment ça s'est passé (scoreboard)
+            // qui va alors animé le fait qu'on a marqué un score
+            // on devrait aussi animer le cas ou on fail sword challenge
+            // et le cas ou on se tape 3 tete
+            endRound()
+            onRoundOver({
+              // a faire ici:
+              // si on fail sword-challenge ou qu'on fait 3 skulls
+              // alors la raison doit changer
+              // et le scoreboard fera une autre animation
+              reason: "score-marked",
+              value: roundScore,
+            })
+          }}
+        >
+          Terminer mon tour
+        </button>
+      </div>
+    )
+  }
+
+  return null
+}
+
+const useEndRound = createAction((state) => {
+  return {
+    ...state,
+    roundStarted: false,
+  }
+})

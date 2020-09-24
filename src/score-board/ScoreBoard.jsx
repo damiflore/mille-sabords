@@ -1,7 +1,6 @@
 import React from "react"
 import { usePlayers, useRoundStarted, useCurrentPlayerGettingReady } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { useCloseScoreBoard } from "src/game/Game.jsx"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 
@@ -16,13 +15,11 @@ const pathList = {
     "M39.582,739.564c0-113.074-5.437-166.074-8.437-198.074s36-20.667,33.019-2c-1.796,11.248-24.583,13.333-23.699-22c1.229-49.158,22.68-111,23.68-169s-38-95-46-181S39.582,0,39.582,0",
 }
 
-export const ScoreBoard = () => {
+export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
   const roundStarted = useRoundStarted()
   const currentPlayerGettingReady = useCurrentPlayerGettingReady()
-
-  const closeScoreBoard = useCloseScoreBoard()
 
   // dialogue StartPlayerRoundDialog
   const [startPlayerRoundDialogIsOpen, startPlayerRoundDialogIsOpenSetter] = React.useState(false)
@@ -55,8 +52,8 @@ export const ScoreBoard = () => {
 
   return (
     <div className="score-board-container">
-      {roundStarted && (
-        <div className="cross" onClick={closeScoreBoard}>
+      {openedByUser && (
+        <div className="cross" onClick={closeScoreboard}>
           X
         </div>
       )}
@@ -74,16 +71,24 @@ export const ScoreBoard = () => {
 
       <img className="win-treasure-img" src="src/score-board/win-treasure.png" alt="win-treasure" />
       <div className="users-path">
-        {players.map((player) => {
-          return (
-            <UserPath
-              key={player.id}
-              player={player}
-              previousScore={player.score}
-              newScore={player.score}
-            />
-          )
-        })}
+        {players.map((player) => (
+          <UserPath
+            key={player.id}
+            pathCoordinates={pathList[`path${player.id}`]}
+            score={player.score}
+            character={player.character}
+            scoreAnimation={
+              currentPlayer && player.id === currentPlayer.id && scoreAnimation
+                ? {
+                    from: player.score - scoreAnimation.newScore,
+                    to: player.score,
+                  }
+                : null
+            }
+            // uncomment line below to test animation
+            // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
+          />
+        ))}
       </div>
       <StartPlayerRoundDialog
         dialogIsOpen={startPlayerRoundDialogIsOpen}
@@ -96,108 +101,82 @@ export const ScoreBoard = () => {
   )
 }
 
-const UserPath = ({ previousScore, newScore, player }) => {
-  const playerId = player.id
+const UserPath = ({ scoreAnimation, pathCoordinates, character, score }) => {
+  const pathForegroundElementRef = React.useRef(null)
+  const circleElementRef = React.useRef(null)
 
-  const pathId = `path-${playerId}`
-  const pathCoordinates = pathList[`path${playerId}`] || null
+  React.useEffect(() => {
+    if (!scoreAnimation) return
 
-  const pathElement = document.getElementById(pathId)
+    const from = scoreAnimation.from
+    const to = scoreAnimation.to
 
-  if (pathElement) {
-    // useAnimateTransitionUsingWebAnimation(newScore, (from, to) => {
-    //   const pathLength = pathElement.getTotalLength()
-    //   // path-foreground line fill
-    //   pathElement.style.strokeDashoffset = `${pathLength - (from * (pathLength / 2)) / 3000}`
-    //   return pathElement.animate(
-    //     [
-    //       { strokeDashoffset: `${pathLength - (from * (pathLength / 2)) / 3000}` },
-    //       { strokeDashoffset: `${pathLength - (to * (pathLength / 2)) / 3000}` },
-    //     ],
-    //     {
-    //       duration: 1000,
-    //       fill: "forwards",
-    //     },
-    //   )
-    // })
+    const pathForegroundElement = pathForegroundElementRef.current
+    const pathLength = pathForegroundElement.getTotalLength()
+    pathForegroundElement.style.strokeDashoffset = `${
+      pathLength - (from * (pathLength / 2)) / 3000
+    }`
+    pathForegroundElement.animate(
+      [
+        { strokeDashoffset: `${pathLength - (from * (pathLength / 2)) / 3000}` },
+        { strokeDashoffset: `${pathLength - (to * (pathLength / 2)) / 3000}` },
+      ],
+      {
+        duration: 1000,
+        fill: "forwards",
+      },
+    )
 
-    const pathLength = pathElement.getTotalLength()
+    const circleElement = circleElementRef.current
+    circleElement.style.offsetDistance = `${(from * 50) / 3000}%`
+    circleElement.animate(
+      [{ offsetDistance: `${(from * 50) / 3000}%` }, { offsetDistance: `${(to * 50) / 3000}%` }],
+      {
+        duration: 1000,
+        fill: "forwards",
+      },
+    )
+  }, [scoreAnimation])
+
+  React.useEffect(() => {
     // path-foreground line fill
-    pathElement.style.strokeDashoffset = `${pathLength - (previousScore * (pathLength / 2)) / 3000}`
-    pathElement.style.strokeDasharray = pathLength
-    pathElement.animate(
-      [
-        { strokeDashoffset: `${pathLength - (previousScore * (pathLength / 2)) / 3000}` },
-        { strokeDashoffset: `${pathLength - (newScore * (pathLength / 2)) / 3000}` },
-      ],
-      {
-        duration: 1000,
-        fill: "forwards",
-      },
-    )
-  }
-
-  const ScoreIndicatorId = `score-indicator-${playerId}`
-  const scoreIndicatorElement = document.getElementById(ScoreIndicatorId)
-
-  // score indicator
-  if (scoreIndicatorElement) {
-    scoreIndicatorElement.style.offsetDistance = `${(previousScore * 50) / 3000}%`
-    scoreIndicatorElement.style.offsetPath = `path('${pathCoordinates}')`
-    scoreIndicatorElement.animate(
-      [
-        { offsetDistance: `${(previousScore * 50) / 3000}%` },
-        { offsetDistance: `${(newScore * 50) / 3000}%` },
-      ],
-      {
-        duration: 1000,
-        fill: "forwards",
-      },
-    )
-  }
+    const pathForegroundElement = pathForegroundElementRef.current
+    const pathLength = pathForegroundElement.getTotalLength()
+    pathForegroundElement.style.strokeDasharray = pathLength
+    pathForegroundElement.style.strokeDashoffset = pathLength - (score / 6000) * pathLength
+  }, [score])
 
   return (
     <div className="user-path">
-      <div className="path path-background">
-        <Path coordinates={pathCoordinates} />
-      </div>
-      <div className="path path-foreground">
-        <Path
-          coordinates={pathCoordinates}
-          pathId={pathId}
-          player={player}
-          ScoreIndicatorId={ScoreIndicatorId}
+      <svg viewBox="0 0 79.164 739.564">
+        <path d={pathCoordinates} className="path-background" />
+        <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground" />
+        <circle
+          ref={circleElementRef}
+          r="13"
+          fill={character.color || "white"}
+          className="score-indicator"
+          style={{
+            offsetPath: `path('${pathCoordinates}')`,
+            offsetDistance: `${(score / 6000) * 100}%`,
+          }}
         />
-      </div>
-      <div className="speech-bubble">{newScore}</div>
+      </svg>
+      <div className="speech-bubble">{score}</div>
       <div className="user-avatar">
-        <Avatar player={player} />
+        <Avatar character={character} />
       </div>
     </div>
   )
 }
 
-const Avatar = ({ player }) => (
+const Avatar = ({ character }) => (
   <img
     className="player-img"
-    src={`src/score-board/${player && player.character.img}`}
+    src={`src/score-board/${character.img}`}
     alt="player"
     style={{
-      boxShadow: `inset 0px 0px 0px 4px ${(player && player.character.color) || "black"}`,
+      boxShadow: `inset 0px 0px 0px 4px ${character.color || "black"}`,
     }}
   />
-)
-
-const Path = ({ coordinates, pathId, player, ScoreIndicatorId }) => (
-  <svg viewBox="0 0 79.164 739.564">
-    <path fill="#FFFFFF" d={coordinates} id={pathId ? pathId : "path"} />
-    {player && (
-      <circle
-        className="score-indicator"
-        id={ScoreIndicatorId}
-        r="13"
-        fill={player.character.color || "white"}
-      />
-    )}
-  </svg>
 )
