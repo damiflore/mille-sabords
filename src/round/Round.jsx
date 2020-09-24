@@ -32,21 +32,7 @@ import {
 } from "src/helper/rectangle.js"
 import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
-const { useMemo } = React
-
 export const Round = ({ openScoreboard, onRoundOver }) => {
-  /*
-  https://github.com/facebook/react/issues/15156#issuecomment-474590693
-
-  useMemo usage below means the components won't be re-rendered when game global state changes
-  and it's fine because as you can see component structure is not conditioned by the gameState or anything.
-  Every descendant will still be re-rendered by react and if some component are expensive to render
-  they can be wrapped by useMemo with the same pattern.
-  (Don't forget to pass dependencies as second arg if there is any).
-
-  There is no real need for useMemo here: it's kept as an example.
-  */
-
   const chestSlots = useChestSlots()
   const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
@@ -99,15 +85,16 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     const rectangle = getDomNodeRectangle(
       chestDomNode.querySelector(`[data-chest-slot="${firstAvailableChestSlot}"]`),
     )
-
+    dice.rotation = 0
     moveDice(dice, {
-      x: rectangle.rectange.left,
-      y: rectangle.rectange.top,
+      x: rectangle.left,
+      y: rectangle.top,
     })
     return firstAvailableChestSlot
   }
 
   const moveDiceBackIntoRolledArea = (dice) => {
+    dice.rotation = dice.rolledAreaRotation
     moveDice(dice, {
       x: dice.rolledAreaPosition.x,
       y: dice.rolledAreaPosition.y,
@@ -119,6 +106,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
     const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
     dice.rolledAreaPosition = { x: diceRectangle.left, y: diceRectangle.top }
+    dice.rotation = dice.rolledAreaRotation
     moveDice(dice, {
       x: diceRectangle.left,
       y: diceRectangle.top,
@@ -144,6 +132,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     })
     const closestRectangle = findClosestRectangle(requestedRectangle, rectangleCandidates)
     const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
+    dice.rotation = 0
     moveDice(dice, {
       x: closestRectangle.left,
       y: closestRectangle.top,
@@ -179,7 +168,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return "none"
   }
 
-  return useMemo(() => (
+  return (
     <div className="round-container">
       <GameEffects />
       <Header openScoreboard={openScoreboard} />
@@ -191,7 +180,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         rolledAreaDragOverGesture={rolledAreaDragOverGesture}
         rolledAreaRef={rolledAreaRef}
       />
-      <Footer onRoundOver={onRoundOver} rolledAreaDomNode={rolledAreaRef.current} />
+      <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
       <DiceContainer
         onDiceClick={(dice) => {
           if (diceIsInRolledArea(dice)) {
@@ -219,22 +208,6 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           }
         }}
         onDiceDrag={(dice, dragDiceGesture) => {
-          const rolledAreaDomNode = rolledAreaRef.current
-          const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-          if (
-            rectangleCollidesWithRectangle(
-              dragDiceGesture.diceRectangle,
-              rolledAreaDomNodeRectangle,
-            )
-          ) {
-            rolledAreaDragOverGestureSetter({
-              dice,
-              allowed: canKeepDice(dice),
-            })
-          } else {
-            rolledAreaDragOverGestureSetter(null)
-          }
-
           const chestDomNode = chestRef.current
           const chestDomNodeRectangle = getDomNodeRectangle(chestDomNode)
           if (
@@ -246,6 +219,21 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
             })
           } else {
             chestDragOverGestureSetter(null)
+          }
+
+          const rolledAreaDomNode = rolledAreaRef.current
+          const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
+          const diceIsOverRolledArea = rectangleCollidesWithRectangle(
+            dragDiceGesture.diceRectangle,
+            rolledAreaDomNodeRectangle,
+          )
+          if (diceIsOverRolledArea) {
+            rolledAreaDragOverGestureSetter({
+              dice,
+              allowed: canUnkeepDice(dice),
+            })
+          } else {
+            rolledAreaDragOverGestureSetter(null)
           }
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
@@ -274,10 +262,13 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           } else {
             // todo: animation pour replacer le dé a sa position pre drag
           }
+
+          chestDragOverGestureSetter(null)
+          rolledAreaDragOverGestureSetter(null)
         }}
       />
     </div>
-  ))
+  )
 }
 
 const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {

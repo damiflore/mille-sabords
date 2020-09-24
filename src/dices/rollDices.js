@@ -53,8 +53,9 @@ export const rollDices = (dices, { rolledAreaDomNode }) => {
     const { rectangle, rotation, rotatedRectangle } = getRandomAndCollisionFreeInfo(dice)
     otherRotatedRectangles.push(rotatedRectangle)
 
-    dice.rotation = rotation
+    dice.rolledAreaRotation = rotation
     dice.rolledAreaPosition = rectangle[0]
+    dice.rotation = rotation
     dice.x = rectangle[0].x
     dice.y = rectangle[0].y
   })

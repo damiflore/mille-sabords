@@ -60,7 +60,7 @@ export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
     if (chestSlotContent && chestSlotContent.type === "dice") {
       const diceId = chestSlotContent.value
       const dice = diceIdToDice(diceId)
-      return [...previous, diceToVisibleSymbol(dice.value)]
+      return [...previous, diceToVisibleSymbol(dice)]
     }
 
     return previous
@@ -93,10 +93,10 @@ export const useDicesToCurse = ({
   remainingSpotInCursedArea = useRemainingSpotInCursedArea(),
 } = {}) => {
   return diceRolledIds
-    .filter((diceRolledId) => {
-      if (diceRolledId === witchUncursedDiceId) return false
-      const dice = diceIdToDice(diceRolledId)
-      return diceIsOnSkull(dice)
+    .map((diceRolledId) => diceIdToDice(diceRolledId))
+    .filter((diceRolled) => {
+      if (diceRolled.id === witchUncursedDiceId) return false
+      return diceIsOnSkull(diceRolled)
     })
     .slice(0, remainingSpotInCursedArea)
 }

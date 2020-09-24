@@ -4,7 +4,7 @@ import { useRollDiceAllowed } from "src/round/round.selectors.js"
 import { rollDices } from "src/dices/rollDices.js"
 import { diceIdToDice } from "src/dices/dices.js"
 
-export const ButtonRoll = ({ rolledAreaDomNode }) => {
+export const ButtonRoll = ({ rolledAreaRef }) => {
   const rollDiceAllowed = useRollDiceAllowed()
   const roll = useRoll()
 
@@ -13,7 +13,7 @@ export const ButtonRoll = ({ rolledAreaDomNode }) => {
       <div className="roll-action">
         <button
           onClick={() => {
-            roll(rolledAreaDomNode)
+            roll(rolledAreaRef.current)
           }}
         >
           Lancer
@@ -33,7 +33,7 @@ const useRoll = createAction((state, rolledAreaDomNode) => {
     ...state,
     rollCount: rollCount + 1,
     witchUncursedDiceId: null,
-    // [...] to ensure rolling dice re-render
+    diceRolledIds: dicesToRoll.map((dice) => dice.id),
     dices: [...rollDices(dicesToRoll, { rolledAreaDomNode })],
   }
 })
