@@ -8,10 +8,10 @@ export const SkullIsland = ({ cursedAreaRef }) => {
   const currentCard = cardIdToCard(useCurrentCardId())
 
   return (
-    <div className="skull-island" ref={cursedAreaRef}>
+    <div className="skull-island">
       {isWitchCard(currentCard) ? <UncurseDiceLabel /> : null}
       <div className="bottle">
-        <div className="area">
+        <div className="area" ref={cursedAreaRef}>
           {isOneSkullCard(currentCard) ? <ExtraSkull card={currentCard} /> : null}
           {isTwoSkullsCard(currentCard) ? (
             <>

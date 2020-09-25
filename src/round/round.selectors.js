@@ -92,13 +92,15 @@ export const useDicesToCurse = ({
   witchUncursedDiceId = useWitchUncursedDiceId(),
   remainingSpotInCursedArea = useRemainingSpotInCursedArea(),
 } = {}) => {
-  return diceRolledIds
+  const dicesToCurse = diceRolledIds
     .map((diceRolledId) => diceIdToDice(diceRolledId))
     .filter((diceRolled) => {
+      if (!diceIsOnSkull(diceRolled)) return false
       if (diceRolled.id === witchUncursedDiceId) return false
-      return diceIsOnSkull(diceRolled)
+      return true
     })
     .slice(0, remainingSpotInCursedArea)
+  return dicesToCurse
 }
 
 export const useRollDiceAllowed = ({

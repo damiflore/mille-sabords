@@ -10,11 +10,13 @@ const diceSpacing = diceSize / 8
 
 export const rollDices = (dices, { rolledAreaDomNode }) => {
   const rolledAreaRectangle = getDomNodeRectangle(rolledAreaDomNode)
+  const rolledAreaWidth = rolledAreaRectangle.right - rolledAreaRectangle.left
+  const rolledAreaHeight = rolledAreaRectangle.bottom - rolledAreaRectangle.top
   const rectangleAllowed = {
-    left: rolledAreaRectangle.left + diceSpacing,
-    right: rolledAreaRectangle.right - (diceSize + diceSpacing),
-    top: rolledAreaRectangle.top + diceSpacing,
-    bottom: rolledAreaRectangle.bottom - (diceSize + diceSpacing),
+    left: diceSpacing,
+    right: rolledAreaWidth - (diceSize + diceSpacing),
+    top: diceSpacing,
+    bottom: rolledAreaHeight - (diceSize + diceSpacing),
   }
 
   const otherRotatedRectangles = []

@@ -188,6 +188,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         chestRef={chestRef}
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
+        cursedAreaRef={cursedAreaRef}
         onDiceClick={(dice) => {
           if (diceIsInRolledArea(dice)) {
             if (canKeepDice(dice)) {
