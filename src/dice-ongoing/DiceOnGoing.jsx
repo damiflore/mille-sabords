@@ -1,7 +1,7 @@
 import React from "react"
 import { useDiceKeptIds } from "src/round/round.selectors.js"
 
-export const DiceOnGoing = ({ rolledAreaRef, dragoverGesture }) => {
+export const DiceOnGoing = ({ rolledAreaRef, offscreenRef, dragoverGesture }) => {
   const diceKeptIds = useDiceKeptIds()
   const diceOverRolledArea =
     dragoverGesture &&
@@ -19,7 +19,7 @@ export const DiceOnGoing = ({ rolledAreaRef, dragoverGesture }) => {
           ...(diceOverRolledArea ? { outline: "2px dotted" } : {}),
         }}
       ></div>
-      <div className="offscreen-area">
+      <div className="offscreen-area" ref={offscreenRef}>
         {/* we will move the dice into this zone when they are offgame (first roll) */}
       </div>
     </div>

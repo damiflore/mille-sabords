@@ -4,11 +4,11 @@ import { useCurrentCardId, useRoundStarted } from "src/main.store.js"
 import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
 
-export const SkullIsland = () => {
+export const SkullIsland = ({ cursedAreaRef }) => {
   const currentCard = cardIdToCard(useCurrentCardId())
 
   return (
-    <div className="skull-island">
+    <div className="skull-island" ref={cursedAreaRef}>
       {isWitchCard(currentCard) ? <UncurseDiceLabel /> : null}
       <div className="bottle">
         <div className="area">

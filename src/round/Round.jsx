@@ -49,6 +49,8 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
 
   const rolledAreaRef = React.useRef(null)
   const chestRef = React.useRef(null)
+  const cursedAreaRef = React.useRef(null)
+  const offscreenRef = React.useRef(null)
   const [dragoverGesture, dragoverGestureSetter] = React.useState(null)
   const dropTargetRef = React.useRef(null)
 
@@ -174,11 +176,18 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       <Header openScoreboard={openScoreboard} />
       <div className="chest-and-skulls">
         <Chest chestRef={chestRef} dragoverGesture={dragoverGesture} />
-        <SkullIsland />
+        <SkullIsland cursedAreaRef={cursedAreaRef} />
       </div>
-      <DiceOnGoing rolledAreaRef={rolledAreaRef} dragoverGesture={dragoverGesture} />
+      <DiceOnGoing
+        rolledAreaRef={rolledAreaRef}
+        offscreenRef={offscreenRef}
+        dragoverGesture={dragoverGesture}
+      />
       <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
       <DiceContainer
+        chestRef={chestRef}
+        rolledAreaRef={rolledAreaRef}
+        offscreenRef={offscreenRef}
         onDiceClick={(dice) => {
           if (diceIsInRolledArea(dice)) {
             if (canKeepDice(dice)) {

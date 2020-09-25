@@ -11,6 +11,8 @@ lorsqu'on drop un dé dans dice kept il se place avec animation + scale back ave
 */
 
 import React from "react"
+
+import { Portal } from "src/generic/Portal.jsx"
 import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
@@ -21,6 +23,7 @@ import { enableDragGesture } from "src/drag/drag.js"
 const { useEffect, useState } = React
 
 export const Dice = ({
+  container,
   // todo: draggable n'est pas toujours true
   // il faut changer ça
   draggable = false,
@@ -97,65 +100,67 @@ export const Dice = ({
   }, [draggable, diceDomNode, mainDomNode])
 
   return (
-    <svg
-      data-dice-id={dice.id}
-      className={stringifyClassNames([
-        "dice",
-        ...(becomesCursed ? ["dice-cursed-disapear"] : []),
-        ...(becomesUncursed ? ["dice-cursed-appear"] : []),
-      ])}
-      onClick={
-        draggable
-          ? undefined
-          : (clickEvent) => {
-              onDiceClick(dice, clickEvent)
-            }
-      }
-      style={{
-        width: diceSize,
-        height: diceSize,
-        left: `${diceX}px`,
-        top: `${diceY}px`,
-        ...(dragGesture
-          ? {
-              zIndex: 1000,
-            }
-          : {}),
-      }}
-    >
-      <g
-        ref={diceDomNodeSetter}
+    <Portal parent={container}>
+      <svg
+        data-dice-id={dice.id}
+        className={stringifyClassNames([
+          "dice",
+          ...(becomesCursed ? ["dice-cursed-disapear"] : []),
+          ...(becomesUncursed ? ["dice-cursed-appear"] : []),
+        ])}
+        onClick={
+          draggable
+            ? undefined
+            : (clickEvent) => {
+                onDiceClick(dice, clickEvent)
+              }
+        }
         style={{
-          transform: stringifyTransformations({
-            rotate: diceRotation ? diceRotation : 0,
-            scale: diceGripped ? "1.2" : "1",
-          }),
-          transitionProperty: "transform",
-          transitionDuration: "500ms",
-          // https://easings.net/#easeOutCirc
-          transitionTimingFunction: "cubic-bezier(0, 0.55, 0.45, 1)",
-          transformOrigin: "center center",
+          width: diceSize,
+          height: diceSize,
+          left: `${diceX}px`,
+          top: `${diceY}px`,
+          ...(dragGesture
+            ? {
+                zIndex: 1000,
+              }
+            : {}),
         }}
       >
-        <rect
-          className="dice-background"
-          width="100%"
-          height="100%"
-          rx="5"
-          ry="5"
-          fill={onSkull ? "black" : "#fcfcfc"}
-          stroke={onSkull ? "black" : "#b9b9b9"}
-          strokeWidth="1"
-        ></rect>
-        <image
-          xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
-          draggable="false"
+        <g
+          ref={diceDomNodeSetter}
           style={{
-            width: "100%",
-            height: "100%",
+            transform: stringifyTransformations({
+              rotate: diceRotation ? diceRotation : 0,
+              scale: diceGripped ? "1.2" : "1",
+            }),
+            transitionProperty: "transform",
+            transitionDuration: "500ms",
+            // https://easings.net/#easeOutCirc
+            transitionTimingFunction: "cubic-bezier(0, 0.55, 0.45, 1)",
+            transformOrigin: "center center",
           }}
-        />
-      </g>
-    </svg>
+        >
+          <rect
+            className="dice-background"
+            width="100%"
+            height="100%"
+            rx="5"
+            ry="5"
+            fill={onSkull ? "black" : "#fcfcfc"}
+            stroke={onSkull ? "black" : "#b9b9b9"}
+            strokeWidth="1"
+          ></rect>
+          <image
+            xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
+            draggable="false"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </g>
+      </svg>
+    </Portal>
   )
 }
