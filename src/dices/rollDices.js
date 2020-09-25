@@ -1,4 +1,4 @@
-import { getDomNodeRectangle } from "src/helper/rectangle.js"
+import { getDomNodeRectangle } from "src/dom/dom.position.js"
 import {
   rotateRectangle,
   rotatedRectangleCollidesWithRotatedRectangle,

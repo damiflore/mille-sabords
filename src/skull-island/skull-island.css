@@ -15,6 +15,7 @@
   margin-bottom: 13px;
   flex-direction: column-reverse;
   display: flex;
+  position: relative;
 }
 .witch-label {
   position: absolute;

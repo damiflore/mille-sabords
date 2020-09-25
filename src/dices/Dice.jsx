@@ -8,34 +8,57 @@ todo:
 lorsqu'on drop un dé hors de dice kept il revient a sa place avec une animation et pas immédiatement
 lorsqu'on drop un dé dans dice kept il se place avec animation + scale back avec animation
 
+lorsque le dé est dropped on va le déplacer a l'endroit voulu
+mais aussi démarrer une animation pour ce dé
 */
 
 import React from "react"
 
 import { Portal } from "src/generic/Portal.jsx"
-import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
+import { rectangleToRectangleInsideDomNode } from "src/dom/dom.position.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
+import { useDiceCursedIds, useDiceRolledIds, useChestSlots } from "src/main.store.js"
+import { useDiceKeptIds } from "src/round/round.selectors.js"
 
 const { useEffect, useState } = React
 
 export const Dice = ({
-  container,
-  // todo: draggable n'est pas toujours true
-  // il faut changer ça
-  draggable = false,
-  rotation = 0,
-  x,
-  y,
   dice,
+  diceAnimation,
+  chestRef,
+  rolledAreaRef,
+  offscreenRef,
+  cursedAreaRef,
   onDiceClick,
   onDiceDrag,
   onDiceDrop,
   onDiceDragEnd,
+  onDiceAnimationEnd,
 }) => {
+  const chestSlots = useChestSlots()
+  const diceKeptIds = useDiceKeptIds()
+  const diceRolledIds = useDiceRolledIds()
+  const diceCursedIds = useDiceCursedIds()
+
+  const { container, rotation, x, y, draggable } = diceLocationToInfo(dice, {
+    // chest
+    diceKeptIds,
+    chestSlots,
+    chestRef,
+    // rolled
+    diceRolledIds,
+    rolledAreaRef,
+    // cursed
+    diceCursedIds,
+    cursedAreaRef,
+    // offscreen
+    offscreenRef,
+  })
+
   // state from other contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
@@ -70,8 +93,7 @@ export const Dice = ({
           top: y,
           bottom: y + diceSize,
         }
-        const mainDomNodeRect = getDomNodeRectangle(mainDomNode)
-        const diceRectangle = rectangleInsideOf(diceDesiredRect, mainDomNodeRect)
+        const diceRectangle = rectangleToRectangleInsideDomNode(diceDesiredRect, mainDomNode)
         setDragGesture({ x: diceRectangle.left, y: diceRectangle.top })
         onDiceDrag(dice, { diceRectangle })
       },
@@ -101,6 +123,39 @@ export const Dice = ({
     }
   }, [draggable, diceDomNode, mainDomNode])
 
+  useEffect(() => {
+    if (!diceAnimation || !diceDomNode) return () => {}
+
+    const from = diceAnimation.from || { x: diceX, y: diceY }
+    const to = diceAnimation.to
+    const animation = diceDomNode.parentNode.animate(
+      [
+        {
+          left: `${from.x}px`,
+          top: `${from.y}px`,
+          position: "fixed",
+          transform: "translate(0px, 0px)",
+        },
+        {
+          left: `${from.x}px`,
+          top: `${from.y}px`,
+          position: "fixed",
+          transform: `translate(${to.x}px, ${to.y}px)`,
+        },
+      ],
+      {
+        duration: 1000,
+        fill: "forwards",
+      },
+    )
+    animation.onfinish = () => {
+      onDiceAnimationEnd(dice)
+    }
+    return () => {
+      animation.cancel()
+    }
+  }, [diceDomNode, diceAnimation])
+
   return (
     <Portal parent={container}>
       <svg
@@ -124,6 +179,7 @@ export const Dice = ({
           top: `${diceY}px`,
           ...(dragGesture
             ? {
+                position: "fixed",
                 zIndex: 1000,
               }
             : {}),
@@ -165,4 +221,72 @@ export const Dice = ({
       </svg>
     </Portal>
   )
+}
+
+const diceLocationToInfo = (
+  dice,
+  {
+    // chest
+    diceKeptIds,
+    chestSlots,
+    chestRef,
+    // rolled
+    diceRolledIds,
+    rolledAreaRef,
+    // cursed
+    diceCursedIds,
+    cursedAreaRef,
+    // offscreen
+    offscreenRef,
+  },
+) => {
+  if (diceKeptIds.includes(dice.id)) {
+    if (!chestRef.current) return {}
+
+    const diceChestSlot = Object.keys(chestSlots).find(
+      (chestSlot) =>
+        chestSlots[chestSlot] &&
+        chestSlots[chestSlot].type === "dice" &&
+        chestSlots[chestSlot].value === dice.id,
+    )
+    return {
+      container: chestRef.current.querySelector(`[data-chest-slot="${diceChestSlot}"]`),
+      rotation: 0,
+      x: 0,
+      y: 0,
+      draggable: true,
+    }
+  }
+
+  if (diceRolledIds.includes(dice.id)) {
+    return {
+      container: rolledAreaRef.current,
+      rotation: dice.rotation,
+      x: dice.rolledAreaPosition.x,
+      y: dice.rolledAreaPosition.y,
+      draggable: true,
+    }
+  }
+
+  if (diceCursedIds.includes(dice.id)) {
+    return {
+      // TODO: create some slot in the skull
+      // bottle so that dice can be placed properly
+      // otherwse we must keep a dice
+      // cursedAreaPosition
+      container: cursedAreaRef.current,
+      rotation: 0,
+      x: 0,
+      y: 0,
+      draggable: false,
+    }
+  }
+
+  return {
+    container: offscreenRef.current,
+    rotation: 0,
+    x: 0,
+    y: 0,
+    draggable: false,
+  }
 }

@@ -24,12 +24,7 @@ import {
   useSetDiceChestSlot,
   useUncurseDice,
 } from "src/dices/dices.actions.js"
-import {
-  rectangleCollidesWithRectangle,
-  rectangleInsideOf,
-  getDomNodeRectangle,
-  findClosestRectangle,
-} from "src/helper/rectangle.js"
+import { domNodeCollidesWithRectangle, rectangleRelativeToDomNode, findDomNodeClosestToRectangle } from "src/dom/dom.position.js"
 import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 export const Round = ({ openScoreboard, onRoundOver }) => {
@@ -88,8 +83,8 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
 
   const getClosestAvailableChestSlot = (dice, requestedRectangle) => {
     const chestDomNode = chestRef.current
-    const rectangleToChestSlotMap = new Map()
-    const rectangleCandidates = []
+    const chestSlotMap = {}
+    const domNodeCandidates = []
     Object.keys(chestSlots).forEach((chestSlot) => {
       const chestSlotContent = chestSlots[chestSlot]
       const chestSlotIsEmpty = !chestSlotContent
@@ -98,21 +93,21 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         (chestSlotContent.type === "dice" && chestSlotContent.value === dice.id)
       ) {
         const chestSlotDomNode = chestDomNode.querySelector(`[data-chest-slot="${chestSlot}"]`)
-        const rectangle = getDomNodeRectangle(chestSlotDomNode)
-        rectangleToChestSlotMap.set(rectangle, chestSlot)
-        rectangleCandidates.push(rectangle)
+        chestSlotMap[chestSlot] = chestSlotDomNode
+        domNodeCandidates.push(chestSlotDomNode)
       }
     })
-    const closestRectangle = findClosestRectangle(requestedRectangle, rectangleCandidates)
-    const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
+    const closestDomNode = findDomNodeClosestToRectangle(domNodeCandidates, requestedRectangle)
+    const closestChestSlot = chestSlotMap[closestDomNode]
     return closestChestSlot
   }
 
   const getClosestRolledAreaPosition = (requestedRectangle) => {
-    const rolledAreaDomNode = rolledAreaRef.current
-    const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-    const diceRectangle = rectangleInsideOf(requestedRectangle, rolledAreaDomNodeRectangle)
-    const closestRolledAreaPosition = { x: diceRectangle.left, y: diceRectangle.top }
+    const rectangle = rectangleRelativeToDomNode(requestedRectangle, rolledAreaRef.current)
+    const closestRolledAreaPosition = {
+      x: rectangle.left,
+      y: rectangle.top,
+    }
     return closestRolledAreaPosition
   }
 
@@ -157,6 +152,8 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return "none"
   }
 
+  const diceAnimations = {}
+
   return (
     <div className="round-container">
       <GameEffects />
@@ -176,6 +173,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
         cursedAreaRef={cursedAreaRef}
+        diceAnimations={diceAnimations}
         onDiceClick={(dice) => {
           const clickIntent = getClickIntent(dice)
           if (clickIntent === "keep") {
@@ -204,21 +202,19 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           let dropTarget = null
 
           const chestDomNode = chestRef.current
-          const chestDomNodeRectangle = getDomNodeRectangle(chestDomNode)
-          const diceIsOverChest = rectangleCollidesWithRectangle(
+          const diceIsOverChest = domNodeCollidesWithRectangle(
+            chestDomNode,
             dragDiceGesture.diceRectangle,
-            chestDomNodeRectangle,
           )
           if (diceIsOverChest) {
-            dropTarget = chestDomNode
+            dropTarget = chestRef.current
             dropAllowed = canKeepDice(dice)
           }
 
           const rolledAreaDomNode = rolledAreaRef.current
-          const rolledAreaDomNodeRectangle = getDomNodeRectangle(rolledAreaDomNode)
-          const diceIsOverRolledArea = rectangleCollidesWithRectangle(
+          const diceIsOverRolledArea = domNodeCollidesWithRectangle(
+            rolledAreaDomNode,
             dragDiceGesture.diceRectangle,
-            rolledAreaDomNodeRectangle,
           )
           if (diceIsOverRolledArea) {
             dropTarget = rolledAreaDomNode
@@ -266,7 +262,15 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
             )
           } else {
             // todo: animation pour replacer le dé a sa position pre drag
+            // on a le rectangle ou se trouve le dé et on souhaite le ramener ou il était
+            // (partons du principe qu'il est dans rolledArea pour le moment)
+            diceAnimations[dice.id] = {
+              to: dice.rolledAreaPosition,
+            }
           }
+        }}
+        onDiceAnimationEnd={(dice) => {
+          diceAnimations[dice.id] = null
         }}
         onDiceDragEnd={() => {
           dragoverGestureSetter(null)
