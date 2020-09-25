@@ -27,6 +27,9 @@ export const Dice = ({
   // todo: draggable n'est pas toujours true
   // il faut changer ça
   draggable = false,
+  rotation = 0,
+  x,
+  y,
   dice,
   onDiceClick,
   onDiceDrag,
@@ -43,9 +46,8 @@ export const Dice = ({
   const [dragGesture, setDragGesture] = useState(null)
 
   const onSkull = diceIsOnSkull(dice)
-  const diceRotation = dice.rotation
-  const diceX = dragGesture ? dragGesture.x : dice.x
-  const diceY = dragGesture ? dragGesture.y : dice.y
+  const diceX = dragGesture ? dragGesture.x : x
+  const diceY = dragGesture ? dragGesture.y : y
   const becomesCursed = false
   const becomesUncursed = false
 
@@ -131,7 +133,7 @@ export const Dice = ({
           ref={diceDomNodeSetter}
           style={{
             transform: stringifyTransformations({
-              rotate: diceRotation ? diceRotation : 0,
+              rotate: rotation ? rotation : 0,
               scale: diceGripped ? "1.2" : "1",
             }),
             transitionProperty: "transform",

@@ -30,6 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .chest .top-left-corner {
   width: 28px;

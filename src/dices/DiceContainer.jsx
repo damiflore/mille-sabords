@@ -19,7 +19,8 @@ export const DiceContainer = ({
   const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
-  const diceToContainer = (dice) => {
+
+  const diceLocationToInfo = (dice) => {
     if (diceKeptIds.includes(dice.id)) {
       const diceChestSlot = Object.keys(chestSlots).find(
         (chestSlot) =>
@@ -27,25 +28,49 @@ export const DiceContainer = ({
           chestSlots[chestSlot].type === "dice" &&
           chestSlots[chestSlot].value === dice.id,
       )
-      return chestRef.current.querySelector(`[data-chest-slot="${diceChestSlot}"]`)
+      return {
+        container: chestRef.current.querySelector(`[data-chest-slot="${diceChestSlot}"]`),
+        rotation: 0,
+        x: 0,
+        y: 0,
+      }
     }
 
     if (diceRolledIds.includes(dice.id)) {
-      return rolledAreaRef.current
+      return {
+        container: rolledAreaRef.current,
+        rotation: dice.rotation,
+        x: dice.rolledAreaPosition.x,
+        y: dice.rolledAreaPosition.y,
+      }
     }
 
     if (diceCursedIds.includes(dice.id)) {
-      return cursedAreaRef.current
+      return {
+        // TODO: create some slot in the skull
+        // bottle so that dice can be placed properly
+        // otherwse we must keep a dice
+        // cursedAreaPosition
+        container: cursedAreaRef.current,
+        rotation: 0,
+        x: 0,
+        y: 0,
+      }
     }
 
-    return offscreenRef.current
+    return {
+      container: offscreenRef.current,
+      rotation: 0,
+      x: 0,
+      y: 0,
+    }
   }
 
   return Object.keys(dices).map((diceId) => {
     const dice = dices[diceId]
     return (
       <Dice
-        container={diceToContainer(dice)}
+        {...diceLocationToInfo(dice)}
         key={diceId}
         dice={dice}
         onDiceClick={onDiceClick}
