@@ -23,7 +23,7 @@ const { useEffect, useState } = React
 export const Dice = ({
   // todo: draggable n'est pas toujours true
   // il faut changer ça
-  draggable = true,
+  draggable = false,
   dice,
   onDiceClick,
   onDiceDrag,
@@ -104,12 +104,23 @@ export const Dice = ({
         ...(becomesCursed ? ["dice-cursed-disapear"] : []),
         ...(becomesUncursed ? ["dice-cursed-appear"] : []),
       ])}
-      onClick={draggable ? undefined : (clickEvent) => onDiceClick(dice, clickEvent)}
+      onClick={
+        draggable
+          ? undefined
+          : (clickEvent) => {
+              onDiceClick(dice, clickEvent)
+            }
+      }
       style={{
         width: diceSize,
         height: diceSize,
         left: `${diceX}px`,
         top: `${diceY}px`,
+        ...(dragGesture
+          ? {
+              zIndex: 1000,
+            }
+          : {}),
       }}
     >
       <g
