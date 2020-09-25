@@ -19,6 +19,9 @@ export const DiceOnGoing = ({ rolledAreaRef, dragoverGesture }) => {
           ...(diceOverRolledArea ? { outline: "2px dotted" } : {}),
         }}
       ></div>
+      <div className="offscreen-area">
+        {/* we will move the dice into this zone when they are offgame (first roll) */}
+      </div>
     </div>
   )
 }

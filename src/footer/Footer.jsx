@@ -17,7 +17,7 @@ export const Footer = ({ onRoundOver, rolledAreaRef }) => {
   // TODO: fix bug in DialogBase: dialog cannot be instantiated open
 
   return (
-    <div className="actions">
+    <div className="footer actions">
       <ButtonRoll rolledAreaRef={rolledAreaRef} />
       <ButtonMarkScore />
       <ButtonEndRound onRoundOver={onRoundOver} />
