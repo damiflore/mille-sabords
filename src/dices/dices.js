@@ -29,18 +29,11 @@ const createDice = (props) => {
   }
 }
 
-export const DICES = [
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-]
-
-export const diceIdToDice = (diceId) => DICES.find((diceCandidate) => diceCandidate.id === diceId)
+export const DICES = {}
+new Array(8).fill("").forEach(() => {
+  const dice = createDice()
+  DICES[dice.id] = dice
+})
 
 export const diceIsOnCoin = (dice) => diceToVisibleSymbol(dice) === SYMBOL_COIN
 export const diceIsOnDiamond = (dice) => diceToVisibleSymbol(dice) === SYMBOL_DIAMOND

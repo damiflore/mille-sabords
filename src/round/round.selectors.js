@@ -11,8 +11,9 @@ import {
   useChestSlots,
   useCurrentPlayerId,
   usePlayers,
+  useDices,
 } from "src/main.store.js"
-import { diceIsOnSkull, diceToVisibleSymbol, diceIdToDice } from "src/dices/dices.js"
+import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
   cardIdToCard,
   isChestCard,
@@ -49,7 +50,7 @@ export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount
 
 export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
 
-export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
+export const useSymbolsInChest = ({ dices = useDices(), chestSlots = useChestSlots() } = {}) => {
   return Object.keys(chestSlots).reduce((previous, chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
 
@@ -59,7 +60,7 @@ export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
 
     if (chestSlotContent && chestSlotContent.type === "dice") {
       const diceId = chestSlotContent.value
-      const dice = diceIdToDice(diceId)
+      const dice = dices[diceId]
       return [...previous, diceToVisibleSymbol(dice)]
     }
 
@@ -88,12 +89,13 @@ export const useDiceKeptIds = ({ chestSlots = useChestSlots() } = {}) => {
 }
 
 export const useDicesToCurse = ({
+  dices = useDices(),
   diceRolledIds = useDiceRolledIds(),
   witchUncursedDiceId = useWitchUncursedDiceId(),
   remainingSpotInCursedArea = useRemainingSpotInCursedArea(),
 } = {}) => {
   const dicesToCurse = diceRolledIds
-    .map((diceRolledId) => diceIdToDice(diceRolledId))
+    .map((diceRolledId) => dices[diceRolledId])
     .filter((diceRolled) => {
       if (!diceIsOnSkull(diceRolled)) return false
       if (diceRolled.id === witchUncursedDiceId) return false

@@ -41,11 +41,12 @@ export const DiceContainer = ({
     return offscreenRef.current
   }
 
-  return dices.map((dice) => {
+  return Object.keys(dices).map((diceId) => {
+    const dice = dices[diceId]
     return (
       <Dice
         container={diceToContainer(dice)}
-        key={dice.id}
+        key={diceId}
         dice={dice}
         onDiceClick={onDiceClick}
         onDiceDrag={onDiceDrag}

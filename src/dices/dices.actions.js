@@ -6,7 +6,7 @@ export const useMoveDice = createAction((state, dice, { x, y }) => {
   dice.y = y
   return {
     ...state,
-    dices: [...dices],
+    dices: { ...dices },
   }
 })
 

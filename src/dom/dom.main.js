@@ -9,8 +9,8 @@ export const useMainDomNode = () => useContext(MainDomNodeContext)[0]
 export const useMainDomNodeSetter = () => useContext(MainDomNodeContext)[1]
 
 const diceDomNodeContexts = {}
-DICES.forEach((dice) => {
-  diceDomNodeContexts[dice.id] = createContext()
+Object.keys(DICES).forEach((diceId) => {
+  diceDomNodeContexts[diceId] = createContext()
 })
 const diceDomNodeProviders = Object.keys(diceDomNodeContexts).map(
   (key) => diceDomNodeContexts[key].Provider,
