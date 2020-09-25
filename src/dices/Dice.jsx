@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable import/max-dependencies */
 /**
 
 Nice to have
@@ -14,8 +16,9 @@ mais aussi démarrer une animation pour ce dé
 
 import React from "react"
 
+import { usePrevious } from "src/hooks.js"
 import { Portal } from "src/generic/Portal.jsx"
-import { rectangleToRectangleInsideDomNode } from "src/dom/dom.position.js"
+import { rectangleToRectangleInsideDomNode, printPointInDocument } from "src/dom/dom.position.js"
 import { stringifyClassNames, stringifyTransformations } from "src/helper/render.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
@@ -29,6 +32,7 @@ const { useEffect, useState } = React
 export const Dice = ({
   dice,
   diceAnimation,
+  onDiceAnimationEnd,
   chestRef,
   rolledAreaRef,
   offscreenRef,
@@ -37,12 +41,14 @@ export const Dice = ({
   onDiceDrag,
   onDiceDrop,
   onDiceDragEnd,
-  onDiceAnimationEnd,
 }) => {
   const chestSlots = useChestSlots()
   const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
+
+  // si y'a une animation alors reste dans ton conteneur
+  // le temps qu'elle se finisse
 
   const { container, rotation, x, y, draggable } = diceLocationToInfo(dice, {
     // chest
@@ -58,6 +64,8 @@ export const Dice = ({
     // offscreen
     offscreenRef,
   })
+  const containerPrevious = usePrevious(container)
+  const portalContainer = diceAnimation ? containerPrevious : container
 
   // state from other contexts
   const mainDomNode = useMainDomNode()
@@ -69,8 +77,10 @@ export const Dice = ({
   const [dragGesture, setDragGesture] = useState(null)
 
   const onSkull = diceIsOnSkull(dice)
-  const diceX = dragGesture ? dragGesture.x : x
-  const diceY = dragGesture ? dragGesture.y : y
+  const diceX =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x
+  const diceY =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y
   const becomesCursed = false
   const becomesUncursed = false
 
@@ -128,18 +138,14 @@ export const Dice = ({
 
     const from = diceAnimation.from || { x: diceX, y: diceY }
     const to = diceAnimation.to
+    printPointInDocument(from)
+    printPointInDocument(to)
     const animation = diceDomNode.parentNode.animate(
       [
         {
-          left: `${from.x}px`,
-          top: `${from.y}px`,
-          position: "fixed",
           transform: "translate(0px, 0px)",
         },
         {
-          left: `${from.x}px`,
-          top: `${from.y}px`,
-          position: "fixed",
           transform: `translate(${to.x}px, ${to.y}px)`,
         },
       ],
@@ -157,7 +163,7 @@ export const Dice = ({
   }, [diceDomNode, diceAnimation])
 
   return (
-    <Portal parent={container}>
+    <Portal parent={portalContainer}>
       <svg
         data-dice-id={dice.id}
         className={stringifyClassNames([
@@ -177,7 +183,7 @@ export const Dice = ({
           height: diceSize,
           left: `${diceX}px`,
           top: `${diceY}px`,
-          ...(dragGesture
+          ...(dragGesture || diceAnimation
             ? {
                 position: "fixed",
                 zIndex: 1000,

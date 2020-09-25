@@ -11,7 +11,8 @@ export const DiceContainer = ({
   onDiceDrag,
   onDiceDrop,
   onDiceDragEnd,
-  diceAnimations,
+  diceAnimationState,
+  onDiceAnimationEnd,
 }) => {
   const dices = useDices()
   return Object.keys(dices).map((diceId) => {
@@ -21,7 +22,8 @@ export const DiceContainer = ({
         key={diceId}
         {...{
           dice,
-          diceAnimation: diceAnimations[dice.id],
+          diceAnimation: diceAnimationState[dice.id],
+          onDiceAnimationEnd,
           chestRef,
           rolledAreaRef,
           offscreenRef,

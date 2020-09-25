@@ -24,7 +24,12 @@ import {
   useSetDiceChestSlot,
   useUncurseDice,
 } from "src/dices/dices.actions.js"
-import { domNodeCollidesWithRectangle, rectangleRelativeToDomNode, findDomNodeClosestToRectangle } from "src/dom/dom.position.js"
+import {
+  domNodeCollidesWithRectangle,
+  rectangleRelativeToDomNode,
+  findDomNodeClosestToRectangle,
+  rectangleAbsoluteToDomNode,
+} from "src/dom/dom.position.js"
 import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 export const Round = ({ openScoreboard, onRoundOver }) => {
@@ -152,7 +157,12 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return "none"
   }
 
-  const diceAnimations = {}
+  const [diceAnimationState, dispatchDiceAnimation] = React.useReducer((state, action) => {
+    return {
+      ...state,
+      [action.key]: action.value,
+    }
+  }, {})
 
   return (
     <div className="round-container">
@@ -173,7 +183,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
         cursedAreaRef={cursedAreaRef}
-        diceAnimations={diceAnimations}
+        diceAnimationState={diceAnimationState}
         onDiceClick={(dice) => {
           const clickIntent = getClickIntent(dice)
           if (clickIntent === "keep") {
@@ -261,16 +271,28 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
               getClosestAvailableChestSlot(dice, dropDiceGesture.diceRectangle),
             )
           } else {
-            // todo: animation pour replacer le dé a sa position pre drag
-            // on a le rectangle ou se trouve le dé et on souhaite le ramener ou il était
-            // (partons du principe qu'il est dans rolledArea pour le moment)
-            diceAnimations[dice.id] = {
-              to: dice.rolledAreaPosition,
-            }
+            const absoluteRectangle = rectangleAbsoluteToDomNode(
+              {
+                left: dice.rolledAreaPosition.x,
+                top: dice.rolledAreaPosition.y,
+                right: 0,
+                bottom: 0,
+              },
+              rolledAreaRef.current,
+            )
+            dispatchDiceAnimation({
+              key: dice.id,
+              value: {
+                to: { x: absoluteRectangle.left, y: absoluteRectangle.top },
+              },
+            })
           }
         }}
         onDiceAnimationEnd={(dice) => {
-          diceAnimations[dice.id] = null
+          dispatchDiceAnimation({
+            key: dice.id,
+            value: null,
+          })
         }}
         onDiceDragEnd={() => {
           dragoverGestureSetter(null)
