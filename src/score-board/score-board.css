@@ -9,10 +9,29 @@
   margin: 20px;
   font-size: 20px;
 }
-.score-board-container .score-board-action {
+.score-board-container .action-container {
+  height: 100%;
   position: absolute;
-  left: 0;
-  margin: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.score-board-container .score-board-action {
+  z-index: 1;
+  position: absolute;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 13px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #f7a23c;
+  background-color: #ffe7be;
+  border: 3px solid #f7a23c;
 }
 .score-board-container .win-treasure-img {
   width: 50%;
@@ -91,15 +110,35 @@
   border-radius: 100%;
   background-color: #ffe7be;
 }
+.user-avatar.next-player {
+  animation: pulse 1s 1s cubic-bezier(0.4, 0, 1, 1) infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 /* SPEECH BUBBLES */
 .score-board-container .speech-bubble {
   position: relative;
-  background: #00aabb;
+  background: #c7401b;
   border-radius: 0.4em;
-  padding: 7px 16px;
   margin: 0 auto;
   margin-top: 12px;
+  font-size: 12px;
+  padding: 7px 0;
+  width: 100%;
+  text-align: center;
 }
 .score-board-container .speech-bubble:after {
   content: "";
@@ -108,9 +147,9 @@
   left: 50%;
   width: 0;
   height: 0;
-  border: 10px solid transparent;
-  border-top-color: #00aabb;
+  border: 6px solid transparent;
+  border-top-color: #c7401b;
   border-bottom: 0;
-  margin-left: -10px;
-  margin-bottom: -9px;
+  margin-left: -6px;
+  margin-bottom: -6px;
 }

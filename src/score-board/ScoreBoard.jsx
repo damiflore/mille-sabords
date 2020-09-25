@@ -15,6 +15,21 @@ const pathList = {
     "M39.582,739.564c0-113.074-5.437-166.074-8.437-198.074s36-20.667,33.019-2c-1.796,11.248-24.583,13.333-23.699-22c1.229-49.158,22.68-111,23.68-169s-38-95-46-181S39.582,0,39.582,0",
 }
 
+const getNextPlayer = () => {
+  const currentPlayer = useCurrentPlayer()
+  const players = usePlayers()
+
+  let nextPlayer
+  if (currentPlayer) {
+    const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayer.id)
+    nextPlayer =
+      currentPlayerIndex === players.length - 1 ? players[0] : players[currentPlayerIndex + 1]
+  } else {
+    nextPlayer = players[0]
+  }
+  return nextPlayer
+}
+
 export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
@@ -41,14 +56,7 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
     drawCardDialogIsOpenSetter(false)
   }
 
-  let nextPlayer
-  if (currentPlayer) {
-    const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayer.id)
-    nextPlayer =
-      currentPlayerIndex === players.length - 1 ? players[0] : players[currentPlayerIndex + 1]
-  } else {
-    nextPlayer = players[0]
-  }
+  const nextPlayer = getNextPlayer()
 
   return (
     <div className="score-board-container">
@@ -58,15 +66,17 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
         </div>
       )}
 
-      {!roundStarted && (
-        <button
-          className="score-board-action"
-          onClick={() => {
-            openStartPlayerRoundDialog()
-          }}
-        >
-          {currentPlayer ? "Joueur suivant" : "Commencer à jouer"}
-        </button>
+      {!roundStarted && !currentPlayer && (
+        <div className="action-container">
+          <button
+            className="score-board-action"
+            onClick={() => {
+              openStartPlayerRoundDialog()
+            }}
+          >
+            Commencer à jouer
+          </button>
+        </div>
       )}
 
       <img className="win-treasure-img" src="src/score-board/win-treasure.png" alt="win-treasure" />
@@ -77,6 +87,7 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
             pathCoordinates={pathList[`path${player.id}`]}
             score={player.score}
             character={player.character}
+            openStartPlayerRoundDialog={openStartPlayerRoundDialog}
             scoreAnimation={
               currentPlayer && player.id === currentPlayer.id && scoreAnimation
                 ? {
@@ -101,9 +112,16 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
   )
 }
 
-const UserPath = ({ scoreAnimation, pathCoordinates, character, score }) => {
+const UserPath = ({
+  scoreAnimation,
+  pathCoordinates,
+  character,
+  score,
+  openStartPlayerRoundDialog,
+}) => {
   const pathForegroundElementRef = React.useRef(null)
   const circleElementRef = React.useRef(null)
+  const nextPlayer = getNextPlayer()
 
   React.useEffect(() => {
     if (!scoreAnimation) return
@@ -163,7 +181,12 @@ const UserPath = ({ scoreAnimation, pathCoordinates, character, score }) => {
         />
       </svg>
       <div className="speech-bubble">{score}</div>
-      <div className="user-avatar">
+      <div
+        className={`user-avatar ${nextPlayer.character.id === character.id ? "next-player" : ""}`}
+        onClick={() => {
+          if (nextPlayer.character.id === character.id) openStartPlayerRoundDialog()
+        }}
+      >
         <Avatar character={character} />
       </div>
     </div>

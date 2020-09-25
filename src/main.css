@@ -1,3 +1,4 @@
+@import "./home/home.css";
 @import "./chest/chest.css";
 @import "./dice-ongoing/dice-ongoing.css";
 @import "./dices/dice.css";
@@ -18,7 +19,7 @@ body {
   margin: 0;
 }
 #main {
-  background-image: url("./wood.jpg");
+  background-color: #8ec9fc;
   color: white;
   overflow: hidden;
 }
@@ -113,6 +114,7 @@ body {
 }
 
 #main .round-container {
+  background-image: url(./wood.jpg);
   padding: 15px;
   display: flex;
   flex: 1;
