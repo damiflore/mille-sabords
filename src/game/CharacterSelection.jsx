@@ -11,37 +11,42 @@ export const CharacterSelection = ({ players }) => {
     <div className="character-selection-page">
       <CrewMembers />
       {playerWithoutCharacter && (
-        <div className="characters">
+        <>
           <p>Joueur {playerWithoutCharacter.number} : quel pirate êtes vous ?</p>
-          {CHARACTERS.map((character) => {
-            return (
-              <div
-                className={`character ${
-                  characterIsAvailable(character, players) ? "" : "disabled"
-                }`}
-                key={character.id}
-                onClick={() => {
-                  setPlayerCharacter(playerWithoutCharacter, character)
-                }}
-              >
-                <img
-                  className="character-img"
-                  src={`src/score-board/${character && character.img}`}
-                  alt="player"
-                  style={{
-                    border: `4px solid ${(character && character.color) || "black"}`,
-                  }}
-                />
-                <span>{character.name}</span>
-              </div>
-            )
-          })}
-        </div>
+          <div className="characters-container">
+            <div className="characters">
+              {CHARACTERS.map((character) => {
+                return (
+                  <div
+                    className={`character ${
+                      characterIsAvailable(character, players) ? "" : "disabled"
+                    }`}
+                    key={character.id}
+                    onClick={() => {
+                      setPlayerCharacter(playerWithoutCharacter, character)
+                    }}
+                  >
+                    <img
+                      className="character-img"
+                      src={`src/score-board/${character && character.img}`}
+                      alt="player"
+                      style={{
+                        border: `4px solid ${(character && character.color) || "black"}`,
+                      }}
+                    />
+                    <span>{character.name}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </>
       )}
 
       {!playerWithoutCharacter && (
         <div className="crew-completed">
-          <p>Votre équipage est au complet !</p>
+          <p>L&lsquo;équipage est au complet !</p>
+          <img src={`src/cards/card_small-sword-challenge.png`} />
           <button
             onClick={() => {
               startGame()
@@ -59,8 +64,8 @@ const CrewMembers = () => {
   const players = usePlayers()
 
   return (
-    <div className="crew">
-      <p>L&apos;équipage:</p>
+    <div className={`crew ${players.length > 3 ? "large-crew" : ""}`}>
+      <p>Votre équipage:</p>
       <ul>
         {players.map((player) => {
           return (

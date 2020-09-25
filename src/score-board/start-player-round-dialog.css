@@ -1,7 +1,7 @@
 .dialog-content.score-board-dialog {
   background-color: #bee1ff;
   width: calc(100% - 66px);
-  height: calc(50%);
+  height: 300px;
   margin: 25% 33px;
   border-radius: 10px;
 }
