@@ -61,7 +61,10 @@ export const findDomNodeClosestToRectangle = (domNodeCandidates, rectangle) => {
   return domNodeCandidates[rectangleCandidates.indexOf(closestRectangle)]
 }
 
-export const printPointInDocument = ({ x, y }, { color = "yellow" } = {}) => {
+export const printPointInDocument = (
+  { x, y },
+  { color = "yellow", autoRemoveAfter = 2000 } = {},
+) => {
   const div = document.createElement("div")
   div.style.position = "absolute"
   div.style.zIndex = "1000"
@@ -73,7 +76,17 @@ export const printPointInDocument = ({ x, y }, { color = "yellow" } = {}) => {
   div.style.border = "1px solid red"
   document.body.appendChild(div)
 
-  return () => {
+  const remove = () => {
     document.body.removeChild(div)
+  }
+
+  let autoRemoveTimeout
+  if (autoRemoveAfter) {
+    autoRemoveTimeout = setTimeout(remove, autoRemoveAfter)
+  }
+
+  return () => {
+    remove()
+    clearTimeout(autoRemoveTimeout)
   }
 }

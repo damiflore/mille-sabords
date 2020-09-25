@@ -32,6 +32,7 @@ const { useEffect, useState } = React
 export const Dice = ({
   dice,
   diceAnimation,
+  anmationDebug = false,
   onDiceAnimationEnd,
   chestRef,
   rolledAreaRef,
@@ -136,22 +137,23 @@ export const Dice = ({
   useEffect(() => {
     if (!diceAnimation || !diceDomNode) return () => {}
 
-    const from = diceAnimation.from || { x: diceX, y: diceY }
+    const from = diceAnimation.from
     const to = diceAnimation.to
-    printPointInDocument(from)
-    printPointInDocument(to)
+    if (anmationDebug) {
+      printPointInDocument(from)
+      printPointInDocument(to)
+    }
+    const transform = `translate(${Math.floor(to.x - from.x)}px, ${Math.floor(to.y - from.y)}px)`
     const animation = diceDomNode.parentNode.animate(
       [
         {
-          transform: "translate(0px, 0px)",
-        },
-        {
-          transform: `translate(${to.x}px, ${to.y}px)`,
+          transform,
         },
       ],
       {
-        duration: 1000,
+        duration: 500,
         fill: "forwards",
+        easing: "cubic-bezier(0, 0.55, 0.45, 1)",
       },
     )
     animation.onfinish = () => {

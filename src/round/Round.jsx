@@ -271,7 +271,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
               getClosestAvailableChestSlot(dice, dropDiceGesture.diceRectangle),
             )
           } else {
-            const absoluteRectangle = rectangleAbsoluteToDomNode(
+            const absoluteToRectangle = rectangleAbsoluteToDomNode(
               {
                 left: dice.rolledAreaPosition.x,
                 top: dice.rolledAreaPosition.y,
@@ -283,7 +283,11 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
             dispatchDiceAnimation({
               key: dice.id,
               value: {
-                to: { x: absoluteRectangle.left, y: absoluteRectangle.top },
+                from: {
+                  x: dropDiceGesture.diceRectangle.left,
+                  y: dropDiceGesture.diceRectangle.top,
+                },
+                to: { x: absoluteToRectangle.left, y: absoluteToRectangle.top },
               },
             })
           }
