@@ -10,15 +10,15 @@
   <body>
     <script type="module">
       import { assert } from "@jsenv/assert"
-      import { CARD_ANIMALS, CARD_CHEST } from "src/cards/cards.js"
       import { useMarkScoreAllowed } from "src/round/round.selectors.js"
+      import { getFirstAnimalsCardFromDeck, getFirstChestCardFromDeck } from "test/test.material.js"
 
       // with 3 skulls
       {
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: false,
           scoreMarked: false,
-          currentCard: CARD_ANIMALS,
+          currentCardId: getFirstAnimalsCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: true,
           hasDicesToCurse: false,
         })
@@ -31,7 +31,7 @@
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: false,
           scoreMarked: true,
-          currentCard: CARD_ANIMALS,
+          currentCardId: getFirstAnimalsCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: false,
         })
@@ -44,7 +44,7 @@
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: false,
           scoreMarked: false,
-          currentCard: CARD_CHEST,
+          currentCardId: getFirstChestCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: true,
           hasDicesToCurse: false,
         })
@@ -57,7 +57,7 @@
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: true,
           scoreMarked: false,
-          currentCard: CARD_CHEST,
+          currentCardId: getFirstChestCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: true,
           hasDicesToCurse: false,
         })
@@ -70,7 +70,7 @@
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: true,
           scoreMarked: false,
-          currentCard: CARD_CHEST,
+          currentCardId: getFirstChestCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: false,
         })
@@ -83,7 +83,7 @@
         const actual = useMarkScoreAllowed({
           hasRolledMoreThanOnce: false,
           scoreMarked: false,
-          currentCard: CARD_ANIMALS,
+          currentCardId: getFirstAnimalsCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: true,
         })
