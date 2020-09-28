@@ -22,6 +22,9 @@
   bottom: 10px;
   /* border: 1px solid green; */
 }
+.dice-ongoing .area .dice {
+  position: absolute;
+}
 .dice-ongoing .offscreen-area {
   position: absolute;
   left: 100%;

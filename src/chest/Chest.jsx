@@ -86,7 +86,7 @@ const ChestSlot = ({ chestSlotContent }) => {
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
+      <img draggable="false" src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
     </div>
   )
 }

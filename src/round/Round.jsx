@@ -29,6 +29,7 @@ import {
   rectangleRelativeToDomNode,
   findDomNodeClosestToRectangle,
   rectangleAbsoluteToDomNode,
+  getDomNodeRectangle,
 } from "src/dom/dom.position.js"
 import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
@@ -87,8 +88,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   }
 
   const getClosestAvailableChestSlot = (dice, requestedRectangle) => {
-    const chestDomNode = chestRef.current
-    const chestSlotMap = {}
+    const chestSlotMap = new Map()
     const domNodeCandidates = []
     Object.keys(chestSlots).forEach((chestSlot) => {
       const chestSlotContent = chestSlots[chestSlot]
@@ -97,13 +97,13 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         chestSlotIsEmpty ||
         (chestSlotContent.type === "dice" && chestSlotContent.value === dice.id)
       ) {
-        const chestSlotDomNode = chestDomNode.querySelector(`[data-chest-slot="${chestSlot}"]`)
-        chestSlotMap[chestSlot] = chestSlotDomNode
+        const chestSlotDomNode = chestSlotToChestSlotDomNode(chestSlot, { chestRef })
+        chestSlotMap.set(chestSlotDomNode, chestSlot)
         domNodeCandidates.push(chestSlotDomNode)
       }
     })
     const closestDomNode = findDomNodeClosestToRectangle(domNodeCandidates, requestedRectangle)
-    const closestChestSlot = chestSlotMap[closestDomNode]
+    const closestChestSlot = chestSlotMap.get(closestDomNode)
     return closestChestSlot
   }
 
@@ -129,17 +129,20 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return "other"
   }
 
-  const getDropIntent = (dice) => {
+  const getDropEffect = (dice) => {
     if (diceIsInRolledArea(dice)) {
       if (dropTargetRef.current === rolledAreaRef.current) {
         return "reposition-in-rolled-area"
       }
 
       if (dropTargetRef.current === chestRef.current) {
-        return "keep"
+        if (canKeepDice(dice)) {
+          return "keep"
+        }
+        return "back-to-rolled-area"
       }
 
-      return "none"
+      return "back-to-rolled-area"
     }
 
     if (diceIsInChest(dice)) {
@@ -148,10 +151,13 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       }
 
       if (dropTargetRef.current === rolledAreaRef.current) {
-        return "unkeep"
+        if (canUnkeepDice(dice)) {
+          return "unkeep"
+        }
+        return "back-to-chest"
       }
 
-      return "none"
+      return "back-to-chest"
     }
 
     return "none"
@@ -163,6 +169,57 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       [action.key]: action.value,
     }
   }, {})
+
+  const animateDiceMoveTo = (dice, from, to) => {
+    dispatchDiceAnimation({
+      key: dice.id,
+      value: {
+        from,
+        to,
+      },
+    })
+  }
+
+  const animateMoveToRolledArea = (dice, rolledAreaPosition, { dropDiceGesture }) => {
+    const absoluteRolledAreaPositionRectangle = rectangleAbsoluteToDomNode(
+      {
+        left: rolledAreaPosition.x,
+        top: rolledAreaPosition.y,
+        right: 0,
+        bottom: 0,
+      },
+      rolledAreaRef.current,
+    )
+    animateDiceMoveTo(
+      dice,
+      {
+        x: dropDiceGesture.diceRectangle.left,
+        y: dropDiceGesture.diceRectangle.top,
+      },
+      {
+        x: absoluteRolledAreaPositionRectangle.left,
+        y: absoluteRolledAreaPositionRectangle.top,
+      },
+    )
+  }
+
+  const animateDiceMoveToChestSlot = (dice, chestSlot, { dropDiceGesture }) => {
+    const destinationSlotDomNode = chestSlotToChestSlotDomNode(chestSlot, {
+      chestRef,
+    })
+    const destinationSlotRectangle = getDomNodeRectangle(destinationSlotDomNode)
+    animateDiceMoveTo(
+      dice,
+      {
+        x: dropDiceGesture.diceRectangle.left,
+        y: dropDiceGesture.diceRectangle.top,
+      },
+      {
+        x: destinationSlotRectangle.left,
+        y: destinationSlotRectangle.top,
+      },
+    )
+  }
 
   return (
     <div className="round-container">
@@ -239,57 +296,56 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           dropTargetRef.current = dropTarget
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
-          const dropIntent = getDropIntent(dice)
-          console.log("drop", { dice, diceKeptIds, diceRolledIds, dropIntent })
+          const dropEffect = getDropEffect(dice)
+          console.log("drop", { dice, diceKeptIds, diceRolledIds, dropEffect })
 
-          if (dropIntent === "keep") {
-            if (canKeepDice(dice)) {
-              const chestSlot = getClosestAvailableChestSlot(dice, dropDiceGesture.diceRectangle)
-              setDiceChestSlot(dice, chestSlot)
-              keepDice(dice, chestSlot)
-            } else {
-              // todo: animation pour repositionner le dé dans rolled area
-            }
-          } else if (dropIntent === "unkeep") {
-            if (canUnkeepDice(dice)) {
-              setDiceRolledAreaPosition(
-                dice,
-                getClosestRolledAreaPosition(dropDiceGesture.diceRectangle),
-              )
-              unkeepDice(dice)
-            } else {
-              // todo: animation pour replacer le dé a sa position pre drag
-            }
-          } else if (dropIntent === "reposition-in-rolled-area") {
+          if (dropEffect === "reposition-in-rolled-area") {
             setDiceRolledAreaPosition(
               dice,
               getClosestRolledAreaPosition(dropDiceGesture.diceRectangle),
             )
-          } else if (dropIntent === "reposition-in-chest") {
-            setDiceChestSlot(
+            // no animation needed, we drop exactly where we want it
+          } else if (dropEffect === "back-to-rolled-area") {
+            animateMoveToRolledArea(dice, dice.rolledAreaPosition, { dropDiceGesture })
+          } else if (dropEffect === "keep") {
+            const closestAvailableChestSlot = getClosestAvailableChestSlot(
               dice,
-              getClosestAvailableChestSlot(dice, dropDiceGesture.diceRectangle),
+              dropDiceGesture.diceRectangle,
             )
-          } else {
-            const absoluteToRectangle = rectangleAbsoluteToDomNode(
+            keepDice(dice, closestAvailableChestSlot)
+            animateDiceMoveToChestSlot(dice, closestAvailableChestSlot, { dropDiceGesture })
+          } else if (dropEffect === "reposition-in-chest") {
+            const closestAvailableChestSlot = getClosestAvailableChestSlot(
+              dice,
+              dropDiceGesture.diceRectangle,
+            )
+            const diceChestSlot = diceToChestSlot(dice, { chestSlots })
+            if (diceChestSlot !== closestAvailableChestSlot) {
+              setDiceChestSlot(dice, closestAvailableChestSlot)
+              animateDiceMoveToChestSlot(dice, closestAvailableChestSlot, { dropDiceGesture })
+            }
+          } else if (dropEffect === "back-to-chest") {
+            const diceChestSlot = diceToChestSlot(dice, { chestSlots })
+            const diceChestSlotDomNode = chestSlotToChestSlotDomNode(diceChestSlot, { chestRef })
+            const diceChestSlotDomNodeRectangle = getDomNodeRectangle(diceChestSlotDomNode)
+            animateDiceMoveTo(
+              dice,
               {
-                left: dice.rolledAreaPosition.x,
-                top: dice.rolledAreaPosition.y,
-                right: 0,
-                bottom: 0,
+                x: dropDiceGesture.diceRectangle.left,
+                y: dropDiceGesture.diceRectangle.top,
               },
-              rolledAreaRef.current,
+              {
+                x: diceChestSlotDomNodeRectangle.left,
+                y: diceChestSlotDomNodeRectangle.top,
+              },
             )
-            dispatchDiceAnimation({
-              key: dice.id,
-              value: {
-                from: {
-                  x: dropDiceGesture.diceRectangle.left,
-                  y: dropDiceGesture.diceRectangle.top,
-                },
-                to: { x: absoluteToRectangle.left, y: absoluteToRectangle.top },
-              },
-            })
+          } else if (dropEffect === "unkeep") {
+            const closestRolledAreaPosition = getClosestRolledAreaPosition(
+              dropDiceGesture.diceRectangle,
+            )
+            setDiceRolledAreaPosition(dice, closestRolledAreaPosition)
+            unkeepDice(dice)
+            animateMoveToRolledArea(dice, closestRolledAreaPosition, { dropDiceGesture })
           }
         }}
         onDiceAnimationEnd={(dice) => {
@@ -304,6 +360,22 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
       />
     </div>
   )
+}
+
+const diceToChestSlot = (dice, { chestSlots }) => {
+  const diceChestSlot = Object.keys(chestSlots).find((chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
+  })
+  return diceChestSlot
+}
+
+const chestSlotToChestSlotDomNode = (chestSlot, { chestRef }) => {
+  const chestDomNode = chestRef.current
+  const chestSlotDomNode = chestDomNode.querySelector(`[data-chest-slot="${chestSlot}"]`)
+  return chestSlotDomNode
 }
 
 const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {

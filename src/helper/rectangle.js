@@ -63,7 +63,7 @@ export const rectangleRelativeTo = (rectangle, parentRectangle) => {
   }
 }
 
-export const findRectangleCloserToRectangle = (rectangle, rectangleCandidates) => {
+export const findRectangleCloserToRectangle = (rectangleCandidates, rectangle) => {
   let smallestDistance = getDistanceBetweenRectangles(rectangle, rectangleCandidates[0])
   return rectangleCandidates.reduce((prev, rectangleCandidate) => {
     const distance = getDistanceBetweenRectangles(rectangle, rectangleCandidate)
