@@ -13,25 +13,18 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
 
   return (
     <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={false}>
-      <div className="border border-right"></div>
-      <div className="border border-left"></div>
-      <div className="border border-top"></div>
-      <div className="border border-bottom"></div>
-
-      <div className="dialog-title">Suivant</div>
-
       <div className="dialog-content draw-card-dialog">
         <div className="dialog-body">
           <div className="dialog-label">
             {cardDeck.length === 0 && !card
-              ? "Paquet de cartes épuisé. Mélangez-le pour pouvoir piocher à nouveau."
+              ? "Paquet de cartes épuisé. Mélangez-le pour pouvoir piocher à nouveau!"
               : "Piochez une carte pour le tour suivant."}
           </div>
           <div className="card-area">
             <BackCard />
             <TopCard />
           </div>
-          <CardDescription />
+          {/* <CardDescription /> */}
         </div>
         <div className="dialog-actions">
           <DeckButton />
@@ -163,7 +156,7 @@ const ShuffleDeckButton = () => {
   }
   return (
     <button className="draw-card-btn" onClick={shuffleDeckAnimation}>
-      Mélanger le paquet
+      Mélanger
     </button>
   )
 }

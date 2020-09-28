@@ -6,6 +6,7 @@ import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
+import { useCurrentPlayerGettingReady } from "src/main.store.js"
 
 const { useMemo } = React
 
@@ -22,16 +23,23 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   There is no real need for useMemo here: it's kept as an example.
   */
 
+  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const cardDrawn = !currentPlayerGettingReady
+
   return useMemo(() => (
     <div className="round-container">
       <GameEffects />
       <Header openScoreboard={openScoreboard} />
-      <div className="chest-and-skulls">
-        <Chest />
-        <SkullIsland />
-      </div>
-      <DiceOnGoing />
-      <Footer onRoundOver={onRoundOver} />
+      {cardDrawn && (
+        <>
+          <div className="chest-and-skulls">
+            <Chest />
+            <SkullIsland />
+          </div>
+          <DiceOnGoing />
+          <Footer onRoundOver={onRoundOver} />
+        </>
+      )}
     </div>
   ))
 }
