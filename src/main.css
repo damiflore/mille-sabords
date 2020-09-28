@@ -120,7 +120,6 @@ body {
 
 #main .round-container {
   background-image: url(./wood.jpg);
-  padding: 15px;
   display: flex;
   flex: 1;
   flex-direction: column;
