@@ -6,6 +6,26 @@ import {
   SYMBOL_SKULL,
   SYMBOL_SWORD,
 } from "src/symbols/symbols.js"
+import {
+  cardIds,
+  cardIdToCard,
+  isAnimalsCard,
+  isChestCard,
+  isCoinCard,
+  isPirateCard,
+  isTwoSwordsChallengeCard,
+} from "src/cards/cards.js"
+
+export const getFirstAnimalsCardFromDeck = () => getFirstCardFromDeckMatching(isAnimalsCard)
+export const getFirstChestCardFromDeck = () => getFirstCardFromDeckMatching(isChestCard)
+export const getFirstCoinCardFromDeck = () => getFirstCardFromDeckMatching(isCoinCard)
+export const getFirstPirateCardFromDeck = () => getFirstCardFromDeckMatching(isPirateCard)
+export const getFirstTwoSwordsChallengeCardFromDeck = () =>
+  getFirstCardFromDeckMatching(isTwoSwordsChallengeCard)
+const getFirstCardFromDeckMatching = (predicate) => {
+  const cardId = cardIds.find((cardId) => predicate(cardIdToCard(cardId)))
+  return cardIdToCard(cardId)
+}
 
 export const createCoinFromDice = () => SYMBOL_COIN
 export const createDiamondFromDice = () => SYMBOL_DIAMOND

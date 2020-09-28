@@ -1,18 +1,18 @@
 import { assert } from "@jsenv/assert"
-import { CARD_COIN } from "src/cards/cards.js"
 import {
   createCoinFromDice,
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
   createCoinFromCard,
+  getFirstCoinCardFromDeck,
 } from "../test.material.js"
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 
 // with nothing
 {
   const actual = computeRoundScore({
-    card: CARD_COIN,
+    card: getFirstCoinCardFromDeck(),
     symbolsInChest: [
       createCoinFromCard(),
 
@@ -32,7 +32,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 // with 7 coin + 1 parrot
 {
   const actual = computeRoundScore({
-    card: CARD_COIN,
+    card: getFirstCoinCardFromDeck(),
     symbolsInChest: [
       createCoinFromCard(),
 
