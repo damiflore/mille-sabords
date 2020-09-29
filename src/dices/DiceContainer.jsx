@@ -121,11 +121,8 @@ export const DiceContainer = ({
               threeSkullsOrMoreInCursedArea,
             })
             dragDiceGesture.setDropEffect(dropEffect)
-            // TODO: si on décommente ceci on ne peut plus drag and drop les dés
-            // c'est parce que react re-render an plein milieu de la gesture de drag
-            // ce qui cancel le drag en cours
-            // onDiceOverChestChange(dropEffect === "keep" ? dice : null)
-            // onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
+            onDiceOverChestChange(dropEffect === "keep" ? dice : null)
+            onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
           },
           onDiceDrop: (dice, dropDiceGesture) => {
             const dropEffect = getDropEffect(dice, {
@@ -147,7 +144,10 @@ export const DiceContainer = ({
                 dropDiceGesture.diceRectangle,
                 rolledAreaDomNode,
               )
-              const highestRolledAreaZIndex = highestRolledAreaZIndexGetter(dice, dices)
+              const highestRolledAreaZIndex = highestRolledAreaZIndexGetter(dice, {
+                dices,
+                diceRolledIds,
+              })
               setDiceRolledAreaPosition(dice, closestRolledAreaPosition, highestRolledAreaZIndex)
               // no animation needed, we drop exactly where we want it
             } else if (dropEffect === "back-to-rolled-area") {
@@ -189,7 +189,7 @@ export const DiceContainer = ({
               setDiceRolledAreaPosition(
                 dice,
                 closestRolledAreaPosition,
-                highestRolledAreaZIndexGetter(dice, dices),
+                highestRolledAreaZIndexGetter(dice, { dices, diceRolledIds }),
               )
               unkeepDice(dice)
               dropAnimation = true
@@ -430,14 +430,16 @@ const closestRolledAreaPositionGetter = (requestedRectangle, rolledAreaDomNode) 
   return closestRolledAreaPosition
 }
 
-const highestRolledAreaZIndexGetter = (dice, dices) => {
-  const diceIds = Object.keys(dices)
-  const diceWithHighestZIndex = diceIds.slice(1).reduce((previous, diceId) => {
+const highestRolledAreaZIndexGetter = (dice, { diceRolledIds, dices }) => {
+  if (diceRolledIds.length === 0) {
+    return 1
+  }
+  const diceWithHighestZIndex = diceRolledIds.slice(1).reduce((previous, diceId) => {
     const dice = dices[diceId]
     const diceZIndex = dice.rolledAreaZIndex
     if (diceZIndex > previous.rolledAreaZIndex) return dice
     return previous
-  }, dices[diceIds[0]])
+  }, dices[diceRolledIds[0]])
   if (diceWithHighestZIndex === dice) return dice.rolledAreaZIndex
   return diceWithHighestZIndex.rolledAreaZIndex + 1
 }
