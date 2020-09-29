@@ -1,19 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable import/max-dependencies */
-/**
-
-Nice to have
-- collision entre les dé (si on drop sur un autre dé, le dé se met a la position la plus proche)
-
-todo:
-
-lorsqu'on drop un dé hors de dice kept il revient a sa place avec une animation et pas immédiatement
-lorsqu'on drop un dé dans dice kept il se place avec animation + scale back avec animation
-
-lorsque le dé est dropped on va le déplacer a l'endroit voulu
-mais aussi démarrer une animation pour ce dé
-*/
-
 import React from "react"
 
 import { usePrevious } from "src/hooks.js"
@@ -43,12 +28,7 @@ export const Dice = ({
   disapear,
   appear,
 }) => {
-  // si y'a une animation alors reste dans ton conteneur
-  // le temps qu'elle se finisse
-  const parentNodePrevious = usePrevious(parentNode)
-  const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
-
-  // state from other contexts
+  // state from contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
@@ -56,6 +36,11 @@ export const Dice = ({
   // local states
   const [diceGripped, diceGrippedSetter] = useState(false)
   const [dragGesture, setDragGesture] = useState(null)
+
+  // si y'a une animation alors reste dans ton conteneur
+  // le temps qu'elle se finisse
+  const parentNodePrevious = usePrevious(parentNode)
+  const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
 
   const onSkull = diceIsOnSkull(dice)
   const diceX =

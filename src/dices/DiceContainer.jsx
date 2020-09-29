@@ -86,7 +86,6 @@ export const DiceContainer = ({
           rolledAreaDomNode,
           offscreenDomNode,
           cursedAreaDomNode,
-          diceAnimationState,
           onDiceClick: (dice) => {
             const clickEffect = getClickEffect(dice, {
               diceRolledIds,
@@ -175,7 +174,7 @@ export const DiceContainer = ({
                 dropPosition = chestSlotDropPositionGetter(closestAvailableChestSlot, chestDomNode)
               }
             } else if (dropEffect === "back-to-chest") {
-              const diceChestSlot = diceToChestSlot(dice, { chestSlots })
+              const diceChestSlot = diceToChestSlot(dice, chestSlots)
               dropAnimation = true
               dropPosition = chestSlotDropPositionGetter(diceChestSlot, chestDomNode)
             } else if (dropEffect === "unkeep") {
@@ -469,7 +468,10 @@ const DiceController = ({
   rolledAreaDomNode,
   offscreenDomNode,
   cursedAreaDomNode,
-  ...rest
+  onDiceClick,
+  onDiceDrag,
+  onDiceDrop,
+  onDiceDragEnd,
 }) => {
   const diceLocation = diceToLocation(dice, { chestSlots, diceRolledIds, diceCursedIds })
   const propsFromLocation = diceLocationToProps(diceLocation, {
@@ -488,10 +490,13 @@ const DiceController = ({
       {...{
         dice,
         diceAnimation,
-        ...propsFromLocation,
         disapear: diceIsGoingToBeCursed,
         appear: diceInCursedArea,
-        ...rest,
+        onDiceClick,
+        onDiceDrag,
+        onDiceDrop,
+        onDiceDragEnd,
+        ...propsFromLocation,
       }}
     />
   )
