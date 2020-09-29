@@ -9,6 +9,10 @@ export const CharacterSelection = ({ players }) => {
   const playerWithoutCharacter = players.find((player) => !player.character)
   scrollEffect()
 
+  React.useEffect(() => {
+    scrollEffect()
+  }, [])
+
   return (
     <div className="character-selection-page">
       <CrewMembers />
