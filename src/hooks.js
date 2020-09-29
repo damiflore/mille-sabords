@@ -1,4 +1,5 @@
 import React from "react"
+import { createSignal } from "src/helper/signal.js"
 
 // https://stackoverflow.com/a/61680184/2634179
 export const useBecomes = (becomesPredicate, deps) => {
@@ -37,4 +38,17 @@ export const usePrevious = (value) => {
     ref.current = value
   }, [value])
   return ref.current
+}
+
+export const useSignalEmitter = () => {
+  const [signal] = React.useState(() => createSignal())
+  return signal
+}
+
+export const useSignalListener = (signal) => {
+  const [state, stateSetter] = React.useState()
+  React.useEffect(() => {
+    return signal.listen(stateSetter)
+  }, [])
+  return state
 }

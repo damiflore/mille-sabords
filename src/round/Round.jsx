@@ -7,17 +7,19 @@ import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
+import { useSignalEmitter } from "src/hooks.js"
 
 export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const [roundMounted, roundMountedSetter] = React.useState(false)
-  const [diceOverChest, diceOverChestSetter] = React.useState(null)
-  const [diceOverRolledArea, diceOverRolledAreaSetter] = React.useState(null)
+
+  const diceOverRolledAreaSignal = useSignalEmitter()
+  const diceOverChestSignal = useSignalEmitter()
 
   return (
     <div className="round-container">
       <RoundGameBoard
-        diceOverChest={diceOverChest}
-        diceOverRolledArea={diceOverRolledArea}
+        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+        diceOverChestSignal={diceOverChestSignal}
         openScoreboard={openScoreboard}
         onRoundOver={onRoundOver}
         onRoundMounted={(refs) => {
@@ -31,8 +33,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           chestDomNode={roundMounted.chestDomNode}
           rolledAreaDomNode={roundMounted.rolledAreaDomNode}
           cursedAreaDomNode={roundMounted.cursedAreaDomNode}
-          onDiceOverChestChange={diceOverChestSetter}
-          onDiceOverRolledAreaChange={diceOverRolledAreaSetter}
+          onDiceOverChestChange={diceOverChestSignal.emit}
+          onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
         />
       ) : null}
     </div>
@@ -40,8 +42,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
 }
 
 const RoundGameBoard = ({
-  diceOverChest,
-  diceOverRolledArea,
+  diceOverRolledAreaSignal,
+  diceOverChestSignal,
   openScoreboard,
   onRoundMounted,
   onRoundOver,
@@ -65,13 +67,13 @@ const RoundGameBoard = ({
       <GameEffects />
       <Header openScoreboard={openScoreboard} />
       <div className="chest-and-skulls">
-        <Chest chestRef={chestRef} diceOverChest={diceOverChest} />
+        <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
         <SkullIsland cursedAreaRef={cursedAreaRef} />
       </div>
       <DiceOnGoing
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
-        diceOverRolledArea={diceOverRolledArea}
+        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
       />
       <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
     </>

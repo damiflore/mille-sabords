@@ -1,5 +1,6 @@
 import React from "react"
 
+import { useSignalListener } from "src/hooks.js"
 import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
@@ -7,9 +8,10 @@ import { cardIdToCard } from "src/cards/cards.js"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-export const Chest = ({ chestRef, diceOverChest }) => {
+export const Chest = ({ chestRef, diceOverChestSignal }) => {
   const chestSlots = useChestSlots()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const diceOverChest = useSignalListener(diceOverChestSignal)
 
   return (
     <div className="chest">
