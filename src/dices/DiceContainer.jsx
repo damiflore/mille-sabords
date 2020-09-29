@@ -75,162 +75,203 @@ export const DiceContainer = ({
       dice.id !== witchUncursedDiceId && parentNode === rolledAreaDomNode && diceIsOnSkull(dice)
     const diceInCursedArea = parentNode === cursedAreaDomNode
 
-    return (
-      <Dice
-        key={dice.id}
-        {...{
-          ...propsFromLocation,
-          dice,
-          diceAnimation: diceAnimationState[dice.id],
+    // we use useCallback because it prevents dices
+    // from being re-rendered and drag gesture to become
+    // shortly unavailable while react is rerendering
+    const onDiceClick = React.useCallback(
+      (dice) => {
+        const clickEffect = getClickEffect(dice, {
+          diceRolledIds,
+          chestSlots,
+          diceCursedIds,
+          scoreMarked,
+          threeSkullsOrMoreInCursedArea,
+          currentCard,
           witchUncursedDiceId,
-          disapear: diceIsGoingToBeCursed,
-          appear: diceInCursedArea,
-          onDiceClick: (dice) => {
-            const clickEffect = getClickEffect(dice, {
-              diceRolledIds,
-              chestSlots,
-              diceCursedIds,
-              scoreMarked,
-              threeSkullsOrMoreInCursedArea,
-              currentCard,
-              witchUncursedDiceId,
-            })
-            // console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
-            if (clickEffect === "keep") {
-              const firstAvailableChestSlot = firstAvailableChestSlotGetter(chestSlots)
-              keepDice(dice, firstAvailableChestSlot)
-            } else if (clickEffect === "unkeep") {
-              unkeepDice(dice)
-            } else if (clickEffect === "uncurse") {
-              uncurseDice(dice)
-            }
-          },
-          onDiceDrag: (dice, dragDiceGesture) => {
-            dropTargetRef.current = dropTargetGetter({
-              dragDiceGesture,
-              chestDomNode,
-              rolledAreaDomNode,
-            })
-            const dropEffect = getDropEffect(dice, {
-              diceRolledIds,
-              chestSlots,
-              dropTargetRef,
-              rolledAreaDomNode,
-              chestDomNode,
-              scoreMarked,
-              threeSkullsOrMoreInCursedArea,
-            })
-            dragDiceGesture.setDropEffect(dropEffect)
-            onDiceOverChestChange(dropEffect === "keep" ? dice : null)
-            onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
-          },
-          onDiceDrop: (dice, dropDiceGesture) => {
-            const dropEffect = getDropEffect(dice, {
-              diceRolledIds,
-              chestSlots,
-              dropTargetRef,
-              rolledAreaDomNode,
-              chestDomNode,
-              scoreMarked,
-              threeSkullsOrMoreInCursedArea,
-            })
-            // console.log(`drop dice#${dice.id} -> ${dropEffect} effect`)
+        })
+        // console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
+        if (clickEffect === "keep") {
+          const firstAvailableChestSlot = firstAvailableChestSlotGetter(chestSlots)
+          keepDice(dice, firstAvailableChestSlot)
+        } else if (clickEffect === "unkeep") {
+          unkeepDice(dice)
+        } else if (clickEffect === "uncurse") {
+          uncurseDice(dice)
+        }
+      },
+      [
+        diceRolledIds,
+        chestSlots,
+        diceCursedIds,
+        scoreMarked,
+        threeSkullsOrMoreInCursedArea,
+        currentCard,
+        witchUncursedDiceId,
+      ],
+    )
 
-            let dropAnimation = false
-            let dropPosition = null
+    const onDiceDrag = React.useCallback(
+      (dice, dragDiceGesture) => {
+        dropTargetRef.current = dropTargetGetter({
+          dragDiceGesture,
+          chestDomNode,
+          rolledAreaDomNode,
+        })
+        const dropEffect = getDropEffect(dice, {
+          diceRolledIds,
+          chestSlots,
+          dropTargetRef,
+          rolledAreaDomNode,
+          chestDomNode,
+          scoreMarked,
+          threeSkullsOrMoreInCursedArea,
+        })
+        dragDiceGesture.setDropEffect(dropEffect)
+        onDiceOverChestChange(dropEffect === "keep" ? dice : null)
+        onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
+      },
+      [
+        diceRolledIds,
+        chestSlots,
+        dropTargetRef,
+        rolledAreaDomNode,
+        chestDomNode,
+        scoreMarked,
+        threeSkullsOrMoreInCursedArea,
+        onDiceOverChestChange,
+        onDiceOverRolledAreaChange,
+      ],
+    )
 
-            if (dropEffect === "reposition-in-rolled-area") {
-              const closestRolledAreaPosition = closestRolledAreaPositionGetter(
-                dropDiceGesture.diceRectangle,
-                rolledAreaDomNode,
-              )
-              const highestRolledAreaZIndex = highestRolledAreaZIndexGetter(dice, {
-                dices,
-                diceRolledIds,
-              })
-              setDiceRolledAreaPosition(dice, closestRolledAreaPosition, highestRolledAreaZIndex)
-              // no animation needed, we drop exactly where we want it
-            } else if (dropEffect === "back-to-rolled-area") {
-              dropAnimation = true
-              dropPosition = rolledAreaDropPositionGetter(
-                dice.rolledAreaPosition,
-                rolledAreaDomNode,
-              )
-            } else if (dropEffect === "keep") {
-              const closestAvailableChestSlot = closestAvailableChestSlotGetter(dice, {
-                chestSlots,
-                rectangle: dropDiceGesture.diceRectangle,
-                chestDomNode,
-              })
-              keepDice(dice, closestAvailableChestSlot)
-              dropAnimation = true
-              dropPosition = chestSlotDropPositionGetter(closestAvailableChestSlot, chestDomNode)
-            } else if (dropEffect === "reposition-in-chest") {
-              const closestAvailableChestSlot = closestAvailableChestSlotGetter(dice, {
-                chestSlots,
-                rectangle: dropDiceGesture.diceRectangle,
-                chestDomNode,
-              })
-              const diceChestSlot = diceToChestSlot(dice, chestSlots)
-              if (diceChestSlot !== closestAvailableChestSlot) {
-                setDiceChestSlot(dice, closestAvailableChestSlot)
-                dropAnimation = true
-                dropPosition = chestSlotDropPositionGetter(closestAvailableChestSlot, chestDomNode)
-              }
-            } else if (dropEffect === "back-to-chest") {
-              const diceChestSlot = diceToChestSlot(dice, chestSlots)
-              dropAnimation = true
-              dropPosition = chestSlotDropPositionGetter(diceChestSlot, chestDomNode)
-            } else if (dropEffect === "unkeep") {
-              const closestRolledAreaPosition = closestRolledAreaPositionGetter(
-                dropDiceGesture.diceRectangle,
-                rolledAreaDomNode,
-              )
-              setDiceRolledAreaPosition(
-                dice,
-                closestRolledAreaPosition,
-                highestRolledAreaZIndexGetter(dice, { dices, diceRolledIds }),
-              )
-              unkeepDice(dice)
-              dropAnimation = true
-              dropPosition = rolledAreaDropPositionGetter(
-                closestRolledAreaPosition,
-                rolledAreaDomNode,
-              )
-            }
+    const onDiceDrop = React.useCallback(
+      (dice, dropDiceGesture) => {
+        const dropEffect = getDropEffect(dice, {
+          diceRolledIds,
+          chestSlots,
+          dropTargetRef,
+          rolledAreaDomNode,
+          chestDomNode,
+          scoreMarked,
+          threeSkullsOrMoreInCursedArea,
+        })
+        // console.log(`drop dice#${dice.id} -> ${dropEffect} effect`)
 
-            if (dropAnimation) {
-              dispatchDiceAnimation({
-                key: dice.id,
-                value: {
-                  from: {
-                    x: dropDiceGesture.diceRectangle.left,
-                    y: dropDiceGesture.diceRectangle.top,
-                  },
-                  to: dropPosition,
-                  onfinish: () => {
-                    // at the end of dice animation, dice is flickering briely
-                    // (moving somewhere on the page and going back to where it's supposed to be)
-                    // the following setTimeout fixes this
-                    // of course we should improve that because it's an hint there is a deeper
-                    // issue to resolve.
-                    setTimeout(() => {
-                      dispatchDiceAnimation({
-                        key: dice.id,
-                        value: null,
-                      })
-                    })
-                  },
-                },
-              })
-            }
-          },
-          onDiceDragEnd: () => {
-            onDiceOverChestChange(null)
-            onDiceOverRolledAreaChange(null)
-          },
-        }}
-      />
+        let dropAnimation = false
+        let dropPosition = null
+
+        if (dropEffect === "reposition-in-rolled-area") {
+          const closestRolledAreaPosition = closestRolledAreaPositionGetter(
+            dropDiceGesture.diceRectangle,
+            rolledAreaDomNode,
+          )
+          const highestRolledAreaZIndex = highestRolledAreaZIndexGetter(dice, {
+            dices,
+            diceRolledIds,
+          })
+          setDiceRolledAreaPosition(dice, closestRolledAreaPosition, highestRolledAreaZIndex)
+          // no animation needed, we drop exactly where we want it
+        } else if (dropEffect === "back-to-rolled-area") {
+          dropAnimation = true
+          dropPosition = rolledAreaDropPositionGetter(dice.rolledAreaPosition, rolledAreaDomNode)
+        } else if (dropEffect === "keep") {
+          const closestAvailableChestSlot = closestAvailableChestSlotGetter(dice, {
+            chestSlots,
+            rectangle: dropDiceGesture.diceRectangle,
+            chestDomNode,
+          })
+          keepDice(dice, closestAvailableChestSlot)
+          dropAnimation = true
+          dropPosition = chestSlotDropPositionGetter(closestAvailableChestSlot, chestDomNode)
+        } else if (dropEffect === "reposition-in-chest") {
+          const closestAvailableChestSlot = closestAvailableChestSlotGetter(dice, {
+            chestSlots,
+            rectangle: dropDiceGesture.diceRectangle,
+            chestDomNode,
+          })
+          const diceChestSlot = diceToChestSlot(dice, chestSlots)
+          if (diceChestSlot !== closestAvailableChestSlot) {
+            setDiceChestSlot(dice, closestAvailableChestSlot)
+            dropAnimation = true
+            dropPosition = chestSlotDropPositionGetter(closestAvailableChestSlot, chestDomNode)
+          }
+        } else if (dropEffect === "back-to-chest") {
+          const diceChestSlot = diceToChestSlot(dice, chestSlots)
+          dropAnimation = true
+          dropPosition = chestSlotDropPositionGetter(diceChestSlot, chestDomNode)
+        } else if (dropEffect === "unkeep") {
+          const closestRolledAreaPosition = closestRolledAreaPositionGetter(
+            dropDiceGesture.diceRectangle,
+            rolledAreaDomNode,
+          )
+          setDiceRolledAreaPosition(
+            dice,
+            closestRolledAreaPosition,
+            highestRolledAreaZIndexGetter(dice, { dices, diceRolledIds }),
+          )
+          unkeepDice(dice)
+          dropAnimation = true
+          dropPosition = rolledAreaDropPositionGetter(closestRolledAreaPosition, rolledAreaDomNode)
+        }
+
+        if (dropAnimation) {
+          dispatchDiceAnimation({
+            key: dice.id,
+            value: {
+              from: {
+                x: dropDiceGesture.diceRectangle.left,
+                y: dropDiceGesture.diceRectangle.top,
+              },
+              to: dropPosition,
+              onfinish: () => {
+                // at the end of dice animation, dice is flickering briely
+                // (moving somewhere on the page and going back to where it's supposed to be)
+                // the following setTimeout fixes this
+                // of course we should improve that because it's an hint there is a deeper
+                // issue to resolve.
+                setTimeout(() => {
+                  dispatchDiceAnimation({
+                    key: dice.id,
+                    value: null,
+                  })
+                })
+              },
+            },
+          })
+        }
+      },
+      [
+        diceRolledIds,
+        chestSlots,
+        dropTargetRef,
+        rolledAreaDomNode,
+        chestDomNode,
+        scoreMarked,
+        threeSkullsOrMoreInCursedArea,
+      ],
+    )
+
+    const onDiceDragEnd = React.useCallback(() => {
+      onDiceOverChestChange(null)
+      onDiceOverRolledAreaChange(null)
+    }, [onDiceOverChestChange, onDiceOverRolledAreaChange])
+
+    const props = {
+      key: dice.id,
+      ...propsFromLocation,
+      dice,
+      diceAnimation: diceAnimationState[dice.id],
+      witchUncursedDiceId,
+      disapear: diceIsGoingToBeCursed,
+      appear: diceInCursedArea,
+      onDiceClick,
+      onDiceDrag,
+      onDiceDrop,
+      onDiceDragEnd,
+    }
+
+    return React.useMemo(
+      () => <Dice {...props} />,
+      Object.keys(props).map((key) => props[key]),
     )
   })
 }
@@ -531,7 +572,10 @@ const diceLocationToProps = (
   if (type === "chest-slot") {
     return {
       parentNode: chestDomNode.querySelector(`[data-chest-slot="${value}"]`),
+      zIndex: undefined,
       rotation: 0,
+      x: undefined,
+      y: undefined,
       draggable: true,
     }
   }
@@ -550,14 +594,20 @@ const diceLocationToProps = (
   if (type === "cursed-area") {
     return {
       parentNode: cursedAreaDomNode,
+      zIndex: undefined,
       rotation: 0,
+      x: undefined,
+      y: undefined,
       draggable: false,
     }
   }
 
   return {
     parentNode: offscreenDomNode,
+    zIndex: undefined,
     rotation: 0,
+    x: undefined,
+    y: undefined,
     draggable: false,
   }
 }
