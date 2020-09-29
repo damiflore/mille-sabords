@@ -43,10 +43,21 @@ export const Dice = ({
   const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
 
   const onSkull = diceIsOnSkull(dice)
-  const diceX =
-    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x
-  const diceY =
-    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y
+  const diceX = Math.floor(
+    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x,
+  )
+  const diceY = Math.floor(
+    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y,
+  )
+
+  // if (dice.id === 4 && !dragGesture) {
+  //   console.log({
+  //     diceX,
+  //     diceY,
+  //     diceAnimation: Boolean(diceAnimation),
+  //     dragGesture: Boolean(dragGesture),
+  //   })
+  // }
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !mainDomNode) {
@@ -144,8 +155,8 @@ export const Dice = ({
         style={{
           width: diceSize,
           height: diceSize,
-          ...(typeof diceX === "undefined" ? {} : { left: `${diceX}px` }),
-          ...(typeof diceY === "undefined" ? {} : { top: `${diceY}px` }),
+          left: `${diceX}px`,
+          top: `${diceY}px`,
           ...(dragGesture || diceAnimation
             ? {
                 position: "fixed",
