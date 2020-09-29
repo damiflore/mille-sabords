@@ -3,6 +3,8 @@
   user-select: none; /* prevent accidental dice image selection while mousedown + mousemove near the dice */
   overflow: visible;
   filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));
+  padding: 0;
+  border-radius: 5px;
 }
 .dice-cursed-disapear {
   animation: diceDisapear 0.2s 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;

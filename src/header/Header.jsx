@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCard } from "src/main.store.js"
+import { useCurrentCard, useCurrentPlayerGettingReady } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
@@ -11,6 +11,7 @@ import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.
 export const Header = ({ openScoreboard }) => {
   const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
   const card = useCurrentCard()
+  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
   const openDialog = () => {
     if (card) setDialogIsOpen(true)
@@ -31,7 +32,7 @@ export const Header = ({ openScoreboard }) => {
         <div className="small-card">
           <TopDeckCard />
         </div>
-        <SwordChallengeIndicator />
+        {!currentPlayerGettingReady && <SwordChallengeIndicator />}
       </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
@@ -42,8 +43,9 @@ export const Header = ({ openScoreboard }) => {
 
 const TopDeckCard = () => {
   const currentCard = useCurrentCard()
+  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
-  return currentCard ? <Card card={currentCard} /> : <BackCard />
+  return currentCard && !currentPlayerGettingReady ? <SmallCard card={currentCard} /> : <BackCard />
 }
 
 const BackCard = () => {
@@ -58,10 +60,11 @@ const BackCard = () => {
   )
 }
 
-const Card = ({ card }) => {
+export const SmallCard = ({ card }) => {
   return (
     <div
       className="card current-card"
+      id="small-card"
       style={{
         backgroundColor: cardColors[card].color1,
         borderColor: cardColors[card].color2,
@@ -95,7 +98,7 @@ const TotalScore = () => {
   const player = useCurrentPlayer()
   const totalScore = player.score
   const totalScoreAnimation = useAnimateTransitionUsingJs(totalScore, {
-    duration: 2000,
+    duration: 1200,
     timingFunction: (progress) => 1 - Math.pow(1 - progress, 5),
   })
 
