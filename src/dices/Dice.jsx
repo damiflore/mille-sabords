@@ -17,6 +17,7 @@ export const Dice = ({
   diceAnimation,
   anmationDebug = false,
   parentNode,
+  zIndex,
   x,
   y,
   rotation,
@@ -41,23 +42,6 @@ export const Dice = ({
   // le temps qu'elle se finisse
   const parentNodePrevious = usePrevious(parentNode)
   const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
-
-  const onSkull = diceIsOnSkull(dice)
-  const diceX = Math.floor(
-    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x,
-  )
-  const diceY = Math.floor(
-    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y,
-  )
-
-  // if (dice.id === 4 && !dragGesture) {
-  //   console.log({
-  //     diceX,
-  //     diceY,
-  //     diceAnimation: Boolean(diceAnimation),
-  //     dragGesture: Boolean(dragGesture),
-  //   })
-  // }
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !mainDomNode) {
@@ -140,6 +124,26 @@ export const Dice = ({
     }
   }, [diceDomNode, diceAnimation])
 
+  const onSkull = diceIsOnSkull(dice)
+  const diceX = Math.floor(
+    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x,
+  )
+  const diceY = Math.floor(
+    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y,
+  )
+  const diceZIndex = dragGesture || diceAnimation ? 1000 : zIndex
+
+  console.log({ diceId: dice.id, diceZIndex })
+
+  // if (dice.id === 4 && !dragGesture) {
+  //   console.log({
+  //     diceX,
+  //     diceY,
+  //     diceAnimation: Boolean(diceAnimation),
+  //     dragGesture: Boolean(dragGesture),
+  //   })
+  // }
+
   return (
     <Portal parent={portalParentNode}>
       <svg
@@ -157,12 +161,8 @@ export const Dice = ({
           height: diceSize,
           left: `${diceX}px`,
           top: `${diceY}px`,
-          ...(dragGesture || diceAnimation
-            ? {
-                position: "fixed",
-                zIndex: 1000,
-              }
-            : {}),
+          zIndex: diceZIndex,
+          position: dragGesture || diceAnimation ? "fixed" : undefined,
         }}
       >
         <g

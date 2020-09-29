@@ -62,20 +62,29 @@ export const DiceContainer = ({
 
   return Object.keys(dices).map((diceId) => {
     const dice = dices[diceId]
+
+    const diceLocation = diceToLocation(dice, { chestSlots, diceRolledIds, diceCursedIds })
+    const propsFromLocation = diceLocationToProps(diceLocation, {
+      chestDomNode,
+      rolledAreaDomNode,
+      cursedAreaDomNode,
+      offscreenDomNode,
+    })
+    const { parentNode } = propsFromLocation
+    const diceIsGoingToBeCursed =
+      dice.id !== witchUncursedDiceId && parentNode === rolledAreaDomNode && diceIsOnSkull(dice)
+    const diceInCursedArea = parentNode === cursedAreaDomNode
+
     return (
-      <DiceController
+      <Dice
         key={dice.id}
         {...{
+          ...propsFromLocation,
           dice,
           diceAnimation: diceAnimationState[dice.id],
-          chestSlots,
-          diceRolledIds,
-          diceCursedIds,
           witchUncursedDiceId,
-          chestDomNode,
-          rolledAreaDomNode,
-          offscreenDomNode,
-          cursedAreaDomNode,
+          disapear: diceIsGoingToBeCursed,
+          appear: diceInCursedArea,
           onDiceClick: (dice) => {
             const clickEffect = getClickEffect(dice, {
               diceRolledIds,
@@ -131,10 +140,12 @@ export const DiceContainer = ({
             let dropPosition = null
 
             if (dropEffect === "reposition-in-rolled-area") {
-              setDiceRolledAreaPosition(
-                dice,
-                closestRolledAreaPositionGetter(dropDiceGesture.diceRectangle, rolledAreaDomNode),
+              const closestRolledAreaPosition = closestRolledAreaPositionGetter(
+                dropDiceGesture.diceRectangle,
+                rolledAreaDomNode,
               )
+              const highestRolledAreaZIndex = highestRolledAreaZIndexGetter(dice, dices)
+              setDiceRolledAreaPosition(dice, closestRolledAreaPosition, highestRolledAreaZIndex)
               // no animation needed, we drop exactly where we want it
             } else if (dropEffect === "back-to-rolled-area") {
               dropAnimation = true
@@ -172,7 +183,11 @@ export const DiceContainer = ({
                 dropDiceGesture.diceRectangle,
                 rolledAreaDomNode,
               )
-              setDiceRolledAreaPosition(dice, closestRolledAreaPosition)
+              setDiceRolledAreaPosition(
+                dice,
+                closestRolledAreaPosition,
+                highestRolledAreaZIndexGetter(dice, dices),
+              )
               unkeepDice(dice)
               dropAnimation = true
               dropPosition = rolledAreaDropPositionGetter(
@@ -404,6 +419,18 @@ const closestRolledAreaPositionGetter = (requestedRectangle, rolledAreaDomNode) 
   return closestRolledAreaPosition
 }
 
+const highestRolledAreaZIndexGetter = (dice, dices) => {
+  const diceIds = Object.keys(dices)
+  const diceWithHighestZIndex = diceIds.slice(1).reduce((previous, diceId) => {
+    const dice = dices[diceId]
+    const diceZIndex = dice.rolledAreaZIndex
+    if (diceZIndex > previous.rolledAreaZIndex) return dice
+    return previous
+  }, dices[diceIds[0]])
+  if (diceWithHighestZIndex === dice) return dice.rolledAreaZIndex
+  return diceWithHighestZIndex.rolledAreaZIndex + 1
+}
+
 const firstAvailableChestSlotGetter = (chestSlots) => {
   const firstAvailableChestSlot = Object.keys(chestSlots).find((chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
@@ -447,51 +474,6 @@ const chestSlotToChestSlotDomNode = (chestSlot, chestDomNode) => {
   return chestSlotDomNode
 }
 
-const DiceController = ({
-  dice,
-  diceAnimation,
-  chestSlots,
-  diceRolledIds,
-  diceCursedIds,
-  witchUncursedDiceId,
-  chestDomNode,
-  rolledAreaDomNode,
-  offscreenDomNode,
-  cursedAreaDomNode,
-  onDiceClick,
-  onDiceDrag,
-  onDiceDrop,
-  onDiceDragEnd,
-}) => {
-  const diceLocation = diceToLocation(dice, { chestSlots, diceRolledIds, diceCursedIds })
-  const propsFromLocation = diceLocationToProps(diceLocation, {
-    chestDomNode,
-    rolledAreaDomNode,
-    cursedAreaDomNode,
-    offscreenDomNode,
-  })
-  const { parentNode } = propsFromLocation
-  const diceIsGoingToBeCursed =
-    dice.id !== witchUncursedDiceId && parentNode === rolledAreaDomNode && diceIsOnSkull(dice)
-  const diceInCursedArea = parentNode === cursedAreaDomNode
-
-  return (
-    <Dice
-      {...{
-        dice,
-        diceAnimation,
-        disapear: diceIsGoingToBeCursed,
-        appear: diceInCursedArea,
-        onDiceClick,
-        onDiceDrag,
-        onDiceDrop,
-        onDiceDragEnd,
-        ...propsFromLocation,
-      }}
-    />
-  )
-}
-
 const diceToLocation = (dice, { chestSlots, diceRolledIds, diceCursedIds }) => {
   const diceChestSlot = Object.keys(chestSlots).find(
     (chestSlot) =>
@@ -512,6 +494,7 @@ const diceToLocation = (dice, { chestSlots, diceRolledIds, diceCursedIds }) => {
       value: {
         ...dice.rolledAreaPosition,
         rotation: dice.rotation,
+        zIndex: dice.rolledAreaZIndex,
       },
     }
   }
@@ -543,6 +526,7 @@ const diceLocationToProps = (
   if (type === "rolled-area") {
     return {
       parentNode: rolledAreaDomNode,
+      zIndex: value.zIndex,
       rotation: value.rotation,
       x: value.x,
       y: value.y,

@@ -1,8 +1,9 @@
 import { createAction } from "src/main.store.js"
 
-export const useSetDiceRolledAreaPosition = createAction((state, dice, { x, y }) => {
+export const useSetDiceRolledAreaPosition = createAction((state, dice, { x, y }, zIndex) => {
   const { dices } = state
   dice.rolledAreaPosition = { x, y }
+  dice.rolledAreaZIndex = zIndex
   return {
     ...state,
     dices: { ...dices },

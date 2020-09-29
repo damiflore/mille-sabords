@@ -49,12 +49,13 @@ export const rollDices = (dices, { rolledAreaDomNode }) => {
     return next()
   }
 
-  dices.forEach((dice) => {
+  dices.forEach((dice, index) => {
     dice.visibleFaceIndex = getDiceRandomFace(dice)
 
     const { rectangle, rotation, rotatedRectangle } = getRandomAndCollisionFreeInfo(dice)
     otherRotatedRectangles.push(rotatedRectangle)
 
+    dice.rolledAreaZIndex = index + 1
     dice.rolledAreaPosition = rectangle[0]
     dice.rotation = rotation
   })
