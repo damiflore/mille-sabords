@@ -75,7 +75,7 @@ const DiceController = ({
   cursedAreaDomNode,
   ...rest
 }) => {
-  const { container, rotation, x, y, draggable } = diceLocationToInfo(dice, {
+  const propsFromLocation = diceLocationToInfo(dice, {
     // chest
     diceKeptIds,
     chestSlots,
@@ -89,21 +89,17 @@ const DiceController = ({
     // offscreen
     offscreenDomNode,
   })
-  // const containerPrevious = usePrevious(container)
+  const { parentNode } = propsFromLocation
   const diceIsGoingToBeCursed =
-    dice.id !== witchUncursedDiceId && container === rolledAreaDomNode && diceIsOnSkull(dice)
-  const diceInCursedArea = container === cursedAreaDomNode
+    dice.id !== witchUncursedDiceId && parentNode === rolledAreaDomNode && diceIsOnSkull(dice)
+  const diceInCursedArea = parentNode === cursedAreaDomNode
 
   return (
     <Dice
       {...{
         dice,
         diceAnimation,
-        container,
-        rotation,
-        x,
-        y,
-        draggable,
+        ...propsFromLocation,
         disapear: diceIsGoingToBeCursed,
         appear: diceInCursedArea,
         ...rest,
@@ -137,17 +133,15 @@ const diceLocationToInfo = (
         chestSlots[chestSlot].value === dice.id,
     )
     return {
-      container: chestDomNode.querySelector(`[data-chest-slot="${diceChestSlot}"]`),
+      parentNode: chestDomNode.querySelector(`[data-chest-slot="${diceChestSlot}"]`),
       rotation: 0,
-      x: 0,
-      y: 0,
       draggable: true,
     }
   }
 
   if (diceRolledIds.includes(dice.id)) {
     return {
-      container: rolledAreaDomNode,
+      parentNode: rolledAreaDomNode,
       rotation: dice.rotation,
       x: dice.rolledAreaPosition.x,
       y: dice.rolledAreaPosition.y,
@@ -157,19 +151,15 @@ const diceLocationToInfo = (
 
   if (diceCursedIds.includes(dice.id)) {
     return {
-      container: cursedAreaDomNode,
+      parentNode: cursedAreaDomNode,
       rotation: 0,
-      x: 0,
-      y: 0,
       draggable: false,
     }
   }
 
   return {
-    container: offscreenDomNode,
+    parentNode: offscreenDomNode,
     rotation: 0,
-    x: 0,
-    y: 0,
     draggable: false,
   }
 }

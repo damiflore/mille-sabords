@@ -31,7 +31,7 @@ export const Dice = ({
   dice,
   diceAnimation,
   anmationDebug = false,
-  container,
+  parentNode,
   x,
   y,
   rotation,
@@ -46,8 +46,8 @@ export const Dice = ({
 }) => {
   // si y'a une animation alors reste dans ton conteneur
   // le temps qu'elle se finisse
-  const containerPrevious = usePrevious(container)
-  const portalContainer = diceAnimation ? containerPrevious : container
+  const parentNodePrevious = usePrevious(parentNode)
+  const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
 
   // state from other contexts
   const mainDomNode = useMainDomNode()
@@ -144,7 +144,7 @@ export const Dice = ({
   }, [diceDomNode, diceAnimation])
 
   return (
-    <Portal parent={portalContainer}>
+    <Portal parent={portalParentNode}>
       <svg
         data-dice-id={dice.id}
         className="dice"
@@ -158,8 +158,8 @@ export const Dice = ({
         style={{
           width: diceSize,
           height: diceSize,
-          left: `${diceX}px`,
-          top: `${diceY}px`,
+          ...(typeof diceX === "undefined" ? {} : { left: `${diceX}px` }),
+          ...(typeof diceY === "undefined" ? {} : { top: `${diceY}px` }),
           ...(dragGesture || diceAnimation
             ? {
                 position: "fixed",
@@ -174,7 +174,7 @@ export const Dice = ({
           style={{
             transform: stringifyTransformations({
               rotate: rotation ? rotation : 0,
-              scale: diceGripped ? "1.2" : "1",
+              scale: diceGripped ? "1.1" : "1",
             }),
             transitionProperty: "transform",
             transitionDuration: "500ms",
