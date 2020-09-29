@@ -14,7 +14,7 @@ import {
 } from "src/round/round.selectors.js"
 import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
 
-import { cardColors } from "src/cards/cards.js"
+import { cardColors, isChestCard } from "src/cards/cards.js"
 import { Dice } from "src/dices/Dice.jsx"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
@@ -73,6 +73,8 @@ export const Chest = () => {
   }, [dragDiceGesture, chestDropAreaDomNode])
 
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const currentCard = useCurrentCard()
+  const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 
   /*
     to get better user experience we should instantiate 9 elements even if the dices are not kept
@@ -91,7 +93,7 @@ export const Chest = () => {
   return (
     <div className="chest">
       <div
-        className="dice-area"
+        className={`dice-area ${isChestCard(currentCard) ? "glow" : ""}`}
         ref={chestDropAreaDomNodeSetter}
         style={{
           ...(hoveredByRolledDice && !threeSkullsOrMoreInCursedArea
@@ -110,7 +112,7 @@ export const Chest = () => {
         <div className="top-right-corner"></div>
         <div className="bottom-left-corner"></div>
         <div className="bottom-right-corner"></div>
-        {threeSkullsOrMoreInCursedArea ? <CursedCover /> : null}
+        {threeSkullsOrMoreInCursedArea && !protectedByChestCard ? <CursedCover /> : null}
       </div>
       <RoundScore />
     </div>
