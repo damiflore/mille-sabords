@@ -11,7 +11,6 @@ export const enableDragGesture = (
     // in case it's passed we will call it only on fast and precise click
     onClick = () => {},
     onDrag = () => {},
-    onDrop = () => {},
     onRelease = () => {},
     onCancel = () => {},
     longGripMs = 300,
@@ -145,20 +144,14 @@ export const enableDragGesture = (
     pendingGesture = false
     clearTimeout(longGripTimeout)
 
-    // if there is a dropEffect fire the drop event
-    if (dropEffect !== "none") {
-      const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
-      const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
-      onDrop({
-        event,
-        dropEffect,
-        x: pointerPositionPrevious.x - gripHorizontalShift,
-        y: pointerPositionPrevious.y - gripVerticalShit,
-      })
-    }
+    const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
+    const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
 
     onRelease({
       event,
+      dropEffect,
+      x: pointerPositionPrevious.x - gripHorizontalShift,
+      y: pointerPositionPrevious.y - gripVerticalShit,
     })
     // setTimeout is to ensure the click cannot happen just after mouseup
     dragIntentTimeout = setTimeout(() => {

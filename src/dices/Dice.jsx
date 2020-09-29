@@ -90,18 +90,18 @@ export const Dice = ({
           onDiceDrag(dice, { relativeX, relativeY, setDropEffect, diceRectangle })
         }
       },
-      onDrop: ({ x, y }) => {
-        const diceRectangle = {
-          left: x,
-          right: x + diceSize,
-          top: y,
-          bottom: y + diceSize,
+      onRelease: ({ dropEffect, x, y }) => {
+        if (dropEffect !== "none") {
+          const diceRectangle = {
+            left: x,
+            right: x + diceSize,
+            top: y,
+            bottom: y + diceSize,
+          }
+          onDiceDrop(dice, {
+            diceRectangle,
+          })
         }
-        onDiceDrop(dice, {
-          diceRectangle,
-        })
-      },
-      onRelease: () => {
         diceGrippedSetter(false)
         setDragGesture(null)
         onDiceDragEnd(dice)

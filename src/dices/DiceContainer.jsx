@@ -32,8 +32,8 @@ export const DiceContainer = ({
   rolledAreaRef,
   offscreenRef,
   cursedAreaRef,
-  onDiceOverChestChange = () => {},
-  onDiceOverRolledAreaChange = () => {},
+  // onDiceOverChestChange = () => {},
+  // onDiceOverRolledAreaChange = () => {},
 }) => {
   // global state
   const dices = useDices()
@@ -125,8 +125,8 @@ export const DiceContainer = ({
               threeSkullsOrMoreInCursedArea,
             })
             dragDiceGesture.setDropEffect(dropEffect)
-            onDiceOverChestChange(dropEffect === "keep" ? dice : null)
-            onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
+            // onDiceOverChestChange(dropEffect === "keep" ? dice : null)
+            // onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
           },
           onDiceDrop: (dice, dropDiceGesture) => {
             const dropEffect = getDropEffect(dice, {
@@ -214,8 +214,8 @@ export const DiceContainer = ({
             }
           },
           onDiceDragEnd: () => {
-            onDiceOverChestChange(null)
-            onDiceOverRolledAreaChange(null)
+            // onDiceOverChestChange(null)
+            // onDiceOverRolledAreaChange(null)
           },
         }}
       />
