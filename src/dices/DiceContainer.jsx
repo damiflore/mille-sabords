@@ -32,8 +32,8 @@ export const DiceContainer = ({
   chestDomNode,
   rolledAreaDomNode,
   cursedAreaDomNode,
-  // onDiceOverChestChange = () => {},
-  // onDiceOverRolledAreaChange = () => {},
+  onDiceOverChestChange = () => {},
+  onDiceOverRolledAreaChange = () => {},
 }) => {
   // global state
   const dices = useDices()
@@ -121,6 +121,9 @@ export const DiceContainer = ({
               threeSkullsOrMoreInCursedArea,
             })
             dragDiceGesture.setDropEffect(dropEffect)
+            // TODO: si on décommente ceci on ne peut plus drag and drop les dés
+            // c'est parce que react re-render an plein milieu de la gesture de drag
+            // ce qui cancel le drag en cours
             // onDiceOverChestChange(dropEffect === "keep" ? dice : null)
             // onDiceOverRolledAreaChange(dropEffect === "unkeep" ? dice : null)
           },
@@ -223,8 +226,8 @@ export const DiceContainer = ({
             }
           },
           onDiceDragEnd: () => {
-            // onDiceOverChestChange(null)
-            // onDiceOverRolledAreaChange(null)
+            onDiceOverChestChange(null)
+            onDiceOverRolledAreaChange(null)
           },
         }}
       />
