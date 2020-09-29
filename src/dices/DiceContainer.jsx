@@ -16,7 +16,7 @@ import {
   getDomNodeRectangle,
   domNodeCollidesWithRectangle,
 } from "src/dom/dom.position.js"
-import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
+import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
 import {
@@ -38,7 +38,6 @@ export const DiceContainer = ({
   // global state
   const dices = useDices()
   const chestSlots = useChestSlots()
-  const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
   const witchUncursedDiceId = useWitchUncursedDiceId()
@@ -79,7 +78,6 @@ export const DiceContainer = ({
         {...{
           dice,
           diceAnimation: diceAnimationState[dice.id],
-          diceKeptIds,
           chestSlots,
           diceRolledIds,
           diceCursedIds,
@@ -92,7 +90,7 @@ export const DiceContainer = ({
           onDiceClick: (dice) => {
             const clickEffect = getClickEffect(dice, {
               diceRolledIds,
-              diceKeptIds,
+              chestSlots,
               diceCursedIds,
               scoreMarked,
               threeSkullsOrMoreInCursedArea,
@@ -117,7 +115,7 @@ export const DiceContainer = ({
             })
             const dropEffect = getDropEffect(dice, {
               diceRolledIds,
-              diceKeptIds,
+              chestSlots,
               dropTargetRef,
               rolledAreaDomNode,
               chestDomNode,
@@ -131,7 +129,7 @@ export const DiceContainer = ({
           onDiceDrop: (dice, dropDiceGesture) => {
             const dropEffect = getDropEffect(dice, {
               diceRolledIds,
-              diceKeptIds,
+              chestSlots,
               dropTargetRef,
               rolledAreaDomNode,
               chestDomNode,
@@ -227,7 +225,7 @@ const getClickEffect = (
   dice,
   {
     diceRolledIds,
-    diceKeptIds,
+    chestSlots,
     diceCursedIds,
     scoreMarked,
     threeSkullsOrMoreInCursedArea,
@@ -242,7 +240,7 @@ const getClickEffect = (
     return "none"
   }
 
-  if (diceIsInChestGetter(dice, diceKeptIds)) {
+  if (diceIsInChestGetter(dice, chestSlots)) {
     if (unkeepDiceAllowedGetter(dice, { scoreMarked, threeSkullsOrMoreInCursedArea })) {
       return "unkeep"
     }
@@ -270,7 +268,7 @@ const getDropEffect = (
   dice,
   {
     diceRolledIds,
-    diceKeptIds,
+    chestSlots,
     dropTargetRef,
     rolledAreaDomNode,
     chestDomNode,
@@ -293,7 +291,7 @@ const getDropEffect = (
     return "back-to-rolled-area"
   }
 
-  if (diceIsInChestGetter(dice, diceKeptIds)) {
+  if (diceIsInChestGetter(dice, chestSlots)) {
     if (dropTargetRef.current === chestDomNode) {
       return "reposition-in-chest"
     }
@@ -329,7 +327,13 @@ const dropTargetGetter = ({ dragDiceGesture, chestDomNode, rolledAreaDomNode }) 
 }
 
 const diceIsInRolledAreaGetter = (dice, diceRolledIds) => diceRolledIds.includes(dice.id)
-const diceIsInChestGetter = (dice, diceKeptIds) => diceKeptIds.includes(dice.id)
+const diceIsInChestGetter = (dice, chestSlots) =>
+  Object.keys(chestSlots).some((chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
+  })
 const diceIsInCursedAreaGetter = (dice, diceCursedIds) => diceCursedIds.includes(dice.id)
 
 const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
@@ -457,7 +461,6 @@ const chestSlotToChestSlotDomNode = (chestSlot, chestDomNode) => {
 const DiceController = ({
   dice,
   diceAnimation,
-  diceKeptIds,
   chestSlots,
   diceRolledIds,
   diceCursedIds,
@@ -468,18 +471,11 @@ const DiceController = ({
   cursedAreaDomNode,
   ...rest
 }) => {
-  const propsFromLocation = diceLocationToInfo(dice, {
-    // chest
-    diceKeptIds,
-    chestSlots,
+  const diceLocation = diceToLocation(dice, { chestSlots, diceRolledIds, diceCursedIds })
+  const propsFromLocation = diceLocationToProps(diceLocation, {
     chestDomNode,
-    // rolled
-    diceRolledIds,
     rolledAreaDomNode,
-    // cursed
-    diceCursedIds,
     cursedAreaDomNode,
-    // offscreen
     offscreenDomNode,
   })
   const { parentNode } = propsFromLocation
@@ -501,48 +497,65 @@ const DiceController = ({
   )
 }
 
-const diceLocationToInfo = (
-  dice,
-  {
-    // chest
-    diceKeptIds,
-    chestSlots,
-    chestDomNode,
-    // rolled
-    diceRolledIds,
-    rolledAreaDomNode,
-    // cursed
-    diceCursedIds,
-    cursedAreaDomNode,
-    // offscreen
-    offscreenDomNode,
-  },
-) => {
-  if (diceKeptIds.includes(dice.id)) {
-    const diceChestSlot = Object.keys(chestSlots).find(
-      (chestSlot) =>
-        chestSlots[chestSlot] &&
-        chestSlots[chestSlot].type === "dice" &&
-        chestSlots[chestSlot].value === dice.id,
-    )
+const diceToLocation = (dice, { chestSlots, diceRolledIds, diceCursedIds }) => {
+  const diceChestSlot = Object.keys(chestSlots).find(
+    (chestSlot) =>
+      chestSlots[chestSlot] &&
+      chestSlots[chestSlot].type === "dice" &&
+      chestSlots[chestSlot].value === dice.id,
+  )
+  if (diceChestSlot) {
     return {
-      parentNode: chestDomNode.querySelector(`[data-chest-slot="${diceChestSlot}"]`),
-      rotation: 0,
-      draggable: true,
+      type: "chest-slot",
+      value: diceChestSlot,
     }
   }
 
   if (diceRolledIds.includes(dice.id)) {
     return {
-      parentNode: rolledAreaDomNode,
-      rotation: dice.rotation,
-      x: dice.rolledAreaPosition.x,
-      y: dice.rolledAreaPosition.y,
-      draggable: true,
+      type: "rolled-area",
+      value: {
+        ...dice.rolledAreaPosition,
+        rotation: dice.rotation,
+      },
     }
   }
 
   if (diceCursedIds.includes(dice.id)) {
+    return {
+      type: "cursed-area",
+      value: undefined,
+    }
+  }
+
+  return {
+    type: "offscreen-area",
+  }
+}
+
+const diceLocationToProps = (
+  { type, value },
+  { chestDomNode, rolledAreaDomNode, cursedAreaDomNode, offscreenDomNode },
+) => {
+  if (type === "chest-slot") {
+    return {
+      parentNode: chestDomNode.querySelector(`[data-chest-slot="${value}"]`),
+      rotation: 0,
+      draggable: true,
+    }
+  }
+
+  if (type === "rolled-area") {
+    return {
+      parentNode: rolledAreaDomNode,
+      rotation: value.rotation,
+      x: value.x,
+      y: value.y,
+      draggable: true,
+    }
+  }
+
+  if (type === "cursed-area") {
     return {
       parentNode: cursedAreaDomNode,
       rotation: 0,
