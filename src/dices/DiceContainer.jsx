@@ -32,8 +32,8 @@ export const DiceContainer = ({
   rolledAreaRef,
   offscreenRef,
   cursedAreaRef,
-  onDiceOverChestChange,
-  onDiceOverRolledAreaChange,
+  onDiceOverChestChange = () => {},
+  onDiceOverRolledAreaChange = () => {},
 }) => {
   // global state
   const dices = useDices()
@@ -198,7 +198,10 @@ export const DiceContainer = ({
               dispatchDiceAnimation({
                 key: dice.id,
                 value: {
-                  from: { x: dropDiceGesture.x, y: dropDiceGesture.y },
+                  from: {
+                    x: dropDiceGesture.diceRectangle.left,
+                    y: dropDiceGesture.diceRectangle.top,
+                  },
                   to: dropPosition,
                   onfinish: () => {
                     dispatchDiceAnimation({

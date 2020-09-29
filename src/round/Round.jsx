@@ -40,8 +40,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
         cursedAreaRef={cursedAreaRef}
-        onDiceOverChestChange={diceOverChestSetter}
-        onDiceOverRolledAreaChange={diceOverRolledAreaSetter}
+        // onDiceOverChestChange={diceOverChestSetter}
+        // onDiceOverRolledAreaChange={diceOverRolledAreaSetter}
       />
     </div>
   )
