@@ -1,14 +1,6 @@
 import React from "react"
-import { useDiceKeptIds } from "src/round/round.selectors.js"
 
-export const DiceOnGoing = ({ rolledAreaRef, offscreenRef, dragoverGesture }) => {
-  const diceKeptIds = useDiceKeptIds()
-  const diceOverRolledArea =
-    dragoverGesture &&
-    dragoverGesture.dropTarget === rolledAreaRef.current &&
-    dragoverGesture.dropAllowed &&
-    diceKeptIds.includes(dragoverGesture.dropPayload.id)
-
+export const DiceOnGoing = ({ rolledAreaRef, offscreenRef, diceOverRolledArea }) => {
   return (
     <div className="dice-ongoing">
       <div className="map"></div>

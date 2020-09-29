@@ -68,6 +68,7 @@ export const Dice = ({
       return () => {}
     }
 
+    let bigMoveOccured = false
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         diceGrippedSetter(true)
@@ -75,7 +76,7 @@ export const Dice = ({
       onClick: (clickEvent) => {
         onDiceClick(dice, clickEvent)
       },
-      onDrag: ({ x, y }) => {
+      onDrag: ({ x, y, relativeX, relativeY, setDropEffect }) => {
         const diceDesiredRect = {
           left: x,
           right: x + diceSize,
@@ -84,12 +85,12 @@ export const Dice = ({
         }
         const diceRectangle = rectangleToRectangleInsideDomNode(diceDesiredRect, mainDomNode)
         setDragGesture({ x: diceRectangle.left, y: diceRectangle.top })
-        onDiceDrag(dice, { diceRectangle })
+        bigMoveOccured = bigMoveOccured || Math.abs(relativeX) > 10 || Math.abs(relativeY) > 10
+        if (bigMoveOccured) {
+          onDiceDrag(dice, { relativeX, relativeY, setDropEffect, diceRectangle })
+        }
       },
-      onRelease: ({ x, y }) => {
-        diceGrippedSetter(false)
-        setDragGesture(null)
-
+      onDrop: ({ x, y }) => {
         const diceRectangle = {
           left: x,
           right: x + diceSize,
@@ -99,6 +100,10 @@ export const Dice = ({
         onDiceDrop(dice, {
           diceRectangle,
         })
+      },
+      onRelease: () => {
+        diceGrippedSetter(false)
+        setDragGesture(null)
         onDiceDragEnd(dice)
       },
       onCancel: () => {
@@ -110,7 +115,7 @@ export const Dice = ({
     return () => {
       disableDragGesture()
     }
-  }, [draggable, diceDomNode, mainDomNode, onDiceClick, onDiceDrag, onDiceDragEnd])
+  }, [draggable, diceDomNode, mainDomNode, onDiceClick, onDiceDrag, onDiceDrop, onDiceDragEnd])
 
   useEffect(() => {
     if (!diceAnimation || !diceDomNode) return () => {}

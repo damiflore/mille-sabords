@@ -6,13 +6,15 @@ export const enableDragGesture = (
   domNode,
   {
     logLevel = "warn",
-    // in case it's passed we will call it only on fast and precise click
-    onClick = () => {},
     onGrip = () => {},
     onLongGrip = () => {},
-    onRelease = () => {},
+    // in case it's passed we will call it only on fast and precise click
+    onClick = () => {},
     onDrag = () => {},
+    onDrop = () => {},
+    onRelease = () => {},
     onCancel = () => {},
+    longGripMs = 300,
   },
 ) => {
   const logger = createLogger({ logLevel })
@@ -74,7 +76,7 @@ export const enableDragGesture = (
     { passive: true },
   )
   const removeClickListener = addDomEventListener(domNode, "click", (clickEvent) => {
-    if (!dragIntent) {
+    if (!dragIntent && dropEffect === "none") {
       onClick(clickEvent)
     }
   })
@@ -83,10 +85,11 @@ export const enableDragGesture = (
   let domNodeStartPosition
   let gripPointerPosition
   let longGripTimeout
+  let dropEffect
   const handleGrip = (pointerPosition, event) => {
     logger.debug("gripping node at", pointerPosition)
     pendingGesture = true
-    // gripTimestamp = Date.now()
+    dropEffect = "none"
     gripPointerPosition = pointerPosition
     pointerPositionPrevious = pointerPosition
     domNodeStartPosition = domNodeToPagePosition(domNode)
@@ -96,10 +99,11 @@ export const enableDragGesture = (
       y: domNodeStartPosition.y,
       event,
     })
-    longGripTimeout = setTimeout(handleLongGrip, 300)
+    longGripTimeout = setTimeout(handleLongGrip, longGripMs)
   }
 
   const handleLongGrip = () => {
+    dragIntent = true
     onLongGrip()
   }
 
@@ -125,25 +129,36 @@ export const enableDragGesture = (
     const relativeY = pointerPosition.y - gripPointerPosition.y
 
     logger.debug("move node at", movePosition)
-    if (Math.abs(relativeX) > 10 || Math.abs(relativeY) > 10) {
-      dragIntent = true
-    }
     onDrag({
       event,
       ...movePosition,
+      relativeX,
+      relativeY,
+      setDropEffect: (value) => {
+        dropEffect = value
+      },
     })
   }
 
   const handleRelease = (pointerPosition, event) => {
     logger.debug("releasing node")
     pendingGesture = false
-    const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
-    const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
     clearTimeout(longGripTimeout)
+
+    // if there is a dropEffect fire the drop event
+    if (dropEffect !== "none") {
+      const gripHorizontalShift = gripPointerPosition.x - domNodeStartPosition.x
+      const gripVerticalShit = gripPointerPosition.y - domNodeStartPosition.y
+      onDrop({
+        event,
+        dropEffect,
+        x: pointerPositionPrevious.x - gripHorizontalShift,
+        y: pointerPositionPrevious.y - gripVerticalShit,
+      })
+    }
+
     onRelease({
       event,
-      x: pointerPositionPrevious.x - gripHorizontalShift,
-      y: pointerPositionPrevious.y - gripVerticalShit,
     })
     // setTimeout is to ensure the click cannot happen just after mouseup
     dragIntentTimeout = setTimeout(() => {

@@ -1,21 +1,15 @@
 import React from "react"
 
-import { useCurrentCardId, useChestSlots, useDiceRolledIds } from "src/main.store.js"
+import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 import { cardIdToCard } from "src/cards/cards.js"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-export const Chest = ({ chestRef, dragoverGesture }) => {
+export const Chest = ({ chestRef, diceOverChest }) => {
   const chestSlots = useChestSlots()
-  const diceRolledIds = useDiceRolledIds()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
-  const diceOverChest =
-    dragoverGesture &&
-    dragoverGesture.dropTarget === chestRef.current &&
-    dragoverGesture.dropAllowed &&
-    diceRolledIds.includes(dragoverGesture.dropPayload.id)
 
   return (
     <div className="chest">
