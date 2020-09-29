@@ -21,6 +21,9 @@
   height: 160px;
   left: 12px;
 }
+.skull-island .dice {
+  margin-top: 3px;
+}
 .witch-label {
   position: absolute;
   transform: translate(-3px, -50px) scale(0.7);
