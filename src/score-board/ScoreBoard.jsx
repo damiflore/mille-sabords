@@ -32,7 +32,7 @@ const getNextPlayer = () => {
   return nextPlayer
 }
 
-export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) => {
+export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
   const roundStarted = useRoundStarted()
@@ -67,7 +67,6 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
           X
         </div>
       )}
-
       {!roundStarted && !currentPlayer && (
         <div className="action-container">
           <button
@@ -80,7 +79,6 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
           </button>
         </div>
       )}
-
       <img className="win-treasure-img" src="src/score-board/win-treasure.png" alt="win-treasure" />
       <div className="users-path">
         {players.map((player) => (
@@ -90,17 +88,8 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
             score={player.score}
             character={player.character}
             openStartPlayerRoundDialog={openStartPlayerRoundDialog}
-            scoreAnimation={
-              currentPlayer && player.id === currentPlayer.id && scoreAnimation
-                ? {
-                    from: player.score - scoreAnimation.newScore,
-                    to: player.score,
-                    onfinish: scoreAnimation.onfinish,
-                  }
-                : null
-            }
-            // uncomment line below to test animation
-            // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
+            isCurrentPlayer={currentPlayer && player.id === currentPlayer.id}
+            roundOverPayload={roundOverPayload}
           />
         ))}
       </div>
@@ -116,21 +105,36 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
 }
 
 const UserPath = ({
-  scoreAnimation,
   pathCoordinates,
   character,
   score,
   openStartPlayerRoundDialog,
+  isCurrentPlayer,
+  roundOverPayload,
 }) => {
   const pathForegroundElementRef = React.useRef(null)
   const circleElementRef = React.useRef(null)
   const nextPlayer = getNextPlayer()
 
+  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
+  // uncomment line below to test animation
+  // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
+  React.useEffect(() => {
+    if (isCurrentPlayer && roundOverPayload && roundOverPayload.reason === "score-marked") {
+      const roundScore = roundOverPayload.value
+      const fromScore = score - roundScore
+      scoreAnimationSetter({
+        from: fromScore < 0 ? 0 : fromScore,
+        to: score,
+      })
+    } else {
+      scoreAnimationSetter(null)
+    }
+  }, [isCurrentPlayer, roundOverPayload])
   React.useEffect(() => {
     if (!scoreAnimation) return () => {}
 
-    const { from, to, onfinish = () => {} } = scoreAnimation
-
+    const { from, to } = scoreAnimation
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
     const pathForegroundAnimation = pathForegroundElement.animate(
@@ -156,10 +160,10 @@ const UserPath = ({
     )
 
     pathForegroundAnimation.onfinish = () => {
-      if (circleAnimation.playState === "finished") onfinish()
+      if (circleAnimation.playState === "finished") scoreAnimationSetter(null)
     }
     circleAnimation.onfinish = () => {
-      if (pathForegroundAnimation.playState === "finished") onfinish()
+      if (pathForegroundAnimation.playState === "finished") scoreAnimationSetter(null)
     }
 
     return () => {

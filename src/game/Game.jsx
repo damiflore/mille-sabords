@@ -10,7 +10,7 @@ export const Game = () => {
   const gameStarted = useGameStarted()
   const needsToChooseNumberOfPlayers = players.length === 0
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
-  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
+  const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
 
   if (needsToChooseNumberOfPlayers) {
     return <PlayerCountSelection />
@@ -27,7 +27,7 @@ export const Game = () => {
         closeScoreboard={() => {
           scoreboardOpenedByUserSetter(false)
         }}
-        scoreAnimation={scoreAnimation}
+        roundOverPayload={roundOverPayload}
       />
     )
   }
@@ -37,17 +37,11 @@ export const Game = () => {
       openScoreboard={() => {
         scoreboardOpenedByUserSetter(true)
       }}
+      onRoundStart={() => {
+        roundOverPayloadSetter(null)
+      }}
       onRoundOver={(roundOverPayload) => {
-        if (roundOverPayload.reason === "score-marked") {
-          scoreAnimationSetter({
-            newScore: roundOverPayload.value,
-            onfinish: () => {
-              scoreAnimationSetter(null)
-            },
-          })
-        } else {
-          scoreAnimationSetter(null)
-        }
+        roundOverPayloadSetter(roundOverPayload)
       }}
     />
   )

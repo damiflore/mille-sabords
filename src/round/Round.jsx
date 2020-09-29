@@ -33,7 +33,7 @@ import {
 } from "src/dom/dom.position.js"
 import { useDiceKeptIds, useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
-export const Round = ({ openScoreboard, onRoundOver }) => {
+export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const chestSlots = useChestSlots()
   const diceKeptIds = useDiceKeptIds()
   const diceRolledIds = useDiceRolledIds()
@@ -54,6 +54,10 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
   const offscreenRef = React.useRef(null)
   const [dragoverGesture, dragoverGestureSetter] = React.useState(null)
   const dropTargetRef = React.useRef(null)
+
+  React.useEffect(() => {
+    onRoundStart()
+  }, [])
 
   const canKeepDice = (dice) =>
     keepDiceAllowedGetter(dice, {
@@ -255,7 +259,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
           console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
           if (clickEffect === "keep") {
             const firstAvailableChestSlot = getFirstAvailableChestSlot()
-            console.log({ firstAvailableChestSlot })
+            // console.log({ chestSlots, firstAvailableChestSlot })
             keepDice(dice, firstAvailableChestSlot)
           } else if (clickEffect === "unkeep") {
             unkeepDice(dice)
