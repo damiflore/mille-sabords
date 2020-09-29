@@ -206,9 +206,16 @@ export const DiceContainer = ({
                   },
                   to: dropPosition,
                   onfinish: () => {
-                    dispatchDiceAnimation({
-                      key: dice.id,
-                      value: null,
+                    // at the end of dice animation, dice is flickering briely
+                    // (moving somewhere on the page and going back to where it's supposed to be)
+                    // the following setTimeout fixes this
+                    // of course we should improve that because it's an hint there is a deeper
+                    // issue to resolve.
+                    setTimeout(() => {
+                      dispatchDiceAnimation({
+                        key: dice.id,
+                        value: null,
+                      })
                     })
                   },
                 },

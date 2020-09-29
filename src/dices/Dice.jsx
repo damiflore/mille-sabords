@@ -133,8 +133,6 @@ export const Dice = ({
   )
   const diceZIndex = dragGesture || diceAnimation ? 1000 : zIndex
 
-  console.log({ diceId: dice.id, diceZIndex })
-
   // if (dice.id === 4 && !dragGesture) {
   //   console.log({
   //     diceX,
