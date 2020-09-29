@@ -125,12 +125,12 @@ export const Dice = ({
   }, [diceDomNode, diceAnimation])
 
   const onSkull = diceIsOnSkull(dice)
-  const diceX = Math.floor(
-    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x,
-  )
-  const diceY = Math.floor(
-    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y,
-  )
+  const diceX =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x
+
+  const diceY =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y
+
   const diceZIndex = dragGesture || diceAnimation ? 1000 : zIndex
 
   // if (dice.id === 4 && !dragGesture) {

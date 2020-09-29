@@ -415,8 +415,9 @@ const chestSlotDropPositionGetter = (chestSlot, chestDomNode) => {
   const destinationSlotDomNode = chestSlotToChestSlotDomNode(chestSlot, chestDomNode)
   const destinationSlotRectangle = getDomNodeRectangle(destinationSlotDomNode)
   return {
-    x: destinationSlotRectangle.left,
-    y: destinationSlotRectangle.top,
+    // + 5 is because dice is centered in the chest slot
+    x: destinationSlotRectangle.left + 5,
+    y: destinationSlotRectangle.top + 5,
   }
 }
 
