@@ -28,10 +28,10 @@ import {
 } from "src/dices/dices.actions.js"
 
 export const DiceContainer = ({
-  chestRef,
-  rolledAreaRef,
-  offscreenRef,
-  cursedAreaRef,
+  offscreenDomNode,
+  chestDomNode,
+  rolledAreaDomNode,
+  cursedAreaDomNode,
   // onDiceOverChestChange = () => {},
   // onDiceOverRolledAreaChange = () => {},
 }) => {
@@ -59,16 +59,6 @@ export const DiceContainer = ({
   const setDiceChestSlot = useSetDiceChestSlot()
   // other
   const dropTargetRef = React.useRef(null)
-
-  const chestDomNode = chestRef.current
-  const rolledAreaDomNode = rolledAreaRef.current
-  const offscreenDomNode = offscreenRef.current
-  const cursedAreaDomNode = cursedAreaRef.current
-
-  if (!chestDomNode) return null
-  if (!rolledAreaDomNode) return null
-  if (!offscreenDomNode) return null
-  if (!cursedAreaDomNode) return null
 
   return Object.keys(dices).map((diceId) => {
     const dice = dices[diceId]
