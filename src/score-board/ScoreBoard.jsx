@@ -4,6 +4,8 @@ import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 
+const SCORE_MAX = 6000
+
 const pathList = {
   path1:
     "M39.582,739.564c0-91.824,39.191-96.32,38.045-166.691s-30.042-70.37-47.326-161.729s38.128-86.388,31.276-186.42C55.405,134.602-3.014,89.176,8.812,129.825c5.333,18.333,30.77-21,30.77-129.825",
@@ -93,6 +95,7 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, scoreAnimation }) =>
                 ? {
                     from: player.score - scoreAnimation.newScore,
                     to: player.score,
+                    onfinish: scoreAnimation.onfinish,
                   }
                 : null
             }
@@ -124,20 +127,27 @@ const UserPath = ({
   const nextPlayer = getNextPlayer()
 
   React.useEffect(() => {
-    if (!scoreAnimation) return
+    if (!scoreAnimation) return () => {}
 
-    const from = scoreAnimation.from
-    const to = scoreAnimation.to
+    const { from, to, onfinish = () => {} } = scoreAnimation
 
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
-    pathForegroundElement.style.strokeDashoffset = `${
-      pathLength - (from * (pathLength / 2)) / 3000
-    }`
-    pathForegroundElement.animate(
+    const pathForegroundAnimation = pathForegroundElement.animate(
       [
-        { strokeDashoffset: `${pathLength - (from * (pathLength / 2)) / 3000}` },
-        { strokeDashoffset: `${pathLength - (to * (pathLength / 2)) / 3000}` },
+        { strokeDashoffset: ratioToStrokeDashOffset(from / SCORE_MAX, pathLength) },
+        { strokeDashoffset: ratioToStrokeDashOffset(to / SCORE_MAX, pathLength) },
+      ],
+      {
+        duration: 1000,
+        fill: "forwards",
+      },
+    )
+    const circleElement = circleElementRef.current
+    const circleAnimation = circleElement.animate(
+      [
+        { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
+        { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
       ],
       {
         duration: 1000,
@@ -145,15 +155,17 @@ const UserPath = ({
       },
     )
 
-    const circleElement = circleElementRef.current
-    circleElement.style.offsetDistance = `${(from * 50) / 3000}%`
-    circleElement.animate(
-      [{ offsetDistance: `${(from * 50) / 3000}%` }, { offsetDistance: `${(to * 50) / 3000}%` }],
-      {
-        duration: 1000,
-        fill: "forwards",
-      },
-    )
+    pathForegroundAnimation.onfinish = () => {
+      if (circleAnimation.playState === "finished") onfinish()
+    }
+    circleAnimation.onfinish = () => {
+      if (pathForegroundAnimation.playState === "finished") onfinish()
+    }
+
+    return () => {
+      pathForegroundAnimation.cancel()
+      circleAnimation.cancel()
+    }
   }, [scoreAnimation])
 
   React.useEffect(() => {
@@ -161,7 +173,10 @@ const UserPath = ({
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
     pathForegroundElement.style.strokeDasharray = pathLength
-    pathForegroundElement.style.strokeDashoffset = pathLength - (score / 6000) * pathLength
+    pathForegroundElement.style.strokeDashoffset = ratioToStrokeDashOffset(
+      score / SCORE_MAX,
+      pathLength,
+    )
   }, [score])
 
   return (
@@ -176,7 +191,7 @@ const UserPath = ({
           className="score-indicator"
           style={{
             offsetPath: `path('${pathCoordinates}')`,
-            offsetDistance: `${(score / 6000) * 100}%`,
+            offsetDistance: ratioToOffsetDistance(score / SCORE_MAX),
           }}
         />
       </svg>
@@ -192,6 +207,10 @@ const UserPath = ({
     </div>
   )
 }
+
+const ratioToOffsetDistance = (ratio) => `${ratio * 100}%`
+
+const ratioToStrokeDashOffset = (ratio, pathLength) => pathLength - ratio * pathLength
 
 const Avatar = ({ character }) => (
   <img

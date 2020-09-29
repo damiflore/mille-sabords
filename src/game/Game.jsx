@@ -39,7 +39,12 @@ export const Game = () => {
       }}
       onRoundOver={(roundOverPayload) => {
         if (roundOverPayload.reason === "score-marked") {
-          scoreAnimationSetter({ newScore: roundOverPayload.value })
+          scoreAnimationSetter({
+            newScore: roundOverPayload.value,
+            onfinish: () => {
+              scoreAnimationSetter(null)
+            },
+          })
         } else {
           scoreAnimationSetter(null)
         }

@@ -116,17 +116,26 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
     return closestRolledAreaPosition
   }
 
-  const getClickIntent = (dice) => {
+  const getClickEffect = (dice) => {
     if (diceIsInRolledArea(dice)) {
-      return "keep"
+      if (canKeepDice(dice)) {
+        return "keep"
+      }
+      return "none"
     }
     if (diceIsInChest) {
-      return "unkeep"
+      if (canUnkeepDice(dice)) {
+        return "unkeep"
+      }
+      return "none"
     }
     if (diceIsInCursedArea(dice)) {
-      return "uncurse"
+      if (canUncurseDice(dice)) {
+        return "uncurse"
+      }
+      return "none"
     }
-    return "other"
+    return "none"
   }
 
   const getDropEffect = (dice) => {
@@ -242,26 +251,16 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         cursedAreaRef={cursedAreaRef}
         diceAnimationState={diceAnimationState}
         onDiceClick={(dice) => {
-          const clickIntent = getClickIntent(dice)
-          if (clickIntent === "keep") {
-            if (canKeepDice(dice)) {
-              keepDice(dice, getFirstAvailableChestSlot())
-            }
-            return
-          }
-
-          if (clickIntent === "unkeep") {
-            if (canUnkeepDice(dice)) {
-              unkeepDice(dice)
-            }
-            return
-          }
-
-          if (clickIntent === "uncurse") {
-            if (canUncurseDice(dice)) {
-              uncurseDice(dice)
-            }
-            return
+          const clickEffect = getClickEffect(dice)
+          console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
+          if (clickEffect === "keep") {
+            const firstAvailableChestSlot = getFirstAvailableChestSlot()
+            console.log({ firstAvailableChestSlot })
+            keepDice(dice, firstAvailableChestSlot)
+          } else if (clickEffect === "unkeep") {
+            unkeepDice(dice)
+          } else if (clickEffect === "uncurse") {
+            uncurseDice(dice)
           }
         }}
         onDiceDrag={(dice, dragDiceGesture) => {
@@ -297,7 +296,7 @@ export const Round = ({ openScoreboard, onRoundOver }) => {
         }}
         onDiceDrop={(dice, dropDiceGesture) => {
           const dropEffect = getDropEffect(dice)
-          console.log("drop", { dice, diceKeptIds, diceRolledIds, dropEffect })
+          console.log(`drop dice#${dice.id} -> ${dropEffect} effect`)
 
           if (dropEffect === "reposition-in-rolled-area") {
             setDiceRolledAreaPosition(
