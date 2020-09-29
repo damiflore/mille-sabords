@@ -189,6 +189,12 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
       value: {
         from,
         to,
+        onfinish: () => {
+          dispatchDiceAnimation({
+            key: dice.id,
+            value: null,
+          })
+        },
       },
     })
   }
@@ -259,7 +265,6 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
           if (clickEffect === "keep") {
             const firstAvailableChestSlot = getFirstAvailableChestSlot()
-            // console.log({ chestSlots, firstAvailableChestSlot })
             keepDice(dice, firstAvailableChestSlot)
           } else if (clickEffect === "unkeep") {
             unkeepDice(dice)
@@ -350,12 +355,6 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
             unkeepDice(dice)
             animateMoveToRolledArea(dice, closestRolledAreaPosition, { dropDiceGesture })
           }
-        }}
-        onDiceAnimationEnd={(dice) => {
-          dispatchDiceAnimation({
-            key: dice.id,
-            value: null,
-          })
         }}
         onDiceDragEnd={() => {
           dragoverGestureSetter(null)

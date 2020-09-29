@@ -36,7 +36,6 @@ export const Dice = ({
   y,
   rotation,
   draggable,
-  onDiceAnimationEnd,
   onDiceClick,
   onDiceDrag,
   onDiceDrop,
@@ -111,13 +110,12 @@ export const Dice = ({
     return () => {
       disableDragGesture()
     }
-  }, [draggable, diceDomNode, mainDomNode])
+  }, [draggable, diceDomNode, mainDomNode, onDiceClick, onDiceDrag, onDiceDragEnd])
 
   useEffect(() => {
     if (!diceAnimation || !diceDomNode) return () => {}
+    const { from, to, onfinish } = diceAnimation
 
-    const from = diceAnimation.from
-    const to = diceAnimation.to
     if (anmationDebug) {
       printPointInDocument(from)
       printPointInDocument(to)
@@ -135,9 +133,7 @@ export const Dice = ({
         easing: "cubic-bezier(0, 0.55, 0.45, 1)",
       },
     )
-    animation.onfinish = () => {
-      onDiceAnimationEnd(dice)
-    }
+    animation.onfinish = onfinish
     return () => {
       animation.cancel()
     }
