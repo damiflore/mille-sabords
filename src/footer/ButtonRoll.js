@@ -1,13 +1,27 @@
 import React from "react"
-import { createAction } from "src/main.store.js"
-import { useRollDiceAllowed } from "src/round/round.selectors.js"
+import { createAction, useDicesRolled, useCurrentCard } from "src/main.store.js"
+import {
+  useRollDiceAllowed,
+  useHasNeverRolled,
+  useThreeSkullsOrMoreInCursedArea,
+} from "src/round/round.selectors.js"
 import { useRolledAreaDomNode } from "src/dom/dom.main.js"
 import { rollDices } from "src/dices/rollDices.js"
+import { isChestCard } from "src/cards/cards.js"
 
 export const ButtonRoll = () => {
   const rollDiceAllowed = useRollDiceAllowed()
   const rolledAreaDomNode = useRolledAreaDomNode()
+  const dicesRolled = useDicesRolled()
+  const hasNeverRolled = useHasNeverRolled()
   const roll = useRoll()
+
+  const currentCard = useCurrentCard()
+  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+
+  const disabledNotEnoughDice = dicesRolled.length < 2 && !hasNeverRolled
+  const disabledChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
+  const disabled = disabledNotEnoughDice || disabledChestCard
 
   if (rollDiceAllowed) {
     return (
@@ -16,9 +30,14 @@ export const ButtonRoll = () => {
           onClick={() => {
             roll(rolledAreaDomNode)
           }}
+          disabled={disabled}
         >
           Lancer
+          {disabledNotEnoughDice && !disabledChestCard && (
+            <span className="button-subtitle">(au moins 2 dés !)</span>
+          )}
         </button>
+        {disabledChestCard && <img src={`/src/dices/dice_skull.png`} className="skull-symbol" />}
       </div>
     )
   }

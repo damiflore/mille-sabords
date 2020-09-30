@@ -32,6 +32,10 @@
   background-color: #a5a19f;
   border-color: #54453b;
 }
+.roll-action span.button-subtitle {
+  text-transform: lowercase;
+  font-size: 11px;
+}
 
 .roll-action,
 .collect-action,
@@ -47,7 +51,7 @@
 .collect-action .score {
   font-size: 12px;
 }
-.collect-action .skull-symbol {
+.skull-symbol {
   width: 32%;
   position: relative;
   top: -70%;
