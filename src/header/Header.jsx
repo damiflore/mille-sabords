@@ -1,24 +1,24 @@
 import React from "react"
 
-import { useCurrentCard, useCurrentPlayerGettingReady } from "src/main.store.js"
+import { useCurrentCardId, useCurrentPlayerGettingReady } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { cardColors, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
 export const Header = ({ openScoreboard }) => {
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
-  const card = useCurrentCard()
+  const [dialogIsOpen, dialogIsOpenSetter] = React.useState(false)
+  const currentCard = cardIdToCard(useCurrentCardId())
   const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
   const openDialog = () => {
-    if (card) setDialogIsOpen(true)
+    if (currentCard) dialogIsOpenSetter(true)
   }
 
   const closeDialog = () => {
-    setDialogIsOpen(false)
+    dialogIsOpenSetter(false)
   }
 
   return (
@@ -36,13 +36,15 @@ export const Header = ({ openScoreboard }) => {
       </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
-      <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
+      {currentCard ? (
+        <CardRulesDialog card={currentCard} dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
+      ) : null}
     </div>
   )
 }
 
 const TopDeckCard = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
   return currentCard && !currentPlayerGettingReady ? <SmallCard card={currentCard} /> : <BackCard />
@@ -66,13 +68,15 @@ export const SmallCard = ({ card }) => {
       className="card current-card"
       id="small-card"
       style={{
-        backgroundColor: cardColors[card].color1,
-        borderColor: cardColors[card].color2,
+        backgroundColor: card.color1,
+        borderColor: card.color2,
       }}
     >
       <img
-        src={`/src/cards/card_small-${isSwordChallengeCard(card) ? "sword-challenge" : card}.png`}
-        alt={card}
+        src={`/src/cards/card_small-${
+          isSwordChallengeCard(card) ? "sword-challenge" : card.type
+        }.png`}
+        alt={card.type}
       />
     </div>
   )

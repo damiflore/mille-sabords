@@ -8,44 +8,19 @@ import {
 import {
   isAnimalsCard,
   isPirateCard,
-  isTwoSwordsChallengeCard,
-  isThreeSwordsChallengeCard,
-  isFourSwordsChallengeCard,
-  TWO_SWORDS_CHALLENGE_GAMBLE,
-  THREE_SWORDS_CHALLENGE_GAMBLE,
-  FOUR_SWORDS_CHALLENGE_GAMBLE,
   isCoinCard,
   isDiamondCard,
+  isSwordChallengeCard,
 } from "src/cards/cards.js"
 
 export const computeRoundScore = ({ card, symbolsInChest, scoreMarked, markScoreAllowed }) => {
-  if (isTwoSwordsChallengeCard(card)) {
+  if (isSwordChallengeCard(card)) {
     if (!scoreMarked && !markScoreAllowed) {
-      return -TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount
+      return -card.gambleAmount
     }
     return computeScoreForSwordChallenge(symbolsInChest, {
-      goal: TWO_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
-      gamble: TWO_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
-    })
-  }
-
-  if (isThreeSwordsChallengeCard(card)) {
-    if (!scoreMarked && !markScoreAllowed) {
-      return -THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount
-    }
-    return computeScoreForSwordChallenge(symbolsInChest, {
-      goal: THREE_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
-      gamble: THREE_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
-    })
-  }
-
-  if (isFourSwordsChallengeCard(card)) {
-    if (!scoreMarked && !markScoreAllowed) {
-      return -FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount
-    }
-    return computeScoreForSwordChallenge(symbolsInChest, {
-      goal: FOUR_SWORDS_CHALLENGE_GAMBLE.numberOfSwords,
-      gamble: FOUR_SWORDS_CHALLENGE_GAMBLE.gambleAmount,
+      goal: card.numberOfSwords,
+      gamble: card.gambleAmount,
     })
   }
 

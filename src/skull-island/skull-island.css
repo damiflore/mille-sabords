@@ -9,12 +9,20 @@
   background-image: url(./skull-bottle.png);
   background-repeat: no-repeat;
   background-size: contain;
+  position: relative;
 }
 .skull-island .area {
-  margin-left: 11px;
-  margin-bottom: 13px;
-  flex-direction: column-reverse;
   display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: 55px;
+  position: absolute;
+  bottom: 17px;
+  height: 160px;
+  left: 14px;
+}
+.skull-island .dice {
+  margin-top: 3px;
 }
 .witch-label {
   position: absolute;

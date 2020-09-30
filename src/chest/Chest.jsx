@@ -1,79 +1,19 @@
 import React from "react"
 
-import {
-  getDomNodeRectangle,
-  rectangleCollidesWithRectangle,
-  findClosestRectangle,
-} from "src/helper/rectangle.js"
+import { useSignalListener } from "src/hooks.js"
+import { useCurrentCardId, useChestSlots } from "src/main.store.js"
+import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
-import { createAction, useCurrentCard, useChestSlots, useDicesRolled } from "src/main.store.js"
-import { useDragDiceGesture } from "src/drag/drag.main.js"
-import {
-  useUnkeepDiceAllowed,
-  useThreeSkullsOrMoreInCursedArea,
-} from "src/round/round.selectors.js"
-import { useUnkeepDice, useKeepDice } from "src/dices/dices.actions.js"
+import { cardIdToCard, isChestCard } from "src/cards/cards.js"
 
-import { cardColors, isChestCard } from "src/cards/cards.js"
-import { Dice } from "src/dices/Dice.jsx"
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-const { useState, useEffect } = React
-
-export const Chest = () => {
+export const Chest = ({ chestRef, diceOverChestSignal }) => {
   const chestSlots = useChestSlots()
-
-  const [chestDropAreaDomNode, chestDropAreaDomNodeSetter] = useState(null)
-  const dragDiceGesture = useDragDiceGesture()
-  const [diceDraggedOver, diceDraggedOverSetter] = useState(false)
-  useEffect(() => {
-    diceDraggedOverSetter(diceDraggedOverGetter({ dragDiceGesture, chestDropAreaDomNode }))
-  }, [dragDiceGesture, chestDropAreaDomNode])
-
-  const dicesRolled = useDicesRolled()
-  const hoveredByRolledDice = diceDraggedOver && dicesRolled.includes(diceDraggedOver)
-  const hoveredByKeptDice =
-    diceDraggedOver &&
-    Object.keys(chestSlots).some(
-      (key) => chestSlots[key] && chestSlots[key].value === diceDraggedOver,
-    )
-
-  const keepDice = useKeepDice()
-  const repositionDiceInChest = useRepositionDiceInChest()
-  useEffect(() => {
-    if (dragDiceGesture) {
-      dragDiceGesture.setDropHandler(chestDropAreaDomNode, ({ diceRectangle }) => {
-        if (threeSkullsOrMoreInCursedArea) return
-        if (!hoveredByRolledDice && !hoveredByKeptDice) return
-
-        const rectangleToChestSlotMap = new Map()
-        const rectangleCandidates = []
-        Object.keys(chestSlots).forEach((chestSlot) => {
-          const chestSlotContent = chestSlots[chestSlot]
-          const chestSlotIsEmpty = !chestSlotContent
-          if (chestSlotIsEmpty || chestSlotContent.value === diceDraggedOver) {
-            const chestSlotDomNode = chestDropAreaDomNode.querySelector(
-              `[data-chest-slot="${chestSlot}"]`,
-            )
-            const rectangle = getDomNodeRectangle(chestSlotDomNode)
-            rectangleToChestSlotMap.set(rectangle, chestSlot)
-            rectangleCandidates.push(rectangle)
-          }
-        })
-        const closestRectangle = findClosestRectangle(diceRectangle, rectangleCandidates)
-        const closestChestSlot = rectangleToChestSlotMap.get(closestRectangle)
-        if (hoveredByRolledDice) {
-          keepDice(diceDraggedOver, closestChestSlot)
-        } else {
-          repositionDiceInChest(diceDraggedOver, closestChestSlot)
-        }
-      })
-    }
-  }, [dragDiceGesture, chestDropAreaDomNode])
-
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
-  const currentCard = useCurrentCard()
+  const diceOverChest = useSignalListener(diceOverChestSignal)
+  const currentCard = cardIdToCard(useCurrentCardId())
   const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 
   /*
@@ -93,12 +33,10 @@ export const Chest = () => {
   return (
     <div className="chest">
       <div
+        ref={chestRef}
         className={`dice-area ${isChestCard(currentCard) ? "glow" : ""}`}
-        ref={chestDropAreaDomNodeSetter}
         style={{
-          ...(hoveredByRolledDice && !threeSkullsOrMoreInCursedArea
-            ? { outline: "2px dotted" }
-            : {}),
+          ...(diceOverChest ? { outline: "2px dotted" } : {}),
         }}
       >
         <div className="box">
@@ -120,9 +58,7 @@ export const Chest = () => {
 }
 
 const ChestSlot = ({ chestSlotContent }) => {
-  const currentCard = useCurrentCard()
-  const unkeepDiceAllowed = useUnkeepDiceAllowed()
-  const unkeepDice = useUnkeepDice()
+  const currentCard = cardIdToCard(useCurrentCardId())
 
   if (!chestSlotContent) {
     return null
@@ -138,8 +74,8 @@ const ChestSlot = ({ chestSlotContent }) => {
           height: diceSize,
           color: "#fcfcfc",
           margin: "5px",
-          backgroundColor: cardColors[currentCard].color1,
-          borderColor: cardColors[currentCard].color2,
+          backgroundColor: currentCard.color1,
+          borderColor: currentCard.color2,
           borderWidth: "2px",
           borderStyle: "solid",
         }}
@@ -157,50 +93,13 @@ const ChestSlot = ({ chestSlotContent }) => {
   }
 
   // it's a dice
-  const dice = chestSlotContent.value
-  return (
-    <Dice
-      dice={dice}
-      draggable={true}
-      clickAllowed={unkeepDiceAllowed}
-      onClickAction={(dice) => {
-        unkeepDice(dice, dice.rolledAreaPosition)
-      }}
-    />
-  )
-}
-
-const diceDraggedOverGetter = ({ dragDiceGesture, chestDropAreaDomNode }) => {
-  if (!dragDiceGesture) {
-    return null
-  }
-  const chestDropAreaDomNodeRectangle = getDomNodeRectangle(chestDropAreaDomNode)
-  if (
-    !rectangleCollidesWithRectangle(dragDiceGesture.diceRectangle, chestDropAreaDomNodeRectangle)
-  ) {
-    return null
-  }
-  return dragDiceGesture.dice
+  return null
 }
 
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
+      <img draggable="false" src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
     </div>
   )
 }
-
-const useRepositionDiceInChest = createAction((state, dice, chestSlot) => {
-  const { chestSlots } = state
-  const previousChestSlot = dice.chestSlot
-  dice.chestSlot = chestSlot
-  return {
-    ...state,
-    chestSlots: {
-      ...chestSlots,
-      [previousChestSlot]: null,
-      [chestSlot]: { type: "dice", value: dice },
-    },
-  }
-})

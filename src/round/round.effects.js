@@ -1,8 +1,8 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useCurrentCard, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
-import { isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { useCurrentCardId, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
+import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
@@ -12,21 +12,18 @@ import {
 } from "src/round/round.selectors.js"
 import { useMarkScore, useSendToSkullIsland } from "src/round/round.actions.js"
 import { useCurseDice } from "src/dices/dices.actions.js"
-import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
 
 const { useEffect } = React
 
-export const GameEffects = () => {
-  useGameEffects()
+export const RoundEffects = () => {
+  useRoundEffects()
   return null
 }
 
-export const useGameEffects = () => {
+export const useRoundEffects = () => {
   useCurseDiceEffect()
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
-  useCoinCardEffect()
-  useDiamondCardEffect()
 }
 
 const useCurseDiceEffect = () => {
@@ -50,7 +47,7 @@ const useCurseDiceEffect = () => {
 
 // auto mark score for failed sword challenges
 const useFailSwordChallengeEffect = () => {
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const markScore = useMarkScore()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
@@ -72,7 +69,7 @@ const useFailSwordChallengeEffect = () => {
 // go to skull island if 4 skulls or more on first roll
 const useFourSkullsOrMoreOnFirstRollEffect = () => {
   const isFirstRoll = useIsFirstRoll()
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const isOnSkullIsland = useIsOnSkullIsland()
   const skullCountInCursedArea = useSkullCountInCursedArea()
   const sendToSkullIsland = useSendToSkullIsland()
@@ -88,34 +85,4 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
 
     sendToSkullIsland()
   }, [isFirstRoll, isOnSkullIsland, currentCard, skullCountInCursedArea])
-}
-
-const useCoinCardEffect = () => {
-  const addExtraCoin = useAddExtraCoin()
-  const currentCard = useCurrentCard()
-  const drawCoinCard = useBecomes(
-    (currentCardPrevious) => !isCoinCard(currentCardPrevious) && isCoinCard(currentCard),
-    [currentCard],
-  )
-
-  useEffect(() => {
-    if (drawCoinCard) {
-      addExtraCoin()
-    }
-  }, [drawCoinCard])
-}
-
-const useDiamondCardEffect = () => {
-  const addExtraDiamond = useAddExtraDiamond()
-  const currentCard = useCurrentCard()
-  const drawDiamondCard = useBecomes(
-    (currentCardPrevious) => !isDiamondCard(currentCardPrevious) && isDiamondCard(currentCard),
-    [currentCard],
-  )
-
-  useEffect(() => {
-    if (drawDiamondCard) {
-      addExtraDiamond()
-    }
-  }, [drawDiamondCard])
 }

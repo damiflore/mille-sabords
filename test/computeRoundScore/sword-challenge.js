@@ -1,17 +1,17 @@
 import { assert } from "@jsenv/assert"
-import { CARD_TWO_SWORDS_CHALLENGE } from "src/cards/cards.js"
 import {
   createCoinFromDice,
   createSwordFromDice,
   createMonkeyFromDice,
   createParrotFromDice,
+  getFirstTwoSwordsChallengeCardFromDeck,
 } from "../test.material.js"
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 
 // 8 coin
 {
   const actual = computeRoundScore({
-    card: CARD_TWO_SWORDS_CHALLENGE,
+    card: getFirstTwoSwordsChallengeCardFromDeck(),
     symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),
@@ -31,7 +31,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 // 2 sword completed with 2 sword
 {
   const actual = computeRoundScore({
-    card: CARD_TWO_SWORDS_CHALLENGE,
+    card: getFirstTwoSwordsChallengeCardFromDeck(),
     symbolsInChest: [
       createSwordFromDice(),
       createSwordFromDice(),
@@ -49,7 +49,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 // 2 sword completed with 3 sword
 {
   const actual = computeRoundScore({
-    card: CARD_TWO_SWORDS_CHALLENGE,
+    card: getFirstTwoSwordsChallengeCardFromDeck(),
     symbolsInChest: [
       createSwordFromDice(),
       createSwordFromDice(),
@@ -67,7 +67,7 @@ import { computeRoundScore } from "src/score/computeRoundScore.js"
 // cannot mark score (because 3skulls)
 {
   const actual = computeRoundScore({
-    card: CARD_TWO_SWORDS_CHALLENGE,
+    card: getFirstTwoSwordsChallengeCardFromDeck(),
     symbolsInChest: [
       createCoinFromDice(),
       createCoinFromDice(),

@@ -20,7 +20,7 @@ export const faces = [
 // Otherwise if(witchUncursedDiceId) would return false and we would have to check
 // if (typeof witchUncursedDiceId === 'number')
 let diceId = 1
-export const createDice = (props) => {
+const createDice = (props) => {
   return {
     faces,
     visibleFaceIndex: 0,
@@ -29,16 +29,11 @@ export const createDice = (props) => {
   }
 }
 
-export const DICES = [
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-  createDice(),
-]
+export const DICES = {}
+new Array(8).fill("").forEach(() => {
+  const dice = createDice()
+  DICES[dice.id] = dice
+})
 
 export const diceIsOnCoin = (dice) => diceToVisibleSymbol(dice) === SYMBOL_COIN
 export const diceIsOnDiamond = (dice) => diceToVisibleSymbol(dice) === SYMBOL_DIAMOND

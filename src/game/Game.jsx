@@ -21,7 +21,7 @@ export const Game = () => {
 
   const needsToChooseNumberOfPlayers = players.length === 0
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
-  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
+  const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
 
   // dialogue drawCardDialog
   const currentPlayer = useCurrentPlayer()
@@ -49,7 +49,7 @@ export const Game = () => {
         closeScoreboard={() => {
           scoreboardOpenedByUserSetter(false)
         }}
-        scoreAnimation={scoreAnimation}
+        roundOverPayload={roundOverPayload}
         openDrawCardDialog={openDrawCardDialog}
       />
     )
@@ -61,12 +61,11 @@ export const Game = () => {
         openScoreboard={() => {
           scoreboardOpenedByUserSetter(true)
         }}
+        onRoundStart={() => {
+          roundOverPayloadSetter(null)
+        }}
         onRoundOver={(roundOverPayload) => {
-          if (roundOverPayload.reason === "score-marked") {
-            scoreAnimationSetter({ newScore: roundOverPayload.value })
-          } else {
-            scoreAnimationSetter(null)
-          }
+          roundOverPayloadSetter(roundOverPayload)
         }}
       />
       <DrawCardDialog dialogIsOpen={drawCardDialogIsOpen} closeDialog={closeDrawCardDialog} />
@@ -113,6 +112,6 @@ export const useStartPlaying = createAction((state, player) => {
   return {
     ...state,
     currentPlayerId: player.id,
-    currentCard: null,
+    currentCardId: null,
   }
 })

@@ -10,15 +10,85 @@ export const CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge"
 export const CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge"
 export const CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge"
 
-export const createDeck = (repartition) => {
+const cardData = {
+  [CARD_ANIMALS]: {
+    type: CARD_ANIMALS,
+    color1: "#99D380",
+    color2: "#39B100",
+  },
+  [CARD_CHEST]: {
+    type: CARD_CHEST,
+    color1: "#C69C6D",
+    color2: "#8C6239",
+  },
+  [CARD_COIN]: {
+    type: CARD_COIN,
+    color1: "#FFF5BB",
+    color2: "#CE9109",
+  },
+  [CARD_DIAMOND]: {
+    type: CARD_DIAMOND,
+    color1: "#95C1E5",
+    color2: "#3E57A6",
+  },
+  [CARD_COIN]: {
+    type: CARD_COIN,
+    color1: "#99D380",
+    color2: "#39B100",
+  },
+  [CARD_PIRATE]: {
+    type: CARD_PIRATE,
+    color1: "#E6A9AB",
+    color2: "#C1272D",
+  },
+  [CARD_WITCH]: {
+    type: CARD_WITCH,
+    color1: "#757092",
+    color2: "#482399",
+  },
+  [CARD_ONE_SKULL]: {
+    type: CARD_ONE_SKULL,
+    color1: "#666666",
+    color2: "#000000",
+  },
+  [CARD_TWO_SKULLS]: {
+    type: CARD_TWO_SKULLS,
+    color1: "#666666",
+    color2: "#000000",
+  },
+  [CARD_TWO_SWORDS_CHALLENGE]: {
+    type: CARD_TWO_SWORDS_CHALLENGE,
+    color1: "#F4B392",
+    color2: "#CB6828",
+    numberOfSwords: 2,
+    gambleAmount: 300,
+  },
+  [CARD_THREE_SWORDS_CHALLENGE]: {
+    type: CARD_THREE_SWORDS_CHALLENGE,
+    color1: "#F4B392",
+    color2: "#CB6828",
+    numberOfSwords: 3,
+    gambleAmount: 500,
+  },
+  [CARD_FOUR_SWORDS_CHALLENGE]: {
+    type: CARD_FOUR_SWORDS_CHALLENGE,
+    color1: "#F4B392",
+    color2: "#CB6828",
+    numberOfSwords: 4,
+    gambleAmount: 1000,
+  },
+}
+
+const createDeck = (repartition) => {
   const cards = []
 
   Object.keys(repartition).forEach((cardType) => {
     const quantity = repartition[cardType]
     for (var i = 0; i < quantity; i++) {
-      // card should have ids, {id: cards.length + 1, value: cardType}
-      // but it means lot of updates, will do later
-      const card = cardType
+      const card = {
+        id: cards.length + 1,
+        ...cardData[cardType],
+      }
       cards.push(card)
     }
   })
@@ -26,7 +96,7 @@ export const createDeck = (repartition) => {
   return cards
 }
 
-export const CARDS = createDeck({
+const CARDS = createDeck({
   [CARD_PIRATE]: 4,
   [CARD_WITCH]: 4,
   [CARD_CHEST]: 4,
@@ -59,48 +129,24 @@ const swapTwoCards = (deck) => {
 
 const randomIndex = (arrayLength) => Math.floor(Math.random() * arrayLength)
 
-export const isPirateCard = (card) => card === CARD_PIRATE
-export const isWitchCard = (card) => card === CARD_WITCH
-export const isChestCard = (card) => card === CARD_CHEST
-export const isAnimalsCard = (card) => card === CARD_ANIMALS
-export const isDiamondCard = (card) => card === CARD_DIAMOND
-export const isCoinCard = (card) => card === CARD_COIN
-export const isOneSkullCard = (card) => card === CARD_ONE_SKULL
-export const isTwoSkullsCard = (card) => card === CARD_TWO_SKULLS
-export const isTwoSwordsChallengeCard = (card) => card === CARD_TWO_SWORDS_CHALLENGE
-export const isThreeSwordsChallengeCard = (card) => card === CARD_THREE_SWORDS_CHALLENGE
-export const isFourSwordsChallengeCard = (card) => card === CARD_FOUR_SWORDS_CHALLENGE
+export const cardIds = CARDS.map((card) => card.id)
+export const cardIdToCard = (cardId) => CARDS.find((cardCandidate) => cardCandidate.id === cardId)
+
+export const isPirateCard = (card) => card.type === CARD_PIRATE
+export const isWitchCard = (card) => card.type === CARD_WITCH
+export const isChestCard = (card) => card.type === CARD_CHEST
+export const isAnimalsCard = (card) => card.type === CARD_ANIMALS
+export const isDiamondCard = (card) => card.type === CARD_DIAMOND
+export const isCoinCard = (card) => card.type === CARD_COIN
+export const isOneSkullCard = (card) => card.type === CARD_ONE_SKULL
+export const isTwoSkullsCard = (card) => card.type === CARD_TWO_SKULLS
+export const isTwoSwordsChallengeCard = (card) => card.type === CARD_TWO_SWORDS_CHALLENGE
+export const isThreeSwordsChallengeCard = (card) => card.type === CARD_THREE_SWORDS_CHALLENGE
+export const isFourSwordsChallengeCard = (card) => card.type === CARD_FOUR_SWORDS_CHALLENGE
 export const isSwordChallengeCard = (card) =>
   isTwoSwordsChallengeCard(card) ||
   isThreeSwordsChallengeCard(card) ||
   isFourSwordsChallengeCard(card)
-
-export const TWO_SWORDS_CHALLENGE_GAMBLE = {
-  numberOfSwords: 2,
-  gambleAmount: 300,
-}
-export const THREE_SWORDS_CHALLENGE_GAMBLE = {
-  numberOfSwords: 3,
-  gambleAmount: 500,
-}
-export const FOUR_SWORDS_CHALLENGE_GAMBLE = {
-  numberOfSwords: 4,
-  gambleAmount: 1000,
-}
-
-export const cardColors = {
-  [CARD_PIRATE]: { color1: "#E6A9AB", color2: "#C1272D" },
-  [CARD_WITCH]: { color1: "#757092", color2: "#482399" },
-  [CARD_CHEST]: { color1: "#C69C6D", color2: "#8C6239" },
-  [CARD_ANIMALS]: { color1: "#99D380", color2: "#39B100" },
-  [CARD_DIAMOND]: { color1: "#95C1E5", color2: "#3E57A6" },
-  [CARD_COIN]: { color1: "#FFF5BB", color2: "#CE9109" },
-  [CARD_ONE_SKULL]: { color1: "#666666", color2: "#000000" },
-  [CARD_TWO_SKULLS]: { color1: "#666666", color2: "#000000" },
-  [CARD_TWO_SWORDS_CHALLENGE]: { color1: "#F4B392", color2: "#CB6828" },
-  [CARD_THREE_SWORDS_CHALLENGE]: { color1: "#F4B392", color2: "#CB6828" },
-  [CARD_FOUR_SWORDS_CHALLENGE]: { color1: "#F4B392", color2: "#CB6828" },
-}
 
 export const cardList = [
   CARD_PIRATE,

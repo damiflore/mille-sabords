@@ -1,25 +1,23 @@
 import React from "react"
-import { createAction, useDicesRolled, useCurrentCard } from "src/main.store.js"
+import { createAction, useDiceRolledIds, useCurrentCardId } from "src/main.store.js"
 import {
   useRollDiceAllowed,
   useHasNeverRolled,
   useThreeSkullsOrMoreInCursedArea,
 } from "src/round/round.selectors.js"
-import { useRolledAreaDomNode } from "src/dom/dom.main.js"
 import { rollDices } from "src/dices/rollDices.js"
-import { isChestCard } from "src/cards/cards.js"
+import { cardIdToCard, isChestCard } from "src/cards/cards.js"
 
-export const ButtonRoll = () => {
+export const ButtonRoll = ({ rolledAreaRef }) => {
   const rollDiceAllowed = useRollDiceAllowed()
-  const rolledAreaDomNode = useRolledAreaDomNode()
-  const dicesRolled = useDicesRolled()
+  const diceRolledIds = useDiceRolledIds()
   const hasNeverRolled = useHasNeverRolled()
   const roll = useRoll()
 
-  const currentCard = useCurrentCard()
+  const currentCard = cardIdToCard(useCurrentCardId())
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
 
-  const disabledNotEnoughDice = dicesRolled.length < 2 && !hasNeverRolled
+  const disabledNotEnoughDice = diceRolledIds.length < 2 && !hasNeverRolled
   const disabledChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
   const disabled = disabledNotEnoughDice || disabledChestCard
 
@@ -28,7 +26,7 @@ export const ButtonRoll = () => {
       <div className="roll-action">
         <button
           onClick={() => {
-            roll(rolledAreaDomNode)
+            roll(rolledAreaRef.current)
           }}
           disabled={disabled}
         >
@@ -46,16 +44,16 @@ export const ButtonRoll = () => {
 }
 
 const useRoll = createAction((state, rolledAreaDomNode) => {
-  const { rollCount, dices, dicesRolled } = state
+  const { dices, rollCount, diceRolledIds } = state
+  const diceToRollIds = rollCount === 0 ? Object.keys(dices) : diceRolledIds
+  const dicesToRoll = diceToRollIds.map((diceRolledId) => dices[diceRolledId])
+
+  rollDices(dicesToRoll, { rolledAreaDomNode })
   return {
     ...state,
     rollCount: rollCount + 1,
-    dicesRolled:
-      // [...] to ensure rolling dice re-render
-      [
-        ...rollDices(rollCount === 0 ? dices : dicesRolled, {
-          rolledAreaDomNode,
-        }),
-      ],
+    witchUncursedDiceId: null,
+    diceRolledIds: dicesToRoll.map((dice) => dice.id),
+    dices: { ...dices },
   }
 })

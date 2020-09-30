@@ -3,6 +3,8 @@ import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 
+const SCORE_MAX = 6000
+
 const pathList = {
   path1:
     "M39.582,739.564c0-91.824,39.191-96.32,38.045-166.691s-30.042-70.37-47.326-161.729s38.128-86.388,31.276-186.42C55.405,134.602-3.014,89.176,8.812,129.825c5.333,18.333,30.77-21,30.77-129.825",
@@ -32,7 +34,7 @@ const getNextPlayer = () => {
 export const ScoreBoard = ({
   openedByUser,
   closeScoreboard,
-  scoreAnimation,
+  roundOverPayload,
   openDrawCardDialog,
 }) => {
   const players = usePlayers()
@@ -57,7 +59,6 @@ export const ScoreBoard = ({
           X
         </div>
       )}
-
       {!roundStarted && !currentPlayer && (
         <div className="action-container">
           <button
@@ -70,7 +71,6 @@ export const ScoreBoard = ({
           </button>
         </div>
       )}
-
       <img className="win-treasure-img" src="src/score-board/win-treasure.png" alt="win-treasure" />
       <div className="users-path">
         {players.map((player) => (
@@ -80,16 +80,8 @@ export const ScoreBoard = ({
             score={player.score}
             character={player.character}
             openStartPlayerRoundDialog={openStartPlayerRoundDialog}
-            scoreAnimation={
-              currentPlayer && player.id === currentPlayer.id && scoreAnimation
-                ? {
-                    from: player.score - scoreAnimation.newScore,
-                    to: player.score,
-                  }
-                : null
-            }
-            // uncomment line below to test animation
-            // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
+            isCurrentPlayer={currentPlayer && player.id === currentPlayer.id}
+            roundOverPayload={roundOverPayload}
           />
         ))}
       </div>
@@ -104,31 +96,53 @@ export const ScoreBoard = ({
 }
 
 const UserPath = ({
-  scoreAnimation,
   pathCoordinates,
   character,
   score,
   openStartPlayerRoundDialog,
+  isCurrentPlayer,
+  roundOverPayload,
 }) => {
   const pathForegroundElementRef = React.useRef(null)
   const circleElementRef = React.useRef(null)
   const nextPlayer = getNextPlayer()
 
+  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
+  // uncomment line below to test animation
+  // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
   React.useEffect(() => {
-    if (!scoreAnimation) return
+    if (isCurrentPlayer && roundOverPayload && roundOverPayload.reason === "score-marked") {
+      const roundScore = roundOverPayload.value
+      const fromScore = score - roundScore
+      scoreAnimationSetter({
+        from: fromScore < 0 ? 0 : fromScore,
+        to: score,
+      })
+    } else {
+      scoreAnimationSetter(null)
+    }
+  }, [isCurrentPlayer, roundOverPayload])
+  React.useEffect(() => {
+    if (!scoreAnimation) return () => {}
 
-    const from = scoreAnimation.from
-    const to = scoreAnimation.to
-
+    const { from, to } = scoreAnimation
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
-    pathForegroundElement.style.strokeDashoffset = `${
-      pathLength - (from * (pathLength / 2)) / 3000
-    }`
-    pathForegroundElement.animate(
+    const pathForegroundAnimation = pathForegroundElement.animate(
       [
-        { strokeDashoffset: `${pathLength - (from * (pathLength / 2)) / 3000}` },
-        { strokeDashoffset: `${pathLength - (to * (pathLength / 2)) / 3000}` },
+        { strokeDashoffset: ratioToStrokeDashOffset(from / SCORE_MAX, pathLength) },
+        { strokeDashoffset: ratioToStrokeDashOffset(to / SCORE_MAX, pathLength) },
+      ],
+      {
+        duration: 1000,
+        fill: "forwards",
+      },
+    )
+    const circleElement = circleElementRef.current
+    const circleAnimation = circleElement.animate(
+      [
+        { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
+        { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
       ],
       {
         duration: 1000,
@@ -136,15 +150,17 @@ const UserPath = ({
       },
     )
 
-    const circleElement = circleElementRef.current
-    circleElement.style.offsetDistance = `${(from * 50) / 3000}%`
-    circleElement.animate(
-      [{ offsetDistance: `${(from * 50) / 3000}%` }, { offsetDistance: `${(to * 50) / 3000}%` }],
-      {
-        duration: 1000,
-        fill: "forwards",
-      },
-    )
+    pathForegroundAnimation.onfinish = () => {
+      if (circleAnimation.playState === "finished") scoreAnimationSetter(null)
+    }
+    circleAnimation.onfinish = () => {
+      if (pathForegroundAnimation.playState === "finished") scoreAnimationSetter(null)
+    }
+
+    return () => {
+      pathForegroundAnimation.cancel()
+      circleAnimation.cancel()
+    }
   }, [scoreAnimation])
 
   React.useEffect(() => {
@@ -152,7 +168,10 @@ const UserPath = ({
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
     pathForegroundElement.style.strokeDasharray = pathLength
-    pathForegroundElement.style.strokeDashoffset = pathLength - (score / 6000) * pathLength
+    pathForegroundElement.style.strokeDashoffset = ratioToStrokeDashOffset(
+      score / SCORE_MAX,
+      pathLength,
+    )
   }, [score])
 
   return (
@@ -167,7 +186,7 @@ const UserPath = ({
           className="score-indicator"
           style={{
             offsetPath: `path('${pathCoordinates}')`,
-            offsetDistance: `${(score / 6000) * 100}%`,
+            offsetDistance: ratioToOffsetDistance(score / SCORE_MAX),
           }}
         />
       </svg>
@@ -183,6 +202,10 @@ const UserPath = ({
     </div>
   )
 }
+
+const ratioToOffsetDistance = (ratio) => `${ratio * 100}%`
+
+const ratioToStrokeDashOffset = (ratio, pathLength) => pathLength - ratio * pathLength
 
 const Avatar = ({ character }) => (
   <img

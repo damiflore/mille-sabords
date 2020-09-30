@@ -10,6 +10,7 @@
     "systemjs": "./node_modules/systemjs/dist/system-node.cjs",
     "react": "./node_modules/react/index.js",
     "src/": "./src/",
+    "test/": "./test/",
     "lab/": "./lab/"
   },
   "scopes": {

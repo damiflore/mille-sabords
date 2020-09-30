@@ -92,30 +92,34 @@ body {
 
 #main .header {
   height: 60px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+}
+
+#main .footer {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
 }
 
 #main .box-and-skulls {
   height: 250px;
   position: relative;
-  z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
 }
 
 #main .dice-ongoing {
   flex: 1;
   min-height: 100px;
-  /* z-index: 0; */
-  /* z-index pour que la map reste en dessous */
 }
 
 #main .actions {
   position: relative;
-  z-index: 1; /* z-index pour passer par dessus la map (idéalement la map serait pas en position absolute) */
   height: 60px;
 }
 
 #main .round-container {
   background-image: url(./wood.jpg);
-  padding: 15px;
   display: flex;
   flex: 1;
   flex-direction: column;

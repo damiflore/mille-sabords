@@ -3,27 +3,34 @@ import React from "react"
 import {
   useRollCount,
   useWitchUncursedDiceId,
-  useCurrentCard,
+  useCurrentCardId,
   useScoreMarked,
-  useDicesRolled,
-  useDicesCursed,
+  useCardIds,
+  useDiceRolledIds,
+  useDiceCursedIds,
   useChestSlots,
   useCurrentPlayerId,
   usePlayers,
+  useDices,
 } from "src/main.store.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import {
-  isWitchCard,
+  cardIdToCard,
   isChestCard,
   isCoinCard,
   isDiamondCard,
   isOneSkullCard,
   isTwoSkullsCard,
 } from "src/cards/cards.js"
+
 import { computeRoundScore } from "src/score/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
+
+export const useCardDeck = ({ cardIds = useCardIds() } = {}) => {
+  return cardIds.map((cardId) => cardIdToCard(cardId))
+}
 
 export const useCurrentPlayer = ({
   currentPlayerId = useCurrentPlayerId(),
@@ -43,24 +50,22 @@ export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount
 
 export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
 
-export const useSymbolsFromCard = ({ currentCard = useCurrentCard() } = {}) => {
-  if (isCoinCard(currentCard)) return [SYMBOL_COIN]
-  if (isDiamondCard(currentCard)) return [SYMBOL_DIAMOND]
-  if (isOneSkullCard(currentCard)) return [SYMBOL_SKULL]
-  if (isTwoSkullsCard(currentCard)) return [SYMBOL_SKULL, SYMBOL_SKULL]
-  return []
-}
+export const useSymbolsInChest = ({ dices = useDices(), chestSlots = useChestSlots() } = {}) => {
+  return Object.keys(chestSlots).reduce((previous, chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
 
-export const useSymbolsInChest = ({ chestSlots = useChestSlots() } = {}) => {
-  return Object.keys(chestSlots)
-    .filter((chestSlot) => chestSlots[chestSlot])
-    .map((chestSlot) => {
-      const chestSlotContent = chestSlots[chestSlot]
-      if (chestSlotContent.type === "symbol") {
-        return chestSlotContent.value
-      }
-      return diceToVisibleSymbol(chestSlotContent.value)
-    })
+    if (chestSlotContent && chestSlotContent.type === "symbol") {
+      return [...previous, chestSlotContent.value]
+    }
+
+    if (chestSlotContent && chestSlotContent.type === "dice") {
+      const diceId = chestSlotContent.value
+      const dice = dices[diceId]
+      return [...previous, diceToVisibleSymbol(dice)]
+    }
+
+    return previous
+  }, [])
 }
 
 export const useRemainingSpotInCursedArea = ({
@@ -73,24 +78,41 @@ export const useHasDicesToCurse = ({ dicesToCurse = useDicesToCurse() } = {}) =>
   return dicesToCurse.length > 0
 }
 
+export const useDiceKeptIds = ({ chestSlots = useChestSlots() } = {}) => {
+  return Object.keys(chestSlots).reduce((previous, chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    if (chestSlotContent && chestSlotContent.type === "dice") {
+      return [...previous, chestSlotContent.value]
+    }
+    return previous
+  }, [])
+}
+
 export const useDicesToCurse = ({
-  dicesRolled = useDicesRolled(),
+  dices = useDices(),
+  diceRolledIds = useDiceRolledIds(),
   witchUncursedDiceId = useWitchUncursedDiceId(),
   remainingSpotInCursedArea = useRemainingSpotInCursedArea(),
 } = {}) => {
-  return dicesRolled
-    .filter((dice) => diceIsOnSkull(dice) && dice.id !== witchUncursedDiceId)
+  const dicesToCurse = diceRolledIds
+    .map((diceRolledId) => dices[diceRolledId])
+    .filter((diceRolled) => {
+      if (!diceIsOnSkull(diceRolled)) return false
+      if (diceRolled.id === witchUncursedDiceId) return false
+      return true
+    })
     .slice(0, remainingSpotInCursedArea)
+  return dicesToCurse
 }
 
 export const useRollDiceAllowed = ({
-  currentCard = useCurrentCard(),
+  currentCardId = useCurrentCardId(),
   hasNeverRolled = useHasNeverRolled(),
   scoreMarked = useScoreMarked(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
-  if (!currentCard) {
+  if (!currentCardId) {
     return false
   }
 
@@ -103,7 +125,7 @@ export const useRollDiceAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(currentCard)) {
+    if (isChestCard(cardIdToCard(currentCardId))) {
       return true
     }
     return false
@@ -123,66 +145,26 @@ export const useThreeSkullsOrMoreInCursedArea = ({
 }
 
 export const useSkullCountInCursedArea = ({
-  dicesCursed = useDicesCursed(),
+  diceCursedIds = useDiceCursedIds(),
   symbolsFromCard = useSymbolsFromCard(),
 } = {}) => {
-  return dicesCursed.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
+  return diceCursedIds.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
 }
 
-export const useRemoveSkullAllowed = ({
-  witchUncursedDiceId = useWitchUncursedDiceId(),
-  currentCard = useCurrentCard(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (!isWitchCard(currentCard)) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  if (witchUncursedDiceId) {
-    return false
-  }
-
-  return true
-}
-
-export const useKeepDiceAllowed = ({
-  scoreMarked = useScoreMarked(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
-}
-
-export const useUnkeepDiceAllowed = ({
-  scoreMarked = useScoreMarked(),
-  threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
-} = {}) => {
-  if (scoreMarked) {
-    return false
-  }
-
-  if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  return true
+const useSymbolsFromCard = ({ currentCardId = useCurrentCardId() } = {}) => {
+  if (!currentCardId) return []
+  const currentCard = cardIdToCard(currentCardId)
+  if (isCoinCard(currentCard)) return [SYMBOL_COIN]
+  if (isDiamondCard(currentCard)) return [SYMBOL_DIAMOND]
+  if (isOneSkullCard(currentCard)) return [SYMBOL_SKULL]
+  if (isTwoSkullsCard(currentCard)) return [SYMBOL_SKULL, SYMBOL_SKULL]
+  return []
 }
 
 export const useMarkScoreButtonVisible = ({
   hasRolledOnce = useHasRolledOnce(),
   scoreMarked = useScoreMarked(),
-  currentCard = useCurrentCard(),
+  currentCardId = useCurrentCardId(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
   if (scoreMarked) {
@@ -193,7 +175,7 @@ export const useMarkScoreButtonVisible = ({
     return false
   }
 
-  if (!currentCard) {
+  if (!currentCardId) {
     return false
   }
 
@@ -206,7 +188,7 @@ export const useMarkScoreButtonVisible = ({
 
 export const useMarkScoreAllowed = ({
   scoreMarked = useScoreMarked(),
-  currentCard = useCurrentCard(),
+  currentCardId = useCurrentCardId(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
 } = {}) => {
@@ -215,7 +197,7 @@ export const useMarkScoreAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(currentCard)) {
+    if (isChestCard(cardIdToCard(currentCardId))) {
       return true
     }
     return false
@@ -225,7 +207,7 @@ export const useMarkScoreAllowed = ({
     return false
   }
 
-  if (!currentCard) {
+  if (!currentCardId) {
     return false
   }
 
@@ -253,7 +235,7 @@ export const useStartNextRoundAllowed = ({
 }
 
 export const useRoundScore = ({
-  currentCard = useCurrentCard(),
+  currentCardId = useCurrentCardId(),
   symbolsInChest = useSymbolsInChest(),
   scoreMarked = useScoreMarked(),
   markScoreAllowed = useMarkScoreAllowed(),
@@ -261,11 +243,11 @@ export const useRoundScore = ({
   return useMemo(
     () =>
       computeRoundScore({
-        card: currentCard,
+        card: cardIdToCard(currentCardId),
         symbolsInChest,
         scoreMarked,
         markScoreAllowed,
       }),
-    [currentCard, symbolsInChest, scoreMarked, markScoreAllowed],
+    [currentCardId, symbolsInChest, scoreMarked, markScoreAllowed],
   )
 }

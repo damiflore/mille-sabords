@@ -1,19 +1,11 @@
-/**
-
-Nice to have
-- lorsqu'on drop dans diceKept le dé se met a la place la plus proche de la ou on drop
-et non pas a la fin
-- si on drag un dé depuis diceOnGoing, la zone diceKept entre en subrillance
-- si on drag un dé depuis diceKept, la zone diceOnGoing entre en surbrillance
-- collision entre les dé (si on drop sur un autre dé, le dé se met a la position la plus proche)
-
-*/
-
+/* eslint-disable no-nested-ternary */
 import React from "react"
-import { getDomNodeRectangle, rectangleInsideOf } from "src/helper/rectangle.js"
-import { useWitchUncursedDiceId } from "src/main.store.js"
+
+import { usePrevious } from "src/hooks.js"
+import { Portal } from "src/generic/Portal.jsx"
+import { rectangleToRectangleInsideDomNode, printPointInDocument } from "src/dom/dom.position.js"
+import { stringifyTransformations } from "src/helper/render.js"
 import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/dom.main.js"
-import { useDragDiceGestureSetter } from "src/drag/drag.main.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
@@ -22,162 +14,190 @@ const { useEffect, useState } = React
 
 export const Dice = ({
   dice,
-  clickAllowed,
-  disabled,
-  draggable,
-  onClickAction,
-  specificStyle,
-  diceOnGoing,
-  x = 0,
-  y = 0,
+  diceAnimation,
+  anmationDebug = false,
+  parentNode,
+  zIndex,
+  x,
+  y,
   rotation,
+  draggable,
+  onDiceClick,
+  onDiceDrag,
+  onDiceDrop,
+  onDiceDragEnd,
+  disapear,
+  appear,
 }) => {
-  const onSkull = diceIsOnSkull(dice)
+  // state from contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
-  const witchUncursedDiceId = useWitchUncursedDiceId()
 
-  // a small move is a drag gesture but
-  // not yet a drag intent
-  // long grip or big enough move set drag intent to true
+  // local states
   const [diceGripped, diceGrippedSetter] = useState(false)
-  const [dragIntent, setDragIntent] = useState(false)
   const [dragGesture, setDragGesture] = useState(null)
-  const setDragDiceGesture = useDragDiceGestureSetter()
 
-  const skullDiceClass = (dice) => {
-    if (dice.id === witchUncursedDiceId) return "dice"
-    return diceOnGoing ? "dice dice-cursed-disapear" : "dice dice-cursed-appear"
-  }
+  // si y'a une animation alors reste dans ton conteneur
+  // le temps qu'elle se finisse
+  const parentNodePrevious = usePrevious(parentNode)
+  const portalParentNode = diceAnimation ? parentNodePrevious : parentNode
 
   useEffect(() => {
     if (!draggable || !diceDomNode || !mainDomNode) {
       return () => {}
     }
 
-    let dragIntentTimeout
-    const dropHandlerMap = new Map()
+    let bigMoveOccured = false
     const disableDragGesture = enableDragGesture(diceDomNode, {
       onGrip: () => {
         diceGrippedSetter(true)
       },
-      onLongGrip: () => {
-        setDragIntent(true)
+      onClick: (clickEvent) => {
+        onDiceClick(dice, clickEvent)
       },
-      onDrag: ({ x, y, relativeX, relativeY }) => {
-        if (Math.abs(relativeX) > 5 || Math.abs(relativeY) > 5) {
-          setDragIntent(true)
-        }
-
+      onDrag: ({ x, y, relativeX, relativeY, setDropEffect }) => {
         const diceDesiredRect = {
           left: x,
           right: x + diceSize,
           top: y,
           bottom: y + diceSize,
         }
-        const mainDomNodeRect = getDomNodeRectangle(mainDomNode)
-        const diceRectangle = rectangleInsideOf(diceDesiredRect, mainDomNodeRect)
+        const diceRectangle = rectangleToRectangleInsideDomNode(diceDesiredRect, mainDomNode)
         setDragGesture({ x: diceRectangle.left, y: diceRectangle.top })
-        setDragDiceGesture({
-          dice,
-          diceRectangle,
-          setDropHandler: (domNode, dropHandler) => {
-            dropHandlerMap.set(domNode, dropHandler)
-          },
-        })
-      },
-      onRelease: ({ x, y }) => {
-        diceGrippedSetter(false)
-        // setTimeout is to ensure the click cannot happen just after mouseup
-        dragIntentTimeout = setTimeout(() => setDragIntent(false))
-        setDragGesture(null)
-        setDragDiceGesture(null)
-
-        const diceRectangle = {
-          left: x,
-          right: x + diceSize,
-          top: y,
-          bottom: y + diceSize,
+        bigMoveOccured = bigMoveOccured || Math.abs(relativeX) > 10 || Math.abs(relativeY) > 10
+        if (bigMoveOccured) {
+          onDiceDrag(dice, { relativeX, relativeY, setDropEffect, diceRectangle })
         }
-        dropHandlerMap.forEach((dropHandler) => dropHandler({ diceRectangle }))
+      },
+      onRelease: ({ dropEffect, x, y }) => {
+        if (dropEffect !== "none") {
+          const diceRectangle = {
+            left: x,
+            right: x + diceSize,
+            top: y,
+            bottom: y + diceSize,
+          }
+          onDiceDrop(dice, {
+            diceRectangle,
+          })
+        }
+        diceGrippedSetter(false)
+        setDragGesture(null)
+        onDiceDragEnd(dice)
       },
       onCancel: () => {
         diceGrippedSetter(false)
-        setDragIntent(false)
         setDragGesture(null)
-        setDragDiceGesture(null)
+        onDiceDragEnd(dice)
       },
     })
     return () => {
       disableDragGesture()
-      clearTimeout(dragIntentTimeout)
     }
-  }, [draggable, diceDomNode, mainDomNode])
+  }, [draggable, diceDomNode, mainDomNode, onDiceClick, onDiceDrag, onDiceDrop, onDiceDragEnd])
 
-  const left = dragGesture ? dragGesture.x : x
-  const top = dragGesture ? dragGesture.y : y
+  useEffect(() => {
+    if (!diceAnimation || !diceDomNode) return () => {}
+    const { from, to, onfinish } = diceAnimation
+
+    if (anmationDebug) {
+      printPointInDocument(from)
+      printPointInDocument(to)
+    }
+    const transform = `translate(${Math.floor(to.x - from.x)}px, ${Math.floor(to.y - from.y)}px)`
+    const animation = diceDomNode.parentNode.animate(
+      [
+        {
+          transform,
+        },
+      ],
+      {
+        duration: 500,
+        fill: "forwards",
+        easing: "cubic-bezier(0, 0.55, 0.45, 1)",
+      },
+    )
+    animation.onfinish = onfinish
+    return () => {
+      animation.cancel()
+    }
+  }, [diceDomNode, diceAnimation])
+
+  const onSkull = diceIsOnSkull(dice)
+  const diceX =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.x : dragGesture ? dragGesture.x : x
+
+  const diceY =
+    diceAnimation && diceAnimation.from ? diceAnimation.from.y : dragGesture ? dragGesture.y : y
+
+  const diceZIndex = dragGesture || diceAnimation ? 1000 : zIndex
+
+  // if (dice.id === 4 && !dragGesture) {
+  //   console.log({
+  //     diceX,
+  //     diceY,
+  //     diceAnimation: Boolean(diceAnimation),
+  //     dragGesture: Boolean(dragGesture),
+  //   })
+  // }
 
   return (
-    <svg
-      data-dice-id={dice.id}
-      onClick={
-        !disabled && onClickAction && clickAllowed && !dragIntent
-          ? () => onClickAction(dice)
-          : undefined
-      }
-      className={onSkull ? skullDiceClass(dice) : "dice"}
-      style={{
-        width: diceSize,
-        height: diceSize,
-        left: `${left}px`,
-        top: `${top}px`,
-        ...specificStyle,
-        ...(dragGesture
-          ? {
-              position: "fixed",
-              zIndex: 1000,
-            }
-          : {}),
-      }}
-    >
-      <g
-        ref={diceDomNodeSetter}
+    <Portal parent={portalParentNode}>
+      <svg
+        data-dice-id={dice.id}
+        className="dice"
+        onClick={
+          draggable
+            ? undefined
+            : (clickEvent) => {
+                onDiceClick(dice, clickEvent)
+              }
+        }
         style={{
-          transform: stringifyTransformations({
-            rotate: rotation && !dragGesture ? rotation : 0,
-            scale: diceGripped ? "1.2" : "1",
-          }),
-          transformOrigin: "center center",
+          width: diceSize,
+          height: diceSize,
+          left: `${diceX}px`,
+          top: `${diceY}px`,
+          zIndex: diceZIndex,
+          position: dragGesture || diceAnimation ? "fixed" : undefined,
         }}
       >
-        <rect
-          className="dice-background"
-          width="100%"
-          height="100%"
-          rx="5"
-          ry="5"
-          fill={onSkull ? "black" : "#fcfcfc"}
-          stroke={onSkull ? "black" : "#b9b9b9"}
-          strokeWidth="1"
-        ></rect>
-        <image
-          xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
-          draggable="false"
+        <g
+          ref={diceDomNodeSetter}
+          className={disapear ? "dice-cursed-disapear" : appear ? "dice-cursed-appear" : ""}
           style={{
-            width: "100%",
-            height: "100%",
+            transform: stringifyTransformations({
+              rotate: rotation ? rotation : 0,
+              scale: diceGripped ? "1.1" : "1",
+            }),
+            transitionProperty: "transform",
+            transitionDuration: "500ms",
+            // https://easings.net/#easeOutCirc
+            transitionTimingFunction: "cubic-bezier(0, 0.55, 0.45, 1)",
+            transformOrigin: "center center",
           }}
-        />
-      </g>
-    </svg>
+        >
+          <rect
+            className="dice-background"
+            width="100%"
+            height="100%"
+            rx="5"
+            ry="5"
+            fill={onSkull ? "black" : "#fcfcfc"}
+            stroke={onSkull ? "black" : "#b9b9b9"}
+            strokeWidth="1"
+          ></rect>
+          <image
+            xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
+            draggable="false"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </g>
+      </svg>
+    </Portal>
   )
-}
-
-const stringifyTransformations = ({ rotate, scale, translate }) => {
-  return [
-    ...(rotate ? [`rotate(${rotate}deg)`] : []),
-    ...(scale && scale !== 1 ? [`scale(${scale})`] : []),
-    ...(translate ? [`translate(${translate})`] : []),
-  ].join("")
 }

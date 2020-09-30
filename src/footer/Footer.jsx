@@ -11,14 +11,14 @@ import { createAction } from "src/main.store.js"
 
 import { ButtonRoll } from "./ButtonRoll.js"
 
-export const Footer = ({ onRoundOver }) => {
+export const Footer = ({ onRoundOver, rolledAreaRef }) => {
   // const roundStarted = useRoundStarted()
   // if (!roundStarted && !dialogIsOpen) openDialog()
   // TODO: fix bug in DialogBase: dialog cannot be instantiated open
 
   return (
-    <div className="actions">
-      <ButtonRoll />
+    <div className="footer actions">
+      <ButtonRoll rolledAreaRef={rolledAreaRef} />
       <ButtonMarkScore />
       <ButtonEndRound onRoundOver={onRoundOver} />
     </div>

@@ -1,48 +1,80 @@
 import { createAction } from "src/main.store.js"
 
-export const useCurseDice = createAction((state, dice) => {
-  const { dicesRolled, dicesCursed } = state
+export const useSetDiceRolledAreaPosition = createAction((state, dice, { x, y }, zIndex) => {
+  const { dices } = state
+  dice.rolledAreaPosition = { x, y }
+  dice.rolledAreaZIndex = zIndex
   return {
     ...state,
-    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
-    dicesCursed: [...dicesCursed, dice],
+    dices: { ...dices },
+  }
+})
+
+export const useSetDiceChestSlot = createAction((state, dice, chestSlot) => {
+  const { chestSlots } = state
+  const previousChestSlot = Object.keys(chestSlots).find((chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
+  })
+  return {
+    ...state,
+    chestSlots: {
+      ...chestSlots,
+      ...(previousChestSlot ? { [previousChestSlot]: null } : {}),
+      [chestSlot]: { type: "dice", value: dice.id },
+    },
+  }
+})
+
+export const useCurseDice = createAction((state, dice) => {
+  const { diceRolledIds, diceCursedIds } = state
+  return {
+    ...state,
+    diceRolledIds: diceRolledIds.filter((diceRolledId) => diceRolledId !== dice.id),
+    diceCursedIds: [...diceCursedIds, dice.id],
   }
 })
 
 export const useUncurseDice = createAction((state, dice) => {
-  const { dicesRolled, dicesCursed } = state
+  const { diceRolledIds, diceCursedIds } = state
   return {
     ...state,
     witchUncursedDiceId: dice.id,
-    dicesRolled: [...dicesRolled, dice],
-    dicesCursed: dicesCursed.filter((diceCursed) => diceCursed.id !== dice.id),
+    diceRolledIds: [...diceRolledIds, dice.id],
+    diceCursedIds: diceCursedIds.filter((diceCursedId) => diceCursedId !== dice.id),
   }
 })
 
-export const useUnkeepDice = createAction((state, dice, rolledAreaPosition) => {
-  const { dicesRolled, chestSlots } = state
-  dice.rolledAreaPosition = rolledAreaPosition
+export const useUnkeepDice = createAction((state, dice) => {
+  const { diceRolledIds, chestSlots } = state
+  const previousChestSlot = Object.keys(chestSlots).find((chestSlot) => {
+    const chestSlotContent = chestSlots[chestSlot]
+    return (
+      chestSlotContent && chestSlotContent.type === "dice" && chestSlotContent.value === dice.id
+    )
+  })
   return {
     ...state,
-    dicesRolled: [...dicesRolled, dice],
+    diceRolledIds: [...diceRolledIds, dice.id],
     chestSlots: {
       ...chestSlots,
-      [dice.chestSlot]: null,
+      [previousChestSlot]: null,
     },
   }
 })
 
 export const useKeepDice = createAction((state, dice, chestSlot) => {
-  const { dicesRolled, chestSlots } = state
-  dice.chestSlot = chestSlot
+  const { diceRolledIds, chestSlots } = state
   return {
     ...state,
-    dicesRolled: dicesRolled.filter((diceRolled) => diceRolled.id !== dice.id),
+    diceRolledIds: diceRolledIds.filter((diceRolledId) => diceRolledId !== dice.id),
     chestSlots: {
       ...chestSlots,
       [chestSlot]: {
         type: "dice",
-        value: dice,
+        value: dice.id,
       },
     },
   }

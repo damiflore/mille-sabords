@@ -1,45 +1,89 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { GameEffects } from "src/round/round.effects.js"
+import { RoundEffects } from "src/round/round.effects.js"
+import { CardsEffects } from "src/cards/cards.effects.js"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
+import { DiceContainer } from "src/dices/DiceContainer.jsx"
+import { useSignalEmitter } from "src/hooks.js"
 import { useCurrentPlayerGettingReady } from "src/main.store.js"
 
-const { useMemo } = React
+export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
+  const [roundMounted, roundMountedSetter] = React.useState(false)
 
-export const Round = ({ openScoreboard, onRoundOver }) => {
-  /*
-  https://github.com/facebook/react/issues/15156#issuecomment-474590693
-
-  useMemo usage below means the components won't be re-rendered when game global state changes
-  and it's fine because as you can see component structure is not conditioned by the gameState or anything.
-  Every descendant will still be re-rendered by react and if some component are expensive to render
-  they can be wrapped by useMemo with the same pattern.
-  (Don't forget to pass dependencies as second arg if there is any).
-
-  There is no real need for useMemo here: it's kept as an example.
-  */
+  const diceOverRolledAreaSignal = useSignalEmitter()
+  const diceOverChestSignal = useSignalEmitter()
 
   const currentPlayerGettingReady = useCurrentPlayerGettingReady()
   const cardDrawn = !currentPlayerGettingReady
 
-  return useMemo(() => (
+  return (
     <div className="round-container">
-      <GameEffects />
+      <CardsEffects />
       <Header openScoreboard={openScoreboard} />
-      {cardDrawn && (
-        <>
-          <div className="chest-and-skulls">
-            <Chest />
-            <SkullIsland />
-          </div>
-          <DiceOnGoing />
-          <Footer onRoundOver={onRoundOver} />
-        </>
-      )}
+      {cardDrawn ? (
+        <RoundGameBoard
+          diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+          diceOverChestSignal={diceOverChestSignal}
+          openScoreboard={openScoreboard}
+          onRoundOver={onRoundOver}
+          onRoundMounted={(refs) => {
+            onRoundStart()
+            roundMountedSetter(refs)
+          }}
+        />
+      ) : null}
+      {roundMounted ? (
+        <DiceContainer
+          offscreenDomNode={roundMounted.offscreenDomNode}
+          chestDomNode={roundMounted.chestDomNode}
+          rolledAreaDomNode={roundMounted.rolledAreaDomNode}
+          cursedAreaDomNode={roundMounted.cursedAreaDomNode}
+          onDiceOverChestChange={diceOverChestSignal.emit}
+          onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
+        />
+      ) : null}
     </div>
-  ))
+  )
+}
+
+const RoundGameBoard = ({
+  diceOverRolledAreaSignal,
+  diceOverChestSignal,
+  onRoundMounted,
+  onRoundOver,
+}) => {
+  const rolledAreaRef = React.useRef(null)
+  const chestRef = React.useRef(null)
+  const cursedAreaRef = React.useRef(null)
+  const offscreenRef = React.useRef(null)
+
+  React.useEffect(() => {
+    onRoundMounted({
+      rolledAreaDomNode: rolledAreaRef.current,
+      chestDomNode: chestRef.current,
+      cursedAreaDomNode: cursedAreaRef.current,
+      offscreenDomNode: offscreenRef.current,
+    })
+  }, [])
+
+  return (
+    <>
+      <RoundEffects />
+      <div className="chest-and-skulls">
+        <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
+        <SkullIsland cursedAreaRef={cursedAreaRef} />
+      </div>
+      <DiceOnGoing
+        rolledAreaRef={rolledAreaRef}
+        offscreenRef={offscreenRef}
+        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+      />
+      <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
+    </>
+  )
 }

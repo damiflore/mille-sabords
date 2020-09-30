@@ -12,7 +12,7 @@ reportFileSizeImpact({
   trackingConfig: {
     systemjs: {
       "./index.prod.html": true,
-      "./dist/bundle.importmap": true,
+      "./import-map-bundle.importmap": true,
       "./dist/systemjs/**/*": true,
       "./dist/systemjs/**/*.map": false,
     },

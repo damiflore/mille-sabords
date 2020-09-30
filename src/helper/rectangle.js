@@ -1,6 +1,5 @@
 // https://github.com/infusion/Rectangles.js/blob/master/rectangles.js
 
-import { getDocumentScroll } from "src/dom/dom.util.js"
 import { getDistanceBetweenTwoPoints } from "./geometry.js"
 
 export const rectangleCollidesWithRectangle = (firstRectangle, secondRectangle) => {
@@ -64,7 +63,7 @@ export const rectangleRelativeTo = (rectangle, parentRectangle) => {
   }
 }
 
-export const findClosestRectangle = (rectangle, rectangleCandidates) => {
+export const findRectangleCloserToRectangle = (rectangleCandidates, rectangle) => {
   let smallestDistance = getDistanceBetweenRectangles(rectangle, rectangleCandidates[0])
   return rectangleCandidates.reduce((prev, rectangleCandidate) => {
     const distance = getDistanceBetweenRectangles(rectangle, rectangleCandidate)
@@ -109,20 +108,4 @@ export const rectangleOverlapping = ({ left, right, top, bottom }, intersectingR
     bottom: bottom < intersectingRectangle.bottom ? bottom : intersectingRectangle.bottom,
   }
   return overlapRectangle
-}
-
-export const getDomNodeRectangle = (domNode) => {
-  const domNodeRect = domNode.getBoundingClientRect()
-  const documentScroll = getDocumentScroll(domNode)
-  const left = domNodeRect.left + documentScroll.x
-  const top = domNodeRect.top + documentScroll.y
-  const right = left + domNodeRect.width
-  const bottom = top + domNodeRect.height
-
-  return {
-    left: Math.floor(left),
-    top: Math.floor(top),
-    right: Math.floor(right),
-    bottom: Math.floor(bottom),
-  }
 }

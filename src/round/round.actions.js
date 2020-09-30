@@ -25,8 +25,8 @@ export const useStartRound = createAction((state) => {
     ...state,
     witchUncursedDiceId: null,
     rollCount: 0,
-    dicesRolled: [],
-    dicesCursed: [],
+    diceRolledIds: [],
+    diceCursedIds: [],
     chestSlots: {
       1: null,
       2: null,

@@ -10,7 +10,7 @@ import * as jsenvConfig from "../../jsenv.config.js"
 // and to remove dev dependencies from importmap
 process.env.NODE_ENV = "production"
 
-const importMapFileRelativeUrl = "./dist/bundle.importmap"
+const importMapFileRelativeUrl = "./import-map-bundle.importmap"
 
 await generateImportMapForProject(
   [
