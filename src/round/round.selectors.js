@@ -152,6 +152,7 @@ export const useSkullCountInCursedArea = ({
 }
 
 const useSymbolsFromCard = ({ currentCardId = useCurrentCardId() } = {}) => {
+  if (!currentCardId) return []
   const currentCard = cardIdToCard(currentCardId)
   if (isCoinCard(currentCard)) return [SYMBOL_COIN]
   if (isDiamondCard(currentCard)) return [SYMBOL_DIAMOND]

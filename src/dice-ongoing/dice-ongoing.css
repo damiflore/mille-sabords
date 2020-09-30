@@ -16,6 +16,14 @@
 .dice-ongoing .area {
   display: block;
   position: absolute;
+  /*
+  dices have z-index in the rolled area because it's easier than re-organizing dom nodes
+  order. By setting a z-index to the rolled area we can make dices z-index relative
+  to the rolled area.
+  To avoid this we could re-render dices depending on their z index instead of setting
+  a z-index.
+  */
+  z-index: 1;
   left: 30px;
   top: 20px;
   right: 40px;

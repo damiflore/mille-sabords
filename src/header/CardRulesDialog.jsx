@@ -1,13 +1,9 @@
 import React from "react"
 
-import { useCurrentCardId } from "src/main.store.js"
-import { cardIdToCard } from "src/cards/cards.js"
-
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
-export const CardRulesDialog = ({ dialogIsOpen, closeDialog }) => {
-  const card = cardIdToCard(useCurrentCardId())
+export const CardRulesDialog = ({ dialogIsOpen, closeDialog, card }) => {
   const cardRules = cardsRules[card.type]
 
   return (

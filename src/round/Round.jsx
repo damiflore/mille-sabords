@@ -1,6 +1,8 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { GameEffects } from "src/round/round.effects.js"
+import { RoundEffects } from "src/round/round.effects.js"
+import { CardsEffects } from "src/cards/cards.effects.js"
 import { DiceOnGoing } from "src/dice-ongoing/DiceOnGoing.jsx"
 import { Chest } from "src/chest/Chest.jsx"
 import { Header } from "src/header/Header.jsx"
@@ -16,18 +18,25 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
 
+  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const cardDrawn = !currentPlayerGettingReady
+
   return (
     <div className="round-container">
-      <RoundGameBoard
-        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
-        diceOverChestSignal={diceOverChestSignal}
-        openScoreboard={openScoreboard}
-        onRoundOver={onRoundOver}
-        onRoundMounted={(refs) => {
-          onRoundStart()
-          roundMountedSetter(refs)
-        }}
-      />
+      <CardsEffects />
+      <Header openScoreboard={openScoreboard} />
+      {cardDrawn ? (
+        <RoundGameBoard
+          diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+          diceOverChestSignal={diceOverChestSignal}
+          openScoreboard={openScoreboard}
+          onRoundOver={onRoundOver}
+          onRoundMounted={(refs) => {
+            onRoundStart()
+            roundMountedSetter(refs)
+          }}
+        />
+      ) : null}
       {roundMounted ? (
         <DiceContainer
           offscreenDomNode={roundMounted.offscreenDomNode}
@@ -45,7 +54,6 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
 const RoundGameBoard = ({
   diceOverRolledAreaSignal,
   diceOverChestSignal,
-  openScoreboard,
   onRoundMounted,
   onRoundOver,
 }) => {
@@ -53,9 +61,6 @@ const RoundGameBoard = ({
   const chestRef = React.useRef(null)
   const cursedAreaRef = React.useRef(null)
   const offscreenRef = React.useRef(null)
-
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
-  const cardDrawn = !currentPlayerGettingReady
 
   React.useEffect(() => {
     onRoundMounted({
@@ -68,22 +73,17 @@ const RoundGameBoard = ({
 
   return (
     <>
-      <GameEffects />
-      <Header openScoreboard={openScoreboard} />
-      {cardDrawn && (
-        <>
-          <div className="chest-and-skulls">
-            <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
-            <SkullIsland cursedAreaRef={cursedAreaRef} />
-          </div>
-          <DiceOnGoing
-            rolledAreaRef={rolledAreaRef}
-            offscreenRef={offscreenRef}
-            diceOverRolledAreaSignal={diceOverRolledAreaSignal}
-          />
-          <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
-        </>
-      )}
+      <RoundEffects />
+      <div className="chest-and-skulls">
+        <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
+        <SkullIsland cursedAreaRef={cursedAreaRef} />
+      </div>
+      <DiceOnGoing
+        rolledAreaRef={rolledAreaRef}
+        offscreenRef={offscreenRef}
+        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+      />
+      <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
     </>
   )
 }

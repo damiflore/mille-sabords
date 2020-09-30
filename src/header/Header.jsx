@@ -36,7 +36,9 @@ export const Header = ({ openScoreboard }) => {
       </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
-      <CardRulesDialog dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
+      {currentCard ? (
+        <CardRulesDialog card={currentCard} dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
+      ) : null}
     </div>
   )
 }

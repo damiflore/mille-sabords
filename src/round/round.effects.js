@@ -2,7 +2,7 @@ import React from "react"
 
 import { useBecomes } from "src/hooks.js"
 import { useCurrentCardId, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
-import { cardIdToCard, isCoinCard, isDiamondCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
@@ -12,21 +12,18 @@ import {
 } from "src/round/round.selectors.js"
 import { useMarkScore, useSendToSkullIsland } from "src/round/round.actions.js"
 import { useCurseDice } from "src/dices/dices.actions.js"
-import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
 
 const { useEffect } = React
 
-export const GameEffects = () => {
-  useGameEffects()
+export const RoundEffects = () => {
+  useRoundEffects()
   return null
 }
 
-export const useGameEffects = () => {
+export const useRoundEffects = () => {
   useCurseDiceEffect()
   useFailSwordChallengeEffect()
   useFourSkullsOrMoreOnFirstRollEffect()
-  useCoinCardEffect()
-  useDiamondCardEffect()
 }
 
 const useCurseDiceEffect = () => {
@@ -88,34 +85,4 @@ const useFourSkullsOrMoreOnFirstRollEffect = () => {
 
     sendToSkullIsland()
   }, [isFirstRoll, isOnSkullIsland, currentCard, skullCountInCursedArea])
-}
-
-const useCoinCardEffect = () => {
-  const addExtraCoin = useAddExtraCoin()
-  const currentCard = cardIdToCard(useCurrentCardId())
-  const drawCoinCard = useBecomes(
-    (currentCardPrevious) => !isCoinCard(currentCardPrevious) && isCoinCard(currentCard),
-    [currentCard],
-  )
-
-  useEffect(() => {
-    if (drawCoinCard) {
-      addExtraCoin()
-    }
-  }, [drawCoinCard])
-}
-
-const useDiamondCardEffect = () => {
-  const addExtraDiamond = useAddExtraDiamond()
-  const currentCard = cardIdToCard(useCurrentCardId())
-  const drawDiamondCard = useBecomes(
-    (currentCardPrevious) => !isDiamondCard(currentCardPrevious) && isDiamondCard(currentCard),
-    [currentCard],
-  )
-
-  useEffect(() => {
-    if (drawDiamondCard) {
-      addExtraDiamond()
-    }
-  }, [drawDiamondCard])
 }
