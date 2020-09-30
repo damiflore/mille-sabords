@@ -4,7 +4,8 @@ import { useSignalListener } from "src/hooks.js"
 import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
-import { cardIdToCard } from "src/cards/cards.js"
+import { cardIdToCard, isChestCard } from "src/cards/cards.js"
+
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
@@ -12,12 +13,28 @@ export const Chest = ({ chestRef, diceOverChestSignal }) => {
   const chestSlots = useChestSlots()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
   const diceOverChest = useSignalListener(diceOverChestSignal)
+  const currentCard = cardIdToCard(useCurrentCardId())
+  const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
+
+  /*
+    to get better user experience we should instantiate 9 elements even if the dices are not kept
+    these elements would be valid drop target
+    so that user can choose to put the dice where he wants in the dice kept area
+
+    beware though because we still want user to drop a dice
+    anywhere in the kept area and dice will choose to drop where it intersects most
+
+    to achieve this the most intersecting drop target should win (how to do that remains to be found)
+
+    il faut vraiment le coder comme ça
+    parce que c'est plus simple a comprendre
+  */
 
   return (
     <div className="chest">
       <div
-        className="dice-area"
         ref={chestRef}
+        className={`dice-area ${isChestCard(currentCard) ? "glow" : ""}`}
         style={{
           ...(diceOverChest ? { outline: "2px dotted" } : {}),
         }}
@@ -33,7 +50,7 @@ export const Chest = ({ chestRef, diceOverChestSignal }) => {
         <div className="top-right-corner"></div>
         <div className="bottom-left-corner"></div>
         <div className="bottom-right-corner"></div>
-        {threeSkullsOrMoreInCursedArea ? <CursedCover /> : null}
+        {threeSkullsOrMoreInCursedArea && !protectedByChestCard ? <CursedCover /> : null}
       </div>
       <RoundScore />
     </div>

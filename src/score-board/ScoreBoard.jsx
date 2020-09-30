@@ -1,7 +1,6 @@
 import React from "react"
-import { usePlayers, useRoundStarted, useCurrentPlayerGettingReady } from "src/main.store.js"
+import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 
 const SCORE_MAX = 6000
@@ -32,11 +31,15 @@ const getNextPlayer = () => {
   return nextPlayer
 }
 
-export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) => {
+export const ScoreBoard = ({
+  openedByUser,
+  closeScoreboard,
+  roundOverPayload,
+  openDrawCardDialog,
+}) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
   const roundStarted = useRoundStarted()
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
   // dialogue StartPlayerRoundDialog
   const [startPlayerRoundDialogIsOpen, startPlayerRoundDialogIsOpenSetter] = React.useState(false)
@@ -45,17 +48,6 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) 
   }
   const closeStartPlayerRoundDialog = () => {
     startPlayerRoundDialogIsOpenSetter(false)
-  }
-
-  // dialogue StartPlayerRoundDialog
-  const isDrawCardDialogOpen = currentPlayer && currentPlayerGettingReady
-  const [drawCardDialogIsOpen, drawCardDialogIsOpenSetter] = React.useState(isDrawCardDialogOpen)
-
-  const openDrawCardDialog = () => {
-    drawCardDialogIsOpenSetter(true)
-  }
-  const closeDrawCardDialog = () => {
-    drawCardDialogIsOpenSetter(false)
   }
 
   const nextPlayer = getNextPlayer()
@@ -99,7 +91,6 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) 
         openDrawCardDialog={openDrawCardDialog}
         player={nextPlayer}
       />
-      <DrawCardDialog dialogIsOpen={drawCardDialogIsOpen} closeDialog={closeDrawCardDialog} />
     </div>
   )
 }

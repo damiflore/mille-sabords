@@ -108,7 +108,6 @@ export const useDicesToCurse = ({
 export const useRollDiceAllowed = ({
   currentCardId = useCurrentCardId(),
   hasNeverRolled = useHasNeverRolled(),
-  diceRolledIds = useDiceRolledIds(),
   scoreMarked = useScoreMarked(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
   hasDicesToCurse = useHasDicesToCurse(),
@@ -126,14 +125,13 @@ export const useRollDiceAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
+    if (isChestCard(cardIdToCard(currentCardId))) {
+      return true
+    }
     return false
   }
 
   if (hasDicesToCurse) {
-    return false
-  }
-
-  if (diceRolledIds.length < 2) {
     return false
   }
 
@@ -188,7 +186,6 @@ export const useMarkScoreButtonVisible = ({
 }
 
 export const useMarkScoreAllowed = ({
-  hasRolledMoreThanOnce = useHasRolledMoreThanOnce(),
   scoreMarked = useScoreMarked(),
   currentCardId = useCurrentCardId(),
   threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea(),
@@ -199,7 +196,7 @@ export const useMarkScoreAllowed = ({
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    if (isChestCard(cardIdToCard(currentCardId)) && hasRolledMoreThanOnce) {
+    if (isChestCard(cardIdToCard(currentCardId))) {
       return true
     }
     return false

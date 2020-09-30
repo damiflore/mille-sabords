@@ -71,7 +71,6 @@
 .character-selection-page .characters-container {
   border: 4px solid #082988;
   border-radius: 10px;
-  overflow: hidden;
   margin: 0 15px;
   width: calc(100vw - 38px);
   /* 38 = (margin x 2) + (border x 2) */
@@ -81,6 +80,7 @@
   width: 100%;
   overflow: scroll;
   justify-content: start;
+  transition: transform 0.4s ease-in;
 }
 .character-selection-page .character {
   display: flex;
@@ -88,8 +88,17 @@
   padding: 20px;
 }
 .character-selection-page .character.disabled {
-  filter: grayscale(100%);
+  animation: grayscale 0.4s 0.1s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
+@keyframes grayscale {
+  0% {
+    filter: none;
+  }
+  100% {
+    filter: grayscale(100%);
+  }
+}
+
 .character-selection-page .character span {
   display: block;
   margin: 0 auto;
@@ -103,6 +112,31 @@
   height: auto;
   border-radius: 100%;
   background-color: #ffe7be;
+}
+
+/* SCROLL PADDELS */
+.paddles {
+  position: relative;
+  top: -50%;
+}
+.paddles .paddle {
+  position: absolute;
+  width: 3em;
+  background: #bee1ff;
+  border: 2px solid #5f82c1;
+  border-radius: 8px;
+  color: #5f82c1;
+  font-size: 12px;
+  padding: 8px;
+}
+.paddles .left-paddle {
+  left: -18px;
+}
+.paddles .right-paddle {
+  right: -18px;
+}
+.paddles .hidden {
+  display: none;
 }
 
 /* CREW COMPLETED */
@@ -120,6 +154,17 @@
   width: 100%;
   left: -20%;
   bottom: -8%;
+  animation: appearLeft 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+@keyframes appearLeft {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100px) rotate(-15deg);
+  }
+  to {
+    opacity: 0.5;
+    transform: translate(0) rotate(0);
+  }
 }
 .character-selection-page button {
   z-index: 1;

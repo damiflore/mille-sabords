@@ -1,41 +1,53 @@
-.draw-card-dialog .dialog-body {
+.draw-card-dialog.dialog-content {
+  background: transparent;
   height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+.draw-card-dialog .dialog-body {
   position: relative;
   text-align: center;
+  margin: 0;
+  overflow: visible;
 }
 .draw-card-dialog .dialog-label {
-  margin: 10px 0;
+  margin: 40px 0;
+  color: #bee1ff;
+  animation: appearFromLeft 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
-.draw-card-dialog .subtitle {
-  margin: 5px;
-  font-size: 19px;
-  color: #885708;
-  opacity: 0;
-  vertical-align: middle;
-  animation: appear 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-.draw-card-dialog .moreInfoIcon {
-  border: none;
-  fill: #f7a23c;
-  background-color: #ffe7be;
-  vertical-align: middle;
-  animation: appear 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-.draw-card-dialog .moreInfoIcon:focus {
-  outline: none;
-}
-@keyframes appear {
+@keyframes appearFromLeft {
+  from {
+    opacity: 0;
+    transform: translate(-110%);
+  }
   to {
     opacity: 1;
+    transform: translate(0);
+  }
+}
+.draw-card-dialog .card-name {
+  display: block;
+  opacity: 0;
+  animation: appearFromBottom 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+@keyframes appearFromBottom {
+  from {
+    opacity: 0;
+    transform: translate(0, -50px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0);
   }
 }
 .draw-card-dialog .text-rule {
   margin: 15px;
   font-size: 15px;
-  color: #885708;
+  color: #8ec9fc;
 }
 .draw-card-dialog .card-description {
   overflow: scroll;
+  margin: 40px 0;
 }
 .draw-card-dialog .dialog-actions {
   width: 90%;
@@ -43,30 +55,29 @@
   margin: 0 auto 20px auto;
 }
 .draw-card-dialog .dialog-actions button {
-  width: 90%;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 7px 13px;
+  padding: 13px;
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
-  color: #f7a23c;
-  background-color: #ffe7be;
-  border-color: #f7a23c;
-  border-width: 3px;
-  border-style: solid;
+  color: #082988;
+  background-color: #8ec9fc;
+  border: 3px solid #082988;
 }
 
 /* Card area */
 .card-area {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: center;
   position: relative;
-  margin: 25px 0;
+  margin: 70px 0;
 }
 .card-area .card {
   display: block;
@@ -79,20 +90,40 @@
 .card-area .current-card {
   position: absolute;
   background: none;
+  width: 53vw;
+  transform-origin: center center;
+  height: 100%;
 }
 .card-area .default-card {
-  height: 215px;
+  height: calc((52vw * 1.54) - 10px);
+  width: calc(52vw - 10px);
 }
 .card-area .draw-card-btn {
   position: relative;
   top: 40%;
   color: #4e8fc2;
 }
-.card-area .card img {
-  width: 140px;
+.card-area .card .card-img {
+  width: 53vw;
   height: auto;
   position: relative;
+  top: -20px;
 }
+/* TODO
+animation on click on COMMENCER
+transform: translate(-100%, -100%) scale(0.25);
+ */
+
+.draw-card-dialog .small-card {
+  position: relative;
+  left: calc(50% - 30px);
+  transform-origin: center center;
+}
+.draw-card-dialog .small-card #small-card {
+  opacity: 0;
+  position: fixed;
+}
+
 .card-area .remaining-cards-number {
   z-index: 1;
   position: relative;
@@ -125,8 +156,7 @@
 }
 @keyframes flipCard {
   to {
-    transform: rotateY(180deg);
-    margin: 15px;
+    transform: rotateY(180deg) scale(1.05);
   }
 }
 .flip-card-front,
@@ -138,7 +168,7 @@
   backface-visibility: hidden;
 }
 .flip-card-back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) scale(1.05);
 }
 [shaking-deck] {
   animation: shake 0.5s;

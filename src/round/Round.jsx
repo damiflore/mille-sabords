@@ -8,6 +8,7 @@ import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
 import { useSignalEmitter } from "src/hooks.js"
+import { useCurrentPlayerGettingReady } from "src/main.store.js"
 
 export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const [roundMounted, roundMountedSetter] = React.useState(false)
@@ -53,6 +54,9 @@ const RoundGameBoard = ({
   const cursedAreaRef = React.useRef(null)
   const offscreenRef = React.useRef(null)
 
+  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const cardDrawn = !currentPlayerGettingReady
+
   React.useEffect(() => {
     onRoundMounted({
       rolledAreaDomNode: rolledAreaRef.current,
@@ -66,16 +70,20 @@ const RoundGameBoard = ({
     <>
       <GameEffects />
       <Header openScoreboard={openScoreboard} />
-      <div className="chest-and-skulls">
-        <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
-        <SkullIsland cursedAreaRef={cursedAreaRef} />
-      </div>
-      <DiceOnGoing
-        rolledAreaRef={rolledAreaRef}
-        offscreenRef={offscreenRef}
-        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
-      />
-      <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
+      {cardDrawn && (
+        <>
+          <div className="chest-and-skulls">
+            <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
+            <SkullIsland cursedAreaRef={cursedAreaRef} />
+          </div>
+          <DiceOnGoing
+            rolledAreaRef={rolledAreaRef}
+            offscreenRef={offscreenRef}
+            diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+          />
+          <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
+        </>
+      )}
     </>
   )
 }

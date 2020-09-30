@@ -68,7 +68,7 @@ const ButtonEndRound = ({ onRoundOver }) => {
             // ici on sait que le round est terminé
             // on peut dire a ceux que ça intéresse
             // comment ça s'est passé (scoreboard)
-            // qui va alors animé le fait qu'on a marqué un score
+            // qui va alors animer le fait qu'on a marqué un score
             // on devrait aussi animer le cas ou on fail sword challenge
             // et le cas ou on se tape 3 tete
             endRound()
