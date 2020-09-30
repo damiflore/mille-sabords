@@ -39,23 +39,9 @@
         assert({ actual, expected })
       }
 
-      // with 3 skulls first roll + chest
+      // with 3 skulls + chest
       {
         const actual = useMarkScoreAllowed({
-          hasRolledMoreThanOnce: false,
-          scoreMarked: false,
-          currentCardId: getFirstChestCardFromDeck().id,
-          threeSkullsOrMoreInCursedArea: true,
-          hasDicesToCurse: false,
-        })
-        const expected = false
-        assert({ actual, expected })
-      }
-
-      // with 3 skulls second roll + chest
-      {
-        const actual = useMarkScoreAllowed({
-          hasRolledMoreThanOnce: true,
           scoreMarked: false,
           currentCardId: getFirstChestCardFromDeck().id,
           threeSkullsOrMoreInCursedArea: true,
