@@ -3,7 +3,7 @@
   "node_modules/systemjs/dist/s.js": "assets/s-3b16538f.js",
   "src/main.component.js": "main.component-37e0e112.js",
   "favicon.png": "assets/favicon-25e95a00.png",
-  "import-map.importmap": "import-map-a4a43312.importmap",
+  "importmap.prod.importmap": "importmap.prod-e86dbc0b.importmap",
   "index.html": "index.prod.html",
   "index.js": "index.js-7b12a85d.js"
 }
