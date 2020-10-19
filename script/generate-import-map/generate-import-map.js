@@ -10,7 +10,7 @@ const generateFile = async (importMapFileRelativeUrl, { includeDevDependencies =
     [
       getImportMapFromNodeModules({
         projectDirectoryUrl,
-        includeDevDependencies: false,
+        projectPackageDevDependenciesIncluded: includeDevDependencies,
       }),
       getImportMapFromFile(new URL("./importmap.project.importmap", projectDirectoryUrl)),
     ],
