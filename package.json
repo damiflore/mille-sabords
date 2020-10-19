@@ -51,7 +51,7 @@
     "@jsenv/codecov-upload": "3.4.2",
     "@jsenv/core": "16.0.0-alpha.2",
     "@jsenv/eslint-config": "12.6.0",
-    "@jsenv/file-size-impact": "5.3.0",
+    "@jsenv/file-size-impact": "5.3.0-alpha.0",
     "@jsenv/lighthouse-score-impact": "2.4.0",
     "@jsenv/node-module-import-map": "12.1.0",
     "@jsenv/prettier-check-project": "5.6.1",
