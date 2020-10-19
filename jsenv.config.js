@@ -7,6 +7,8 @@ const transformReactJSX = require("@babel/plugin-transform-react-jsx")
 
 export const projectDirectoryUrl = String(new URL("./", import.meta.url))
 
+export const importMapFileRelativeUrl = `importmap.prod.importmap`
+
 export const babelPluginMap = {
   ...jsenvBabelPluginMap,
   "transform-react-jsx": [
