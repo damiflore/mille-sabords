@@ -12,6 +12,9 @@ await generateBundle({
   entryPointMap: {
     "./index.html": "./index.prod.html",
   },
+  // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
+  // as main js entry point
+  preserveEntrySignatures: false,
   minify: true,
   manifestFile: true,
 })
