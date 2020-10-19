@@ -1,4 +1,9 @@
 {
-  "index.js": "index-ff6147c2.js",
-  "main.component.js": "main.component-0d0390cd.js"
+  "node_modules/@jsenv/core/helpers/babel/typeof/typeof.js": "index-e17d71b6.js",
+  "node_modules/systemjs/dist/s.js": "assets/s-3b16538f.js",
+  "src/main.component.js": "main.component-37e0e112.js",
+  "favicon.png": "assets/favicon-25e95a00.png",
+  "import-map.importmap": "import-map-a4a43312.importmap",
+  "index.html": "index.prod.html",
+  "index.js": "index.js-7b12a85d.js"
 }
