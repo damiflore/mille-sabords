@@ -21,9 +21,8 @@ export const PreloadImages = () => {
     witchLabelUrl,
     skullBottleUrl,
     cardDefaultUrl,
-    Object.keys(cardImageUrlMap).map((key) => cardImageUrlMap[key]),
+    ...Object.keys(cardImageUrlMap).map((key) => cardImageUrlMap[key]),
   ]
-  console.log(images)
 
   return (
     <div style={{ display: "none" }}>
