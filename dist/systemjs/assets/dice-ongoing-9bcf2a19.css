@@ -1,2 +1,0 @@
-.dice-ongoing{position:relative;width:100%}.dice-ongoing .map{width:100%;height:100%;transform:scale(1.3) translateY(30px) rotate(-4deg);background-image:url(treasure-map.png);background-size:contain;background-repeat:no-repeat;background-position:50%;position:absolute}.dice-ongoing .area{display:block;position:absolute;z-index:1;left:30px;top:20px;right:40px;bottom:10px}.dice-ongoing .area .dice{position:absolute}.dice-ongoing .offscreen-area{position:absolute;left:100%;height:100%;top:0;width:100%;background:red}
-/*# sourceMappingURL=dice-ongoing-9bcf2a19.css.map */
