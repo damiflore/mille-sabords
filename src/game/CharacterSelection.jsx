@@ -1,7 +1,7 @@
 import React from "react"
 import { CHARACTERS } from "src/players/players.main.js"
 import { usePlayers, createAction } from "src/main.store.js"
-import { mixDeck } from "src/cards/cards.js"
+import { mixDeck, cardToSmallImageUrl, CARD_TWO_SWORDS_CHALLENGE } from "src/cards/cards.js"
 import { startJavaScriptAnimation } from "src/animation/startJavaScriptAnimation.js"
 
 export const CharacterSelection = ({ players }) => {
@@ -75,7 +75,7 @@ export const CharacterSelection = ({ players }) => {
       {!playerWithoutCharacter && (
         <div className="crew-completed">
           <p>L&lsquo;équipage est au complet !</p>
-          <img src={`src/cards/card_small-sword-challenge.png`} />
+          <img src={cardToSmallImageUrl({ type: CARD_TWO_SWORDS_CHALLENGE })} />
           <button
             onClick={() => {
               startGame()

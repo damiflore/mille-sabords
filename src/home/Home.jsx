@@ -1,5 +1,6 @@
 import React from "react"
 import { createAction } from "src/main.store.js"
+import { symbolSwordUrl } from "src/symbols/symbols.js"
 
 export const Home = () => {
   return <ButtonNewGame />
@@ -10,7 +11,7 @@ const ButtonNewGame = () => {
 
   return (
     <div className="new-game">
-      <img src={`src/dices/dice_sword.png`} />
+      <img src={symbolSwordUrl} />
       <button onClick={createNewGame}>Nouvelle partie</button>
     </div>
   )
