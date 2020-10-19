@@ -9,6 +9,7 @@ import { useDiceDomNode, useDiceDomNodeSetter, useMainDomNode } from "src/dom/do
 import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
+import { symbolToImageUrl } from "src/symbols/symbols.js"
 
 const { useEffect, useState } = React
 
@@ -189,7 +190,7 @@ export const Dice = ({
             strokeWidth="1"
           ></rect>
           <image
-            xlinkHref={`/src/dices/dice_${diceToVisibleSymbol(dice)}.png`}
+            xlinkHref={symbolToImageUrl(diceToVisibleSymbol(dice))}
             draggable="false"
             style={{
               width: "100%",

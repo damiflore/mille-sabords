@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useCurrentCardId, useRoundStarted, useScoreMarked } from "src/main.store.js"
@@ -6,7 +7,7 @@ import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useBecomes } from "src/hooks.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
-import { SYMBOL_SWORD } from "src/symbols/symbols.js"
+import { SYMBOL_SWORD, symbolCoinUrl, symbolDiamondUrl } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
 import { countSymbol } from "src/score/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
@@ -176,8 +177,8 @@ const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (
           <div className="columns">
             <div className="column">
               <div className="column-title">Symbol</div>
-              <img src={`/src/dices/dice_coin.png`} />
-              <img src={`/src/dices/dice_diamond.png`} />
+              <img src={symbolCoinUrl} />
+              <img src={symbolDiamondUrl} />
             </div>
             <div className="column">
               <div className="column-title">Points</div>

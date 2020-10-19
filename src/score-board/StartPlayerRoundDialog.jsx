@@ -23,7 +23,7 @@ export const StartPlayerRoundDialog = ({
             <div className="dialog-label">{player.character.name}</div>
             <img
               className="player-img"
-              src={`src/score-board/${player && player.character.img}`}
+              src={player && player.character.img}
               alt="player"
               style={{
                 boxShadow: `inset 0px 0px 0px 4px ${(player && player.character.color) || "black"}`,

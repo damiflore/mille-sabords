@@ -2,7 +2,7 @@ import React from "react"
 
 import { useCurrentCardId, useCurrentPlayerGettingReady } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
+import { cardDefaultUrl, cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
@@ -55,7 +55,7 @@ const BackCard = () => {
     <div
       className="card default-card"
       style={{
-        backgroundImage: "url('/src/cards/card_default.png')",
+        backgroundImage: `url(${cardDefaultUrl})`,
         backgroundSize: "217px",
       }}
     ></div>
@@ -72,12 +72,7 @@ export const SmallCard = ({ card }) => {
         borderColor: card.color2,
       }}
     >
-      <img
-        src={`/src/cards/card_small-${
-          isSwordChallengeCard(card) ? "sword-challenge" : card.type
-        }.png`}
-        alt={card.type}
-      />
+      <img src={cardToSmallImageUrl(card)} alt={card.type} />
     </div>
   )
 }
@@ -89,7 +84,7 @@ const CurrentPlayer = ({ openScoreboard }) => {
     <img
       onClick={openScoreboard}
       className="avatar"
-      src={`src/score-board/${player && player.character.img}`}
+      src={player && player.character.img}
       alt="player"
       style={{
         borderColor: (player && player.character.color) || "white",

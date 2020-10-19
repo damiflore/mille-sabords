@@ -3,8 +3,9 @@ import React from "react"
 import { useCurrentCardId } from "src/main.store.js"
 import { useSymbolsInChest } from "src/round/round.selectors.js"
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
-import { SYMBOL_SWORD } from "src/symbols/symbols.js"
+import { SYMBOL_SWORD, symbolSwordUrl } from "src/symbols/symbols.js"
 import { countSymbol } from "src/score/computeRoundScore.js"
+import swordsDisabledImageUrl from "src/header/swords-disabled.png"
 
 export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {
   const card = cardIdToCard(currentCardId)
@@ -40,12 +41,12 @@ export const SwordChallengeIndicator = () => {
 
 const SwordIconActivated = () => (
   <div className="sword-icon">
-    <img src={`/src/dices/dice_sword.png`} />
+    <img src={symbolSwordUrl} />
   </div>
 )
 
 const SwordIconDisabled = () => (
   <div className="sword-icon disabled">
-    <img src={`/src/header/swords-disabled.png`} />
+    <img src={swordsDisabledImageUrl} />
   </div>
 )

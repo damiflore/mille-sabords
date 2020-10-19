@@ -1,3 +1,10 @@
+import luffyUrl from "./Luffy.png"
+import missFortuneUrl from "./MissFortune.png"
+import jackSparrowUrl from "./JackSparrow.png"
+import barbeRougeUrl from "./BarbeRouge.png"
+import ginetteBouletteUrl from "./GinetteBoulette.png"
+import capitaineCrochetUrl from "./CapitaineCrochet.png"
+
 export const createPlayers = (characters) => {
   return characters.map((character, index) => {
     return {
@@ -9,10 +16,10 @@ export const createPlayers = (characters) => {
 }
 
 export const CHARACTERS = [
-  { id: 1, name: "Luffy", color: "#ef9620", img: "Luffy.png" },
-  { id: 2, name: "Miss Fortune", color: "#d90f1b", img: "MissFortune.png" },
-  { id: 3, name: "Jack Sparrow", color: "#007033", img: "JackSparrow.png" },
-  { id: 4, name: "Barbe Rouge", color: "#7baac9", img: "BarbeRouge.png" },
-  { id: 5, name: "Ginette Boulette", color: "#e2500c", img: "GinetteBoulette.png" },
-  { id: 6, name: "Capitaine Crochet", color: "#952460", img: "CapitaineCrochet.png" },
+  { id: 1, name: "Luffy", color: "#ef9620", img: luffyUrl },
+  { id: 2, name: "Miss Fortune", color: "#d90f1b", img: missFortuneUrl },
+  { id: 3, name: "Jack Sparrow", color: "#007033", img: jackSparrowUrl },
+  { id: 4, name: "Barbe Rouge", color: "#7baac9", img: barbeRougeUrl },
+  { id: 5, name: "Ginette Boulette", color: "#e2500c", img: ginetteBouletteUrl },
+  { id: 6, name: "Capitaine Crochet", color: "#952460", img: capitaineCrochetUrl },
 ]

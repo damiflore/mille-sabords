@@ -22,9 +22,9 @@ export const serverPromise = startServer({
   redirectHttpToHttps: Boolean(process.env.HTTPS),
   requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
     if (ressource === "/") {
-      ressource = "/dist/systemjs/index.prod.html"
+      ressource = "/index.prod.html"
     }
-    const fileUrl = resolveUrl(ressource.slice(1), projectDirectoryUrl)
+    const fileUrl = resolveUrl(ressource.slice(1), bundleDirectoryUrl)
     const longTermCacheEnabled =
       fileUrl !== mainHtmlFileUrl && fileUrl.startsWith(bundleDirectoryUrl)
 

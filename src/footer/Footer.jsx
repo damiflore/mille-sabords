@@ -10,6 +10,7 @@ import {
 import { createAction } from "src/main.store.js"
 
 import { ButtonRoll } from "./ButtonRoll.js"
+import { symbolSkullUrl } from "src/symbols/symbols.js"
 
 export const Footer = ({ onRoundOver, rolledAreaRef }) => {
   // const roundStarted = useRoundStarted()
@@ -47,7 +48,7 @@ const ButtonMarkScore = () => {
             {sign} {Math.abs(roundScore)}
           </span>
         </button>
-        {!markScoreAllowed && <img src={`/src/dices/dice_skull.png`} className="skull-symbol" />}
+        {!markScoreAllowed && <img src={symbolSkullUrl} className="skull-symbol" />}
       </div>
     )
   }

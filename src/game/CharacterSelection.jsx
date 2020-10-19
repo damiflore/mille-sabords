@@ -46,7 +46,7 @@ export const CharacterSelection = ({ players }) => {
                   >
                     <img
                       className="character-img"
-                      src={`src/score-board/${character && character.img}`}
+                      src={character && character.img}
                       alt="player"
                       style={{
                         border: `4px solid ${(character && character.color) || "black"}`,
@@ -102,7 +102,7 @@ const CrewMembers = () => {
               {player.character ? (
                 <img
                   className="crew-member-img"
-                  src={`src/score-board/${player.character && player.character.img}`}
+                  src={player.character && player.character.img}
                   alt="player"
                   style={{
                     border: `4px solid ${(player.character && player.character.color) || "black"}`,
