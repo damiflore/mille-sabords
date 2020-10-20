@@ -3,6 +3,8 @@ import React from "react"
 import { useCurrentCardId, useRoundStarted } from "src/main.store.js"
 import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
+import { symbolSkullUrl } from "src/symbols/symbols.js"
+import wichLabelImageUrl from "src/skull-island/witch-label.png"
 
 export const SkullIsland = ({ cursedAreaRef }) => {
   const currentCard = cardIdToCard(useCurrentCardId())
@@ -40,7 +42,7 @@ const ExtraSkull = ({ card }) => {
       }}
     >
       <img
-        src={`/src/dices/dice_skull.png`}
+        src={symbolSkullUrl}
         style={{
           width: "100%",
           height: "100%",
@@ -53,12 +55,13 @@ const ExtraSkull = ({ card }) => {
 const UncurseDiceLabel = () => {
   const roundStarted = useRoundStarted()
 
-  if (!roundStarted)
-    return <img style={{ display: "none" }} src={`/src/skull-island/witch-label.png`} />
+  if (!roundStarted) {
+    return <img style={{ display: "none" }} src={wichLabelImageUrl} />
+  }
 
   return (
     <div className="witch-label">
-      <img src={`/src/skull-island/witch-label.png`} />
+      <img src={wichLabelImageUrl} />
       <svg x="0px" y="0px" width="156.083px" height="208.667px" viewBox="0 0 156.083 208.667">
         <path
           id="path_01"

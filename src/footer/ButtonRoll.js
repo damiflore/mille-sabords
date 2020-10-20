@@ -7,6 +7,7 @@ import {
 } from "src/round/round.selectors.js"
 import { rollDices } from "src/dices/rollDices.js"
 import { cardIdToCard, isChestCard } from "src/cards/cards.js"
+import { symbolSkullUrl } from "src/symbols/symbols.js"
 
 export const ButtonRoll = ({ rolledAreaRef }) => {
   const rollDiceAllowed = useRollDiceAllowed()
@@ -35,7 +36,7 @@ export const ButtonRoll = ({ rolledAreaRef }) => {
             <span className="button-subtitle">(au moins 2 dés !)</span>
           )}
         </button>
-        {disabledChestCard && <img src={`/src/dices/dice_skull.png`} className="skull-symbol" />}
+        {disabledChestCard && <img src={symbolSkullUrl} className="skull-symbol" />}
       </div>
     )
   }

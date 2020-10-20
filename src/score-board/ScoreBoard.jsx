@@ -2,6 +2,7 @@ import React from "react"
 import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
+import winTreasureUrl from "src/score-board/win-treasure.png"
 
 const SCORE_MAX = 6000
 
@@ -71,7 +72,7 @@ export const ScoreBoard = ({
           </button>
         </div>
       )}
-      <img className="win-treasure-img" src="src/score-board/win-treasure.png" alt="win-treasure" />
+      <img className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" />
       <div className="users-path">
         {players.map((player) => (
           <UserPath
@@ -210,7 +211,7 @@ const ratioToStrokeDashOffset = (ratio, pathLength) => pathLength - ratio * path
 const Avatar = ({ character }) => (
   <img
     className="player-img"
-    src={`src/score-board/${character.img}`}
+    src={character.img}
     alt="player"
     style={{
       boxShadow: `inset 0px 0px 0px 4px ${character.color || "black"}`,

@@ -1,10 +1,9 @@
 /.jsenv/
-/.vscode/settings.json
 /coverage/
 /lighthouse/
 /node_modules/
 /env.json
-/import-map.importmap
+/importmap.dev.importmap
 /index.prod.html
 /jsconfig.json
 /package-lock.json

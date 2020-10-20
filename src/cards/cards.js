@@ -1,3 +1,27 @@
+/* eslint-disable import/max-dependencies */
+import cardOneSkullUrl from "src/cards/card_1skull.png"
+import cardTwoSkullsUrl from "src/cards/card_2skulls.png"
+import cardTwoSwordChallengeUrl from "src/cards/card_2sword-challenge.png"
+import cardThreeSwordChallengeUrl from "src/cards/card_3sword-challenge.png"
+import cardFourSwordChallengeUrl from "src/cards/card_4sword-challenge.png"
+import cardAnimalsUrl from "src/cards/card_animals.png"
+import cardChestUrl from "src/cards/card_chest.png"
+import cardCoinUrl from "src/cards/card_coin.png"
+import cardDefaultUrl from "src/cards/card_default.png"
+import cardDiamondUrl from "src/cards/card_diamond.png"
+import cardPirateUrl from "src/cards/card_pirate.png"
+import cardWitchUrl from "src/cards/card_witch.png"
+
+import cardOneSkullSmallUrl from "src/cards/card_small-1skull.png"
+import cardTwoSkullsSmallUrl from "src/cards/card_small-2skulls.png"
+import cardSwordChallengeSmallUrl from "src/cards/card_small-sword-challenge.png"
+import cardAnimalsSmallUrl from "src/cards/card_small-animals.png"
+import cardChestSmallUrl from "src/cards/card_small-chest.png"
+import cardCoinSmallUrl from "src/cards/card_small-coin.png"
+import cardDiamondSmallUrl from "src/cards/card_small-diamond.png"
+import cardPirateSmallUrl from "src/cards/card_small-pirate.png"
+import cardWitchSmallUrl from "src/cards/card_small-witch.png"
+
 export const CARD_ANIMALS = "animals"
 export const CARD_CHEST = "chest"
 export const CARD_COIN = "coin"
@@ -9,6 +33,38 @@ export const CARD_TWO_SKULLS = "2skulls"
 export const CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge"
 export const CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge"
 export const CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge"
+
+export const cardImageUrlMap = {
+  [CARD_ONE_SKULL]: cardOneSkullUrl,
+  [CARD_TWO_SKULLS]: cardTwoSkullsUrl,
+  [CARD_TWO_SWORDS_CHALLENGE]: cardTwoSwordChallengeUrl,
+  [CARD_THREE_SWORDS_CHALLENGE]: cardThreeSwordChallengeUrl,
+  [CARD_FOUR_SWORDS_CHALLENGE]: cardFourSwordChallengeUrl,
+  [CARD_ANIMALS]: cardAnimalsUrl,
+  [CARD_CHEST]: cardChestUrl,
+  [CARD_COIN]: cardCoinUrl,
+  [CARD_DIAMOND]: cardDiamondUrl,
+  [CARD_PIRATE]: cardPirateUrl,
+  [CARD_WITCH]: cardWitchUrl,
+}
+export const cardToImageUrl = (card) => cardImageUrlMap[card.type]
+
+const cardSmallImageUrlMap = {
+  [CARD_ONE_SKULL]: cardOneSkullSmallUrl,
+  [CARD_TWO_SKULLS]: cardTwoSkullsSmallUrl,
+  [CARD_TWO_SWORDS_CHALLENGE]: cardSwordChallengeSmallUrl,
+  [CARD_THREE_SWORDS_CHALLENGE]: cardSwordChallengeSmallUrl,
+  [CARD_FOUR_SWORDS_CHALLENGE]: cardSwordChallengeSmallUrl,
+  [CARD_ANIMALS]: cardAnimalsSmallUrl,
+  [CARD_CHEST]: cardChestSmallUrl,
+  [CARD_COIN]: cardCoinSmallUrl,
+  [CARD_DIAMOND]: cardDiamondSmallUrl,
+  [CARD_PIRATE]: cardPirateSmallUrl,
+  [CARD_WITCH]: cardWitchSmallUrl,
+}
+export const cardToSmallImageUrl = (card) => cardSmallImageUrlMap[card.type]
+
+export { cardDefaultUrl }
 
 const cardData = {
   [CARD_ANIMALS]: {

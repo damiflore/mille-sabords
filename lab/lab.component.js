@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import {
@@ -36,6 +37,7 @@ import {
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Main } from "src/main.component.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
+import labCssUrl from "mille-sabords/lab/lab.css"
 
 export const Lab = () => {
   const gameState = {
@@ -44,7 +46,7 @@ export const Lab = () => {
 
   return (
     <div id="lab">
-      <Stylesheet href="/lab/lab.css" />
+      <Stylesheet href={labCssUrl} />
       <ContextProvider initialState={gameState}>
         <GameLab />
         <Main />

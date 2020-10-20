@@ -7,7 +7,7 @@ import { useStartRound } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
-import { cardIdToCard } from "src/cards/cards.js"
+import { cardIdToCard, cardToImageUrl, cardDefaultUrl } from "src/cards/cards.js"
 import { SmallCard } from "src/header/Header.jsx"
 
 export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
@@ -54,15 +54,11 @@ const TopCard = ({ currentCard }) => {
             <div className="flip-card-front">
               <div
                 className="card default-card"
-                style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
+                style={{ backgroundImage: `url(${cardDefaultUrl})` }}
               ></div>
             </div>
             <div className="flip-card-back">
-              <img
-                className="card-img"
-                src={`/src/cards/card_${currentCard.type}.png`}
-                alt={currentCard.type}
-              />
+              <img className="card-img" src={cardToImageUrl(currentCard)} alt={currentCard.type} />
             </div>
           </div>
         </div>
@@ -79,7 +75,7 @@ const BackCard = ({ currentCard, remainingCardCount }) => {
     <div
       className="card default-card"
       id="back-deck-card"
-      style={{ backgroundImage: "url('/src/cards/card_default.png')" }}
+      style={{ backgroundImage: `url(${cardDefaultUrl})` }}
     >
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>

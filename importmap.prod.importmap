@@ -18,6 +18,10 @@
       "@jsenv/cancellation/": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/",
       "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/index.js"
     },
+    "./node_modules/@jsenv/server/node_modules/@jsenv/logger/": {
+      "@jsenv/logger/": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/",
+      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js"
+    },
     "./node_modules/@jsenv/server/node_modules/@jsenv/util/": {
       "@jsenv/cancellation": "./node_modules/@jsenv/server/node_modules/@jsenv/cancellation/index.js",
       "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
@@ -51,6 +55,7 @@
       "@jsenv/node-signals": "./node_modules/@jsenv/node-signals/index.js",
       "abort-controller": "./node_modules/abort-controller/dist/abort-controller.js",
       "@jsenv/server/": "./node_modules/@jsenv/server/",
+      "@jsenv/logger": "./node_modules/@jsenv/server/node_modules/@jsenv/logger/index.js",
       "@jsenv/util/": "./node_modules/@jsenv/server/node_modules/@jsenv/util/",
       "@jsenv/util": "./node_modules/@jsenv/server/node_modules/@jsenv/util/index.js",
       "node-fetch": "./node_modules/@jsenv/server/node_modules/node-fetch/lib/index.mjs",

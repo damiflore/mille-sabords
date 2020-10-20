@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/home/home.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,UACE,YAAa,CACb,WAAY,CACZ,sBAAuB,CACvB,qBACF,CACA,cACE,iBAAkB,CAClB,UAAY,CACZ,SAAU,CACV,UACF,CACA,iBACE,SAAU,CACV,SAAU,CACV,YAAa,CACb,sBAAuB,CACvB,aAAc,CACd,YAAa,CACb,cAAe,CACf,eAAiB,CACjB,wBAAyB,CACzB,aAAc,CACd,wBAAyB,CACzB,wBACF",
+  "file": "home-2e7e167b.css",
+  "sourcesContent": [
+    ".new-game {\n  display: flex;\n  flex-grow: 1;\n  justify-content: center;\n  flex-direction: column;\n}\n.new-game img {\n  position: absolute;\n  opacity: 0.5;\n  z-index: 0;\n  width: 100%;\n}\n.new-game button {\n  z-index: 1;\n  width: 70%;\n  display: flex;\n  justify-content: center;\n  margin: 0 auto;\n  padding: 13px;\n  font-size: 16px;\n  font-weight: bold;\n  text-transform: uppercase;\n  color: #082988;\n  background-color: #8ec9fc;\n  border: 3px solid #082988;\n}\n"
+  ]
+}

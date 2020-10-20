@@ -8,6 +8,8 @@ import { catchError } from "src/error/error.main.js"
 import { watchBooting } from "src/booting/booting.main.js"
 import { PreloadImages } from "src/generic/PreloadImages.jsx"
 
+import milleSabordsCssUrl from "../mille-sabord.css"
+
 const MainRaw = ({ booted }) => {
   React.useEffect(() => {
     if (booted) {
@@ -18,7 +20,7 @@ const MainRaw = ({ booted }) => {
   return (
     <div id="main-container">
       <div id="main" ref={useMainDomNodeSetter()}>
-        <Stylesheet href="/mille-sabord.css" />
+        <Stylesheet href={milleSabordsCssUrl} />
         <AppBody />
         {booted ? <PreloadImages /> : null}
       </div>

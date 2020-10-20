@@ -4,10 +4,13 @@ import { useSignalListener } from "src/hooks.js"
 import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
+import { symbolToImageUrl } from "src/symbols/symbols.js"
 import { cardIdToCard, isChestCard } from "src/cards/cards.js"
 
 import { RoundScore } from "src/score/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
+
+import cursedGridImageUrl from "src/chest/cursed-grid.png"
 
 export const Chest = ({ chestRef, diceOverChestSignal }) => {
   const chestSlots = useChestSlots()
@@ -81,7 +84,7 @@ const ChestSlot = ({ chestSlotContent }) => {
         }}
       >
         <img
-          src={`/src/dices/dice_${symbol}.png`}
+          src={symbolToImageUrl(symbol)}
           draggable="false"
           style={{
             width: "100%",
@@ -99,7 +102,7 @@ const ChestSlot = ({ chestSlotContent }) => {
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img draggable="false" src={`/src/chest/cursed-grid.png`} alt="cursed-cover" />
+      <img draggable="false" src={cursedGridImageUrl} alt="cursed-cover" />
     </div>
   )
 }
