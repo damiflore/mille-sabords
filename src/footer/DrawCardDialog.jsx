@@ -28,13 +28,19 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
             {currentCard && <span className="card-name">{cardsRules[currentCard.type].name}</span>}
           </div>
           <div className="card-area">
-            <BackCard currentCard={currentCard} remainingCardCount={cardDeck.length} />
-            <TopCard currentCard={currentCard} />
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <BackCard currentCard={currentCard} remainingCardCount={cardDeck.length} />
+              <TopCard currentCard={currentCard} />
+            </div>
           </div>
         </div>
         <div className="dialog-actions">
           <DeckButton cardDeck={cardDeck} currentCard={currentCard} />
-          <StartButton currentCard={currentCard} closeDialog={closeDialog} />
+          {currentCard ? <StartButton currentCard={currentCard} closeDialog={closeDialog} /> : null}
         </div>
       </div>
     </Dialog>
@@ -52,13 +58,15 @@ const TopCard = ({ currentCard }) => {
         <div className="flip-card">
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <div
-                className="card default-card"
-                style={{ backgroundImage: `url(${cardDefaultUrl})` }}
-              ></div>
+              <img className="card default-card" src={cardDefaultUrl} />
             </div>
             <div className="flip-card-back">
-              <img className="card-img" src={cardToImageUrl(currentCard)} alt={currentCard.type} />
+              <img
+                className="card-img"
+                src={cardToImageUrl(currentCard)}
+                width="250"
+                alt={currentCard.type}
+              />
             </div>
           </div>
         </div>
@@ -72,11 +80,8 @@ const TopCard = ({ currentCard }) => {
 
 const BackCard = ({ currentCard, remainingCardCount }) => {
   return (
-    <div
-      className="card default-card"
-      id="back-deck-card"
-      style={{ backgroundImage: `url(${cardDefaultUrl})` }}
-    >
+    <div className="card default-card" id="back-deck-card" style={{ background: "none" }}>
+      <img src={cardDefaultUrl} width="250" />
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>
   )
