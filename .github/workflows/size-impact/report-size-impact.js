@@ -1,10 +1,4 @@
-import {
-  reportFileSizeImpact,
-  readGithubWorkflowEnv,
-  raw,
-  gzip,
-  brotli,
-} from "@jsenv/file-size-impact"
+import { reportFileSizeImpact, readGithubWorkflowEnv, raw, gzip } from "@jsenv/file-size-impact"
 
 reportFileSizeImpact({
   ...readGithubWorkflowEnv(),
@@ -15,5 +9,5 @@ reportFileSizeImpact({
       "./dist/systemjs/**/*.map": false,
     },
   },
-  transformations: { raw, gzip, brotli },
+  transformations: { raw, gzip },
 })
