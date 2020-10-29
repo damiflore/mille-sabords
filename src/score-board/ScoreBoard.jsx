@@ -108,9 +108,8 @@ const UserPath = ({
   const circleElementRef = React.useRef(null)
   const nextPlayer = getNextPlayer()
 
-  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
-  // uncomment line below to test animation
-  // scoreAnimation={{ from: player.score, to: player.score + 1000 }}
+  const [scoreAnimation, scoreAnimationSetter] = React.useState()
+
   React.useEffect(() => {
     if (isCurrentPlayer && roundOverPayload && roundOverPayload.reason === "score-marked") {
       const roundScore = roundOverPayload.value
@@ -163,6 +162,14 @@ const UserPath = ({
       circleAnimation.cancel()
     }
   }, [scoreAnimation])
+
+  // uncomment to test score animation
+  // React.useEffect(() => {
+  //   scoreAnimationSetter({
+  //     from: 0,
+  //     to: -1000,
+  //   })
+  // }, [])
 
   React.useEffect(() => {
     // path-foreground line fill
