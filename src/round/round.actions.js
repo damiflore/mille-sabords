@@ -44,3 +44,10 @@ export const useStartRound = createAction((state) => {
     currentPlayerGettingReady: false,
   }
 })
+
+export const useResetRound = createAction((state) => {
+  return {
+    ...state,
+    roundStarted: false,
+  }
+})

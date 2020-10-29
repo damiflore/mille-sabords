@@ -49,3 +49,13 @@ export const useShuffleDeck = createAction((state) => {
     cardUsedIds: [],
   }
 })
+
+export const useUndrawCard = createAction((state) => {
+  const { currentCardId, cardIds, cardUsedIds } = state
+  return {
+    ...state,
+    currentCardId: null,
+    cardIds: [currentCardId, ...cardIds],
+    cardUsedIds: cardUsedIds.slice(1),
+  }
+})
