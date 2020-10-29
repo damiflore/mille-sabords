@@ -8,6 +8,7 @@ import {
 } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
 import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
+import { GameConfiguration } from "src/game/GameConfiguration.jsx"
 import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
@@ -16,10 +17,12 @@ import { useCurrentPlayer } from "src/round/round.selectors.js"
 export const Game = () => {
   const players = usePlayers()
   const roundStarted = useRoundStarted()
-  const gameStarted = useGameStarted()
+
   const currentPlayerGettingReady = useCurrentPlayerGettingReady()
 
-  const needsToChooseNumberOfPlayers = players.length === 0
+  const isOnGameConfigurationScreen = useisOnGameConfigurationScreen()
+  const isOnCharacterSelectionScreen = useIsOnCharacterSelectionScreen()
+
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
   const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
 
@@ -34,11 +37,11 @@ export const Game = () => {
     drawCardDialogIsOpenSetter(false)
   }
 
-  if (needsToChooseNumberOfPlayers) {
-    return <PlayerCountSelection />
+  if (isOnGameConfigurationScreen) {
+    return <GameConfiguration />
   }
 
-  if (!gameStarted) {
+  if (isOnCharacterSelectionScreen) {
     return <CharacterSelection players={players} />
   }
 
@@ -73,40 +76,16 @@ export const Game = () => {
   )
 }
 
-const PlayerCountSelection = () => {
-  const setPlayerCount = useSetPlayerCount()
-
-  return (
-    <div>
-      <p>Combien de joueur?</p>
-      {[1, 2, 3, 4, 5].map((playerCount) => {
-        return (
-          <button
-            key={playerCount}
-            onClick={() => {
-              setPlayerCount(playerCount)
-            }}
-          >
-            {playerCount === 1 ? "1 joueur" : `${playerCount} joueurs`}
-          </button>
-        )
-      })}
-    </div>
-  )
+export const useisOnGameConfigurationScreen = () => {
+  const players = usePlayers()
+  const needsToChooseNumberOfPlayers = players.length === 0
+  return needsToChooseNumberOfPlayers
 }
 
-const useSetPlayerCount = createAction((state, playerCount) => {
-  return {
-    ...state,
-    players: new Array(playerCount).fill("").map((_, index) => {
-      return {
-        id: index + 1,
-        number: index + 1,
-        score: 0,
-      }
-    }),
-  }
-})
+export const useIsOnCharacterSelectionScreen = () => {
+  const gameStarted = useGameStarted()
+  return !gameStarted
+}
 
 export const useStartPlaying = createAction((state, player) => {
   return {
