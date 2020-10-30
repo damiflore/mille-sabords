@@ -6,7 +6,7 @@ import {
   useDiceRolledIds,
   useDiceCursedIds,
   useChestSlots,
-  useDispatch,
+  createAction,
 } from "src/main.store.js"
 import { useDiceDomNode } from "src/dom/dom.main.js"
 import {
@@ -20,6 +20,7 @@ import {
 import { faces } from "src/dices/dices.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { useResetRound } from "src/round/round.actions.js"
+import { useUncurseDice } from "src/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()
@@ -73,20 +74,15 @@ export const GameBoardLab = () => {
   )
 }
 
-const useSetCurrentPlayerScore = () => {
-  const dispatch = useDispatch()
-  return (score) => {
-    dispatch((state) => {
-      const { currentPlayerId, players } = state
-      const currentPlayer = useCurrentPlayer(currentPlayerId, { players })
-      currentPlayer.score = score
-      return {
-        ...state,
-        players: [...players],
-      }
-    })
+const useSetCurrentPlayerScore = createAction((state, score) => {
+  const { players } = state
+  const currentPlayer = useCurrentPlayer(state)
+  currentPlayer.score = score
+  return {
+    ...state,
+    players: [...players],
   }
-}
+})
 
 const VARIANTS = [
   "random",
@@ -103,6 +99,9 @@ const DiceVariants = ({ dice }) => {
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
   const chestSlots = useChestSlots()
+  const uncurseDice = useUncurseDice()
+
+  const isCursed = diceCursedIds.includes(dice.id)
 
   return (
     <div className="dice-variants">
@@ -121,6 +120,16 @@ const DiceVariants = ({ dice }) => {
         }}
       >
         inspect
+      </button>
+      <button
+        disabled={!isCursed}
+        onClick={() => {
+          if (isCursed) {
+            uncurseDice(dice, true)
+          }
+        }}
+      >
+        {isCursed ? "uncurse" : "not cursed"}
       </button>
     </div>
   )
@@ -147,11 +156,10 @@ const diceToAreaName = (dice, { diceRolledIds, diceCursedIds, chestSlots }) => {
   return "offscreen"
 }
 
-const diceIsCheated = (dice) => dice.faces[0] === dice.faces[1]
-
 const DiceVariant = ({ dice, variant }) => {
+  const cheatDice = useCheatDice()
+  const uncheatDice = useUncheatDice()
   const isCurrent = diceIsCheated(dice) ? dice.faces[0] === variant : variant === "random"
-  const dispatch = useDispatch()
 
   return (
     <button
@@ -161,21 +169,10 @@ const DiceVariant = ({ dice, variant }) => {
       disabled={isCurrent}
       onClick={() => {
         if (variant === "random") {
-          dice.faces = faces
+          uncheatDice(dice)
         } else {
-          dice.faces = dice.faces.map(() => variant)
+          cheatDice(dice, variant)
         }
-        // force re-render of rolled, cursed and kept area
-        // (in theory we could optimize to render depening where the dice is)
-        dispatch((state) => {
-          const { dicesRolled, dicesCursed, chestSlots } = state
-          return {
-            ...state,
-            dicesRolled: [...dicesRolled],
-            dicesCursed: [...dicesCursed],
-            chestSlots: { ...chestSlots },
-          }
-        })
       }}
     >
       {variant === "random" ? (
@@ -186,3 +183,33 @@ const DiceVariant = ({ dice, variant }) => {
     </button>
   )
 }
+
+const diceIsCheated = (dice) => dice.faces[0] === dice.faces[1]
+
+const useCheatDice = createAction((state, dice, symbol) => {
+  dice.faces = dice.faces.map(() => symbol)
+  // force re-render of rolled, cursed and kept area
+  // (in theory we could optimize to render depening where the dice is)
+  const { dices, diceRolledIds, diceCursedIds, chestSlots } = state
+  return {
+    ...state,
+    dices: { ...dices },
+    diceRolledIds: [...diceRolledIds],
+    diceCursedIds: [...diceCursedIds],
+    chestSlots: { ...chestSlots },
+  }
+})
+
+const useUncheatDice = createAction((state, dice) => {
+  dice.faces = faces
+  // force re-render of rolled, cursed and kept area
+  // (in theory we could optimize to render depening where the dice is)
+  const { dices, diceRolledIds, diceCursedIds, chestSlots } = state
+  return {
+    ...state,
+    dices: { ...dices },
+    diceRolledIds: [...diceRolledIds],
+    diceCursedIds: [...diceCursedIds],
+    chestSlots: { ...chestSlots },
+  }
+})

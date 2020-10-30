@@ -61,11 +61,11 @@ const GameLabBody = () => {
   }
 
   if (!currentCardId) {
-    return <CardActivationLab />
+    return <CardDrawingLab />
   }
 
   if (!currentCardActivated) {
-    return <CardDrawingLab />
+    return <CardActivationLab />
   }
 
   return <GameBoardLab />
