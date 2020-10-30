@@ -1,13 +1,12 @@
 import React from "react"
 
-import { useMarkScore } from "src/round/round.actions.js"
+import { useMarkScore, useEndPlayerRound } from "src/round/round.actions.js"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
   useStartNextRoundAllowed,
   useRoundScore,
 } from "src/round/round.selectors.js"
-import { createAction } from "src/main.store.js"
 
 import { ButtonRoll } from "./ButtonRoll.js"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
@@ -58,7 +57,7 @@ const ButtonMarkScore = () => {
 
 const ButtonEndRound = ({ onRoundOver }) => {
   const startNextRoundAllowed = useStartNextRoundAllowed()
-  const endRound = useEndRound()
+  const endPlayerRound = useEndPlayerRound()
   const roundScore = useRoundScore()
 
   if (startNextRoundAllowed) {
@@ -72,7 +71,7 @@ const ButtonEndRound = ({ onRoundOver }) => {
             // qui va alors animer le fait qu'on a marqué un score
             // on devrait aussi animer le cas ou on fail sword challenge
             // et le cas ou on se tape 3 tete
-            endRound()
+            endPlayerRound()
             onRoundOver({
               // a faire ici:
               // si on fail sword-challenge ou qu'on fait 3 skulls
@@ -91,10 +90,3 @@ const ButtonEndRound = ({ onRoundOver }) => {
 
   return null
 }
-
-const useEndRound = createAction((state) => {
-  return {
-    ...state,
-    roundStarted: false,
-  }
-})

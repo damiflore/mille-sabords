@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCardId, useCurrentPlayerGettingReady } from "src/main.store.js"
+import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardDefaultUrl, cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
@@ -11,7 +11,7 @@ import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.
 export const Header = ({ openScoreboard }) => {
   const [dialogIsOpen, dialogIsOpenSetter] = React.useState(false)
   const currentCard = cardIdToCard(useCurrentCardId())
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const currentCardActivated = useCurrentCardActivated()
 
   const openDialog = () => {
     if (currentCard) dialogIsOpenSetter(true)
@@ -32,7 +32,7 @@ export const Header = ({ openScoreboard }) => {
         <div className="small-card">
           <TopDeckCard />
         </div>
-        {!currentPlayerGettingReady && <SwordChallengeIndicator />}
+        {currentCardActivated && <SwordChallengeIndicator />}
       </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
@@ -45,9 +45,9 @@ export const Header = ({ openScoreboard }) => {
 
 const TopDeckCard = () => {
   const currentCard = cardIdToCard(useCurrentCardId())
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const currentCardActivated = useCurrentCardActivated()
 
-  return currentCard && !currentPlayerGettingReady ? <SmallCard card={currentCard} /> : <BackCard />
+  return currentCard && currentCardActivated ? <SmallCard card={currentCard} /> : <BackCard />
 }
 
 const BackCard = () => {

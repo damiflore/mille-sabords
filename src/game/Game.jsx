@@ -8,13 +8,13 @@ import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 export const Game = () => {
   const players = usePlayers()
   const roundStarted = useRoundStarted()
-
   const isOnGameConfigurationScreen = useisOnGameConfigurationScreen()
   const isOnCharacterSelectionScreen = useIsOnCharacterSelectionScreen()
-  const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
 
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
   const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
+
+  const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
 
   if (isOnGameConfigurationScreen) {
     return <GameConfiguration />

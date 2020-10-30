@@ -11,25 +11,22 @@ import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
 import { useSignalEmitter } from "src/hooks.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
-import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
+import { useCurrentCardActivated } from "src/main.store.js"
 
 export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
-  const currentCardId = useCurrentCardId()
   const currentCardActivated = useCurrentCardActivated()
 
   const [roundMounted, roundMountedSetter] = React.useState(false)
-  const [drawCardDialogIsOpen] = React.useState(currentCardActivated)
+  const [drawCardDialogIsOpen] = React.useState(!currentCardActivated)
 
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
-
-  const cardDrawn = Boolean(currentCardId)
 
   return (
     <div className="round-container">
       <CardsEffects />
       <Header openScoreboard={openScoreboard} />
-      {cardDrawn ? (
+      {currentCardActivated ? (
         <RoundGameBoard
           diceOverRolledAreaSignal={diceOverRolledAreaSignal}
           diceOverChestSignal={diceOverChestSignal}

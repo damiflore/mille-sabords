@@ -1,9 +1,9 @@
 import React from "react"
-import { createAction } from "src/main.store.js"
+import { useStartPlayerRound } from "src/round/round.actions.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
 export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) => {
-  const startPlaying = useStartPlaying()
+  const startPlayerRound = useStartPlayerRound()
   return (
     <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
       <div className="dialog-content score-board-dialog">
@@ -27,7 +27,7 @@ export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) =>
             <button
               onClick={() => {
                 closeDialog()
-                startPlaying(player)
+                startPlayerRound(player)
               }}
             >
               Jouer
@@ -38,11 +38,3 @@ export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) =>
     </Dialog>
   )
 }
-
-const useStartPlaying = createAction((state, player) => {
-  return {
-    ...state,
-    currentPlayerId: player.id,
-    currentCardId: null,
-  }
-})
