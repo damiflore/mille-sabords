@@ -25,12 +25,13 @@ export const Lab = () => {
   }, [labOpened])
   const openLab = React.useCallback(() => labOpenedSetter(true))
   const closeLab = React.useCallback(() => labOpenedSetter(false))
+  const whatever = true
 
   return (
     <div id="lab">
       <Stylesheet href={labCssUrl} />
       <ContextProvider>
-        <Main />
+        <Main whatever={whatever} />
         {labOpened ? <GameLab closeLab={closeLab} /> : <ButtonOpenLab onClick={openLab} />}
       </ContextProvider>
     </div>

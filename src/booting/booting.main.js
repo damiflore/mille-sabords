@@ -43,12 +43,12 @@ export const watchBooting = (LowerLevelComponent) => {
     return <LowerLevelComponent {...props} />
   }
 
-  const BootingWithAssetTrackingProvider = () => {
+  const BootingWithAssetTrackingProvider = (props) => {
     const [booted, bootedSetter] = useState(false)
 
     return (
       <AssetsTrackingProvider>
-        <Booting booted={booted} bootedSetter={bootedSetter} />
+        <Booting {...props} booted={booted} bootedSetter={bootedSetter} />
       </AssetsTrackingProvider>
     )
   }

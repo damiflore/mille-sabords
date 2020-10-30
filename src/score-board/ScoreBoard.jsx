@@ -32,11 +32,7 @@ const getNextPlayer = () => {
   return nextPlayer
 }
 
-export const ScoreBoard = ({
-  openedByUser,
-  closeScoreboard,
-  roundOverPayload,
-}) => {
+export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
   const roundStarted = useRoundStarted()

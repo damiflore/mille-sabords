@@ -18,39 +18,15 @@ import {
   SYMBOL_SWORD,
 } from "src/symbols/symbols.js"
 import { faces } from "src/dices/dices.js"
-import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { useResetRound } from "src/round/round.actions.js"
 import { useUncurseDice } from "src/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()
-  const currentPlayer = useCurrentPlayer()
-  const setCurrentPlayerScore = useSetCurrentPlayerScore()
   const resetRound = useResetRound()
 
   return (
     <>
-      <form
-        onSubmit={(submitEvent) => {
-          submitEvent.preventDefault()
-        }}
-      >
-        <fieldset>
-          <legend>Score de {`${currentPlayer.character.name}`}</legend>
-          {[0, 3000, 5900].map((score) => {
-            return (
-              <button
-                key={score}
-                onClick={() => {
-                  setCurrentPlayerScore(score)
-                }}
-              >
-                Set to {score}
-              </button>
-            )
-          })}
-        </fieldset>
-      </form>
       <form
         onSubmit={(submitEvent) => {
           submitEvent.preventDefault()
@@ -73,16 +49,6 @@ export const GameBoardLab = () => {
     </>
   )
 }
-
-const useSetCurrentPlayerScore = createAction((state, score) => {
-  const { players } = state
-  const currentPlayer = useCurrentPlayer(state)
-  currentPlayer.score = score
-  return {
-    ...state,
-    players: [...players],
-  }
-})
 
 const VARIANTS = [
   "random",
