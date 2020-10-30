@@ -1,7 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useCurrentCardId, useRoundStarted, useScoreMarked } from "src/main.store.js"
+import { useCurrentCardId, useCurrentCardActivated, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
@@ -75,9 +75,11 @@ const ScoreDisplay = () => {
 }
 
 const DoubleScoreIndicator = () => {
-  const roundStarted = useRoundStarted()
-  if (roundStarted) return <div className="pirate-hook"></div>
-  return <div style={{ display: "none" }} className="pirate-hook"></div>
+  const currentCardActivated = useCurrentCardActivated()
+  if (!currentCardActivated) {
+    return <div style={{ display: "none" }} className="pirate-hook"></div>
+  }
+  return <div className="pirate-hook"></div>
 }
 
 const NegativeScoreSign = () => {

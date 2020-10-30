@@ -15,7 +15,7 @@ import {
   cardIdToCard,
 } from "src/cards/cards.js"
 
-export const DrawCardLab = () => {
+export const CardDrawingLab = () => {
   const cardIds = useCardIds()
   const nextCardId = cardIds[0]
   const nextCard = cardIdToCard(nextCardId)

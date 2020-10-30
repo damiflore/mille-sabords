@@ -10,16 +10,20 @@ import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
 import { useSignalEmitter } from "src/hooks.js"
-import { useCurrentPlayerGettingReady } from "src/main.store.js"
+import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
+import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 
 export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
+  const currentCardId = useCurrentCardId()
+  const currentCardActivated = useCurrentCardActivated()
+
   const [roundMounted, roundMountedSetter] = React.useState(false)
+  const [drawCardDialogIsOpen] = React.useState(currentCardActivated)
 
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
 
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
-  const cardDrawn = !currentPlayerGettingReady
+  const cardDrawn = Boolean(currentCardId)
 
   return (
     <div className="round-container">
@@ -47,6 +51,7 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
         />
       ) : null}
+      <DrawCardDialog dialogIsOpen={drawCardDialogIsOpen} />
     </div>
   )
 }

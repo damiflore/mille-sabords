@@ -4,21 +4,21 @@ import {
   useRoundStarted,
   useGameStarted,
   useCurrentCardId,
-  useCurrentPlayerGettingReady,
+  useCurrentCardActivated,
 } from "src/main.store.js"
 import { ContextProvider } from "src/main.context.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Main } from "src/main.component.js"
 import { ScoreBoardLab } from "lab/ScoreBoardLab.jsx"
-import { DrawCardLab } from "lab/DrawCardLab.jsx"
-import { StartRoundLab } from "lab/StartRoundLab.jsx"
-import { RoundLab } from "lab/RoundLab.jsx"
+import { CardDrawingLab } from "lab/CardDrawingLab.jsx"
+import { CardActivationLab } from "lab/CardActivationLab.jsx"
+import { GameBoardLab } from "lab/GameBoardLab.jsx"
 import labCssUrl from "lab/lab.css"
 
 export const Lab = () => {
   const [labOpened, labOpenedSetter] = React.useState(
-    localStorage.getItem("lab-menu-opened") || false,
+    JSON.parse(localStorage.getItem("lab-menu-opened")) || false,
   )
   React.useEffect(() => {
     localStorage.setItem("lab-menu-opened", labOpened)
@@ -50,23 +50,25 @@ const GameLabBody = () => {
   const gameStarted = useGameStarted()
   const roundStarted = useRoundStarted()
   const currentCardId = useCurrentCardId()
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const currentCardActivated = useCurrentCardActivated()
 
   if (!gameStarted) {
     return `Waiting for a game to start`
   }
 
   if (!roundStarted) {
-    if (!currentPlayerGettingReady) {
-      return <ScoreBoardLab />
-    }
-    if (!currentCardId) {
-      return <DrawCardLab />
-    }
-    return <StartRoundLab />
+    return <ScoreBoardLab />
   }
 
-  return <RoundLab />
+  if (!currentCardId) {
+    return <CardActivationLab />
+  }
+
+  if (!currentCardActivated) {
+    return <CardDrawingLab />
+  }
+
+  return <GameBoardLab />
 }
 
 const ButtonOpenLab = ({ onClick }) => {

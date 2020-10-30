@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCardId, useRoundStarted } from "src/main.store.js"
+import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
@@ -53,9 +53,9 @@ const ExtraSkull = ({ card }) => {
 }
 
 const UncurseDiceLabel = () => {
-  const roundStarted = useRoundStarted()
+  const currentCardActivated = useCurrentCardActivated()
 
-  if (!roundStarted) {
+  if (!currentCardActivated) {
     return <img style={{ display: "none" }} src={wichLabelImageUrl} />
   }
 

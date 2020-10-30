@@ -1,7 +1,7 @@
 import React from "react"
 import { useUndrawCard } from "src/cards/cards.actions.js"
 
-export const StartRoundLab = () => {
+export const CardActivationLab = () => {
   const undrawCard = useUndrawCard()
   return (
     <>

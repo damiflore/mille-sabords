@@ -21,7 +21,7 @@ import { faces } from "src/dices/dices.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { useResetRound } from "src/round/round.actions.js"
 
-export const RoundLab = () => {
+export const GameBoardLab = () => {
   const dices = useDices()
   const currentPlayer = useCurrentPlayer()
   const setCurrentPlayerScore = useSetCurrentPlayerScore()

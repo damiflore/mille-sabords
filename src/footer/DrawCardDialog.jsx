@@ -64,7 +64,7 @@ const TopCard = ({ currentCard }) => {
               <img
                 className="card-img"
                 src={cardToImageUrl(currentCard)}
-                width="250"
+                width="150"
                 alt={currentCard.type}
               />
             </div>
@@ -81,7 +81,7 @@ const TopCard = ({ currentCard }) => {
 const BackCard = ({ currentCard, remainingCardCount }) => {
   return (
     <div className="card default-card" id="back-deck-card" style={{ background: "none" }}>
-      <img src={cardDefaultUrl} width="250" />
+      <img src={cardDefaultUrl} width="150" />
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>
   )

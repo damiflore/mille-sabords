@@ -36,7 +36,6 @@ export const ScoreBoard = ({
   openedByUser,
   closeScoreboard,
   roundOverPayload,
-  openDrawCardDialog,
 }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
@@ -89,7 +88,6 @@ export const ScoreBoard = ({
       <StartPlayerRoundDialog
         dialogIsOpen={startPlayerRoundDialogIsOpen}
         closeDialog={closeStartPlayerRoundDialog}
-        openDrawCardDialog={openDrawCardDialog}
         player={nextPlayer}
       />
     </div>

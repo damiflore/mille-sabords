@@ -15,10 +15,10 @@ const defaultState = {
   dices: DICES,
 
   // game round
-  currentPlayerGettingReady: false,
   roundStarted: false,
-  rollCount: 0,
   currentCardId: null,
+  currentCardActivated: false,
+  rollCount: 0,
   scoreMarked: false,
   isOnSkullIsland: false,
   witchUncursedDiceId: null,
@@ -93,11 +93,11 @@ export const useCardIds = () => store.useKeyedState("cardIds")
 export const useCardUsedIds = () => store.useKeyedState("cardUsedIds")
 export const useDices = () => store.useKeyedState("dices")
 export const useRoundStarted = () => store.useKeyedState("roundStarted")
-export const useCurrentPlayerGettingReady = () => store.useKeyedState("currentPlayerGettingReady")
+export const useCurrentCardId = () => store.useKeyedState("currentCardId")
+export const useCurrentCardActivated = () => store.useKeyedState("currentCardActivated")
 export const useRollCount = () => store.useKeyedState("rollCount")
 export const useScoreMarked = () => store.useKeyedState("scoreMarked")
 export const useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland")
-export const useCurrentCardId = () => store.useKeyedState("currentCardId")
 export const useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId")
 export const useDiceRolledIds = () => store.useKeyedState("diceRolledIds")
 export const useDiceCursedIds = () => store.useKeyedState("diceCursedIds")
