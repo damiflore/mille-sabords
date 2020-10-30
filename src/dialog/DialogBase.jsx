@@ -178,7 +178,9 @@ export const DialogBase = ({
     }
   }, [isOpen, dialogElement])
 
-  if (closeMethod === "dom-remove" && !isOpen) return null
+  if (closeMethod === "dom-remove" && !isOpen) {
+    return null
+  }
 
   return ReactDOM.createPortal(
     <>

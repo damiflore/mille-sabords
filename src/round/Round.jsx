@@ -17,7 +17,6 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const currentCardActivated = useCurrentCardActivated()
 
   const [roundMounted, roundMountedSetter] = React.useState(false)
-  const [drawCardDialogIsOpen] = React.useState(!currentCardActivated)
 
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
@@ -48,7 +47,7 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
         />
       ) : null}
-      <DrawCardDialog dialogIsOpen={drawCardDialogIsOpen} />
+      <DrawCardDialog dialogIsOpen={!currentCardActivated} />
     </div>
   )
 }

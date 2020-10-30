@@ -5,6 +5,7 @@ export const useStartPlayerRound = createAction((state, player) => {
     ...state,
     currentPlayerId: player.id,
     currentCardId: null,
+    currentCardActivated: false,
     roundStarted: true,
   }
 })
