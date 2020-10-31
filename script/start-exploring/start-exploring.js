@@ -11,11 +11,11 @@ startExploring({
     },
     "manual tests": {
       "src/**/*.scenario.html": true,
+      "test-manual/**/*.scenario.html": true,
     },
     "unit tests": {
       "src/**/*.test.html": true,
       "test/**/*.test.html": true,
     },
   },
-  projectFileEtagEnabled: true,
 })
