@@ -1,4 +1,5 @@
 import React from "react"
+import { Image } from "src/generic/Image.jsx"
 import { useStartPlayerRound } from "src/round/round.actions.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
@@ -14,7 +15,7 @@ export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) =>
           <div>
             Au tour de
             <div className="dialog-label">{player.character.name}</div>
-            <img
+            <Image
               className="player-img"
               src={player && player.character.img}
               alt="player"

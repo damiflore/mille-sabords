@@ -1,6 +1,7 @@
 import React from "react"
 
 import { useCurrentCardId } from "src/main.store.js"
+import { Image } from "src/generic/Image.jsx"
 import { useCardDeck } from "src/round/round.selectors.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 import { useActivateCurrentCard } from "src/round/round.actions.js"
@@ -58,10 +59,10 @@ const TopCard = ({ currentCard }) => {
         <div className="flip-card">
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <img className="card default-card" src={cardDefaultUrl} />
+              <Image className="card default-card" src={cardDefaultUrl} />
             </div>
             <div className="flip-card-back">
-              <img
+              <Image
                 className="card-img"
                 src={cardToImageUrl(currentCard)}
                 width="150"
@@ -81,7 +82,7 @@ const TopCard = ({ currentCard }) => {
 const BackCard = ({ currentCard, remainingCardCount }) => {
   return (
     <div className="card default-card" id="back-deck-card" style={{ background: "none" }}>
-      <img src={cardDefaultUrl} width="150" />
+      <Image src={cardDefaultUrl} width="150" />
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>
   )

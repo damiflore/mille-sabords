@@ -1,5 +1,6 @@
 import React from "react"
 
+import { Image } from "src/generic/Image.jsx"
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 import { cardToImageUrl } from "src/cards/cards.js"
@@ -21,7 +22,7 @@ export const CardRulesDialog = ({ dialogIsOpen, closeDialog, card }) => {
           {cardRules && (
             <>
               <div className="dialog-label">{cardRules.name}</div>
-              <img className="current-card" src={cardToImageUrl(card)} alt={card.type} />
+              <Image className="current-card" src={cardToImageUrl(card)} alt={card.type} />
               <div className="text-rule">{cardRules.rule}</div>
               {cardRules.more ? <div className="text-rule">{cardRules.more}</div> : null}
             </>

@@ -2,7 +2,6 @@ import React from "react"
 
 import { useAssetTracker } from "src/booting/booting.main.js"
 import { useImage } from "src/booting/useImage.js"
-import { useBecomes } from "src/hooks.js"
 import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 
 export const Image = ({
@@ -65,13 +64,12 @@ const AnimateImageLoaded = (props) => {
 const OnceImageLoadedSuspense = ({ fallback, src, children }) => {
   const [status] = useImage(src)
   const imageLoadEnds = useAssetTracker(src)
-  const becomesLoaded = useBecomes(
-    (statusPrevious) => statusPrevious !== "loaded" && status === "loaded",
-    [status],
-  )
-  if (becomesLoaded) {
-    imageLoadEnds()
-  }
+
+  React.useEffect(() => {
+    if (status === "loaded") {
+      imageLoadEnds()
+    }
+  }, [status])
 
   if (status !== "loaded") {
     return fallback

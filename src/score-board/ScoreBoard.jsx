@@ -1,4 +1,5 @@
 import React from "react"
+import { Image } from "src/generic/Image.jsx"
 import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
@@ -52,7 +53,7 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, playerAnimation }) =
           </button>
         </div>
       )}
-      <img className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" />
+      <Image className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" />
       <div className="users-path">
         {players.map((player) => (
           <PlayerPath
@@ -207,7 +208,7 @@ const ratioToOffsetDistance = (ratio) => `${ratio * 100}%`
 const ratioToStrokeDashOffset = (ratio, pathLength) => pathLength - ratio * pathLength
 
 const Avatar = ({ character }) => (
-  <img
+  <Image
     className="player-img"
     src={character.img}
     alt="player"

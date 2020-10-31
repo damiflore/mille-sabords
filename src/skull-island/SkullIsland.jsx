@@ -1,5 +1,6 @@
 import React from "react"
 
+import { Image } from "src/generic/Image.jsx"
 import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
@@ -41,7 +42,7 @@ const ExtraSkull = ({ card }) => {
         borderWidth: "2px",
       }}
     >
-      <img
+      <Image
         src={symbolSkullUrl}
         style={{
           width: "100%",
@@ -56,12 +57,12 @@ const UncurseDiceLabel = () => {
   const currentCardActivated = useCurrentCardActivated()
 
   if (!currentCardActivated) {
-    return <img style={{ display: "none" }} src={wichLabelImageUrl} />
+    return <Image style={{ display: "none" }} src={wichLabelImageUrl} />
   }
 
   return (
     <div className="witch-label">
-      <img src={wichLabelImageUrl} />
+      <Image src={wichLabelImageUrl} />
       <svg x="0px" y="0px" width="156.083px" height="208.667px" viewBox="0 0 156.083 208.667">
         <path
           id="path_01"

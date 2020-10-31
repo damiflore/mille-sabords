@@ -2,6 +2,7 @@ import React from "react"
 
 import { useSignalListener } from "src/hooks.js"
 import { useCurrentCardId, useChestSlots } from "src/main.store.js"
+import { Image } from "src/generic/Image.jsx"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 import { symbolToImageUrl } from "src/symbols/symbols.js"
@@ -83,7 +84,7 @@ const ChestSlot = ({ chestSlotContent }) => {
           borderStyle: "solid",
         }}
       >
-        <img
+        <Image
           src={symbolToImageUrl(symbol)}
           draggable="false"
           style={{
@@ -102,7 +103,7 @@ const ChestSlot = ({ chestSlotContent }) => {
 const CursedCover = () => {
   return (
     <div className="cursed-cover">
-      <img draggable="false" src={cursedGridImageUrl} alt="cursed-cover" />
+      <Image draggable="false" src={cursedGridImageUrl} alt="cursed-cover" />
     </div>
   )
 }

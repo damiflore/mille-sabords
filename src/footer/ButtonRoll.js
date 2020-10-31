@@ -1,5 +1,6 @@
 import React from "react"
 import { createAction, useDiceRolledIds, useCurrentCardId } from "src/main.store.js"
+import { Image } from "src/generic/Image.jsx"
 import {
   useRollDiceAllowed,
   useHasNeverRolled,
@@ -36,7 +37,7 @@ export const ButtonRoll = ({ rolledAreaRef }) => {
             <span className="button-subtitle">(au moins 2 dés !)</span>
           )}
         </button>
-        {disabledChestCard && <img src={symbolSkullUrl} className="skull-symbol" />}
+        {disabledChestCard && <Image src={symbolSkullUrl} className="skull-symbol" />}
       </div>
     )
   }

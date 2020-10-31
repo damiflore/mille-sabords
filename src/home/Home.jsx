@@ -1,4 +1,5 @@
 import React from "react"
+import { Image } from "src/generic/Image.jsx"
 import { createAction } from "src/main.store.js"
 import { symbolSwordUrl } from "src/symbols/symbols.js"
 
@@ -11,7 +12,7 @@ const ButtonNewGame = () => {
 
   return (
     <div className="new-game">
-      <img src={symbolSwordUrl} />
+      <Image src={symbolSwordUrl} />
       <button onClick={createNewGame}>Nouvelle partie</button>
     </div>
   )

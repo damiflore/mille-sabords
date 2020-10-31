@@ -1,6 +1,7 @@
 import React from "react"
 
 import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
+import { Image } from "src/generic/Image.jsx"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { cardDefaultUrl, cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
@@ -72,7 +73,7 @@ export const SmallCard = ({ card }) => {
         borderColor: card.color2,
       }}
     >
-      <img src={cardToSmallImageUrl(card)} alt={card.type} />
+      <Image src={cardToSmallImageUrl(card)} alt={card.type} />
     </div>
   )
 }
@@ -81,7 +82,7 @@ const CurrentPlayer = ({ openScoreboard }) => {
   const player = useCurrentPlayer()
 
   return (
-    <img
+    <Image
       onClick={openScoreboard}
       className="avatar"
       src={player && player.character.img}

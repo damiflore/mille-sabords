@@ -1,5 +1,6 @@
 import React from "react"
 
+import { Image } from "src/generic/Image.jsx"
 import { useCurrentCardId } from "src/main.store.js"
 import { useSymbolsInChest } from "src/round/round.selectors.js"
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
@@ -41,12 +42,12 @@ export const SwordChallengeIndicator = () => {
 
 const SwordIconActivated = () => (
   <div className="sword-icon">
-    <img src={symbolSwordUrl} />
+    <Image src={symbolSwordUrl} />
   </div>
 )
 
 const SwordIconDisabled = () => (
   <div className="sword-icon disabled">
-    <img src={swordsDisabledImageUrl} />
+    <Image src={swordsDisabledImageUrl} />
   </div>
 )

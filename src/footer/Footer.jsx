@@ -1,6 +1,7 @@
 import React from "react"
 
 import { useMarkScore, useEndPlayerRound } from "src/round/round.actions.js"
+import { Image } from "src/generic/Image.jsx"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
@@ -47,7 +48,7 @@ const ButtonMarkScore = () => {
             {sign} {Math.abs(roundScore)}
           </span>
         </button>
-        {!markScoreAllowed && <img src={symbolSkullUrl} className="skull-symbol" />}
+        {!markScoreAllowed && <Image src={symbolSkullUrl} className="skull-symbol" />}
       </div>
     )
   }

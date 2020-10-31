@@ -8,6 +8,7 @@ import {
   useChestSlots,
   createAction,
 } from "src/main.store.js"
+import { Image } from "src/generic/Image.jsx"
 import { useDiceDomNode } from "src/dom/dom.main.js"
 import {
   SYMBOL_COIN,
@@ -144,7 +145,7 @@ const DiceVariant = ({ dice, variant }) => {
       {variant === "random" ? (
         "?"
       ) : (
-        <img width="32" height="32" src={`src/dices/dice_${variant}.png`} />
+        <Image width="32" height="32" src={`src/dices/dice_${variant}.png`} />
       )}
     </button>
   )

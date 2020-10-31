@@ -1,6 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
+import { Image } from "src/generic/Image.jsx"
 import { useCurrentCardId, useCurrentCardActivated, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
@@ -179,8 +180,8 @@ const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (
           <div className="columns">
             <div className="column">
               <div className="column-title">Symbol</div>
-              <img src={symbolCoinUrl} />
-              <img src={symbolDiamondUrl} />
+              <Image src={symbolCoinUrl} />
+              <Image src={symbolDiamondUrl} />
             </div>
             <div className="column">
               <div className="column-title">Points</div>
