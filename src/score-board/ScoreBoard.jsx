@@ -17,22 +17,7 @@ const pathList = {
     "M39.582,739.564c0-113.074-5.437-166.074-8.437-198.074s36-20.667,33.019-2c-1.796,11.248-24.583,13.333-23.699-22c1.229-49.158,22.68-111,23.68-169s-38-95-46-181S39.582,0,39.582,0",
 }
 
-const getNextPlayer = () => {
-  const currentPlayer = useCurrentPlayer()
-  const players = usePlayers()
-
-  let nextPlayer
-  if (currentPlayer) {
-    const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayer.id)
-    nextPlayer =
-      currentPlayerIndex === players.length - 1 ? players[0] : players[currentPlayerIndex + 1]
-  } else {
-    nextPlayer = players[0]
-  }
-  return nextPlayer
-}
-
-export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) => {
+export const ScoreBoard = ({ openedByUser, closeScoreboard, playerAnimation }) => {
   const players = usePlayers()
   const currentPlayer = useCurrentPlayer()
   const roundStarted = useRoundStarted()
@@ -70,14 +55,15 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) 
       <img className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" />
       <div className="users-path">
         {players.map((player) => (
-          <UserPath
+          <PlayerPath
             key={player.id}
+            player={player}
             pathCoordinates={pathList[`path${player.id}`]}
             score={player.score}
             character={player.character}
             openStartPlayerRoundDialog={openStartPlayerRoundDialog}
             isCurrentPlayer={currentPlayer && player.id === currentPlayer.id}
-            roundOverPayload={roundOverPayload}
+            playerAnimation={playerAnimation}
           />
         ))}
       </div>
@@ -90,13 +76,28 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, roundOverPayload }) 
   )
 }
 
-const UserPath = ({
+const getNextPlayer = () => {
+  const currentPlayer = useCurrentPlayer()
+  const players = usePlayers()
+
+  let nextPlayer
+  if (currentPlayer) {
+    const currentPlayerIndex = players.findIndex((player) => player.id === currentPlayer.id)
+    nextPlayer =
+      currentPlayerIndex === players.length - 1 ? players[0] : players[currentPlayerIndex + 1]
+  } else {
+    nextPlayer = players[0]
+  }
+  return nextPlayer
+}
+
+const PlayerPath = ({
   pathCoordinates,
+  player,
   character,
   score,
   openStartPlayerRoundDialog,
-  isCurrentPlayer,
-  roundOverPayload,
+  playerAnimation,
 }) => {
   const pathForegroundElementRef = React.useRef(null)
   const circleElementRef = React.useRef(null)
@@ -105,17 +106,13 @@ const UserPath = ({
   const [scoreAnimation, scoreAnimationSetter] = React.useState()
 
   React.useEffect(() => {
-    if (isCurrentPlayer && roundOverPayload && roundOverPayload.reason === "score-marked") {
-      const roundScore = roundOverPayload.value
-      const fromScore = score - roundScore
-      scoreAnimationSetter({
-        from: fromScore < 0 ? 0 : fromScore,
-        to: score,
-      })
+    if (playerAnimation && playerAnimation.player === player) {
+      scoreAnimationSetter(playerAnimation.score)
     } else {
       scoreAnimationSetter(null)
     }
-  }, [isCurrentPlayer, roundOverPayload])
+  }, [playerAnimation, player])
+
   React.useEffect(() => {
     if (!scoreAnimation) return () => {}
 

@@ -1,20 +1,44 @@
 import React from "react"
-import { usePlayers, useGameStarted, useRoundStarted } from "src/main.store.js"
+import { usePlayers, useGameStarted, useRoundStarted, useCurrentPlayerId } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
 import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
 import { GameConfiguration } from "src/game/GameConfiguration.jsx"
 import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
-export const Game = () => {
+export const Game = ({ playerAnimationSignal }) => {
   const players = usePlayers()
+  const currentPlayerId = useCurrentPlayerId()
   const roundStarted = useRoundStarted()
-  const isOnGameConfigurationScreen = useisOnGameConfigurationScreen()
+  const isOnGameConfigurationScreen = useIsOnGameConfigurationScreen()
   const isOnCharacterSelectionScreen = useIsOnCharacterSelectionScreen()
 
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
   const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
+  const [playerAnimation, playerAnimationSetter] = React.useState(null)
 
   const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
+
+  React.useEffect(() => {
+    if (roundOverPayload && roundOverPayload.reason === "score-marked") {
+      const player = players.find((player) => player.id === currentPlayerId)
+      const roundScore = roundOverPayload.value
+      const fromScore = player.score - roundScore
+      playerAnimationSetter({
+        player,
+        score: {
+          from: fromScore < 0 ? 0 : fromScore,
+          to: player.score,
+        },
+      })
+    } else {
+      playerAnimationSetter(null)
+    }
+  }, [roundOverPayload, currentPlayerId])
+  React.useEffect(() => {
+    if (playerAnimationSignal) {
+      playerAnimationSignal.listen(playerAnimationSetter)
+    }
+  }, [playerAnimationSignal])
 
   if (isOnGameConfigurationScreen) {
     return <GameConfiguration />
@@ -31,7 +55,7 @@ export const Game = () => {
         closeScoreboard={() => {
           scoreboardOpenedByUserSetter(false)
         }}
-        roundOverPayload={roundOverPayload}
+        playerAnimation={playerAnimation}
       />
     )
   }
@@ -51,7 +75,7 @@ export const Game = () => {
   )
 }
 
-export const useisOnGameConfigurationScreen = () => {
+export const useIsOnGameConfigurationScreen = () => {
   const players = usePlayers()
   const needsToChooseNumberOfPlayers = players.length === 0
   return needsToChooseNumberOfPlayers

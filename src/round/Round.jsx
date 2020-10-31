@@ -18,6 +18,10 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
 
   const [roundMounted, roundMountedSetter] = React.useState(false)
 
+  React.useEffect(() => {
+    onRoundStart()
+  }, [])
+
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
 
@@ -32,7 +36,6 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           openScoreboard={openScoreboard}
           onRoundOver={onRoundOver}
           onRoundMounted={(refs) => {
-            onRoundStart()
             roundMountedSetter(refs)
           }}
         />

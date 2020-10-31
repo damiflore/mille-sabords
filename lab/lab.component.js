@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import {
@@ -6,6 +7,7 @@ import {
   useCurrentCardId,
   useCurrentCardActivated,
 } from "src/main.store.js"
+import { useSignalEmitter } from "src/hooks.js"
 import { ContextProvider } from "src/main.context.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
@@ -25,29 +27,34 @@ export const Lab = () => {
   }, [labOpened])
   const openLab = React.useCallback(() => labOpenedSetter(true))
   const closeLab = React.useCallback(() => labOpenedSetter(false))
-  const whatever = true
+
+  const playerAnimationSignal = useSignalEmitter()
 
   return (
     <div id="lab">
       <Stylesheet href={labCssUrl} />
       <ContextProvider>
-        <Main whatever={whatever} />
-        {labOpened ? <GameLab closeLab={closeLab} /> : <ButtonOpenLab onClick={openLab} />}
+        <Main playerAnimationSignal={playerAnimationSignal} />
+        {labOpened ? (
+          <GameLab closeLab={closeLab} playerAnimationSignal={playerAnimationSignal} />
+        ) : (
+          <ButtonOpenLab onClick={openLab} />
+        )}
       </ContextProvider>
     </div>
   )
 }
 
-const GameLab = ({ closeLab }) => {
+const GameLab = ({ closeLab, ...props }) => {
   return (
     <aside>
       <ButtonCloseLab onClick={closeLab} />
-      <GameLabBody />
+      <GameLabBody {...props} />
     </aside>
   )
 }
 
-const GameLabBody = () => {
+const GameLabBody = (props) => {
   const gameStarted = useGameStarted()
   const roundStarted = useRoundStarted()
   const currentCardId = useCurrentCardId()
@@ -58,18 +65,18 @@ const GameLabBody = () => {
   }
 
   if (!roundStarted) {
-    return <ScoreBoardLab />
+    return <ScoreBoardLab {...props} />
   }
 
   if (!currentCardId) {
-    return <CardDrawingLab />
+    return <CardDrawingLab {...props} />
   }
 
   if (!currentCardActivated) {
-    return <CardActivationLab />
+    return <CardActivationLab {...props} />
   }
 
-  return <GameBoardLab />
+  return <GameBoardLab {...props} />
 }
 
 const ButtonOpenLab = ({ onClick }) => {
