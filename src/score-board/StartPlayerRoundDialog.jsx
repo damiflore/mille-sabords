@@ -1,16 +1,9 @@
 import React from "react"
-import { createAction } from "src/main.store.js"
-import { useStartPlaying } from "src/game/Game.jsx"
+import { useStartPlayerRound } from "src/round/round.actions.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 
-export const StartPlayerRoundDialog = ({
-  openDrawCardDialog,
-  closeDialog,
-  dialogIsOpen,
-  player,
-}) => {
-  const startPlaying = useStartPlaying()
-  const setCurrentPlayerGettingReady = useSetCurrentPlayerGettingReady()
+export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) => {
+  const startPlayerRound = useStartPlayerRound()
   return (
     <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
       <div className="dialog-content score-board-dialog">
@@ -34,9 +27,7 @@ export const StartPlayerRoundDialog = ({
             <button
               onClick={() => {
                 closeDialog()
-                setCurrentPlayerGettingReady()
-                startPlaying(player)
-                openDrawCardDialog()
+                startPlayerRound(player)
               }}
             >
               Jouer
@@ -47,10 +38,3 @@ export const StartPlayerRoundDialog = ({
     </Dialog>
   )
 }
-
-const useSetCurrentPlayerGettingReady = createAction((state) => {
-  return {
-    ...state,
-    currentPlayerGettingReady: true,
-  }
-})

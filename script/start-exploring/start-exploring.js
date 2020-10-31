@@ -17,4 +17,5 @@ startExploring({
       "test/**/*.test.html": true,
     },
   },
+  projectFileEtagEnabled: true,
 })

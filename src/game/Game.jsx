@@ -1,117 +1,87 @@
 import React from "react"
-import {
-  usePlayers,
-  createAction,
-  useGameStarted,
-  useRoundStarted,
-  useCurrentPlayerGettingReady,
-} from "src/main.store.js"
+import { usePlayers, useGameStarted, useRoundStarted, useCurrentPlayerId } from "src/main.store.js"
 import { Round } from "src/round/Round.jsx"
 import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
+import { GameConfiguration } from "src/game/GameConfiguration.jsx"
 import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
-import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
-import { useCurrentPlayer } from "src/round/round.selectors.js"
-
-export const Game = () => {
+export const Game = ({ playerAnimationSignal }) => {
   const players = usePlayers()
+  const currentPlayerId = useCurrentPlayerId()
   const roundStarted = useRoundStarted()
-  const gameStarted = useGameStarted()
-  const currentPlayerGettingReady = useCurrentPlayerGettingReady()
+  const isOnGameConfigurationScreen = useIsOnGameConfigurationScreen()
+  const isOnCharacterSelectionScreen = useIsOnCharacterSelectionScreen()
 
-  const needsToChooseNumberOfPlayers = players.length === 0
   const [scoreboardOpenedByUser, scoreboardOpenedByUserSetter] = React.useState(false)
   const [roundOverPayload, roundOverPayloadSetter] = React.useState(null)
+  const [playerAnimation, playerAnimationSetter] = React.useState(null)
 
-  // dialogue drawCardDialog
-  const currentPlayer = useCurrentPlayer()
-  const isDrawCardDialogOpen = currentPlayer && currentPlayerGettingReady
-  const [drawCardDialogIsOpen, drawCardDialogIsOpenSetter] = React.useState(isDrawCardDialogOpen)
-  const openDrawCardDialog = () => {
-    drawCardDialogIsOpenSetter(true)
-  }
-  const closeDrawCardDialog = () => {
-    drawCardDialogIsOpenSetter(false)
+  const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
+
+  React.useEffect(() => {
+    if (roundOverPayload && roundOverPayload.reason === "score-marked") {
+      const player = players.find((player) => player.id === currentPlayerId)
+      const roundScore = roundOverPayload.value
+      const fromScore = player.score - roundScore
+      playerAnimationSetter({
+        player,
+        score: {
+          from: fromScore < 0 ? 0 : fromScore,
+          to: player.score,
+        },
+      })
+    } else {
+      playerAnimationSetter(null)
+    }
+  }, [roundOverPayload, currentPlayerId])
+  React.useEffect(() => {
+    if (playerAnimationSignal) {
+      playerAnimationSignal.listen(playerAnimationSetter)
+    }
+  }, [playerAnimationSignal])
+
+  if (isOnGameConfigurationScreen) {
+    return <GameConfiguration />
   }
 
-  if (needsToChooseNumberOfPlayers) {
-    return <PlayerCountSelection />
-  }
-
-  if (!gameStarted) {
+  if (isOnCharacterSelectionScreen) {
     return <CharacterSelection players={players} />
   }
 
-  if ((!roundStarted || scoreboardOpenedByUser) && !currentPlayerGettingReady) {
+  if (isOnScoreboardScreen) {
     return (
       <ScoreBoard
         openedByUser={scoreboardOpenedByUser}
         closeScoreboard={() => {
           scoreboardOpenedByUserSetter(false)
         }}
-        roundOverPayload={roundOverPayload}
-        openDrawCardDialog={openDrawCardDialog}
+        playerAnimation={playerAnimation}
       />
     )
   }
 
   return (
-    <>
-      <Round
-        openScoreboard={() => {
-          scoreboardOpenedByUserSetter(true)
-        }}
-        onRoundStart={() => {
-          roundOverPayloadSetter(null)
-        }}
-        onRoundOver={(roundOverPayload) => {
-          roundOverPayloadSetter(roundOverPayload)
-        }}
-      />
-      <DrawCardDialog dialogIsOpen={drawCardDialogIsOpen} closeDialog={closeDrawCardDialog} />
-    </>
+    <Round
+      openScoreboard={() => {
+        scoreboardOpenedByUserSetter(true)
+      }}
+      onRoundStart={() => {
+        roundOverPayloadSetter(null)
+      }}
+      onRoundOver={(roundOverPayload) => {
+        roundOverPayloadSetter(roundOverPayload)
+      }}
+    />
   )
 }
 
-const PlayerCountSelection = () => {
-  const setPlayerCount = useSetPlayerCount()
-
-  return (
-    <div>
-      <p>Combien de joueur?</p>
-      {[1, 2, 3, 4, 5].map((playerCount) => {
-        return (
-          <button
-            key={playerCount}
-            onClick={() => {
-              setPlayerCount(playerCount)
-            }}
-          >
-            {playerCount === 1 ? "1 joueur" : `${playerCount} joueurs`}
-          </button>
-        )
-      })}
-    </div>
-  )
+export const useIsOnGameConfigurationScreen = () => {
+  const players = usePlayers()
+  const needsToChooseNumberOfPlayers = players.length === 0
+  return needsToChooseNumberOfPlayers
 }
 
-const useSetPlayerCount = createAction((state, playerCount) => {
-  return {
-    ...state,
-    players: new Array(playerCount).fill("").map((_, index) => {
-      return {
-        id: index + 1,
-        number: index + 1,
-        score: 0,
-      }
-    }),
-  }
-})
-
-export const useStartPlaying = createAction((state, player) => {
-  return {
-    ...state,
-    currentPlayerId: player.id,
-    currentCardId: null,
-  }
-})
+export const useIsOnCharacterSelectionScreen = () => {
+  const gameStarted = useGameStarted()
+  return !gameStarted
+}

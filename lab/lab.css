@@ -4,9 +4,33 @@
 }
 
 #lab aside {
-  width: 560px;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
   border-right: 2px solid black;
+  box-sizing: border-box;
   padding: 1em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button-open-lab {
+  width: 30px;
+  height: 30px;
+  background: white;
+  position: absolute;
+  z-index: 1000;
+  left: 1em;
+  top: 1em;
+}
+
+.button-close-lab {
+  width: 30px;
+  height: 30px;
+  background: white;
 }
 
 button[data-active] {

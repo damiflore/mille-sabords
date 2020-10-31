@@ -37,11 +37,11 @@ export const useCurseDice = createAction((state, dice) => {
   }
 })
 
-export const useUncurseDice = createAction((state, dice) => {
+export const useUncurseDice = createAction((state, dice, fromLab = false) => {
   const { diceRolledIds, diceCursedIds } = state
   return {
     ...state,
-    witchUncursedDiceId: dice.id,
+    ...(fromLab ? {} : { witchUncursedDiceId: dice.id }),
     diceRolledIds: [...diceRolledIds, dice.id],
     diceCursedIds: diceCursedIds.filter((diceCursedId) => diceCursedId !== dice.id),
   }

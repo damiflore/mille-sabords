@@ -43,12 +43,12 @@ export const watchBooting = (LowerLevelComponent) => {
     return <LowerLevelComponent {...props} />
   }
 
-  const BootingWithAssetTrackingProvider = () => {
+  const BootingWithAssetTrackingProvider = (props) => {
     const [booted, bootedSetter] = useState(false)
 
     return (
       <AssetsTrackingProvider>
-        <Booting booted={booted} bootedSetter={bootedSetter} />
+        <Booting {...props} booted={booted} bootedSetter={bootedSetter} />
       </AssetsTrackingProvider>
     )
   }
@@ -73,6 +73,12 @@ export const useAssetsTracking = () => useContext(AssetsContext)[0]
 export const useAssetTracking = (url) => useContext(AssetsContext)[0][url]
 
 export const useAssetTracker = (url) => {
+  const assetContextValue = useContext(AssetsContext)
+  if (!assetContextValue) {
+    // this asset has not the assetsContext, it cannot be tracked
+    return () => {}
+  }
+
   const dispatch = useContext(AssetsContext)[1]
 
   const assetLoadStarts = () => {

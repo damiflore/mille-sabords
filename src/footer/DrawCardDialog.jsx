@@ -3,7 +3,7 @@ import React from "react"
 import { useCurrentCardId } from "src/main.store.js"
 import { useCardDeck } from "src/round/round.selectors.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
-import { useStartRound } from "src/round/round.actions.js"
+import { useActivateCurrentCard } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
@@ -64,7 +64,7 @@ const TopCard = ({ currentCard }) => {
               <img
                 className="card-img"
                 src={cardToImageUrl(currentCard)}
-                width="250"
+                width="150"
                 alt={currentCard.type}
               />
             </div>
@@ -81,7 +81,7 @@ const TopCard = ({ currentCard }) => {
 const BackCard = ({ currentCard, remainingCardCount }) => {
   return (
     <div className="card default-card" id="back-deck-card" style={{ background: "none" }}>
-      <img src={cardDefaultUrl} width="250" />
+      <img src={cardDefaultUrl} width="150" />
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>
   )
@@ -155,15 +155,14 @@ const animateCard = (duration) => {
   )
 }
 
-const StartButton = ({ closeDialog }) => {
-  const startRound = useStartRound()
+const StartButton = () => {
+  const activateCurrentCard = useActivateCurrentCard()
 
   const start = () => {
     const animationDuration = 500
     animateCard(animationDuration)
     setTimeout(() => {
-      startRound()
-      closeDialog()
+      activateCurrentCard()
     }, animationDuration)
   }
 

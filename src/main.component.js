@@ -6,11 +6,11 @@ import { Home } from "src/home/Home.jsx"
 import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
 import { watchBooting } from "src/booting/booting.main.js"
-import { PreloadImages } from "src/generic/PreloadImages.jsx"
+import { ImagePreloader } from "src/booting/ImagePreloader.jsx"
 
 import milleSabordsCssUrl from "../mille-sabord.css"
 
-const MainRaw = ({ booted }) => {
+const MainRaw = ({ booted, ...props }) => {
   React.useEffect(() => {
     if (booted) {
       window.removeSplashscreen()
@@ -21,21 +21,21 @@ const MainRaw = ({ booted }) => {
     <div id="main-container">
       <div id="main" ref={useMainDomNodeSetter()}>
         <Stylesheet href={milleSabordsCssUrl} />
-        <AppBody />
-        {booted ? <PreloadImages /> : null}
+        <AppBody {...props} />
+        {booted ? <ImagePreloader /> : null}
       </div>
     </div>
   )
 }
 
-const AppBody = () => {
+const AppBody = (props) => {
   const gameCreated = useGameCreated()
 
   if (gameCreated) {
-    return <Game />
+    return <Game {...props} />
   }
 
-  return <Home />
+  return <Home {...props} />
 }
 
 const ErrorScreen = ({ error }) => {
