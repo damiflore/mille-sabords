@@ -1,7 +1,6 @@
 import React from "react"
 
 import { cardDefaultUrl, cardImageUrlMap } from "src/cards/cards.js"
-import { Image } from "src/generic/Image.jsx"
 
 import woodUrl from "src/wood.jpg"
 import pirateHookUrl from "src/chest/pirate-hook.png"
@@ -10,8 +9,9 @@ import woodBoxUrl from "src/chest/wood-box.jpg"
 import treasureMapUrl from "src/dice-ongoing/treasure-map.png"
 import witchLabelUrl from "src/skull-island/witch-label.png"
 import skullBottleUrl from "src/skull-island/skull-bottle.png"
+import { preloadImages } from "src/booting/preloadImages.js"
 
-export const PreloadImages = () => {
+export const ImagePreloader = () => {
   const images = [
     woodUrl,
     pirateHookUrl,
@@ -24,11 +24,9 @@ export const PreloadImages = () => {
     ...Object.keys(cardImageUrlMap).map((key) => cardImageUrlMap[key]),
   ]
 
-  return (
-    <div style={{ display: "none" }}>
-      {images.map((src) => (
-        <Image key={src} src={src} />
-      ))}
-    </div>
-  )
+  React.useEffect(() => {
+    setTimeout(() => preloadImages(images), 2000)
+  }, [])
+
+  return null
 }

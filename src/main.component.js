@@ -6,7 +6,7 @@ import { Home } from "src/home/Home.jsx"
 import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
 import { watchBooting } from "src/booting/booting.main.js"
-import { PreloadImages } from "src/generic/PreloadImages.jsx"
+import { ImagePreloader } from "src/booting/ImagePreloader.jsx"
 
 import milleSabordsCssUrl from "../mille-sabord.css"
 
@@ -22,7 +22,7 @@ const MainRaw = ({ booted, ...props }) => {
       <div id="main" ref={useMainDomNodeSetter()}>
         <Stylesheet href={milleSabordsCssUrl} />
         <AppBody {...props} />
-        {booted ? <PreloadImages /> : null}
+        {booted ? <ImagePreloader /> : null}
       </div>
     </div>
   )
