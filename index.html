@@ -41,28 +41,76 @@
           align-items: center;
         }
 
-        #splashscreen #app-loading {
+        #splashscreen #splashscreen-text {
           display: flex;
           visibility: hidden;
           align-items: center;
           flex: 1;
         }
+
+        #splashscreen #errorscreen {
+          display: block;
+        }
+
+        #splashscreen #errorscreen details {
+          max-width: 500px;
+        }
+        #splashscreen details pre {
+          overflow: auto;
+        }
       </style>
       <h1>Mille sabords</h1>
-      <div id="app-loading" hidden>Hey ça load</div>
+      <div id="splashscreen-text" hidden>Hey ça load</div>
       <script>
+        const splashscreenTextElement = document.querySelector("#splashscreen-text")
         const timeout = setTimeout(() => {
           // montre un loader ou quelque chose parce que le site met un peu de temps a se load
-          document.querySelector("#app-loading").style.visibility = "visible"
+          splashscreenTextElement.style.visibility = "visible"
         }, 700)
 
-        window.removeSplashscreen = () => {
-          clearTimeout(timeout)
-          document.querySelector("#splashscreen").removeAttribute("data-visible")
+        const errorEventCallback = (errorEvent) => {
+          window.removeEventListener("error", errorEventCallback)
+          window.splashscreen.onMainScriptSyntaxOrRunTimeError({
+            message: errorEvent.message,
+            filename: errorEvent.filename,
+            lineNumber: errorEvent.lineno,
+            columnNumber: errorEvent.colno,
+          })
+        }
+        window.addEventListener("error", errorEventCallback)
+
+        window.splashscreen = {
+          onMainScriptLoadError: () => {
+            splashscreenTextElement.innerHTML = `<div id="errorscreen">
+Une erreur est survenue pendant le chargement du fichier principal du jeu
+</div>`
+          },
+          onMainScriptSyntaxOrRunTimeError: (error) => {
+            splashscreenTextElement.innerHTML = `<div id="errorscreen">
+  <p>Le fichier principal du jeu contient une erreur.</p>
+  <br />
+  <details>
+    <summary>Voir le détail</summary>
+    <h6>${error.filename}:${error.lineNumber}:${error.columnNumber}</h6>
+    <pre>${error.message}</pre>
+  </details>
+</div>`
+          },
+          remove: () => {
+            clearTimeout(timeout)
+            window.removeEventListener("error", errorEventCallback)
+            document.querySelector("#splashscreen").removeAttribute("data-visible")
+          },
         }
       </script>
     </div>
     <div id="app"></div>
-    <script type="module" src="./index.js"></script>
+    <script id="main-script" type="module" src="./index.js"></script>
+    <script async>
+      const mainScript = document.querySelector("script#main-script")
+      mainScript.onerror = () => {
+        window.splashscreen.onMainScriptLoadError()
+      }
+    </script>
   </body>
 </html>
