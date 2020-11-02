@@ -60,56 +60,75 @@
         }
       </style>
       <h1>Mille sabords</h1>
-      <div id="splashscreen-text" hidden>Hey ça load</div>
-      <script>
-        const splashscreenTextElement = document.querySelector("#splashscreen-text")
-        const timeout = setTimeout(() => {
-          // montre un loader ou quelque chose parce que le site met un peu de temps a se load
-          splashscreenTextElement.style.visibility = "visible"
-        }, 700)
-
-        const errorEventCallback = (errorEvent) => {
-          window.removeEventListener("error", errorEventCallback)
-          window.splashscreen.onMainScriptSyntaxOrRunTimeError({
-            message: errorEvent.message,
-            filename: errorEvent.filename,
-            lineNumber: errorEvent.lineno,
-            columnNumber: errorEvent.colno,
-          })
-        }
-        window.addEventListener("error", errorEventCallback)
-
-        window.splashscreen = {
-          onMainScriptLoadError: () => {
-            splashscreenTextElement.innerHTML = `<div id="errorscreen">
-Une erreur est survenue pendant le chargement du fichier principal du jeu
-</div>`
-          },
-          onMainScriptSyntaxOrRunTimeError: (error) => {
-            splashscreenTextElement.innerHTML = `<div id="errorscreen">
-  <p>Le fichier principal du jeu contient une erreur.</p>
-  <br />
-  <details>
-    <summary>Voir le détail</summary>
-    <h6>${error.filename}:${error.lineNumber}:${error.columnNumber}</h6>
-    <pre>${error.message}</pre>
-  </details>
-</div>`
-          },
-          remove: () => {
-            clearTimeout(timeout)
-            window.removeEventListener("error", errorEventCallback)
-            document.querySelector("#splashscreen").removeAttribute("data-visible")
-          },
-        }
-      </script>
+      <div id="splashscreen-text">
+        <div id="splashscreen-text-active-variant"></div>
+        <div id="splashscreen-text-variants" style="display: none">
+          <div id="loader">Hey ça load</div>
+          <div id="fetch-error-screen">
+            Une erreur est survenue pendant le chargement du fichier principal du jeu
+          </div>
+          <div id="runtime-error-screen">
+            <p>Le fichier principal du jeu contient une erreur.</p>
+            <br />
+            <details>
+              <summary>Voir le détail</summary>
+              <h6 id="runtime-error-title"></h6>
+              <pre id="runtime-error-message">${error.message}</pre>
+            </details>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="app"></div>
     <script id="main-script" type="module" src="./index.js"></script>
     <script async>
+      const activateSplashscreenVariant = (variantId) => {
+        const activeVariantContainer = document.querySelector("#splashscreen-text-active-variant")
+        activeVariantContainer.innerHTML = ""
+        const variantModel = document.querySelector(`#${variantId}`)
+        const variantInstance = variantModel.cloneNode(true)
+        activeVariantContainer.appendChild(variantInstance)
+        return variantInstance
+      }
+
+      // montre un loader ou quelque chose parce que le site met un peu de temps a se load
+      const showLoaderTimeout = setTimeout(() => {
+        activateSplashscreenVariant("loader")
+      }, 700)
+
+      // detect main script load error
       const mainScript = document.querySelector("script#main-script")
       mainScript.onerror = () => {
-        window.splashscreen.onMainScriptLoadError()
+        clearTimeout(showLoaderTimeout)
+        activateSplashscreenVariant("fetch-error-screen")
+      }
+
+      // detect main script parse or execute error
+      const errorEventCallback = (errorEvent) => {
+        window.removeEventListener("error", errorEventCallback)
+
+        const { message, filename, lineno: lineNumber, colno: columnNumber } = errorEvent
+
+        clearTimeout(showLoaderTimeout)
+        const runtimeErrorElement = activateSplashscreenVariant("runtime-error-screen")
+        runtimeErrorElement.querySelector(
+          "#runtime-error-title",
+        ).innerHTML = `${filename}:${lineNumber}:${columnNumber}`
+        runtimeErrorElement.querySelector("#runtime-error-message").innerHTML = message
+      }
+      window.addEventListener("error", errorEventCallback)
+
+      window.splashscreen = {
+        remove: () => {
+          // here the main script should call this when it's ready to display something
+          // because the main script might be loading some images and stuff
+          // we should first display an other screen showing what the main script is doing
+          // (likely loading assets)
+          // we must create this component which does not exists yet
+          clearTimeout(showLoaderTimeout)
+          window.removeEventListener("error", errorEventCallback)
+          document.querySelector("#splashscreen").removeAttribute("data-visible")
+        },
       }
     </script>
   </body>
