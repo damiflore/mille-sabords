@@ -12,7 +12,7 @@ import {
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
 } from "src/loading/loading.main.js"
-// import { ImagePreloader } from "src/loading/ImagePreloader.jsx"
+import { ImagePreloader } from "src/loading/ImagePreloader.jsx"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
 import { Image } from "src/generic/Image.jsx"
 
@@ -87,6 +87,7 @@ const LoadScreen = ({ children }) => {
           Loading files ({urlTrackerLoadedCount}/{urlTrackerTotalCount})
         </p>
       </div>
+      {mainUrlsLoaded ? <ImagePreloader /> : null}
     </>
   )
 }
