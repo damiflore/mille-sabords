@@ -5,6 +5,8 @@ const UrlLoadingContext = React.createContext()
 const reducer = (state, action) => action(state)
 const initialState = {}
 
+const logs = true
+
 export const UrlLoadingProvider = ({ children }) => {
   return (
     <UrlLoadingContext.Provider value={React.useReducer(reducer, initialState)}>
@@ -13,50 +15,66 @@ export const UrlLoadingProvider = ({ children }) => {
   )
 }
 
-export const useUrlTracking = () => {
-  const urlLoadingState = useUrlLoadingState()
-  const fakeUrlLoadends = useUrlLoadingNotifier("")
-  const fakeUrlLoadingTracker = useSingleUrlLoadingTracker("")
+export const useAllUrlLoaded = (fakeUrl) => {
+  const urlTrackerReady = useUrlTrackerReady(fakeUrl)
+  const urlTrackerTotalCount = useUrlTrackerTotalCount()
+  const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
+  const [allUrlLoaded, allUrlLoadedSetter] = React.useState(false)
 
-  const [urlTrackingReady, urlTrackingReadySetter] = React.useState(false)
-  const [urlTotalCount, urlTotalCountSetter] = React.useState(0)
-  const [urlLoadedCount, urlLoadedCountSetter] = React.useState(0)
-  const [urlAllLoaded, urlAllLoadedSetter] = React.useState(true)
+  React.useEffect(() => {
+    if (urlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
+      allUrlLoadedSetter(true)
+    }
+  }, [urlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
+  return allUrlLoaded
+}
+
+export const useUrlTrackerReady = (fakeUrl = "") => {
+  const urlLoadingState = useUrlLoadingState()
+  const fakeUrlLoadends = useUrlLoadingNotifier(fakeUrl)
+  const fakeUrlLoadingTracker = urlLoadingState[fakeUrl]
+
+  const [ready, readySetter] = React.useState(false)
 
   // wait a first fake url load ends to ensure other components are rendered
   // once and capable to call useUrlLoadingNotifier() informing us
   // that something is loading an url.
   React.useEffect(() => {
-    fakeUrlLoadends()
+    // also use requestIdleCallback in case some image
+    // use intersection observer before starting to load
+    const callbackRequestId = window.requestIdleCallback(fakeUrlLoadends)
+    return () => {
+      window.cancelIdleCallback(callbackRequestId)
+    }
   }, [])
 
   React.useEffect(() => {
-    if (fakeUrlLoadingTracker && fakeUrlLoadingTracker.status === "loaded") {
-      urlTrackingReadySetter(true)
-    }
-  }, [fakeUrlLoadingTracker])
-
-  React.useEffect(() => {
-    if (!urlTrackingReady) {
+    if (!fakeUrlLoadingTracker || fakeUrlLoadingTracker.status !== "loaded") {
       return
     }
+    readySetter(true)
+  })
+  return ready
+}
 
-    const urls = Object.keys(urlLoadingState)
-    const totalCount = urls.length
-    const loadedCount = urls.filter((url) => urlLoadingState[url].status === "loaded").length
-    const allLoaded = loadedCount === urlTotalCount
+export const useUrlTrackerTotalCount = () => {
+  const urlLoadingState = useUrlLoadingState()
+  const totalCount = Object.keys(urlLoadingState).length
+  return totalCount
+}
 
-    urlTotalCountSetter(totalCount)
-    urlLoadedCountSetter(loadedCount)
-    urlAllLoadedSetter(allLoaded)
-  }, [urlTrackingReady, urlLoadingState])
+export const useUrlTrackerLoadedCount = () => {
+  const urlLoadingState = useUrlLoadingState()
+  const loadedCount = Object.keys(urlLoadingState).filter(
+    (url) => urlLoadingState[url].status === "loaded",
+  ).length
+  return loadedCount
+}
 
-  return {
-    urlTrackingReady,
-    urlTotalCount,
-    urlLoadedCount,
-    urlAllLoaded,
-  }
+export const useUrlTrackerAllLoaded = () => {
+  const totalCount = useUrlTrackerTotalCount()
+  const loadedCount = useUrlTrackerLoadedCount()
+  return loadedCount === totalCount
 }
 
 export const useUrlLoadingNotifier = (url) => {
@@ -76,7 +94,9 @@ export const useUrlLoadingNotifier = (url) => {
         // console.log("start loading early return", url, state[url])
         return state
       }
-      // console.log("start loading", url)
+      if (logs) {
+        console.log("start loading", url)
+      }
       return {
         ...state,
         [url]: { status: "loading" },
@@ -90,7 +110,9 @@ export const useUrlLoadingNotifier = (url) => {
         // console.log("end loading early return", url, state[url])
         return state
       }
-      // console.log("end loading", url)
+      if (logs) {
+        console.log("end loading", url)
+      }
       return {
         ...state,
         [url]: { status: "loaded" },

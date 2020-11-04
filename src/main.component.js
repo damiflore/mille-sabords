@@ -6,7 +6,12 @@ import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Home } from "src/home/Home.jsx"
 import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
-import { UrlLoadingProvider, useUrlTracking } from "src/loading/loading.main.js"
+import {
+  UrlLoadingProvider,
+  useAllUrlLoaded,
+  useUrlTrackerTotalCount,
+  useUrlTrackerLoadedCount,
+} from "src/loading/loading.main.js"
 // import { ImagePreloader } from "src/loading/ImagePreloader.jsx"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
 import { Image } from "src/generic/Image.jsx"
@@ -17,58 +22,70 @@ import loadscreenCssUrl from "../loadscreen.css"
 const MainRaw = (props) => {
   return (
     <UrlLoadingProvider>
-      <LoadingScreen>
+      <LoadScreen>
         <div id="main-container">
           <div id="main" ref={useMainDomNodeSetter()}>
             <Stylesheet href={milleSabordsCssUrl} />
             <AppBody {...props} />
           </div>
         </div>
-      </LoadingScreen>
+      </LoadScreen>
     </UrlLoadingProvider>
   )
 }
 
-const LoadingScreen = ({ children }) => {
-  const loadingScreenUrlTracking = useUrlTracking()
-  console.log(loadingScreenUrlTracking)
+const LoadScreen = ({ children }) => {
+  const loadscreenRef = React.useRef()
+  const loadScreenUrlsLoaded = useAllUrlLoaded("loadscreen")
 
-  const [loadingScreenLoaded, loadingScreenLoadedSetter] = React.useState(false)
+  // main must wait for loadscreen + request idle callback before starting
+  const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
+  const [mainUrlsLoaded, mainsUrlsLoadedSetter] = React.useState(false)
+
+  const urlTrackerTotalCount = useUrlTrackerTotalCount()
+  const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    if (loadingScreenUrlTracking.urlTrackingReady && loadingScreenUrlTracking.urlAllLoaded) {
-      loadingScreenLoadedSetter(true)
+    if (!loadScreenUrlsLoaded) {
+      return () => {}
     }
-  }, [loadingScreenUrlTracking.urlTrackingReady, loadingScreenUrlTracking.urlAllLoaded])
+
+    window.splashscreen.remove()
+    const callbackRequestId = window.requestIdleCallback(() => {
+      mainUrlTrackerReadySetter(true)
+    })
+    return () => {
+      window.cancelIdleCallback(callbackRequestId)
+    }
+  }, [loadScreenUrlsLoaded])
 
   React.useEffect(() => {
-    window.splashscreen.remove()
-  }, [loadingScreenLoaded])
+    if (mainUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
+      mainsUrlsLoadedSetter(true)
+    }
+  }, [mainUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
 
-  // React.useEffect(() => {
-  //   if (!urlTrackingReady || !urlAllLoaded) {
-  //     loadingScreenDisplayedSetter(true)
-  //     return () => {}
-  //   }
-
-  //   const callbackRequestId = window.requestIdleCallback(
-  //     () => {
-  //       loadingScreenDisplayedSetter(false)
-  //       // console.info(`all game ressource loaded`, Object.keys(assetsTracking))
-  //     },
-  //     { timeout: 400 },
-  //   )
-  //   return () => {
-  //     window.cancelIdleCallback(callbackRequestId)
-  //   }
-  // }, [urlTrackingReady, urlAllLoaded])
+  React.useEffect(() => {
+    if (mainUrlsLoaded && loadscreenRef) {
+      const animation = loadscreenRef.current.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 300,
+        fill: "forwards",
+      })
+      animation.onfinish = () => {
+        // loadscreenRef.current.style.display = "none"
+      }
+    }
+  }, [loadscreenRef, mainUrlsLoaded])
 
   return (
     <>
-      {/* {loadingScreenLoaded ? children : null} */}
-      <div id="loadscreen">
+      {loadScreenUrlsLoaded ? children : null}
+      <div id="loadscreen" ref={loadscreenRef}>
         <Stylesheet href={loadscreenCssUrl} />
-        <Image src={symbolSkullUrl} />
+        <Image src={symbolSkullUrl} animateLoaded={false} />
+        <p>
+          Loading files ({urlTrackerLoadedCount}/{urlTrackerTotalCount})
+        </p>
       </div>
     </>
   )

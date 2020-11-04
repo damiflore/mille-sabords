@@ -7,6 +7,7 @@ import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 export const Image = ({
   loadWhenIntersecting = true,
   usePlaceholderWhileLoading = true,
+  animateLoaded = true,
 
   intersectionRoot,
   intersectionRootMargin,
@@ -16,7 +17,19 @@ export const Image = ({
   src,
   ...props
 }) => {
-  let Component = <AnimateImageLoaded {...props} src={src} />
+  const [status] = useImage(src)
+  const imageLoadEnds = useUrlLoadingNotifier(src)
+  React.useEffect(() => {
+    if (status === "loaded") {
+      imageLoadEnds()
+    }
+  }, [status])
+
+  let Component = <img {...props} src={src} />
+
+  if (animateLoaded) {
+    Component = <AnimateImageLoaded {...props} src={src} />
+  }
 
   if (usePlaceholderWhileLoading) {
     const ComponentPrevious = Component
@@ -63,13 +76,6 @@ const AnimateImageLoaded = (props) => {
 
 const OnceImageLoadedSuspense = ({ fallback, src, children }) => {
   const [status] = useImage(src)
-  const imageLoadEnds = useUrlLoadingNotifier(src)
-
-  React.useEffect(() => {
-    if (status === "loaded") {
-      imageLoadEnds()
-    }
-  }, [status])
 
   if (status !== "loaded") {
     return fallback
