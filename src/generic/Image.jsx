@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useAssetTracker } from "src/booting/booting.main.js"
-import { useImage } from "src/booting/useImage.js"
+import { useAssetTracker } from "src/loading/loading.main.js"
+import { useImage } from "src/loading/useImage.js"
 import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 
 export const Image = ({

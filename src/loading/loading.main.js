@@ -3,8 +3,8 @@ import { addDomEventListener } from "src/dom/dom.util.js"
 
 const { createContext, useContext, useReducer, useState } = React
 
-export const watchBooting = (LowerLevelComponent) => {
-  const Booting = (props) => {
+export const watchLoading = (LowerLevelComponent) => {
+  const Loading = (props) => {
     // fake the loading of some ressource to ensure
     // other components had time to register their own asset tracking
     const assetLoadEnds = useAssetTracker("")
@@ -43,17 +43,17 @@ export const watchBooting = (LowerLevelComponent) => {
     return <LowerLevelComponent {...props} />
   }
 
-  const BootingWithAssetTrackingProvider = (props) => {
+  const LoadingWithAssetTrackingProvider = (props) => {
     const [booted, bootedSetter] = useState(false)
 
     return (
       <AssetsTrackingProvider>
-        <Booting {...props} booted={booted} bootedSetter={bootedSetter} />
+        <Loading {...props} booted={booted} bootedSetter={bootedSetter} />
       </AssetsTrackingProvider>
     )
   }
 
-  return BootingWithAssetTrackingProvider
+  return LoadingWithAssetTrackingProvider
 }
 
 const AssetsContext = createContext()

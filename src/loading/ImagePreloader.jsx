@@ -9,7 +9,7 @@ import woodBoxUrl from "src/chest/wood-box.jpg"
 import treasureMapUrl from "src/dice-ongoing/treasure-map.png"
 import witchLabelUrl from "src/skull-island/witch-label.png"
 import skullBottleUrl from "src/skull-island/skull-bottle.png"
-import { preloadImages } from "src/booting/preloadImages.js"
+import { preloadImages } from "src/loading/preloadImages.js"
 
 export const ImagePreloader = () => {
   const images = [

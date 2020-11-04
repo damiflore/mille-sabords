@@ -5,8 +5,8 @@ import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Home } from "src/home/Home.jsx"
 import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
-import { watchBooting } from "src/booting/booting.main.js"
-import { ImagePreloader } from "src/booting/ImagePreloader.jsx"
+import { watchLoading } from "src/loading/loading.main.js"
+import { ImagePreloader } from "src/loading/ImagePreloader.jsx"
 
 import milleSabordsCssUrl from "../mille-sabord.css"
 
@@ -47,4 +47,4 @@ const ErrorScreen = ({ error }) => {
   )
 }
 
-export const Main = catchError(watchBooting(MainRaw), ErrorScreen)
+export const Main = catchError(watchLoading(MainRaw), ErrorScreen)

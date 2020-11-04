@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { useAssetTracker, addLoadedListener } from "src/booting/booting.main.js"
+import { useAssetTracker, addLoadedListener } from "src/loading/loading.main.js"
 
 export const Stylesheet = ({ href }) => {
   const stylesheetLoadEnds = useAssetTracker(href)
