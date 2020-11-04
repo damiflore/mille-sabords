@@ -52,6 +52,8 @@
   "assets/home.css": "assets/home-2e7e167b.css",
   "assets/home.css.map": "assets/home-2e7e167b.css.map",
   "assets/JackSparrow.png": "assets/JackSparrow-f439b5cc.png",
+  "assets/loadscreen.css": "assets/loadscreen-df212c0f.css",
+  "assets/loadscreen.css.map": "assets/loadscreen-df212c0f.css.map",
   "assets/Luffy.png": "assets/Luffy-59728a08.png",
   "assets/main.css": "assets/main-b036d279.css",
   "assets/main.css.map": "assets/main-b036d279.css.map",
@@ -84,10 +86,10 @@
   "assets/wood.jpg": "assets/wood-3c23f120.jpg",
   "assets/wood.png": "assets/wood-1edfbf4b.png",
   "assets/wood2.png": "assets/wood2-15862f37.png",
-  "importmap.prod.importmap": "importmap.prod-af08626e.importmap",
-  "index.13.css.map": "index.13-5bb9727b.css.map",
-  "index.53.js.map": "index.53-57d7d4d8.js.map",
+  "importmap.prod.importmap": "importmap.prod-be016c34.importmap",
+  "index.121.js.map": "index.121-2e4b7acf.js.map",
+  "index.14.css.map": "index.14-4f28fe69.css.map",
   "index.js": "index.js",
   "index.prod.html": "index.prod.html",
-  "main.component.js": "main.component-1c7ad560.js"
+  "main.component.js": "main.component-736a6b29.js"
 }
