@@ -5,7 +5,7 @@ const UrlLoadingContext = React.createContext()
 const reducer = (state, action) => action(state)
 const initialState = {}
 
-const logs = true
+const logs = false
 
 export const UrlLoadingProvider = ({ children }) => {
   return (
