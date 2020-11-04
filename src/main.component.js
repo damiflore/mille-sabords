@@ -13,7 +13,7 @@ import milleSabordsCssUrl from "../mille-sabord.css"
 const MainRaw = ({ booted, ...props }) => {
   React.useEffect(() => {
     if (booted) {
-      window.removeSplashscreen()
+      window.splashscreen.remove()
     }
   }, [booted])
 
@@ -39,7 +39,7 @@ const AppBody = (props) => {
 }
 
 const ErrorScreen = ({ error }) => {
-  window.removeSplashscreen()
+  window.splashscreen.remove()
   return (
     <div>
       An error occured<pre>{typeof error === "object" ? error.stack : error}</pre>
