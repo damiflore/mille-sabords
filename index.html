@@ -184,6 +184,9 @@
           clearTimeout(showLoaderTimeout)
           window.removeEventListener("error", errorEventCallback)
           splashscreenElement.setAttribute("data-step", "loaded")
+          setTimeout(() => {
+            splashscreenElement.style.display = "none"
+          }, 300)
         },
       }
     </script>
