@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useAssetTracker } from "src/loading/loading.main.js"
+import { useUrlLoadingNotifier } from "src/loading/loading.main.js"
 import { useImage } from "src/loading/useImage.js"
 import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 
@@ -63,7 +63,7 @@ const AnimateImageLoaded = (props) => {
 
 const OnceImageLoadedSuspense = ({ fallback, src, children }) => {
   const [status] = useImage(src)
-  const imageLoadEnds = useAssetTracker(src)
+  const imageLoadEnds = useUrlLoadingNotifier(src)
 
   React.useEffect(() => {
     if (status === "loaded") {

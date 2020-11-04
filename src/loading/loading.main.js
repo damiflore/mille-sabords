@@ -1,87 +1,76 @@
 import React from "react"
 import { addDomEventListener } from "src/dom/dom.util.js"
 
-const { createContext, useContext, useReducer, useState } = React
+const UrlLoadingContext = React.createContext()
+const reducer = (state, action) => action(state)
+const initialState = {}
 
-export const watchLoading = (LowerLevelComponent) => {
-  const Loading = (props) => {
-    // fake the loading of some ressource to ensure
-    // other components had time to register their own asset tracking
-    const assetLoadEnds = useAssetTracker("")
-    React.useEffect(() => {
-      assetLoadEnds()
-    }, [])
-
-    const bootAssetTracking = useAssetTracking("")
-    const assetsTracking = useAssetsTracking()
-    React.useEffect(() => {
-      if (!bootAssetTracking) {
-        return () => {}
-      }
-
-      const allLoaded = Object.keys(assetsTracking).every(
-        (url) => assetsTracking[url].status === "loaded",
-      )
-      // console.log("ressource tracked", Object.keys(assetsTracking), allLoaded, assetsTracking)
-      if (allLoaded) {
-        // give bit of time for the browser to render stuff
-        const callbackRequestId = window.requestIdleCallback(
-          () => {
-            props.bootedSetter(true)
-            // console.info(`all game ressource loaded`, Object.keys(assetsTracking))
-          },
-
-          { timeout: 400 },
-        )
-        return () => {
-          window.cancelIdleCallback(callbackRequestId)
-        }
-      }
-      return () => {}
-    }, [bootAssetTracking, assetsTracking])
-
-    return <LowerLevelComponent {...props} />
-  }
-
-  const LoadingWithAssetTrackingProvider = (props) => {
-    const [booted, bootedSetter] = useState(false)
-
-    return (
-      <AssetsTrackingProvider>
-        <Loading {...props} booted={booted} bootedSetter={bootedSetter} />
-      </AssetsTrackingProvider>
-    )
-  }
-
-  return LoadingWithAssetTrackingProvider
-}
-
-const AssetsContext = createContext()
-const assetTrackingReducer = (state, action) => action(state)
-const assetTrackingInitialState = {}
-
-const AssetsTrackingProvider = ({ children }) => {
+export const UrlLoadingProvider = ({ children }) => {
   return (
-    <AssetsContext.Provider value={useReducer(assetTrackingReducer, assetTrackingInitialState)}>
+    <UrlLoadingContext.Provider value={React.useReducer(reducer, initialState)}>
       {children}
-    </AssetsContext.Provider>
+    </UrlLoadingContext.Provider>
   )
 }
 
-export const useAssetsTracking = () => useContext(AssetsContext)[0]
+export const useUrlTracking = () => {
+  const urlLoadingState = useUrlLoadingState()
+  const fakeUrlLoadends = useUrlLoadingNotifier("")
+  const fakeUrlLoadingTracker = useSingleUrlLoadingTracker("")
 
-export const useAssetTracking = (url) => useContext(AssetsContext)[0][url]
+  const [urlTrackingReady, urlTrackingReadySetter] = React.useState(false)
+  const [urlTotalCount, urlTotalCountSetter] = React.useState(0)
+  const [urlLoadedCount, urlLoadedCountSetter] = React.useState(0)
+  const [urlAllLoaded, urlAllLoadedSetter] = React.useState(true)
 
-export const useAssetTracker = (url) => {
-  const assetContextValue = useContext(AssetsContext)
-  if (!assetContextValue) {
-    // this asset has not the assetsContext, it cannot be tracked
+  // wait a first fake url load ends to ensure other components are rendered
+  // once and capable to call useUrlLoadingNotifier() informing us
+  // that something is loading an url.
+  React.useEffect(() => {
+    fakeUrlLoadends()
+  }, [])
+
+  React.useEffect(() => {
+    if (fakeUrlLoadingTracker && fakeUrlLoadingTracker.status === "loaded") {
+      urlTrackingReadySetter(true)
+    }
+  }, [fakeUrlLoadingTracker])
+
+  React.useEffect(() => {
+    if (!urlTrackingReady) {
+      return
+    }
+
+    const urls = Object.keys(urlLoadingState)
+    const totalCount = urls.length
+    const loadedCount = urls.filter((url) => urlLoadingState[url].status === "loaded").length
+    const allLoaded = loadedCount === urlTotalCount
+
+    urlTotalCountSetter(totalCount)
+    urlLoadedCountSetter(loadedCount)
+    urlAllLoadedSetter(allLoaded)
+  }, [urlTrackingReady, urlLoadingState])
+
+  return {
+    urlTrackingReady,
+    urlTotalCount,
+    urlLoadedCount,
+    urlAllLoaded,
+  }
+}
+
+export const useUrlLoadingNotifier = (url) => {
+  const contextValue = React.useContext(UrlLoadingContext)
+  if (!contextValue) {
+    if (import.meta.dev) {
+      console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
+    }
     return () => {}
   }
 
-  const dispatch = useContext(AssetsContext)[1]
+  const dispatch = contextValue[1]
 
-  const assetLoadStarts = () => {
+  const loadStarts = () => {
     dispatch((state) => {
       if (url in state) {
         // console.log("start loading early return", url, state[url])
@@ -95,7 +84,7 @@ export const useAssetTracker = (url) => {
     })
   }
 
-  const assetLoadEnds = () => {
+  const loadEnds = () => {
     dispatch((state) => {
       if (url in state && state[url].status === "loaded") {
         // console.log("end loading early return", url, state[url])
@@ -110,13 +99,38 @@ export const useAssetTracker = (url) => {
   }
 
   React.useEffect(() => {
-    assetLoadStarts()
+    loadStarts()
   }, [])
 
-  return assetLoadEnds
+  return loadEnds
 }
 
-export const addLoadedListener = (domNode, callback) => {
+export const useDOMNodeLoadingNotifier = (url) => {
+  const loadEnds = useUrlLoadingNotifier(url)
+
+  const nodeRefCallback = (node) => {
+    if (node) {
+      addLoadedListener(node, loadEnds)
+    }
+  }
+
+  return nodeRefCallback
+}
+
+const useUrlLoadingState = () => {
+  const contextValue = React.useContext(UrlLoadingContext)
+  if (!contextValue) {
+    if (import.meta.dev) {
+      console.warn(`useUrlLoadingState was called on a component without UrlLoadingContext`)
+    }
+    return null
+  }
+  return contextValue[0]
+}
+
+export const useSingleUrlLoadingTracker = (url) => useUrlLoadingState()[url]
+
+const addLoadedListener = (domNode, callback) => {
   const removeLoadListener = addDomEventListener(domNode, "load", () => {
     removeErrorListener()
     callback()
