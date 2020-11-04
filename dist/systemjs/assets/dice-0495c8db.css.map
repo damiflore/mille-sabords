@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/dices/dice.css"
+  ],
+  "names": [],
+  "mappings": "AAAA;EACE,kBAAkB,EAAE,iDAAiD;EACrE,iBAAiB,EAAE,sFAAsF;EACzG,iBAAiB;EACjB,mDAAmD;EACnD,UAAU;EACV,kBAAkB;AACpB;AACA;EACE,qEAAqE;AACvE;AACA;EACE,mBAAmB;EACnB,8DAA8D;AAChE;;AAEA;EACE;IACE,mBAAmB;EACrB;EACA;IACE,mBAAmB;EACrB;AACF;AACA;EACE;IACE,mBAAmB;EACrB;EACA;IACE,mBAAmB;EACrB;AACF",
+  "file": "dice-0495c8db.css",
+  "sourcesContent": [
+    ".dice {\n  touch-action: none; /* prevent pull to refresh while dragging dices */\n  user-select: none; /* prevent accidental dice image selection while mousedown + mousemove near the dice */\n  overflow: visible;\n  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));\n  padding: 0;\n  border-radius: 5px;\n}\n.dice-cursed-disapear {\n  animation: diceDisapear 0.2s 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;\n}\n.dice-cursed-appear {\n  transform: scale(0);\n  animation: diceAppear 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;\n}\n\n@keyframes diceDisapear {\n  0% {\n    transform: scale(1);\n  }\n  100% {\n    transform: scale(0);\n  }\n}\n@keyframes diceAppear {\n  0% {\n    transform: scale(0);\n  }\n  100% {\n    transform: scale(1);\n  }\n}\n"
+  ]
+}

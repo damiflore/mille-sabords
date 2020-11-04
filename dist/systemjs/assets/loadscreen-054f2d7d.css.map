@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../loadscreen.css"
+  ],
+  "names": [],
+  "mappings": "AAAA;EACE,eAAe;EACf,aAAa;EACb,OAAO;EACP,MAAM;EACN,QAAQ;EACR,SAAS;EACT,kBAAkB;EAClB,UAAU;EACV,aAAa;EACb,sBAAsB;EACtB,mBAAmB;AACrB",
+  "file": "loadscreen-054f2d7d.css",
+  "sourcesContent": [
+    "#loadscreen {\n  position: fixed;\n  z-index: 1000;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  background: yellow;\n  color: red;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n"
+  ]
+}

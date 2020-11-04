@@ -1,0 +1,15 @@
+.card-rules-dialog .text-rule {
+  margin: 15px;
+  font-size: 15px;
+  color: #885708;
+}
+.card-rules-dialog .dialog-label {
+  margin: 10px 0;
+}
+.card-rules-dialog .current-card {
+  width: 60%;
+  margin: 0 auto;
+  display: block;
+}
+
+/*# sourceMappingURL=card-rules-dialog-87b0857a.css.map */
