@@ -72,7 +72,7 @@ const LoadScreen = ({ children }) => {
         fill: "forwards",
       })
       animation.onfinish = () => {
-        // loadscreenRef.current.style.display = "none"
+        loadscreenRef.current.style.display = "none"
       }
     }
   }, [loadscreenRef, mainUrlsLoaded])
