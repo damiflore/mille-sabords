@@ -15,48 +15,6 @@ export const UrlLoadingProvider = ({ children }) => {
   )
 }
 
-export const useAllUrlLoaded = (fakeUrl) => {
-  const urlTrackerReady = useUrlTrackerReady(fakeUrl)
-  const urlTrackerTotalCount = useUrlTrackerTotalCount()
-  const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
-  const [allUrlLoaded, allUrlLoadedSetter] = React.useState(false)
-
-  React.useEffect(() => {
-    if (urlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
-      allUrlLoadedSetter(true)
-    }
-  }, [urlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
-  return allUrlLoaded
-}
-
-export const useUrlTrackerReady = (fakeUrl = "") => {
-  const urlLoadingState = useUrlLoadingState()
-  const fakeUrlLoadends = useUrlLoadingNotifier(fakeUrl)
-  const fakeUrlLoadingTracker = urlLoadingState[fakeUrl]
-
-  const [ready, readySetter] = React.useState(false)
-
-  // wait a first fake url load ends to ensure other components are rendered
-  // once and capable to call useUrlLoadingNotifier() informing us
-  // that something is loading an url.
-  React.useEffect(() => {
-    // also use requestIdleCallback in case some image
-    // use intersection observer before starting to load
-    const callbackRequestId = window.requestIdleCallback(fakeUrlLoadends)
-    return () => {
-      window.cancelIdleCallback(callbackRequestId)
-    }
-  }, [])
-
-  React.useEffect(() => {
-    if (!fakeUrlLoadingTracker || fakeUrlLoadingTracker.status !== "loaded") {
-      return
-    }
-    readySetter(true)
-  })
-  return ready
-}
-
 export const useUrlTrackerTotalCount = () => {
   const urlLoadingState = useUrlLoadingState()
   const totalCount = Object.keys(urlLoadingState).length

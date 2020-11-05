@@ -1,5 +1,6 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
+import { requestAsapCallback } from "src/helper/asap.js"
 import { useGameCreated } from "src/main.store.js"
 import { useMainDomNodeSetter } from "src/dom/dom.main.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
@@ -8,7 +9,6 @@ import { Game } from "src/game/Game.jsx"
 import { catchError } from "src/error/error.main.js"
 import {
   UrlLoadingProvider,
-  useAllUrlLoaded,
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
 } from "src/loading/loading.main.js"
@@ -36,7 +36,8 @@ const MainRaw = (props) => {
 
 const LoadScreen = ({ children }) => {
   const loadscreenRef = React.useRef()
-  const loadScreenUrlsLoaded = useAllUrlLoaded("loadscreen")
+  const [loadscreenUrlTrackerReady, loadscreenUrlTrackerReadySetter] = React.useState(false)
+  const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] = React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
   const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
@@ -46,18 +47,27 @@ const LoadScreen = ({ children }) => {
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    if (!loadScreenUrlsLoaded) {
+    return requestAsapCallback(() => {
+      loadscreenUrlTrackerReadySetter(true)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    if (loadscreenUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
+      loadscreenUrlsLoadedSetter(true)
+    }
+  }, [loadscreenUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
+
+  React.useEffect(() => {
+    if (!loadscreenUrlsLoaded) {
       return () => {}
     }
 
     window.splashscreen.remove()
-    const callbackRequestId = window.requestIdleCallback(() => {
+    return requestAsapCallback(() => {
       mainUrlTrackerReadySetter(true)
     })
-    return () => {
-      window.cancelIdleCallback(callbackRequestId)
-    }
-  }, [loadScreenUrlsLoaded])
+  }, [loadscreenUrlsLoaded])
 
   React.useEffect(() => {
     if (mainUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
@@ -79,7 +89,7 @@ const LoadScreen = ({ children }) => {
 
   return (
     <>
-      {loadScreenUrlsLoaded ? children : null}
+      {loadscreenUrlsLoaded ? children : null}
       <div id="loadscreen" ref={loadscreenRef}>
         <Stylesheet href={loadscreenCssUrl} />
         <Image src={symbolSkullUrl} animateLoaded={false} />
