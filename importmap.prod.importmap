@@ -1,8 +1,13 @@
 {
   "imports": {
     "mille-sabords/": "./",
+    "systemjs/dist/": "./node_modules/systemjs/dist/",
     "@jsenv/logger": "./node_modules/@jsenv/logger/index.js",
     "mille-sabords": "./index.js",
+    "systemjs/s.js": "./node_modules/systemjs/dist/s.min.js",
+    "react-dom": "./node_modules/react-dom/index.js",
+    "systemjs": "./node_modules/systemjs/dist/system-node.cjs",
+    "react": "./node_modules/react/index.js",
     "src/": "./src/",
     "test/": "./test/",
     "lab/": "./lab/"
@@ -10,6 +15,35 @@
   "scopes": {
     "./node_modules/@jsenv/logger/": {
       "@jsenv/logger/": "./node_modules/@jsenv/logger/"
+    },
+    "./node_modules/object-assign/": {
+      "object-assign/": "./node_modules/object-assign/"
+    },
+    "./node_modules/loose-envify/": {
+      "loose-envify/": "./node_modules/loose-envify/",
+      "js-tokens": "./node_modules/js-tokens/index.js"
+    },
+    "./node_modules/js-tokens/": {
+      "js-tokens/": "./node_modules/js-tokens/"
+    },
+    "./node_modules/react-dom/": {
+      "object-assign": "./node_modules/object-assign/index.js",
+      "loose-envify": "./node_modules/loose-envify/index.js",
+      "react-dom/": "./node_modules/react-dom/",
+      "scheduler": "./node_modules/scheduler/index.js"
+    },
+    "./node_modules/scheduler/": {
+      "object-assign": "./node_modules/object-assign/index.js",
+      "loose-envify": "./node_modules/loose-envify/index.js",
+      "scheduler/": "./node_modules/scheduler/"
+    },
+    "./node_modules/systemjs/": {
+      "systemjs/": "./node_modules/systemjs/"
+    },
+    "./node_modules/react/": {
+      "object-assign": "./node_modules/object-assign/index.js",
+      "loose-envify": "./node_modules/loose-envify/index.js",
+      "react/": "./node_modules/react/"
     }
   }
 }

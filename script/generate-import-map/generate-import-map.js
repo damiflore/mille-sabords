@@ -5,11 +5,15 @@ import {
 } from "@jsenv/node-module-import-map"
 import { projectDirectoryUrl } from "../../jsenv.config.js"
 
-const generateFile = async (importMapFileRelativeUrl, { includeDevDependencies = false } = {}) => {
+const generateFile = async (
+  importMapFileRelativeUrl,
+  { packageIncludedPredicate, includeDevDependencies = false } = {},
+) => {
   await generateImportMapForProject(
     [
       getImportMapFromNodeModules({
         projectDirectoryUrl,
+        packageIncludedPredicate,
         projectPackageDevDependenciesIncluded: includeDevDependencies,
       }),
       getImportMapFromFile(new URL("./importmap.project.importmap", projectDirectoryUrl)),
@@ -22,5 +26,11 @@ const generateFile = async (importMapFileRelativeUrl, { includeDevDependencies =
   )
 }
 
-generateFile("importmap.prod.importmap")
-generateFile("importmap.dev.importmap", { includeDevDependencies: true })
+generateFile("importmap.prod.importmap", {
+  packageIncludedPredicate: ({ packageName }) => {
+    return !["@jsenv/server"].includes(packageName)
+  },
+})
+generateFile("importmap.dev.importmap", {
+  includeDevDependencies: true,
+})
