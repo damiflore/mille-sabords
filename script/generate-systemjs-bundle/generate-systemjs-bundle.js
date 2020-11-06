@@ -15,6 +15,6 @@ await generateBundle({
   // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
   // as main js entry point
   preserveEntrySignatures: false,
-  minify: false,
+  minify: true,
   manifestFile: true,
 })

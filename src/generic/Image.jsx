@@ -59,18 +59,19 @@ export const Image = ({
 
 const AnimateImageLoaded = (props) => {
   const nodeRef = React.useRef()
+  const statusRef = React.useRef()
+  const [status] = useImage(props.src)
+
   React.useEffect(() => {
-    nodeRef.current.animate(
-      [
-        { transform: "scale(0)", opacity: 0 },
-        { transform: "scale(1)", opacity: 1 },
-      ],
-      {
+    if (statusRef.current !== status && status === "loaded") {
+      nodeRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 300,
         fill: "forwards",
-      },
-    )
-  }, [nodeRef])
+      })
+    }
+    statusRef.current = status
+  }, [statusRef, status, nodeRef])
+
   return <img {...props} ref={nodeRef} />
 }
 
