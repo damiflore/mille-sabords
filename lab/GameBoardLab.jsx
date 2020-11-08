@@ -19,12 +19,13 @@ import {
   SYMBOL_SWORD,
 } from "src/symbols/symbols.js"
 import { faces } from "src/dices/dices.js"
-import { useResetRound } from "src/round/round.actions.js"
+import { useResetRound, useEndPlayerRound } from "src/round/round.actions.js"
 import { useUncurseDice } from "src/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()
   const resetRound = useResetRound()
+  const endPlayerRound = useEndPlayerRound()
 
   return (
     <>
@@ -46,6 +47,13 @@ export const GameBoardLab = () => {
         }}
       >
         Reset round
+      </button>
+      <button
+        onClick={() => {
+          endPlayerRound()
+        }}
+      >
+        End round
       </button>
     </>
   )
