@@ -14,11 +14,13 @@ import {
   CARD_WITCH,
   cardIdToCard,
 } from "src/cards/cards.js"
+import { useEndPlayerRound } from "src/round/round.actions.js"
 
 export const CardDrawingLab = () => {
   const cardIds = useCardIds()
   const nextCardId = cardIds[0]
   const nextCard = cardIdToCard(nextCardId)
+  const endPlayerRound = useEndPlayerRound()
 
   return (
     <form
@@ -51,7 +53,13 @@ export const CardDrawingLab = () => {
           )
         })}
       </fieldset>
-      {`TODO: a button to cancel this player round (goes back to scoreboard)`}
+      <button
+        onClick={() => {
+          endPlayerRound()
+        }}
+      >
+        End player round
+      </button>
     </form>
   )
 }

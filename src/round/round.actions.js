@@ -10,6 +10,15 @@ export const useStartPlayerRound = createAction((state, player) => {
   }
 })
 
+export const useEndPlayerRound = createAction((state) => {
+  return {
+    ...state,
+    currentCardId: null,
+    currentCardActivated: false,
+    roundStarted: false,
+  }
+})
+
 export const useActivateCurrentCard = createAction((state) => {
   return {
     ...state,
@@ -42,13 +51,6 @@ export const useResetRound = createAction((state) => {
   return {
     ...state,
     ...ROUND_START_STATE,
-  }
-})
-
-export const useEndPlayerRound = createAction((state) => {
-  return {
-    ...state,
-    roundStarted: false,
   }
 })
 

@@ -38,9 +38,9 @@ export const useUrlTrackerAllLoaded = () => {
 export const useUrlLoadingNotifier = (url) => {
   const contextValue = React.useContext(UrlLoadingContext)
   if (!contextValue) {
-    if (import.meta.dev) {
-      console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
-    }
+    // if (import.meta.dev) {
+    //   console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
+    // }
     return () => {}
   }
 
@@ -100,9 +100,9 @@ export const useDOMNodeLoadingNotifier = (url) => {
 const useUrlLoadingState = () => {
   const contextValue = React.useContext(UrlLoadingContext)
   if (!contextValue) {
-    if (import.meta.dev) {
-      console.warn(`useUrlLoadingState was called on a component without UrlLoadingContext`)
-    }
+    // if (import.meta.dev) {
+    //   console.warn(`useUrlLoadingState was called on a component without UrlLoadingContext`)
+    // }
     return null
   }
   return contextValue[0]
