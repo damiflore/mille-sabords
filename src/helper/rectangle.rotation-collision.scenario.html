@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
     <style>
       #app {
         border: 1px solid black;
@@ -47,7 +48,6 @@
     <canvas id="canvas" width="500" height="500"></canvas>
     <div id="result"></div>
     <script type="module">
-      import { assert } from "@jsenv/assert"
       import { lineCollidesWithLine } from "src/helper/geometry.js"
 
       const drawRectangle = (points, color) => {

@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
     <style>
       .slot {
         width: 40px;
@@ -56,9 +57,8 @@
     </div>
 
     <script type="module">
-      import { assert } from "@jsenv/assert"
       import { enableDragGesture } from "src/drag/drag.js"
-      import { findClosestRectangle, getDomNodeRectangle } from "src/helper/rectangle.js"
+      import { findDomNodeClosestToRectangle, getDomNodeRectangle } from "src/dom/dom.position.js"
 
       const draggableNode = document.getElementById("draggable")
       enableDragGesture(draggableNode, {
@@ -72,12 +72,14 @@
           const rectangleCandidates = nodeCandidates.map((nodeCandidate) =>
             getDomNodeRectangle(nodeCandidate),
           )
-          const closestRectangle = findClosestRectangle(draggableNodeRectangle, rectangleCandidates)
+          const closestNode = findDomNodeClosestToRectangle(
+            draggableNodeRectangle,
+            rectangleCandidates,
+          )
           Array.from(document.querySelectorAll(".slot")).forEach((node) => {
             node.removeAttribute("data-closest")
           })
 
-          const closestNode = nodeCandidates[rectangleCandidates.indexOf(closestRectangle)]
           console.log(`closest node`, closestNode)
           closestNode.setAttribute("data-closest", "")
         },

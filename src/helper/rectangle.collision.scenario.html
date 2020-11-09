@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
     <style>
       .rectangle {
         width: 40px;
@@ -70,7 +71,6 @@
     </div>
 
     <script type="module">
-      import { assert } from "@jsenv/assert"
       import { enableDragGesture } from "src/drag/drag.js"
       import {
         getDomNodePoints,
