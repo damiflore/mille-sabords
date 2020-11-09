@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
+    <style>
+      img {
+        width: 40px;
+        height: 40px;
+        background: grey;
+        cursor: move;
+        position: absolute;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Image dragging</h1>
+    <p>Ensure image can be dragged without issue. Especially on Firefox.</p>
+    <img id="img" src="../../favicon.png" />
+
+    <script type="module">
+      import { enableDragGesture } from "src/drag/drag.js"
+
+      const img = document.querySelector("#img")
+      enableDragGesture(img, {
+        onDrag: ({ x, y }) => {
+          img.style.left = `${x}px`
+          img.style.top = `${y}px`
+        },
+      })
+    </script>
+  </body>
+</html>
