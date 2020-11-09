@@ -16,6 +16,8 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
   const currentCardId = useCurrentCardId()
   const currentCard = cardIdToCard(currentCardId) || null
 
+  const backCardRef = React.useRef()
+
   const shuffleCardsText = "Paquet de cartes épuisé. Mélangez-le pour pouvoir piocher à nouveau !"
   const drawCardText = "Piochez une carte pour le tour suivant."
 
@@ -34,13 +36,17 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
                 position: "relative",
               }}
             >
-              <BackCard currentCard={currentCard} remainingCardCount={cardDeck.length} />
+              <BackCard
+                backCardRef={backCardRef}
+                currentCard={currentCard}
+                remainingCardCount={cardDeck.length}
+              />
               <TopCard currentCard={currentCard} />
             </div>
           </div>
         </div>
         <div className="dialog-actions">
-          <DeckButton cardDeck={cardDeck} currentCard={currentCard} />
+          <DeckButton backCardRef={backCardRef} cardDeck={cardDeck} currentCard={currentCard} />
           {currentCard ? <StartButton currentCard={currentCard} closeDialog={closeDialog} /> : null}
         </div>
       </div>
@@ -79,22 +85,27 @@ const TopCard = ({ currentCard }) => {
   )
 }
 
-const BackCard = ({ currentCard, remainingCardCount }) => {
+const BackCard = ({ currentCard, remainingCardCount, backCardRef }) => {
   return (
-    <div className="card default-card" id="back-deck-card" style={{ background: "none" }}>
+    <div
+      ref={backCardRef}
+      className="card default-card"
+      id="back-deck-card"
+      style={{ background: "none" }}
+    >
       <Image src={cardDefaultUrl} width="150" />
       {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
     </div>
   )
 }
 
-const DeckButton = ({ cardDeck, currentCard }) => {
+const DeckButton = ({ cardDeck, currentCard, backCardRef }) => {
   if (currentCard) {
     return null
   }
 
   if (cardDeck.length === 0) {
-    return <ButtonShuffleDeck />
+    return <ButtonShuffleDeck backCardRef={backCardRef} />
   }
 
   return <ButtonDrawCard />
@@ -110,18 +121,34 @@ const ButtonDrawCard = () => {
   )
 }
 
-const ButtonShuffleDeck = () => {
+const ButtonShuffleDeck = ({ backCardRef }) => {
   const shuffleDeck = useShuffleDeck()
+  const [shufflePending, sufflePendingSetter] = React.useState(false)
 
-  const shuffleDeckAnimation = () => {
-    document.getElementById("back-deck-card").setAttribute("shaking-deck", "")
-    setTimeout(() => {
-      document.getElementById("back-deck-card").removeAttribute("shaking-deck", "")
-      shuffleDeck()
-    }, 1000)
+  const startShuffle = () => {
+    sufflePendingSetter(true)
   }
+
+  React.useEffect(() => {
+    if (!shufflePending) {
+      return () => {}
+    }
+
+    backCardRef.current.setAttribute("shaking-deck", "")
+    const timeoutId = setTimeout(() => {
+      backCardRef.current.removeAttribute("shaking-deck", "")
+      shuffleDeck()
+      sufflePendingSetter(false)
+    }, 1000)
+
+    return () => {
+      backCardRef.current.removeAttribute("shaking-deck", "")
+      clearTimeout(timeoutId)
+    }
+  }, [shufflePending])
+
   return (
-    <button className="button-card-main button-shuffle-deck" onClick={shuffleDeckAnimation}>
+    <button className="button-card-main button-shuffle-deck" onClick={startShuffle}>
       Mélanger
     </button>
   )
