@@ -1,25 +1,13 @@
 import React from "react"
-import { useCardIds, useDispatch } from "src/main.store.js"
-import {
-  CARD_ANIMALS,
-  CARD_COIN,
-  CARD_DIAMOND,
-  CARD_ONE_SKULL,
-  CARD_TWO_SWORDS_CHALLENGE,
-  CARD_THREE_SWORDS_CHALLENGE,
-  CARD_FOUR_SWORDS_CHALLENGE,
-  CARD_PIRATE,
-  CARD_CHEST,
-  CARD_TWO_SKULLS,
-  CARD_WITCH,
-  cardIdToCard,
-} from "src/cards/cards.js"
+import { useCardIds, useDispatch, useCardUsedIds } from "src/main.store.js"
+import { cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
 import { useEndPlayerRound } from "src/round/round.actions.js"
 
 export const CardDrawingLab = () => {
   const cardIds = useCardIds()
-  const nextCardId = cardIds[0]
-  const nextCard = cardIdToCard(nextCardId)
+  const cardUsedIds = useCardUsedIds()
+  const moveCardToTopOfTheDeck = useMoveCardToTopOfTheDeck()
+  const moveCardToUsedCards = useMoveCardToUsedCards()
   const endPlayerRound = useEndPlayerRound()
 
   return (
@@ -28,30 +16,44 @@ export const CardDrawingLab = () => {
         submitEvent.preventDefault()
       }}
     >
+      <fieldset className="next-card-lab">
+        <legend>Prochaines cartes</legend>
+        <ol>
+          {cardIds.map((cardId) => {
+            return (
+              <li key={cardId}>
+                <img src={cardToSmallImageUrl(cardIdToCard(cardId))} />
+                <span>{cardIdToCard(cardId).type}</span>
+                <button
+                  onClick={() => {
+                    moveCardToTopOfTheDeck(cardId)
+                  }}
+                >
+                  Mettre en haut du paquet
+                </button>
+                <button
+                  onClick={() => {
+                    moveCardToUsedCards(cardId)
+                  }}
+                >
+                  Utiliser
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </fieldset>
       <fieldset>
-        <legend>Next card in the deck</legend>
-        {[
-          CARD_ANIMALS,
-          CARD_PIRATE,
-          CARD_WITCH,
-          CARD_CHEST,
-          CARD_COIN,
-          CARD_DIAMOND,
-          CARD_ONE_SKULL,
-          CARD_TWO_SKULLS,
-          CARD_TWO_SWORDS_CHALLENGE,
-          CARD_THREE_SWORDS_CHALLENGE,
-          CARD_FOUR_SWORDS_CHALLENGE,
-        ].map((cardType) => {
-          return (
-            <CardTypeButton
-              key={cardType}
-              cardType={cardType}
-              nextCard={nextCard}
-              cardIds={cardIds}
-            />
-          )
-        })}
+        <legend>Cartes utilisées</legend>
+        <ol>
+          {cardUsedIds.map((cardId) => {
+            return (
+              <li key={cardId}>
+                <span>{cardIdToCard(cardId).type}</span>
+              </li>
+            )
+          })}
+        </ol>
       </fieldset>
       <button
         onClick={() => {
@@ -64,34 +66,29 @@ export const CardDrawingLab = () => {
   )
 }
 
-const CardTypeButton = ({ cardType, nextCard, cardIds }) => {
-  const setNextCardId = useSetNextCardId()
-  const isActive = nextCard.type === cardType
-  const cardIdWithThisType = cardIds.find((cardId) => cardIdToCard(cardId).type === cardType)
-
-  return (
-    <button
-      data-active={isActive ? "" : undefined}
-      onClick={() => {
-        if (isActive) {
-          return
-        }
-        setNextCardId(cardIdWithThisType)
-      }}
-    >
-      {cardType}
-    </button>
-  )
-}
-
-const useSetNextCardId = () => {
-  const cardIds = useCardIds()
+const useMoveCardToTopOfTheDeck = () => {
   const dispatch = useDispatch()
-  return (nextCardId) => {
+  return (cardId) => {
     dispatch((state) => {
+      const { cardIds } = state
+      const cardIndex = cardIds.indexOf(cardId)
       return {
         ...state,
-        cardIds: [nextCardId, ...cardIds.slice(1)],
+        cardIds: [cardId, ...cardIds.slice(0, cardIndex), ...cardIds.slice(cardIndex + 1)],
+      }
+    })
+  }
+}
+
+const useMoveCardToUsedCards = () => {
+  const dispatch = useDispatch()
+  return (cardId) => {
+    dispatch((state) => {
+      const { cardIds, cardUsedIds } = state
+      return {
+        ...state,
+        cardIds: cardIds.filter((cardIdCandidate) => cardIdCandidate !== cardId),
+        cardUsedIds: [...cardUsedIds, cardId],
       }
     })
   }
