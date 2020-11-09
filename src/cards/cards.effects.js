@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useCurrentCardId } from "src/main.store.js"
+import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { useBecomes } from "src/hooks.js"
 import { cardIdToCard, isCoinCard, isDiamondCard } from "src/cards/cards.js"
 import { useAddExtraCoin, useAddExtraDiamond } from "src/cards/cards.actions.js"
@@ -14,13 +14,11 @@ export const CardsEffects = () => {
 const useCoinCardEffect = () => {
   const addExtraCoin = useAddExtraCoin()
   const currentCardId = useCurrentCardId()
-  const currentCardBecomesCoinCard = useBecomes(
-    (currentCardIdPrevious) => {
-      if (!currentCardId) return false
-      if (currentCardIdPrevious === currentCardId) return false
-      return isCoinCard(cardIdToCard(currentCardId))
-    },
-    [currentCardId],
+  const currentCardActivated = useCurrentCardActivated()
+
+  const currentCardBecomesActivated = useBecomes(
+    (currentCardActivatedPrevious) => !currentCardActivatedPrevious === currentCardActivated,
+    [currentCardActivated],
   )
   const currentCardIsCoinCard = currentCardId && isCoinCard(cardIdToCard(currentCardId))
 
@@ -31,23 +29,20 @@ const useCoinCardEffect = () => {
   }, [])
 
   React.useEffect(() => {
-    if (currentCardBecomesCoinCard) {
+    if (currentCardBecomesActivated && currentCardIsCoinCard) {
       addExtraCoin()
     }
-  }, [currentCardBecomesCoinCard])
+  }, [currentCardBecomesActivated, currentCardIsCoinCard])
 }
 
 const useDiamondCardEffect = () => {
   const addExtraDiamond = useAddExtraDiamond()
   const currentCardId = useCurrentCardId()
+  const currentCardActivated = useCurrentCardActivated()
 
-  const currentCardBecomesDiamondCard = useBecomes(
-    (currentCardIdPrevious) => {
-      if (!currentCardId) return false
-      if (currentCardIdPrevious === currentCardId) return false
-      return isDiamondCard(cardIdToCard(currentCardId))
-    },
-    [currentCardId],
+  const currentCardBecomesActivated = useBecomes(
+    (currentCardActivatedPrevious) => !currentCardActivatedPrevious === currentCardActivated,
+    [currentCardActivated],
   )
   const currentCardIsDiamondCard = currentCardId && isDiamondCard(cardIdToCard(currentCardId))
 
@@ -58,8 +53,8 @@ const useDiamondCardEffect = () => {
   }, [])
 
   React.useEffect(() => {
-    if (currentCardBecomesDiamondCard) {
+    if (currentCardBecomesActivated && currentCardIsDiamondCard) {
       addExtraDiamond()
     }
-  }, [currentCardBecomesDiamondCard])
+  }, [currentCardBecomesActivated, currentCardIsDiamondCard])
 }
