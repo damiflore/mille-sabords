@@ -42,10 +42,17 @@ export const useAddExtraDiamond = createAction((state) => {
 })
 
 export const useShuffleDeck = createAction((state) => {
-  const { cardUsedIds } = state
+  const { cardIds, cardUsedIds } = state
   return {
     ...state,
-    cardIds: mixDeck(cardUsedIds),
+    // shuffle deck is conceptually the action of taking all the cards
+    // and shuffling them.
+    // hence the [...cardIds, ...cardUsedIds]
+    // For now shuffleDeck is called when cardsIds is empty.
+    // If we change [...cardIds, ...cardUsedIds] by cardUsedIds
+    // it makes shuffleDeck less robust because it cannot be called twice
+    // or at any time.
+    cardIds: mixDeck([...cardIds, ...cardUsedIds]),
     cardUsedIds: [],
   }
 })
