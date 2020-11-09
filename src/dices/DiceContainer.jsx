@@ -417,19 +417,19 @@ const uncurseDiceAllowedGetter = (
   dice,
   { scoreMarked, threeSkullsOrMoreInCursedArea, currentCard, witchUncursedDiceId },
 ) => {
+  if (!isWitchCard(currentCard)) {
+    return false
+  }
+
+  if (witchUncursedDiceId) {
+    return false
+  }
+
   if (scoreMarked) {
     return false
   }
 
   if (threeSkullsOrMoreInCursedArea) {
-    return false
-  }
-
-  if (!isWitchCard(currentCard)) {
-    return false
-  }
-
-  if (witchUncursedDiceId !== dice.id) {
     return false
   }
 
