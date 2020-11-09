@@ -28,6 +28,12 @@ export const enableDragGesture = (
 
   logger.debug("enable drag on", domNode)
 
+  // disable native drag
+  // putting draggable="false" on the element is not enough for firefox
+  const removeDragstartListener = addDomEventListener(domNode, "dragstart", (dragstartEvent) => {
+    dragstartEvent.preventDefault()
+  })
+
   const removeMousedownListener = addDomEventListener(
     domNode,
     "mousedown",
@@ -170,6 +176,7 @@ export const enableDragGesture = (
   }
 
   return (event) => {
+    removeDragstartListener()
     removeClickListener()
     removeMousedownListener()
     removeTouchstartListener()

@@ -13,6 +13,10 @@
         background: grey;
         cursor: move;
         position: absolute;
+
+        touch-action: none; /* prevent pull to refresh while dragging */
+        user-select: none;
+        -moz-user-drag: none;
       }
     </style>
   </head>
@@ -20,7 +24,7 @@
   <body>
     <h1>Image dragging</h1>
     <p>Ensure image can be dragged without issue. Especially on Firefox.</p>
-    <img id="img" src="../../favicon.png" />
+    <img id="img" draggable="false" src="../../favicon.png" />
 
     <script type="module">
       import { enableDragGesture } from "src/drag/drag.js"
