@@ -41,7 +41,12 @@ export const useUncurseDice = createAction((state, dice, fromLab = false) => {
   const { diceRolledIds, diceCursedIds } = state
   return {
     ...state,
-    ...(fromLab ? {} : { witchUncursedDiceId: dice.id }),
+    ...(fromLab
+      ? {}
+      : {
+          witchUncursedDiceId: dice.id,
+          witchCardEffectUsed: true,
+        }),
     diceRolledIds: [...diceRolledIds, dice.id],
     diceCursedIds: diceCursedIds.filter((diceCursedId) => diceCursedId !== dice.id),
   }

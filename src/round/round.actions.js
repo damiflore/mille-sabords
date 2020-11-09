@@ -56,6 +56,7 @@ export const useResetRound = createAction((state) => {
 
 const ROUND_START_STATE = {
   witchUncursedDiceId: null,
+  witchCardEffectUsed: false,
   rollCount: 0,
   diceRolledIds: [],
   diceCursedIds: [],

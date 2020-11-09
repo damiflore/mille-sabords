@@ -5,6 +5,7 @@ import {
   useDiceRolledIds,
   useChestSlots,
   useWitchUncursedDiceId,
+  useWitchCardEffectUsed,
   useScoreMarked,
   useCurrentCardId,
 } from "src/main.store.js"
@@ -41,6 +42,7 @@ export const DiceContainer = ({
   const diceRolledIds = useDiceRolledIds()
   const diceCursedIds = useDiceCursedIds()
   const witchUncursedDiceId = useWitchUncursedDiceId()
+  const witchCardEffectUsed = useWitchCardEffectUsed()
   const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
@@ -87,7 +89,7 @@ export const DiceContainer = ({
           scoreMarked,
           threeSkullsOrMoreInCursedArea,
           currentCard,
-          witchUncursedDiceId,
+          witchCardEffectUsed,
         })
         // console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
         if (clickEffect === "keep") {
@@ -106,7 +108,7 @@ export const DiceContainer = ({
         scoreMarked,
         threeSkullsOrMoreInCursedArea,
         currentCard,
-        witchUncursedDiceId,
+        witchCardEffectUsed,
       ],
     )
 
@@ -260,7 +262,7 @@ export const DiceContainer = ({
       ...propsFromLocation,
       dice,
       diceAnimation: diceAnimationState[dice.id],
-      witchUncursedDiceId,
+      witchCardEffectUsed,
       disapear: diceIsGoingToBeCursed,
       appear: diceInCursedArea,
       onDiceClick,
@@ -285,7 +287,7 @@ const getClickEffect = (
     scoreMarked,
     threeSkullsOrMoreInCursedArea,
     currentCard,
-    witchUncursedDiceId,
+    witchCardEffectUsed,
   },
 ) => {
   if (diceIsInRolledAreaGetter(dice, diceRolledIds)) {
@@ -305,10 +307,10 @@ const getClickEffect = (
   if (diceIsInCursedAreaGetter(dice, diceCursedIds)) {
     if (
       uncurseDiceAllowedGetter(dice, {
+        currentCard,
+        witchCardEffectUsed,
         scoreMarked,
         threeSkullsOrMoreInCursedArea,
-        currentCard,
-        witchUncursedDiceId,
       })
     ) {
       return "uncurse"
@@ -392,6 +394,10 @@ const diceIsInChestGetter = (dice, chestSlots) =>
 const diceIsInCursedAreaGetter = (dice, diceCursedIds) => diceCursedIds.includes(dice.id)
 
 const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
+  if (diceIsOnSkull(dice)) {
+    return false
+  }
+
   if (scoreMarked) {
     return false
   }
@@ -415,13 +421,13 @@ const unkeepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedA
 }
 const uncurseDiceAllowedGetter = (
   dice,
-  { scoreMarked, threeSkullsOrMoreInCursedArea, currentCard, witchUncursedDiceId },
+  { currentCard, witchCardEffectUsed, scoreMarked, threeSkullsOrMoreInCursedArea },
 ) => {
   if (!isWitchCard(currentCard)) {
     return false
   }
 
-  if (witchUncursedDiceId) {
+  if (witchCardEffectUsed) {
     return false
   }
 

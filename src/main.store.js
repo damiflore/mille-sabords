@@ -22,6 +22,7 @@ const defaultState = {
   scoreMarked: false,
   isOnSkullIsland: false,
   witchUncursedDiceId: null,
+  witchCardEffectUsed: false,
   diceRolledIds: [],
   diceCursedIds: [],
   chestSlots: {
@@ -99,6 +100,7 @@ export const useRollCount = () => store.useKeyedState("rollCount")
 export const useScoreMarked = () => store.useKeyedState("scoreMarked")
 export const useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland")
 export const useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId")
+export const useWitchCardEffectUsed = () => store.useKeyedState("witchCardEffectUsed")
 export const useDiceRolledIds = () => store.useKeyedState("diceRolledIds")
 export const useDiceCursedIds = () => store.useKeyedState("diceCursedIds")
 export const useChestSlots = () => store.useKeyedState("chestSlots")
