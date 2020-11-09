@@ -94,7 +94,7 @@
   transform-origin: center center;
   width: 100%;
 }
-.card-area .draw-card-btn {
+.card-area .button-card-main {
   position: relative;
   top: 40%;
   color: #4e8fc2;

@@ -104,7 +104,7 @@ const ButtonDrawCard = () => {
   const drawCard = useDrawCard()
 
   return (
-    <button className="draw-card-btn" onClick={drawCard}>
+    <button className="button-card-main button-draw-card" onClick={drawCard}>
       Piocher
     </button>
   )
@@ -121,7 +121,7 @@ const ButtonShuffleDeck = () => {
     }, 1000)
   }
   return (
-    <button className="draw-card-btn" onClick={shuffleDeckAnimation}>
+    <button className="button-card-main button-shuffle-deck" onClick={shuffleDeckAnimation}>
       Mélanger
     </button>
   )
@@ -169,7 +169,7 @@ const StartButton = () => {
 
   return (
     <button
-      className="draw-card-btn"
+      className="button-card-main button-activate-card"
       onClick={() => {
         start()
       }}
