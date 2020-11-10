@@ -115,7 +115,7 @@ transform: translate(-100%, -100%) scale(0.25);
   left: calc(50% - 30px);
   transform-origin: center center;
 }
-.draw-card-dialog .small-card #small-card {
+.draw-card-dialog .small-card .card {
   opacity: 0;
   position: fixed;
 }

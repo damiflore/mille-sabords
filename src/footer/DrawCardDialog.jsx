@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useCurrentCardId } from "src/main.store.js"
@@ -9,14 +10,17 @@ import { useActivateCurrentCard } from "src/round/round.actions.js"
 import { cardsRules } from "src/cards/cards-rules.js"
 import { Dialog } from "src/dialog/Dialog.jsx"
 import { cardIdToCard, cardToImageUrl, cardDefaultUrl } from "src/cards/cards.js"
-import { SmallCard } from "src/header/Header.jsx"
+import { SmallCard } from "src/cards/SmallCard.jsx"
+import { getDomNodeRectangle } from "src/dom/dom.position.js"
 
-export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
+export const DrawCardDialog = ({ dialogIsOpen, closeDialog, headerSmallCardRef }) => {
   const cardDeck = useCardDeck()
   const currentCardId = useCurrentCardId()
   const currentCard = cardIdToCard(currentCardId) || null
 
   const backCardRef = React.useRef()
+  const topCardRef = React.useRef()
+  const smallCardRef = React.useRef()
 
   const shuffleCardsText = "Paquet de cartes épuisé. Mélangez-le pour pouvoir piocher à nouveau !"
   const drawCardText = "Piochez une carte pour le tour suivant."
@@ -41,27 +45,49 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog }) => {
                 currentCard={currentCard}
                 remainingCardCount={cardDeck.length}
               />
-              <TopCard currentCard={currentCard} />
+              <TopCard
+                topCardRef={topCardRef}
+                smallCardRef={smallCardRef}
+                currentCard={currentCard}
+              />
             </div>
           </div>
         </div>
         <div className="dialog-actions">
           <DeckButton backCardRef={backCardRef} cardDeck={cardDeck} currentCard={currentCard} />
-          {currentCard ? <StartButton currentCard={currentCard} closeDialog={closeDialog} /> : null}
+          {currentCard ? (
+            <StartButton
+              headerSmallCardRef={headerSmallCardRef}
+              smallCardRef={smallCardRef}
+              backCardRef={backCardRef}
+              topCardRef={topCardRef}
+              currentCard={currentCard}
+              closeDialog={closeDialog}
+            />
+          ) : null}
         </div>
       </div>
     </Dialog>
   )
 }
 
-const TopCard = ({ currentCard }) => {
+const BackCard = ({ backCardRef, currentCard, remainingCardCount }) => {
+  return (
+    <div ref={backCardRef} className="card default-card" style={{ background: "none" }}>
+      <Image src={cardDefaultUrl} width="150" />
+      {currentCard ? null : <div className="remaining-cards-number">{remainingCardCount}</div>}
+    </div>
+  )
+}
+
+const TopCard = ({ topCardRef, smallCardRef, currentCard }) => {
   if (!currentCard) {
     return null
   }
 
   return (
     <>
-      <div className="card current-card" id="big-card">
+      <div className="card current-card" ref={topCardRef}>
         <div className="flip-card">
           <div className="flip-card-inner">
             <div className="flip-card-front">
@@ -79,27 +105,13 @@ const TopCard = ({ currentCard }) => {
         </div>
       </div>
       <div className="small-card">
-        <SmallCard card={currentCard} />
+        <SmallCard card={currentCard} ref={smallCardRef} />
       </div>
     </>
   )
 }
 
-const BackCard = ({ currentCard, remainingCardCount, backCardRef }) => {
-  return (
-    <div
-      ref={backCardRef}
-      className="card default-card"
-      id="back-deck-card"
-      style={{ background: "none" }}
-    >
-      <Image src={cardDefaultUrl} width="150" />
-      {!currentCard && <div className="remaining-cards-number">{remainingCardCount}</div>}
-    </div>
-  )
-}
-
-const DeckButton = ({ cardDeck, currentCard, backCardRef }) => {
+const DeckButton = ({ backCardRef, cardDeck, currentCard }) => {
   if (currentCard) {
     return null
   }
@@ -134,17 +146,14 @@ const ButtonShuffleDeck = ({ backCardRef }) => {
       return () => {}
     }
 
-    backCardRef.current.setAttribute("shaking-deck", "")
-    const timeoutId = setTimeout(() => {
-      backCardRef.current.removeAttribute("shaking-deck", "")
-      shuffleDeck()
-      sufflePendingSetter(false)
-    }, 1000)
-
-    return () => {
-      backCardRef.current.removeAttribute("shaking-deck", "")
-      clearTimeout(timeoutId)
-    }
+    shuffleDeck()
+    return animateDeckShuffle({
+      backCard: backCardRef.current,
+      duration: 1000,
+      onfinish: () => {
+        sufflePendingSetter(false)
+      },
+    })
   }, [shufflePending])
 
   return (
@@ -154,45 +163,47 @@ const ButtonShuffleDeck = ({ backCardRef }) => {
   )
 }
 
-const animateCard = (duration) => {
-  const bigCard = document.querySelector("#big-card")
-  const bigCardBack = document.querySelector("#back-deck-card")
-  const smallCard = document.querySelector("#small-card")
-
-  bigCardBack.style.opacity = 0
-  bigCard.animate(
-    [
-      { transform: "scale(1)", opacity: 1 },
-      { transform: "scale(0)", opacity: 0 },
-    ],
-    {
-      duration,
-      fill: "forwards",
-    },
-  )
-
-  smallCard.animate(
-    [
-      { transform: "scale(0)", opacity: 0, position: "fixed", top: "auto", left: "auto" },
-      { transform: "scale(1)", opacity: 1, position: "fixed", top: "15px", left: "15px" },
-    ],
-    {
-      duration,
-      fill: "forwards",
-    },
-  )
+const animateDeckShuffle = ({ backCard, duration, onfinish }) => {
+  backCard.setAttribute("shaking-deck", "")
+  const timeoutId = setTimeout(() => {
+    backCard.removeAttribute("shaking-deck", "")
+    onfinish()
+  }, duration)
+  return () => {
+    backCard.removeAttribute("shaking-deck", "")
+    clearTimeout(timeoutId)
+  }
 }
 
-const StartButton = () => {
+const StartButton = ({ headerSmallCardRef, smallCardRef, backCardRef, topCardRef }) => {
   const activateCurrentCard = useActivateCurrentCard()
 
+  const [cardActivating, cardActivatingSetter] = React.useState(false)
+
   const start = () => {
-    const animationDuration = 500
-    animateCard(animationDuration)
-    setTimeout(() => {
-      activateCurrentCard()
-    }, animationDuration)
+    if (cardActivating) {
+      return
+    }
+    cardActivatingSetter(true)
   }
+
+  React.useEffect(() => {
+    if (!cardActivating) {
+      return () => {}
+    }
+
+    const animationDuration = 500
+    return animateCardActivation({
+      headerSmallCard: headerSmallCardRef.current,
+      smallCard: smallCardRef.current,
+      backCard: backCardRef.current,
+      topCard: topCardRef.current,
+      duration: animationDuration,
+      onfinish: () => {
+        activateCurrentCard()
+      },
+    })
+  }, [cardActivating])
 
   return (
     <button
@@ -204,4 +215,63 @@ const StartButton = () => {
       Commencer
     </button>
   )
+}
+
+const animateCardActivation = ({
+  headerSmallCard,
+  topCard,
+  backCard,
+  smallCard,
+  duration,
+  onfinish,
+}) => {
+  backCard.style.opacity = 0
+
+  const headerSmallCardRectangle = getDomNodeRectangle(headerSmallCard)
+
+  const topCardAnimation = topCard.animate(
+    [
+      {
+        transform: "scale(1)",
+        opacity: 1,
+      },
+      {
+        transform: "scale(0)",
+        opacity: 0,
+      },
+    ],
+    {
+      duration,
+      fill: "forwards",
+    },
+  )
+
+  const smallCardAnimation = smallCard.animate(
+    [
+      {
+        transform: "scale(0)",
+        opacity: 0,
+        position: "fixed",
+        top: "auto",
+        left: "auto",
+      },
+      {
+        transform: "scale(1)",
+        opacity: 1,
+        position: "fixed",
+        top: `${headerSmallCardRectangle.top}.px`,
+        left: `${headerSmallCardRectangle.left}.px`,
+      },
+    ],
+    {
+      duration,
+      fill: "forwards",
+    },
+  )
+  smallCardAnimation.onfinish = onfinish
+
+  return () => {
+    topCardAnimation.cancel()
+    smallCardAnimation.cancel()
+  }
 }

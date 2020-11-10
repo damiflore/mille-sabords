@@ -3,13 +3,14 @@ import React from "react"
 import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { Image } from "src/generic/Image.jsx"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
-import { cardDefaultUrl, cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
+import { cardDefaultUrl, cardIdToCard } from "src/cards/cards.js"
 import { CardRulesDialog } from "src/header/CardRulesDialog.jsx"
+import { SmallCard } from "src/cards/SmallCard.jsx"
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 
 import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
-export const Header = ({ openScoreboard }) => {
+export const Header = ({ openScoreboard, headerSmallCardRef }) => {
   const [dialogIsOpen, dialogIsOpenSetter] = React.useState(false)
   const currentCard = cardIdToCard(useCurrentCardId())
   const currentCardActivated = useCurrentCardActivated()
@@ -31,7 +32,7 @@ export const Header = ({ openScoreboard }) => {
         }}
       >
         <div className="small-card">
-          <TopDeckCard />
+          <TopDeckCard headerSmallCardRef={headerSmallCardRef} />
         </div>
         {currentCardActivated && <SwordChallengeIndicator />}
       </div>
@@ -44,11 +45,14 @@ export const Header = ({ openScoreboard }) => {
   )
 }
 
-const TopDeckCard = () => {
+const TopDeckCard = ({ headerSmallCardRef }) => {
   const currentCard = cardIdToCard(useCurrentCardId())
-  const currentCardActivated = useCurrentCardActivated()
 
-  return currentCard && currentCardActivated ? <SmallCard card={currentCard} /> : <BackCard />
+  if (!currentCard) {
+    return <BackCard />
+  }
+
+  return <SmallCard card={currentCard} ref={headerSmallCardRef} />
 }
 
 const BackCard = () => {
@@ -60,21 +64,6 @@ const BackCard = () => {
         backgroundSize: "217px",
       }}
     ></div>
-  )
-}
-
-export const SmallCard = ({ card }) => {
-  return (
-    <div
-      className="card current-card"
-      id="small-card"
-      style={{
-        backgroundColor: card.color1,
-        borderColor: card.color2,
-      }}
-    >
-      <Image src={cardToSmallImageUrl(card)} alt={card.type} />
-    </div>
   )
 }
 

@@ -25,10 +25,12 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const diceOverRolledAreaSignal = useSignalEmitter()
   const diceOverChestSignal = useSignalEmitter()
 
+  const headerSmallCardRef = React.useRef()
+
   return (
     <div className="round-container">
       <CardsEffects />
-      <Header openScoreboard={openScoreboard} />
+      <Header openScoreboard={openScoreboard} headerSmallCardRef={headerSmallCardRef} />
       {currentCardActivated ? (
         <RoundGameBoard
           diceOverRolledAreaSignal={diceOverRolledAreaSignal}
@@ -50,7 +52,10 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
         />
       ) : null}
-      <DrawCardDialog dialogIsOpen={!currentCardActivated} />
+      <DrawCardDialog
+        dialogIsOpen={!currentCardActivated}
+        headerSmallCardRef={headerSmallCardRef}
+      />
     </div>
   )
 }
