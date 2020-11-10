@@ -17,7 +17,7 @@ import {
   getDomNodeRectangle,
   domNodeCollidesWithRectangle,
 } from "src/dom/dom.position.js"
-import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
+import { useThreeSkullsOrMoreInCursedArea, useHasDicesToCurse } from "src/round/round.selectors.js"
 import { Dice } from "src/dices/Dice.jsx"
 import { diceIsOnSkull } from "src/dices/dices.js"
 import {
@@ -46,6 +46,7 @@ export const DiceContainer = ({
   const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const hasDicesToCurse = useHasDicesToCurse()
   // local state
   const [diceAnimationState, dispatchDiceAnimation] = React.useReducer((state, action) => {
     return {
@@ -83,13 +84,14 @@ export const DiceContainer = ({
     const onDiceClick = React.useCallback(
       (dice) => {
         const clickEffect = getClickEffect(dice, {
+          currentCard,
+          witchCardEffectUsed,
           diceRolledIds,
           chestSlots,
           diceCursedIds,
-          scoreMarked,
+          hasDicesToCurse,
           threeSkullsOrMoreInCursedArea,
-          currentCard,
-          witchCardEffectUsed,
+          scoreMarked,
         })
         // console.log(`click dice#${dice.id} -> ${clickEffect} effect`)
         if (clickEffect === "keep") {
@@ -125,8 +127,9 @@ export const DiceContainer = ({
           dropTargetRef,
           rolledAreaDomNode,
           chestDomNode,
-          scoreMarked,
+          hasDicesToCurse,
           threeSkullsOrMoreInCursedArea,
+          scoreMarked,
         })
         dragDiceGesture.setDropEffect(dropEffect)
         onDiceOverChestChange(dropEffect === "keep" ? dice : null)
@@ -281,24 +284,27 @@ export const DiceContainer = ({
 const getClickEffect = (
   dice,
   {
+    currentCard,
+    witchCardEffectUsed,
     diceRolledIds,
     chestSlots,
     diceCursedIds,
-    scoreMarked,
+    hasDicesToCurse,
     threeSkullsOrMoreInCursedArea,
-    currentCard,
-    witchCardEffectUsed,
+    scoreMarked,
   },
 ) => {
   if (diceIsInRolledAreaGetter(dice, diceRolledIds)) {
-    if (keepDiceAllowedGetter(dice, { scoreMarked, threeSkullsOrMoreInCursedArea })) {
+    if (
+      keepDiceAllowedGetter(dice, { hasDicesToCurse, threeSkullsOrMoreInCursedArea, scoreMarked })
+    ) {
       return "keep"
     }
     return "none"
   }
 
   if (diceIsInChestGetter(dice, chestSlots)) {
-    if (unkeepDiceAllowedGetter(dice, { scoreMarked, threeSkullsOrMoreInCursedArea })) {
+    if (unkeepDiceAllowedGetter(dice, { threeSkullsOrMoreInCursedArea, scoreMarked })) {
       return "unkeep"
     }
     return "none"
@@ -329,8 +335,9 @@ const getDropEffect = (
     dropTargetRef,
     rolledAreaDomNode,
     chestDomNode,
-    scoreMarked,
+    hasDicesToCurse,
     threeSkullsOrMoreInCursedArea,
+    scoreMarked,
   },
 ) => {
   if (diceIsInRolledAreaGetter(dice, diceRolledIds)) {
@@ -339,7 +346,9 @@ const getDropEffect = (
     }
 
     if (dropTargetRef.current === chestDomNode) {
-      if (keepDiceAllowedGetter(dice, { scoreMarked, threeSkullsOrMoreInCursedArea })) {
+      if (
+        keepDiceAllowedGetter(dice, { hasDicesToCurse, threeSkullsOrMoreInCursedArea, scoreMarked })
+      ) {
         return "keep"
       }
       return "back-to-rolled-area"
@@ -393,16 +402,23 @@ const diceIsInChestGetter = (dice, chestSlots) =>
   })
 const diceIsInCursedAreaGetter = (dice, diceCursedIds) => diceCursedIds.includes(dice.id)
 
-const keepDiceAllowedGetter = (dice, { scoreMarked, threeSkullsOrMoreInCursedArea }) => {
+const keepDiceAllowedGetter = (
+  dice,
+  { hasDicesToCurse, threeSkullsOrMoreInCursedArea, scoreMarked },
+) => {
   if (diceIsOnSkull(dice)) {
     return false
   }
 
-  if (scoreMarked) {
+  if (hasDicesToCurse) {
     return false
   }
 
   if (threeSkullsOrMoreInCursedArea) {
+    return false
+  }
+
+  if (scoreMarked) {
     return false
   }
 
