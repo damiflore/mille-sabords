@@ -25,7 +25,10 @@ export const ImagePreloader = () => {
   ]
 
   React.useEffect(() => {
-    setTimeout(() => preloadImages(images), 2000)
+    const timeoutId = setTimeout(() => preloadImages(images), 2000)
+    return () => {
+      clearTimeout(timeoutId)
+    }
   }, [])
 
   return null
