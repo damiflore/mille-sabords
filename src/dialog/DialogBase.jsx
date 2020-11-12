@@ -20,6 +20,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import { useBecomes } from "src/hooks.js"
+import { observeElementResizing } from "src/dom/dom.resize.js"
 import { firstFocusableDescendantOrSelf, trapFocusInside } from "./focus-trap.js"
 import { trapScrollInside } from "./scroll-trap.js"
 
@@ -80,6 +81,7 @@ export const DialogBase = ({
 }) => {
   if (!container) return null
   const [dialogElement, setDialogElement] = React.useState(null)
+  const [containerSize, containerSizeSetter] = React.useState(null)
 
   const isInsideDocument = Boolean(dialogElement)
   const becomesOpen = useBecomes((isOpenPrevious) => !isOpenPrevious && isOpen, [isOpen])
@@ -195,6 +197,21 @@ export const DialogBase = ({
     }
   }, [isOpen, dialogElement])
 
+  useEffect(() => {
+    if (!container) {
+      return () => {}
+    }
+
+    const unobserve = observeElementResizing(container, ({ contentRect }) => {
+      const { width, height } = contentRect
+      containerSizeSetter({ width, height })
+      // element.style.setProperty(`--${cssVariableNameForElementHeight}`, height)
+    })
+    return () => {
+      unobserve()
+    }
+  }, [container])
+
   if (closeMethod === "dom-remove" && !isOpen) {
     return null
   }
@@ -202,6 +219,7 @@ export const DialogBase = ({
   return ReactDOM.createPortal(
     <div
       role="dialog"
+      className="dialog--root"
       style={{
         position: "fixed",
         left: 0,
@@ -252,12 +270,21 @@ export const DialogBase = ({
         {...rest}
         style={{
           ...DIALOG_STYLE,
-          marginTop: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
-          marginBottom: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
+          marginTop: ratioToValueRelativeToContainerHeight(minSpacingWithContainer, containerSize),
+          marginBottom: ratioToValueRelativeToContainerHeight(
+            minSpacingWithContainer,
+            containerSize,
+          ),
           marginLeft: "auto",
           marginRight: "auto",
-          maxHeight: ratioToValueRelativeToContainerHeight(1 - minSpacingWithContainer * 2),
-          maxWidth: ratioToValueRelativeToContainerWidth(1 - minSpacingWithContainer * 2),
+          maxHeight: ratioToValueRelativeToContainerHeight(
+            1 - minSpacingWithContainer * 2,
+            containerSize,
+          ),
+          maxWidth: ratioToValueRelativeToContainerWidth(
+            1 - minSpacingWithContainer * 2,
+            containerSize,
+          ),
           ...rest.style,
         }}
         ref={(element) => {
@@ -279,9 +306,15 @@ export const DialogBase = ({
   )
 }
 
-const ratioToValueRelativeToContainerWidth = (value) => `${value * 100}vw`
+const ratioToValueRelativeToContainerWidth = (value, containerSize) => {
+  if (containerSize) {
+    return `${value * containerSize.width}px`
+  }
+  return `${value * 100}vw`
+}
 
-const ratioToValueRelativeToContainerHeight = (value) => `${value * 100}vh`
+const ratioToValueRelativeToContainerHeight = (value, containerSize) =>
+  containerSize ? `${value * containerSize.height}px` : `${value * 100}vh`
 
 const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)
