@@ -1,3 +1,21 @@
+/**
+
+--- click-no-effect-scenario ---
+
+Be careful if you ever create the following html structure:
+
+<div onClick={openDialog}>
+  Open dialog
+  <Dialog requestCloseOnClickOutside={true} requestClose={closeDialog} />
+</div>
+
+In this context the onClick will happen on dialog backdrop which is
+Inside the <div>. The closeDialog will be called but as click event bubbles
+it will also trigger onClick listener from the <div>.
+In the end the click interaction both close and open the dialog in the same event loop.
+
+*/
+
 import React from "react"
 import ReactDOM from "react-dom"
 
@@ -48,7 +66,7 @@ export const DialogBase = ({
   // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
   // ideally we should return null when isOpen is false and the dialog never rendered
   // (to avoid putting the dialog in display none while it might never be used)
-  // (but that depends it's too early to know exactly what we want/need)
+  // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
   stealFocus = true,
   restoreStolenFocus = true,
@@ -66,7 +84,7 @@ export const DialogBase = ({
   const [dialogElement, setDialogElement] = React.useState(null)
 
   const isInsideDocument = Boolean(dialogElement)
-  const becomesOpen = useBecomes((isActivePrevious) => !isActivePrevious && isOpen, [isOpen])
+  const becomesOpen = useBecomes((isOpenPrevious) => !isOpenPrevious && isOpen, [isOpen])
 
   if (becomesOpen) {
     onAfterOpen()
@@ -192,7 +210,7 @@ export const DialogBase = ({
             ...backdropProps.style,
           }}
           // mousedown on backdrop -> transfer focus to dialog
-          onMouseDownPassive={(mousedownEvent) => {
+          onMouseDownActive={(mousedownEvent) => {
             // prevent mousedown on backdrop from putting focus on document.body
             mousedownEvent.preventDefault()
             // instead foward focus to the dialog if not already inside
@@ -204,6 +222,10 @@ export const DialogBase = ({
             }
           }}
           onClick={(clickEvent) => {
+            // I wonder if we should clickEvent.stopPropagation()
+            // because back drop is also there to shallow click interaction
+            // it would prevent the click event from bubbling and creates the potential
+            // --- click-no-effect-scenario --- described at the top of this file.
             if (requestCloseOnClickOutside) {
               const { target } = clickEvent
               // dialogElement.firstChild?
@@ -242,14 +264,14 @@ export const DialogBase = ({
   )
 }
 
-const DialogBackDrop = ({ onMouseDownPassive, ...props }) => {
+const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)
   useEffect(() => {
     if (!backdropElement) return () => {}
 
-    backdropElement.addEventListener("mousedown", onMouseDownPassive, { passive: false })
+    backdropElement.addEventListener("mousedown", onMouseDownActive, { passive: false })
     return () => {
-      backdropElement.removeEventListener("mousedown", onMouseDownPassive, { passive: false })
+      backdropElement.removeEventListener("mousedown", onMouseDownActive, { passive: false })
     }
   }, [backdropElement])
 
