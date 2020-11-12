@@ -12,8 +12,8 @@ export const trapScrollInside = (element) => {
     previous = previous.previousSibling
   }
 
-  const scrollableParent = getScrollableParent(element)
-  elementsToScrollLock.push(scrollableParent)
+  const scrollableParents = getAllScrollableParent(element)
+  elementsToScrollLock.push(...scrollableParents)
   const cleanUpArray = elementsToScrollLock.map((element) => {
     const prev = element.style.overflow
     element.style.overflow = "hidden"
@@ -33,11 +33,33 @@ export const trapScrollInside = (element) => {
   }
 }
 
+const getAllScrollableParent = (element) => {
+  const scrollableParents = []
+
+  const visitElement = (elementOrScrollableParent) => {
+    const scrollableParent = getScrollableParent(elementOrScrollableParent)
+    if (scrollableParent) {
+      scrollableParents.push(scrollableParent)
+      console.log(scrollableParent)
+      if (scrollableParent === document) {
+        return
+      }
+      visitElement(scrollableParent)
+    }
+  }
+  visitElement(element)
+
+  return scrollableParents
+}
+
 const getScrollableParent = (arg) => {
   if (typeof arg !== "object" || arg.nodeType !== 1) {
     throw new TypeError("getScrollableParent first argument must be DOM node")
   }
   const element = arg
+  if (element === document.documentElement) {
+    return null
+  }
   const position = getStyleValue(element, "position")
 
   if (position === "fixed") {
@@ -172,6 +194,8 @@ const horizontalOverflowIsVisible = (element) => {
 }
 
 const findScrollableParent = (element) => {
+  if (element === document.documentElement) return null
+
   const position = getStyleValue(element, "position")
   let parent = element.parentNode
   while (parent) {
