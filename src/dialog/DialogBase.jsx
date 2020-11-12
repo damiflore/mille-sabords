@@ -32,13 +32,10 @@ https://fr.reactjs.org/docs/portals.html
 */
 
 const DIALOG_STYLE = {
-  position: "absolute",
-  top: "5%",
-  left: "0",
-  right: "0",
+  position: "relative",
   width: "fit-content",
   height: "fit-content",
-  margin: "auto",
+  overflow: "auto",
   padding: "1em",
 
   // prevent body scrolling when scrolling the dialog content
@@ -68,6 +65,33 @@ export const DialogBase = ({
   // (to avoid putting the dialog in display none while it might never be used)
   // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
+  /*
+  ## minSpacingWithContainer
+
+  Minimum space between dialog borders (top/right/bottom/left) and its parent.
+
+  ### top spacing
+
+  It is always present and exactly the one sepcified.
+
+  ### bottom spacing
+
+  When dialog content is higher than container the dialog height is decreased
+  to ensure the spacing is respected. Otherwise the bottom spacing is bigger.
+  It is implemented with CSS max-height.
+
+  ### right spacing
+
+  When dialog content is wider than container + spacing, the dialog width is decreased
+  to ensure the spacing is respected. Otherwise right spacing is bigger and ensure
+  the dialog is horizontally centered.
+  Is it implemented with CSS max-width + margin left and margin right auto
+
+  ### left spacing
+
+  Same as right spacing.
+  */
+  minSpacingWithContainer = "10%",
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
@@ -132,8 +156,9 @@ export const DialogBase = ({
 
   // trap scroll inside dialog
   useEffect(() => {
-    if (!isOpen || !isInsideDocument) return () => {}
-
+    if (!isOpen || !isInsideDocument) {
+      return () => {}
+    }
     return trapScrollInside(dialogElement)
   }, [isOpen, isInsideDocument])
 
@@ -201,7 +226,19 @@ export const DialogBase = ({
   }
 
   return ReactDOM.createPortal(
-    <>
+    <div
+      role="dialog"
+      style={{
+        position: "fixed",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        ...(closeMethod === "display-none" && !isOpen ? { display: "none" } : {}),
+        ...(closeMethod === "visibility-hidden" && !isOpen ? { visibility: "hidden" } : {}),
+      }}
+      hidden={closeMethod === "hidden-attribute" && !isOpen ? true : undefined}
+    >
       {isOpen ? (
         <DialogBackDrop
           {...backdropProps}
@@ -241,8 +278,10 @@ export const DialogBase = ({
         {...rest}
         style={{
           ...DIALOG_STYLE,
+          margin: `${minSpacingWithContainer} auto`,
+          maxHeight: `${100 - parseInt(minSpacingWithContainer) * 2}%`,
+          maxWidth: `${100 - parseInt(minSpacingWithContainer) * 2}%`,
           ...rest.style,
-          ...(isOpen ? {} : getStyleForClose(closeMethod)),
         }}
         ref={(element) => {
           setDialogElement(element)
@@ -254,12 +293,11 @@ export const DialogBase = ({
           }
           if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
         }}
-        hidden={closeMethod === "hidden-attribute" ? isOpen : undefined}
         tabIndex="-1"
       >
         {children}
       </div>
-    </>,
+    </div>,
     container,
   )
 }
@@ -284,16 +322,6 @@ const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
       {...props}
     ></div>
   )
-}
-
-const getStyleForClose = (closeMethod) => {
-  if (closeMethod === "display-none") {
-    return { display: "none" }
-  }
-  if (closeMethod === "visibility-hidden") {
-    return { visibility: "hidden" }
-  }
-  return {}
 }
 
 const hasOrContainsFocus = (element) => {

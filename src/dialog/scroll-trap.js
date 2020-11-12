@@ -21,7 +21,7 @@ export const trapScrollInside = (element) => {
       if (prev) {
         element.style.overflow = prev
       } else {
-        delete element.style.overflow
+        element.style.removeProperty("overflow")
       }
     }
   })
