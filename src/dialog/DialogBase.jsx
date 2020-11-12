@@ -20,9 +20,11 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import { useBecomes } from "src/hooks.js"
-import { observeElementResizing } from "src/dom/dom.resize.js"
+import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { firstFocusableDescendantOrSelf, trapFocusInside } from "./focus-trap.js"
 import { trapScrollInside } from "./scroll-trap.js"
+
+import dialogBaseCssUrl from "./dialog.base.css"
 
 const { useEffect } = React
 
@@ -32,33 +34,10 @@ https://github.com/reactjs/react-modal/blob/master/src/components/ModalPortal.js
 https://fr.reactjs.org/docs/portals.html
 */
 
-const DIALOG_STYLE = {
-  position: "relative",
-  width: "fit-content",
-  height: "fit-content",
-  overflow: "auto",
-  padding: "1em",
-
-  // prevent body scrolling when scrolling the dialog content
-  overscrollBehavior: "contain",
-  outline: "none",
-
-  background: "white",
-  color: "black",
-  border: "solid",
-}
-
-const BACKDROP_STYLE = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.46)",
-}
-
 export const DialogBase = ({
   container = document.body,
+  header,
+  footer,
   children,
   isOpen,
   // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
@@ -81,7 +60,6 @@ export const DialogBase = ({
 }) => {
   if (!container) return null
   const [dialogElement, setDialogElement] = React.useState(null)
-  const [containerSize, containerSizeSetter] = React.useState(null)
 
   const isInsideDocument = Boolean(dialogElement)
   const becomesOpen = useBecomes((isOpenPrevious) => !isOpenPrevious && isOpen, [isOpen])
@@ -197,21 +175,6 @@ export const DialogBase = ({
     }
   }, [isOpen, dialogElement])
 
-  useEffect(() => {
-    if (!container) {
-      return () => {}
-    }
-
-    const unobserve = observeElementResizing(container, ({ contentRect }) => {
-      const { width, height } = contentRect
-      containerSizeSetter({ width, height })
-      // element.style.setProperty(`--${cssVariableNameForElementHeight}`, height)
-    })
-    return () => {
-      unobserve()
-    }
-  }, [container])
-
   if (closeMethod === "dom-remove" && !isOpen) {
     return null
   }
@@ -221,23 +184,18 @@ export const DialogBase = ({
       role="dialog"
       className="dialog--root"
       style={{
-        position: "fixed",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
+        top: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
+        bottom: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
         ...(closeMethod === "display-none" && !isOpen ? { display: "none" } : {}),
         ...(closeMethod === "visibility-hidden" && !isOpen ? { visibility: "hidden" } : {}),
       }}
       hidden={closeMethod === "hidden-attribute" && !isOpen ? true : undefined}
     >
+      <Stylesheet href={dialogBaseCssUrl} />
       {isOpen ? (
         <DialogBackDrop
           {...backdropProps}
-          style={{
-            ...BACKDROP_STYLE,
-            ...backdropProps.style,
-          }}
+          className="dialog--backdrop"
           // mousedown on backdrop -> transfer focus to dialog
           onMouseDownActive={(mousedownEvent) => {
             // prevent mousedown on backdrop from putting focus on document.body
@@ -267,54 +225,39 @@ export const DialogBase = ({
         />
       ) : null}
       <div
-        {...rest}
+        className="dialog--content"
         style={{
-          ...DIALOG_STYLE,
-          marginTop: ratioToValueRelativeToContainerHeight(minSpacingWithContainer, containerSize),
-          marginBottom: ratioToValueRelativeToContainerHeight(
-            minSpacingWithContainer,
-            containerSize,
-          ),
-          marginLeft: "auto",
-          marginRight: "auto",
-          maxHeight: ratioToValueRelativeToContainerHeight(
-            1 - minSpacingWithContainer * 2,
-            containerSize,
-          ),
-          maxWidth: ratioToValueRelativeToContainerWidth(
-            1 - minSpacingWithContainer * 2,
-            containerSize,
-          ),
-          ...rest.style,
+          maxWidth: ratioToValueRelativeToContainerWidth(1 - minSpacingWithContainer * 2),
         }}
-        ref={(element) => {
-          setDialogElement(element)
-          if (rest.ref) rest.ref(element)
-        }}
-        onKeyDown={(keydownEvent) => {
-          if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
-            onRequestClose(keydownEvent)
-          }
-          if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
-        }}
-        tabIndex="-1"
       >
-        {children}
+        <div className="dialog--header">{header}</div>
+        <div
+          {...rest}
+          className="dialog--body"
+          ref={(element) => {
+            setDialogElement(element)
+            if (rest.ref) rest.ref(element)
+          }}
+          onKeyDown={(keydownEvent) => {
+            if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
+              onRequestClose(keydownEvent)
+            }
+            if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
+          }}
+          tabIndex="-1"
+        >
+          {children}
+        </div>
+        <div className="dialog--footer">{footer}</div>
       </div>
     </div>,
     container,
   )
 }
 
-const ratioToValueRelativeToContainerWidth = (value, containerSize) => {
-  if (containerSize) {
-    return `${value * containerSize.width}px`
-  }
-  return `${value * 100}vw`
-}
+const ratioToValueRelativeToContainerWidth = (value) => `${value * 100}%`
 
-const ratioToValueRelativeToContainerHeight = (value, containerSize) =>
-  containerSize ? `${value * containerSize.height}px` : `${value * 100}vh`
+const ratioToValueRelativeToContainerHeight = (value) => `${value * 100}%`
 
 const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)

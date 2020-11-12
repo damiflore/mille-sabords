@@ -47,7 +47,15 @@ a regular document (scrollbar).
           smallDialogIsOpenSetter(false)
         }
         return (
-          <>
+          <div
+            id="app-wrapper"
+            style={{
+              background: "violet",
+              position: "relative",
+              width: "400px",
+              height: "800px",
+            }}
+          >
             <button
               onClick={() => {
                 openBigDialog()
@@ -89,6 +97,7 @@ a regular document (scrollbar).
               mollit anim id est laborum.
             </p>
             <DialogBase
+              container={document.querySelector("#app-wrapper")}
               isOpen={bigDialogIsOpen}
               onRequestClose={closeBigDialog}
               trapFocus={false}
@@ -124,6 +133,7 @@ a regular document (scrollbar).
               </p>
             </DialogBase>
             <DialogBase
+              container={document.querySelector("#app-wrapper")}
               isOpen={smallDialogIsOpen}
               onRequestClose={closeSmallDialog}
               trapFocus={false}
@@ -132,7 +142,7 @@ a regular document (scrollbar).
             >
               Small dialog content
             </DialogBase>
-          </>
+          </div>
         )
       }
 

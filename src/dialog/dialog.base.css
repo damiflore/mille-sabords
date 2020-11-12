@@ -1,0 +1,48 @@
+.dialog--root {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.dialog--backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.46);
+}
+
+.dialog--content {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+  height: 100%;
+  pointer-events: none;
+}
+
+.dialog--header,
+.dialog--body,
+.dialog--footer {
+  pointer-events: auto;
+}
+
+.dialog--body {
+  background: white;
+  color: black;
+  /* border: solid; */
+  padding: 1em;
+
+  overflow: auto;
+  /* prevent body scrolling when scrolling the dialog content */
+  overscroll-behavior: contain;
+  outline: none;
+
+  /* width: fit-content;
+  height: fit-content;
+  overflow: auto; */
+}
