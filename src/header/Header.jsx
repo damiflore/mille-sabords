@@ -11,48 +11,53 @@ import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
 export const Header = ({ openScoreboard, headerSmallCardRef }) => {
-  const [dialogIsOpen, dialogIsOpenSetter] = React.useState(false)
   const currentCard = cardIdToCard(useCurrentCardId())
   const currentCardActivated = useCurrentCardActivated()
 
-  const openDialog = () => {
-    if (currentCard) dialogIsOpenSetter(true)
-  }
-
-  const closeDialog = () => {
-    dialogIsOpenSetter(false)
-  }
-
   return (
     <div className="header">
-      <div
-        className="card-container"
-        onClick={() => {
-          openDialog()
-        }}
-      >
+      <div className="card-container">
         <div className="small-card">
-          <TopDeckCard headerSmallCardRef={headerSmallCardRef} />
+          {currentCard ? (
+            <HeaderSmallCard headerSmallCardRef={headerSmallCardRef} currentCard={currentCard} />
+          ) : (
+            <BackCard />
+          )}
         </div>
         {currentCardActivated && <SwordChallengeIndicator />}
       </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
-      {currentCard ? (
-        <CardRulesDialog card={currentCard} dialogIsOpen={dialogIsOpen} closeDialog={closeDialog} />
-      ) : null}
     </div>
   )
 }
 
-const TopDeckCard = ({ headerSmallCardRef }) => {
-  const currentCard = cardIdToCard(useCurrentCardId())
-
-  if (!currentCard) {
-    return <BackCard />
+const HeaderSmallCard = ({ headerSmallCardRef, currentCard }) => {
+  const [cardDialogIsOpen, cardDialogIsOpenSetter] = React.useState(false)
+  const openCardDialog = () => {
+    cardDialogIsOpenSetter(true)
   }
 
-  return <SmallCard card={currentCard} ref={headerSmallCardRef} />
+  const closeCardDialog = () => {
+    cardDialogIsOpenSetter(false)
+  }
+
+  return (
+    <>
+      <SmallCard
+        onClick={() => {
+          openCardDialog()
+        }}
+        card={currentCard}
+        ref={headerSmallCardRef}
+      />
+      <CardRulesDialog
+        card={currentCard}
+        dialogIsOpen={cardDialogIsOpen}
+        closeDialog={closeCardDialog}
+      />
+    </>
+  )
 }
 
 const BackCard = () => {
