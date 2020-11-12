@@ -65,7 +65,7 @@ export const DialogBase = ({
   // (to avoid putting the dialog in display none while it might never be used)
   // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
-  minSpacingWithContainer = "10%", // see dialog.readme.md
+  minSpacingWithContainer = 0.1, // see dialog.readme.md
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
@@ -252,9 +252,12 @@ export const DialogBase = ({
         {...rest}
         style={{
           ...DIALOG_STYLE,
-          margin: `${minSpacingWithContainer} auto`,
-          maxHeight: `${100 - parseInt(minSpacingWithContainer) * 2}%`,
-          maxWidth: `${100 - parseInt(minSpacingWithContainer) * 2}%`,
+          marginTop: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
+          marginBottom: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
+          marginLeft: "auto",
+          marginRight: "auto",
+          maxHeight: ratioToValueRelativeToContainerHeight(1 - minSpacingWithContainer * 2),
+          maxWidth: ratioToValueRelativeToContainerWidth(1 - minSpacingWithContainer * 2),
           ...rest.style,
         }}
         ref={(element) => {
@@ -275,6 +278,10 @@ export const DialogBase = ({
     container,
   )
 }
+
+const ratioToValueRelativeToContainerWidth = (value) => `${value * 100}vw`
+
+const ratioToValueRelativeToContainerHeight = (value) => `${value * 100}vh`
 
 const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)
