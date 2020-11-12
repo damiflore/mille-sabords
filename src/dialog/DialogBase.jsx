@@ -65,33 +65,7 @@ export const DialogBase = ({
   // (to avoid putting the dialog in display none while it might never be used)
   // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
-  /*
-  ## minSpacingWithContainer
-
-  Minimum space between dialog borders (top/right/bottom/left) and its parent.
-
-  ### top spacing
-
-  It is always present and exactly the one sepcified.
-
-  ### bottom spacing
-
-  When dialog content is higher than container the dialog height is decreased
-  to ensure the spacing is respected. Otherwise the bottom spacing is bigger.
-  It is implemented with CSS max-height.
-
-  ### right spacing
-
-  When dialog content is wider than container + spacing, the dialog width is decreased
-  to ensure the spacing is respected. Otherwise right spacing is bigger and ensure
-  the dialog is horizontally centered.
-  Is it implemented with CSS max-width + margin left and margin right auto
-
-  ### left spacing
-
-  Same as right spacing.
-  */
-  minSpacingWithContainer = "10%",
+  minSpacingWithContainer = "10%", // see dialog.readme.md
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
