@@ -7,7 +7,7 @@ import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useBecomes } from "src/hooks.js"
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { DialogWood } from "src/dialog/dialog.wood.jsx"
 import { SYMBOL_SWORD, symbolCoinUrl, symbolDiamondUrl } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
 import { countSymbol } from "src/score/computeRoundScore.js"
@@ -141,69 +141,69 @@ const NegativeScoreSign = () => {
   )
 }
 
-const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => (
-  <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
-    <div className="border border-right"></div>
-    <div className="border border-left"></div>
-    <div className="border border-top"></div>
-    <div className="border border-bottom"></div>
-
-    <div className="dialog-title">Score</div>
-
-    <div className="dialog-content score-rules-dialog">
-      <div className="dialog-body">
-        <div className="dialog-box">
-          <div className="dialog-label">Combinaisons de dés</div>
-          <div className="columns">
-            <div className="column">
-              <div className="column-title">Symbols identiques</div>
-              <span className="symbol-number">3</span>
-              <span className="symbol-number">4</span>
-              <span className="symbol-number">5</span>
-              <span className="symbol-number">6</span>
-              <span className="symbol-number">7</span>
-              <span className="symbol-number">8</span>
-            </div>
-            <div className="column">
-              <div className="column-title">Points</div>
-              <span className="points">+100</span>
-              <span className="points">+200</span>
-              <span className="points">+500</span>
-              <span className="points">+1000</span>
-              <span className="points">+2000</span>
-              <span className="points">+4000</span>
-            </div>
-          </div>
-        </div>
-        <div className="dialog-box">
-          <div className="dialog-label">Dés spéciaux</div>
-          <div className="columns">
-            <div className="column">
-              <div className="column-title">Symbol</div>
-              <Image src={symbolCoinUrl} />
-              <Image src={symbolDiamondUrl} />
-            </div>
-            <div className="column">
-              <div className="column-title">Points</div>
-              <span className="points">+100</span>
-              <span className="points">+100</span>
+const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
+  return (
+    <DialogWood
+      className="score-rules-dialog"
+      isOpen={dialogIsOpen}
+      onRequestClose={closeDialog}
+      requestCloseOnClickOutside={true}
+      title="Score"
+      body={
+        <>
+          <div className="dialog-box">
+            <div className="dialog-label">Combinaisons de dés</div>
+            <div className="columns">
+              <div className="column">
+                <div className="column-title">Symbols identiques</div>
+                <span className="symbol-number">3</span>
+                <span className="symbol-number">4</span>
+                <span className="symbol-number">5</span>
+                <span className="symbol-number">6</span>
+                <span className="symbol-number">7</span>
+                <span className="symbol-number">8</span>
+              </div>
+              <div className="column">
+                <div className="column-title">Points</div>
+                <span className="points">+100</span>
+                <span className="points">+200</span>
+                <span className="points">+500</span>
+                <span className="points">+1000</span>
+                <span className="points">+2000</span>
+                <span className="points">+4000</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="dialog-box last">
-          <div className="dialog-label">Bonus coffre plein</div>
-          <div className="columns">
-            <div className="column">
-              <div className="column-title">Dés utilisés</div>
-              <span className="symbol-number">8</span>
-            </div>
-            <div className="column">
-              <div className="column-title">Points</div>
-              <span className="points">+500</span>
+          <div className="dialog-box">
+            <div className="dialog-label">Dés spéciaux</div>
+            <div className="columns">
+              <div className="column">
+                <div className="column-title">Symbol</div>
+                <Image src={symbolCoinUrl} />
+                <Image src={symbolDiamondUrl} />
+              </div>
+              <div className="column">
+                <div className="column-title">Points</div>
+                <span className="points">+100</span>
+                <span className="points">+100</span>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </Dialog>
-)
+          <div className="dialog-box last">
+            <div className="dialog-label">Bonus coffre plein</div>
+            <div className="columns">
+              <div className="column">
+                <div className="column-title">Dés utilisés</div>
+                <span className="symbol-number">8</span>
+              </div>
+              <div className="column">
+                <div className="column-title">Points</div>
+                <span className="points">+500</span>
+              </div>
+            </div>
+          </div>
+        </>
+      }
+    ></DialogWood>
+  )
+}

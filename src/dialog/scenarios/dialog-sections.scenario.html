@@ -1,0 +1,171 @@
+<!--
+
+This scenario is to show an example with a dialog having
+
+a fixed header
+a scrollable body
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <style>
+      .dialog {
+        background: white;
+      }
+
+      .dialog-header {
+        height: 60px;
+        background: red;
+        padding: 1em;
+        box-sizing: border-box;
+      }
+
+      .dialog-body {
+        overflow: auto;
+        background: yellow;
+        padding: 1em;
+        box-sizing: border-box;
+        /*
+        ce qu'on veut ici c'est
+        la hauteur du parent - la hauteur du header - la hauteur du footer - le spacing
+        */
+        max-height: calc(80vh - 90px);
+      }
+
+      .dialog-footer {
+        height: 30px;
+        background: orange;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import React from "react"
+      import ReactDOM from "react-dom"
+      import { DialogBase } from "../DialogBase.jsx"
+
+      const App = () => {
+        const [bigDialogIsOpen, bigDialogIsOpenSetter] = React.useState(false)
+        const openBigDialog = () => {
+          bigDialogIsOpenSetter(true)
+        }
+        const closeBigDialog = () => {
+          bigDialogIsOpenSetter(false)
+        }
+
+        const [smallDialogIsOpen, smallDialogIsOpenSetter] = React.useState(false)
+        const openSmallDialog = () => {
+          smallDialogIsOpenSetter(true)
+        }
+        const closeSmallDialog = () => {
+          smallDialogIsOpenSetter(false)
+        }
+        return (
+          <>
+            <button
+              onClick={() => {
+                openBigDialog()
+              }}
+            >
+              Open big dialog
+            </button>
+            <button
+              onClick={() => {
+                openSmallDialog()
+              }}
+            >
+              Open small dialog
+            </button>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </p>
+            <img src="./jsenv.png" />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </p>
+            <img src="./jsenv.png" />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </p>
+            <DialogBase
+              isOpen={bigDialogIsOpen}
+              onRequestClose={closeBigDialog}
+              trapFocus={false}
+              requestCloseOnClickOutside={true}
+              minSpacingWithContainer={0.1}
+              style={{ padding: 0 }}
+            >
+              <div className="dialog-header">Dialog header</div>
+              <div className="dialog-body">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                  officia deserunt mollit anim id est laborum.
+                </p>
+                <img src="./jsenv.png" />
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                  officia deserunt mollit anim id est laborum.
+                </p>
+                <img src="./jsenv.png" />
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                  officia deserunt mollit anim id est laborum.
+                </p>
+              </div>
+              <div className="dialog-footer">Dialog footer</div>
+            </DialogBase>
+            <DialogBase
+              isOpen={smallDialogIsOpen}
+              onRequestClose={closeSmallDialog}
+              trapFocus={false}
+              requestCloseOnClickOutside={true}
+              style={{ padding: 0 }}
+              minSpacingWithContainer={0.2}
+            >
+              <div className="dialog-header">Dialog header</div>
+              <div className="dialog-body">Small dialog content</div>
+              <div className="dialog-footer">Dialog footer</div>
+            </DialogBase>
+          </>
+        )
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

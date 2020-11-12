@@ -1,0 +1,73 @@
+.dialog-border-top,
+.dialog-border-bottom,
+.dialog-border-left,
+.dialog-border-right {
+  position: absolute;
+  background-position: center;
+  background-size: contain;
+  border: 2px solid #836019;
+}
+.dialog-border-top,
+.dialog-border-bottom {
+  background-image: url("./wood2.png");
+  background-size: cover;
+  left: 0;
+  right: 0;
+  height: 30px;
+  border-radius: 3px;
+}
+.dialog-border-left,
+.dialog-border-right {
+  background-image: url("./wood.png");
+  width: 30px;
+  top: 15px;
+  bottom: 0;
+}
+.dialog-border-top {
+  top: 15px;
+}
+.dialog-border-bottom {
+  bottom: 0;
+}
+.dialog-border-left {
+  left: 7px;
+}
+.dialog-border-right {
+  right: 7px;
+}
+
+.dialog-header {
+  height: 49px;
+  position: relative;
+}
+
+.dialog-title {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  margin-left: -30%;
+  width: 60%;
+  padding: 10px;
+  background-image: url(./stone.png);
+  background-size: cover;
+  color: #e4e4e4;
+  font-size: 26px;
+  font-weight: 800;
+  -webkit-text-stroke: 2px #42351a;
+  text-align: center;
+  text-transform: uppercase;
+  border: 2px solid #817d75;
+  border-radius: 5px;
+}
+
+.dialog-body {
+  margin-left: 37px;
+  margin-right: 37px;
+  background-color: #ffe7be;
+  overflow: auto;
+  max-height: 65vh;
+}
+
+.dialog-footer {
+  height: 34px;
+}

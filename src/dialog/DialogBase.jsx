@@ -1,7 +1,26 @@
+/**
+
+--- click-no-effect-scenario ---
+
+Be careful if you ever create the following html structure:
+
+<div onClick={openDialog}>
+  Open dialog
+  <Dialog requestCloseOnClickOutside={true} requestClose={closeDialog} />
+</div>
+
+In this context the onClick will happen on dialog backdrop which is
+Inside the <div>. The closeDialog will be called but as click event bubbles
+it will also trigger onClick listener from the <div>.
+In the end the click interaction both close and open the dialog in the same event loop.
+
+*/
+
 import React from "react"
 import ReactDOM from "react-dom"
 
 import { useBecomes } from "src/hooks.js"
+import { observeElementResizing } from "src/dom/dom.resize.js"
 import { firstFocusableDescendantOrSelf, trapFocusInside } from "./focus-trap.js"
 import { trapScrollInside } from "./scroll-trap.js"
 
@@ -14,13 +33,10 @@ https://fr.reactjs.org/docs/portals.html
 */
 
 const DIALOG_STYLE = {
-  position: "absolute",
-  top: "5%",
-  left: "0",
-  right: "0",
+  position: "relative",
   width: "fit-content",
   height: "fit-content",
-  margin: "auto",
+  overflow: "auto",
   padding: "1em",
 
   // prevent body scrolling when scrolling the dialog content
@@ -48,8 +64,9 @@ export const DialogBase = ({
   // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
   // ideally we should return null when isOpen is false and the dialog never rendered
   // (to avoid putting the dialog in display none while it might never be used)
-  // (but that depends it's too early to know exactly what we want/need)
+  // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
+  minSpacingWithContainer = 0.1, // see dialog.readme.md
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
@@ -64,9 +81,10 @@ export const DialogBase = ({
 }) => {
   if (!container) return null
   const [dialogElement, setDialogElement] = React.useState(null)
+  const [containerSize, containerSizeSetter] = React.useState(null)
 
   const isInsideDocument = Boolean(dialogElement)
-  const becomesOpen = useBecomes((isActivePrevious) => !isActivePrevious && isOpen, [isOpen])
+  const becomesOpen = useBecomes((isOpenPrevious) => !isOpenPrevious && isOpen, [isOpen])
 
   if (becomesOpen) {
     onAfterOpen()
@@ -114,8 +132,9 @@ export const DialogBase = ({
 
   // trap scroll inside dialog
   useEffect(() => {
-    if (!isOpen || !isInsideDocument) return () => {}
-
+    if (!isOpen || !isInsideDocument) {
+      return () => {}
+    }
     return trapScrollInside(dialogElement)
   }, [isOpen, isInsideDocument])
 
@@ -178,12 +197,40 @@ export const DialogBase = ({
     }
   }, [isOpen, dialogElement])
 
+  useEffect(() => {
+    if (!container) {
+      return () => {}
+    }
+
+    const unobserve = observeElementResizing(container, ({ contentRect }) => {
+      const { width, height } = contentRect
+      containerSizeSetter({ width, height })
+      // element.style.setProperty(`--${cssVariableNameForElementHeight}`, height)
+    })
+    return () => {
+      unobserve()
+    }
+  }, [container])
+
   if (closeMethod === "dom-remove" && !isOpen) {
     return null
   }
 
   return ReactDOM.createPortal(
-    <>
+    <div
+      role="dialog"
+      className="dialog--root"
+      style={{
+        position: "fixed",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        ...(closeMethod === "display-none" && !isOpen ? { display: "none" } : {}),
+        ...(closeMethod === "visibility-hidden" && !isOpen ? { visibility: "hidden" } : {}),
+      }}
+      hidden={closeMethod === "hidden-attribute" && !isOpen ? true : undefined}
+    >
       {isOpen ? (
         <DialogBackDrop
           {...backdropProps}
@@ -192,7 +239,7 @@ export const DialogBase = ({
             ...backdropProps.style,
           }}
           // mousedown on backdrop -> transfer focus to dialog
-          onMouseDownPassive={(mousedownEvent) => {
+          onMouseDownActive={(mousedownEvent) => {
             // prevent mousedown on backdrop from putting focus on document.body
             mousedownEvent.preventDefault()
             // instead foward focus to the dialog if not already inside
@@ -204,6 +251,10 @@ export const DialogBase = ({
             }
           }}
           onClick={(clickEvent) => {
+            // I wonder if we should clickEvent.stopPropagation()
+            // because back drop is also there to shallow click interaction
+            // it would prevent the click event from bubbling and creates the potential
+            // --- click-no-effect-scenario --- described at the top of this file.
             if (requestCloseOnClickOutside) {
               const { target } = clickEvent
               // dialogElement.firstChild?
@@ -219,8 +270,22 @@ export const DialogBase = ({
         {...rest}
         style={{
           ...DIALOG_STYLE,
+          marginTop: ratioToValueRelativeToContainerHeight(minSpacingWithContainer, containerSize),
+          marginBottom: ratioToValueRelativeToContainerHeight(
+            minSpacingWithContainer,
+            containerSize,
+          ),
+          marginLeft: "auto",
+          marginRight: "auto",
+          maxHeight: ratioToValueRelativeToContainerHeight(
+            1 - minSpacingWithContainer * 2,
+            containerSize,
+          ),
+          maxWidth: ratioToValueRelativeToContainerWidth(
+            1 - minSpacingWithContainer * 2,
+            containerSize,
+          ),
           ...rest.style,
-          ...(isOpen ? {} : getStyleForClose(closeMethod)),
         }}
         ref={(element) => {
           setDialogElement(element)
@@ -232,24 +297,33 @@ export const DialogBase = ({
           }
           if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
         }}
-        hidden={closeMethod === "hidden-attribute" ? isOpen : undefined}
         tabIndex="-1"
       >
         {children}
       </div>
-    </>,
+    </div>,
     container,
   )
 }
 
-const DialogBackDrop = ({ onMouseDownPassive, ...props }) => {
+const ratioToValueRelativeToContainerWidth = (value, containerSize) => {
+  if (containerSize) {
+    return `${value * containerSize.width}px`
+  }
+  return `${value * 100}vw`
+}
+
+const ratioToValueRelativeToContainerHeight = (value, containerSize) =>
+  containerSize ? `${value * containerSize.height}px` : `${value * 100}vh`
+
+const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)
   useEffect(() => {
     if (!backdropElement) return () => {}
 
-    backdropElement.addEventListener("mousedown", onMouseDownPassive, { passive: false })
+    backdropElement.addEventListener("mousedown", onMouseDownActive, { passive: false })
     return () => {
-      backdropElement.removeEventListener("mousedown", onMouseDownPassive, { passive: false })
+      backdropElement.removeEventListener("mousedown", onMouseDownActive, { passive: false })
     }
   }, [backdropElement])
 
@@ -262,16 +336,6 @@ const DialogBackDrop = ({ onMouseDownPassive, ...props }) => {
       {...props}
     ></div>
   )
-}
-
-const getStyleForClose = (closeMethod) => {
-  if (closeMethod === "display-none") {
-    return { display: "none" }
-  }
-  if (closeMethod === "visibility-hidden") {
-    return { visibility: "hidden" }
-  }
-  return {}
 }
 
 const hasOrContainsFocus = (element) => {
