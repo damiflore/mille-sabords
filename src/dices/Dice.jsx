@@ -161,6 +161,7 @@ export const Dice = ({
           left: `${diceX}px`,
           top: `${diceY}px`,
           zIndex: diceZIndex,
+          cursor: draggable ? (diceGripped ? "grabbing" : "grab") : undefined,
           position: dragGesture || diceAnimation ? "fixed" : undefined,
         }}
       >
