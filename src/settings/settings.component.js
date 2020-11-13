@@ -37,6 +37,7 @@ export const Settings = () => {
 const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
   return (
     <Dialog
+      className="dialog-spacing-10 dialog-spacing-fluid dialog-spacing-top-fixed"
       isOpen={settingsDialogIsOpen}
       onRequestClose={closeSettingsDialog}
       requestCloseOnClickOutside={true}
