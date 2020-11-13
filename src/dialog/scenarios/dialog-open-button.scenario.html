@@ -50,7 +50,11 @@ This scenario is meant to test that
             >
               Open dialog
             </button>
-            <DialogBase isOpen={dialogIsOpen} onRequestClose={closeDialog}>
+            <DialogBase
+              className="dialog-spacing-10"
+              isOpen={dialogIsOpen}
+              onRequestClose={closeDialog}
+            >
               Hello world
               <button onClick={closeDialog}>Close</button>
             </DialogBase>

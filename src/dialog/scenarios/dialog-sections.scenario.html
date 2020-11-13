@@ -87,12 +87,12 @@ a scrollable body
               mollit anim id est laborum.
             </p>
             <DialogBase
-              isOpen={bigDialogIsOpen}
-              onRequestClose={closeBigDialog}
-              trapFocus={false}
-              requestCloseOnClickOutside={true}
-              minSpacingWithContainer={0.1}
-              header={
+              className="dialog-spacing-10 dialog-spacing-fluid"
+              style={{
+                padding: 0,
+                // overflow: "hidden"
+              }}
+              insertTop={
                 <div
                   style={{
                     height: "60px",
@@ -102,7 +102,7 @@ a scrollable body
                   Header
                 </div>
               }
-              footer={
+              insertBottom={
                 <div
                   style={{
                     height: "200px",
@@ -112,10 +112,10 @@ a scrollable body
                   Footer
                 </div>
               }
-              style={{
-                padding: 0,
-                // overflow: "hidden"
-              }}
+              isOpen={bigDialogIsOpen}
+              onRequestClose={closeBigDialog}
+              trapFocus={false}
+              requestCloseOnClickOutside={true}
             >
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -145,13 +145,8 @@ a scrollable body
               </p>
             </DialogBase>
             <DialogBase
-              isOpen={smallDialogIsOpen}
-              onRequestClose={closeSmallDialog}
-              trapFocus={false}
-              requestCloseOnClickOutside={true}
-              style={{ padding: 0 }}
-              minSpacingWithContainer={0.2}
-              header={
+              className="dialog-spacing-10 dialog-spacing-fluid"
+              insertTop={
                 <div
                   style={{
                     height: "60px",
@@ -161,7 +156,7 @@ a scrollable body
                   Header
                 </div>
               }
-              // footer={
+              // insertBottom={
               //   <div
               //     style={{
               //       height: "30px",
@@ -171,6 +166,10 @@ a scrollable body
               //     Footer
               //   </div>
               // }
+              isOpen={smallDialogIsOpen}
+              onRequestClose={closeSmallDialog}
+              trapFocus={false}
+              requestCloseOnClickOutside={true}
             >
               Small message{" "}
               <button

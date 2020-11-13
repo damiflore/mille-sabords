@@ -98,11 +98,11 @@ a regular document (scrollbar).
             </p>
             <DialogBase
               container={document.querySelector("#app-wrapper")}
+              className="dialog-spacing-10 dialog-spacing-fluid"
               isOpen={bigDialogIsOpen}
               onRequestClose={closeBigDialog}
               trapFocus={false}
               requestCloseOnClickOutside={true}
-              spacing="10%"
             >
               Big dialog content
               <p>
@@ -134,11 +134,11 @@ a regular document (scrollbar).
             </DialogBase>
             <DialogBase
               container={document.querySelector("#app-wrapper")}
+              className="dialog-spacing-10 dialog-spacing-fluid"
               isOpen={smallDialogIsOpen}
               onRequestClose={closeSmallDialog}
               trapFocus={false}
               requestCloseOnClickOutside={true}
-              spacing="20%"
             >
               Small dialog content
             </DialogBase>

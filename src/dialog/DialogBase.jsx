@@ -36,21 +36,25 @@ https://fr.reactjs.org/docs/portals.html
 
 export const DialogBase = ({
   container = document.body,
-  header,
-  footer,
+  insertTop,
+  insertLeft,
+  insertRight,
+  insertBottom,
   children,
+
   isOpen,
+  requestCloseOnEscape = true,
+  requestCloseOnClickOutside = false,
   // closeMethod can be "visibility-hidden", "hidden-attribute", "dom-remove"
   // ideally we should return null when isOpen is false and the dialog never rendered
   // (to avoid putting the dialog in display none while it might never be used)
   // (but it's too early to know exactly what we want/need)
   closeMethod = "display-none",
-  minSpacingWithContainer = 0.1, // see dialog.readme.md
+
   stealFocus = true,
   restoreStolenFocus = true,
   trapFocus = true,
-  requestCloseOnEscape = true,
-  requestCloseOnClickOutside = false,
+
   onAfterOpen = () => {},
   onRequestClose = () => {},
   onFocusIn = () => {},
@@ -59,9 +63,9 @@ export const DialogBase = ({
   ...rest
 }) => {
   if (!container) return null
-  const [dialogElement, setDialogElement] = React.useState(null)
+  const [dialogRootNode, dialogRootNodeSetter] = React.useState(null)
 
-  const isInsideDocument = Boolean(dialogElement)
+  const isInsideDocument = Boolean(dialogRootNode)
   const becomesOpen = useBecomes((isOpenPrevious) => !isOpenPrevious && isOpen, [isOpen])
 
   if (becomesOpen) {
@@ -73,7 +77,7 @@ export const DialogBase = ({
   useEffect(() => {
     if (!isOpen || !isInsideDocument) return () => {}
 
-    let focusIsInsideDialog = hasOrContainsFocus(dialogElement)
+    let focusIsInsideDialog = hasOrContainsFocus(dialogRootNode)
 
     const onDocumentBlur = (blurEvent) => {
       // focus is leaving the document and it was inside dialog
@@ -90,7 +94,7 @@ export const DialogBase = ({
       focusIsInsideDialog = true
     }
     const onDocumentFocus = (focusEvent) => {
-      if (hasOrContainsFocus(dialogElement)) {
+      if (hasOrContainsFocus(dialogRootNode)) {
         focusIsInsideDialog = true
       } else {
         focusIsInsideDialog = false
@@ -98,11 +102,11 @@ export const DialogBase = ({
       }
     }
 
-    dialogElement.addEventListener("focus", onDialogFocus, true)
+    dialogRootNode.addEventListener("focus", onDialogFocus, true)
     document.addEventListener("focus", onDocumentFocus, true)
     document.addEventListener("blur", onDocumentBlur, true)
     return () => {
-      dialogElement.removeEventListener("focus", onDialogFocus, true)
+      dialogRootNode.removeEventListener("focus", onDialogFocus, true)
       document.removeEventListener("focus", onDocumentFocus, true)
       document.removeEventListener("blur", onDocumentBlur, true)
     }
@@ -113,14 +117,14 @@ export const DialogBase = ({
     if (!isOpen || !isInsideDocument) {
       return () => {}
     }
-    return trapScrollInside(dialogElement)
+    return trapScrollInside(dialogRootNode)
   }, [isOpen, isInsideDocument])
 
   // trap focus inside dialog
   useEffect(() => {
     if (!isOpen || !isInsideDocument || !trapFocus) return () => {}
 
-    return trapFocusInside(dialogElement)
+    return trapFocusInside(dialogRootNode)
   }, [isOpen, isInsideDocument, trapFocus])
 
   // steal focus to move it into dialog when it opens
@@ -128,16 +132,16 @@ export const DialogBase = ({
     if (!isOpen || !isInsideDocument || !stealFocus) return () => {}
 
     const nodeFocusedBeforeTransfer = document.activeElement
-    const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
+    const firstFocusableElement = firstFocusableDescendantOrSelf(dialogRootNode)
     if (firstFocusableElement) {
-      firstFocusableElement.focus()
+      firstFocusableElement.focus({ preventScroll: true })
     }
     return () => {
       if (firstFocusableElement) {
         if (typeof restoreStolenFocus === "function") {
           restoreStolenFocus(nodeFocusedBeforeTransfer)
         } else if (restoreStolenFocus === true) {
-          nodeFocusedBeforeTransfer.focus()
+          nodeFocusedBeforeTransfer.focus({ preventScroll: true })
         }
       }
     }
@@ -145,7 +149,7 @@ export const DialogBase = ({
 
   // put aria-hidden on elements behind this dialog
   useEffect(() => {
-    if (!isOpen || !dialogElement || !dialogElement.parentNode) return () => {}
+    if (!isOpen || !dialogRootNode || !dialogRootNode.parentNode) return () => {}
 
     const elementsToHide = []
     /*
@@ -158,9 +162,9 @@ export const DialogBase = ({
     and consider the rest as hidden.
     This dialog is not meant to be used for tooltip and so on.
     */
-    const parentChildren = Array.from(dialogElement.parentNode.children)
+    const parentChildren = Array.from(dialogRootNode.parentNode.children)
     parentChildren.forEach((child) => {
-      if (child !== dialogElement) {
+      if (child !== dialogRootNode) {
         elementsToHide.push(child)
       }
     })
@@ -173,7 +177,7 @@ export const DialogBase = ({
         element.removeAttribute("aria-hidden", "true")
       })
     }
-  }, [isOpen, dialogElement])
+  }, [isOpen, dialogRootNode])
 
   if (closeMethod === "dom-remove" && !isOpen) {
     return null
@@ -181,11 +185,21 @@ export const DialogBase = ({
 
   return ReactDOM.createPortal(
     <div
+      {...rest}
       role="dialog"
-      className="dialog--root"
+      className={`dialog--root${rest.className ? ` ${rest.className}` : ""}`}
+      ref={(element) => {
+        dialogRootNodeSetter(element)
+        if (rest.ref) rest.ref(element)
+      }}
+      onKeyDown={(keydownEvent) => {
+        if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
+          onRequestClose(keydownEvent)
+        }
+        if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
+      }}
+      tabIndex="-1"
       style={{
-        top: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
-        bottom: ratioToValueRelativeToContainerHeight(minSpacingWithContainer),
         ...(closeMethod === "display-none" && !isOpen ? { display: "none" } : {}),
         ...(closeMethod === "visibility-hidden" && !isOpen ? { visibility: "hidden" } : {}),
       }}
@@ -201,10 +215,10 @@ export const DialogBase = ({
             // prevent mousedown on backdrop from putting focus on document.body
             mousedownEvent.preventDefault()
             // instead foward focus to the dialog if not already inside
-            if (!hasOrContainsFocus(dialogElement)) {
-              const firstFocusableElement = firstFocusableDescendantOrSelf(dialogElement)
+            if (!hasOrContainsFocus(dialogRootNode)) {
+              const firstFocusableElement = firstFocusableDescendantOrSelf(dialogRootNode)
               if (firstFocusableElement) {
-                firstFocusableElement.focus()
+                firstFocusableElement.focus({ preventScroll: true })
               }
             }
           }}
@@ -214,50 +228,25 @@ export const DialogBase = ({
             // it would prevent the click event from bubbling and creates the potential
             // --- click-no-effect-scenario --- described at the top of this file.
             if (requestCloseOnClickOutside) {
-              const { target } = clickEvent
-              // dialogElement.firstChild?
-              if (target !== dialogElement && !dialogElement.contains(target)) {
-                onRequestClose(clickEvent)
-              }
+              onRequestClose(clickEvent)
             }
             if (backdropProps.onClick) backdropProps.onClick(clickEvent)
           }}
         />
       ) : null}
-      <div
-        className="dialog--content"
-        style={{
-          maxWidth: ratioToValueRelativeToContainerWidth(1 - minSpacingWithContainer * 2),
-        }}
-      >
-        <div className="dialog--header">{header}</div>
-        <div
-          {...rest}
-          className="dialog--body"
-          ref={(element) => {
-            setDialogElement(element)
-            if (rest.ref) rest.ref(element)
-          }}
-          onKeyDown={(keydownEvent) => {
-            if (requestCloseOnEscape && keydownEvent.keyCode === ESC_KEY) {
-              onRequestClose(keydownEvent)
-            }
-            if (rest.onKeyDown) rest.onKeyDown(keydownEvent)
-          }}
-          tabIndex="-1"
-        >
-          {children}
+      <div className="dialog--document">
+        <div className="dialog--insert-top">{insertTop}</div>
+        <div className="dialog--main">
+          <div className="dialog--insert-left">{insertLeft}</div>
+          <div className="dialog--scrollable-content">{children}</div>
+          <div className="dialog--insert-right">{insertRight}</div>
         </div>
-        <div className="dialog--footer">{footer}</div>
+        <div className="dialog--insert-bottom">{insertBottom}</div>
       </div>
     </div>,
     container,
   )
 }
-
-const ratioToValueRelativeToContainerWidth = (value) => `${value * 100}%`
-
-const ratioToValueRelativeToContainerHeight = (value) => `${value * 100}%`
 
 const DialogBackDrop = ({ onMouseDownActive, ...props }) => {
   const [backdropElement, setBackdropElement] = React.useState(null)

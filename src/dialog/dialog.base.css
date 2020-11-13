@@ -4,6 +4,9 @@
   right: 0;
   top: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
+  outline: none;
 }
 
 .dialog--backdrop {
@@ -15,34 +18,113 @@
   background-color: rgba(0, 0, 0, 0.46);
 }
 
-.dialog--content {
+.dialog--document {
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: fit-content;
-  margin: 0 auto;
+  min-height: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.dialog--insert-top,
+.dialog--insert-left,
+.dialog--main,
+.dialog--insert-right,
+.dialog--insert-bottom {
   position: relative;
-  height: 100%;
-  pointer-events: none;
 }
 
-.dialog--header,
-.dialog--body,
-.dialog--footer {
-  pointer-events: auto;
+.dialog--insert-left,
+.dialog--insert-right {
+  overflow: hidden;
 }
 
-.dialog--body {
+.dialog--main {
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  flex-grow: 1;
   background: white;
   color: black;
-  /* border: solid; */
-  padding: 1em;
+}
 
+.dialog--scrollable-content {
   overflow: auto;
-  /* prevent body scrolling when scrolling the dialog content */
   overscroll-behavior: contain;
-  outline: none;
+  padding: 1em;
+  flex-grow: 1;
+}
 
-  /* width: fit-content;
-  height: fit-content;
-  overflow: auto; */
+.dialog-spacing-10.dialog--root {
+  top: 10%;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+}
+
+.dialog-spacing-20.dialog--root {
+  top: 20%;
+  bottom: 20%;
+  left: 20%;
+  right: 20%;
+}
+
+.dialog-spacing-fluid .dialog--document {
+  margin: auto;
+  flex-grow: 0;
+}
+
+.dialog-spacing-left-fluid .dialog--document {
+  margin-left: auto;
+}
+.dialog-spacing-right-fluid .dialog--document {
+  margin-right: auto;
+}
+.dialog-spacing-top-fluid .dialog--document {
+  margin-top: auto;
+}
+.dialog-spacing-bottom-fluid .dialog--document {
+  margin-bottom: auto;
+  flex-grow: 0;
+}
+.dialog-spacing-left-fixed .dialog--document {
+  margin-left: 0;
+}
+.dialog-spacing-right-fixed .dialog--document {
+  margin-right: 0;
+}
+.dialog-spacing-top-fixed .dialog--document {
+  margin-top: 0;
+}
+.dialog-spacing-bottom-fixed .dialog--document {
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+.dialog-border .dialog--insert-top,
+.dialog-border .dialog--scrollable-content,
+.dialog-border .dialog--insert-bottom {
+  border-width: 3px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 0.3em;
+}
+
+.dialog-border .dialog--insert-top {
+  border-bottom-width: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dialog-border .dialog--scrollable-content {
+  border-radius: 0;
+  border-top-width: 0;
+  border-bottom-width: 0;
+}
+
+.dialog-border .dialog--insert-bottom {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
