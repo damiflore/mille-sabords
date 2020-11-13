@@ -1,10 +1,22 @@
+.dialog-theme-wood .dialog--main {
+  background: transparent;
+}
+
+.dialog-theme-wood .dialog--scrollable-content {
+  background-color: #ffe7be;
+}
+
+.dialog-theme-wood .dialog--insert-left,
+.dialog-theme-wood .dialog--insert-right {
+  min-width: 37px;
+}
+
 .dialog-border-top,
 .dialog-border-bottom,
 .dialog-border-left,
 .dialog-border-right {
   background-position: center;
   background-size: contain;
-  border: 2px solid #836019;
 }
 .dialog-border-top,
 .dialog-border-bottom {
@@ -16,10 +28,10 @@
 .dialog-border-left,
 .dialog-border-right {
   background-image: url("./wood.png");
-  width: 60px;
-  z-index: 0;
+  width: 30px;
   border-top: none;
   border-bottom: none;
+  height: 100%;
   /* margin-top: -5px;
   margin-bottom: -5px; */
 }
@@ -63,13 +75,4 @@
 
 .dialog-border-top {
   z-index: 1;
-}
-
-.dialog-body {
-  padding: 1em;
-  background-color: #ffe7be;
-}
-
-.dialog-footer {
-  height: 34px;
 }

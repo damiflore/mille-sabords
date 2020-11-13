@@ -2,24 +2,23 @@ import React from "react"
 
 import { Dialog } from "src/dialog/Dialog.jsx"
 
-export const DialogWood = ({ title, body, ...props }) => {
+export const DialogWood = ({ title, children, ...props }) => {
   return (
     <Dialog
-      {...props}
       requestCloseOnClickOutside={true}
-      header={
+      insertTop={
         <>
           <div className="dialog-border-top"></div>
           <div className="dialog-title">{title}</div>
         </>
       }
-      footer={<div className="dialog-border-bottom"></div>}
+      insertBottom={<div className="dialog-border-bottom"></div>}
+      insertLeft={<div className="dialog-border-left"></div>}
+      insertRight={<div className="dialog-border-right"></div>}
+      {...props}
+      className={`dialog-theme-wood dialog-spacing-10 dialog-spacing-fluid dialog-spacing-top-fixed ${props.className}`}
     >
-      <div className="dialog-wood-body">
-        <div className="dialog-border-left"></div>
-        <div className="dialog-body">{body}</div>
-        <div className="dialog-border-right"></div>
-      </div>
+      {children}
     </Dialog>
   )
 }

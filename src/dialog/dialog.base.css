@@ -45,11 +45,11 @@
   flex-direction: row;
   min-height: 0;
   flex-grow: 1;
-  background: white;
-  color: black;
 }
 
 .dialog--scrollable-content {
+  background: white;
+  color: black;
   overflow: auto;
   overscroll-behavior: contain;
   padding: 1em;

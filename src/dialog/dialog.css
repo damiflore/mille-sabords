@@ -6,9 +6,6 @@
 
 .dialog-content {
   background-color: #ffe7be;
-  width: calc(100% - 66px);
-  height: calc(100% - 55px);
-  margin: -30px 33px;
   display: flex;
   flex-direction: column;
 }

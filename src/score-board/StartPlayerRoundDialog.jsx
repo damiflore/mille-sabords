@@ -6,8 +6,13 @@ import { Dialog } from "src/dialog/Dialog.jsx"
 export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) => {
   const startPlayerRound = useStartPlayerRound()
   return (
-    <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={true}>
-      <div className="dialog-content score-board-dialog">
+    <Dialog
+      className="score-board-dialog dialog-spacing-10 dialog-spacing-fluid"
+      isOpen={dialogIsOpen}
+      onRequestClose={closeDialog}
+      requestCloseOnClickOutside={true}
+    >
+      <div className="dialog-content">
         <div className="cross" onClick={closeDialog}>
           X
         </div>

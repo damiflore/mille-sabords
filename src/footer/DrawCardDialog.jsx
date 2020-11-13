@@ -26,8 +26,13 @@ export const DrawCardDialog = ({ dialogIsOpen, closeDialog, headerSmallCardRef }
   const drawCardText = "Piochez une carte pour le tour suivant."
 
   return (
-    <Dialog isOpen={dialogIsOpen} onRequestClose={closeDialog} requestCloseOnClickOutside={false}>
-      <div className="dialog-content draw-card-dialog">
+    <Dialog
+      className="draw-card-dialog dialog-spacing-10 dialog-spacing-fluid"
+      isOpen={dialogIsOpen}
+      onRequestClose={closeDialog}
+      requestCloseOnClickOutside={false}
+    >
+      <div className="dialog-content">
         <div className="dialog-body">
           <div className="dialog-label">
             {cardDeck.length === 0 && !currentCard && shuffleCardsText}

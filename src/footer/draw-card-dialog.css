@@ -1,4 +1,8 @@
-.draw-card-dialog.dialog-content {
+.draw-card-dialog .dialog--scrollable-content {
+  background: transparent;
+}
+
+.draw-card-dialog .dialog-content {
   background: transparent;
   height: 100%;
   width: 100%;

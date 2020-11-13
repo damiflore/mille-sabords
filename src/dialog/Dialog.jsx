@@ -10,19 +10,7 @@ export const Dialog = (props) => {
   return (
     <>
       <Stylesheet href={dialogCssUrl} />
-      <DialogBase
-        container={useMainDomNode()}
-        backdropProps={{
-          className: "dialog--backdrop",
-        }}
-        style={{
-          padding: "0",
-          border: "none",
-          background: "none",
-        }}
-        className={"dialog"}
-        {...props}
-      />
+      <DialogBase container={useMainDomNode()} {...props} />
     </>
   )
 }

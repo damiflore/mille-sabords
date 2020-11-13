@@ -1,8 +1,9 @@
-.dialog-content.score-board-dialog {
+.score-board-dialog .dialog--scrollable-content {
+  background: transparent;
+}
+
+.score-board-dialog .dialog-content {
   background-color: #bee1ff;
-  width: calc(100% - 66px);
-  height: 300px;
-  margin: 25% 33px;
   border-radius: 10px;
 }
 .score-board-dialog .cross {
