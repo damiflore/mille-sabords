@@ -1,7 +1,12 @@
 import React from "react"
 
 import { useBecomes } from "src/hooks.js"
-import { useCurrentCardId, useScoreMarked, useIsOnSkullIsland } from "src/main.store.js"
+import {
+  useCurrentCardId,
+  useScoreMarked,
+  useIsOnSkullIsland,
+  useAnimationsDisabled,
+} from "src/main.store.js"
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import {
   useIsFirstRoll,
@@ -27,11 +32,21 @@ export const useRoundEffects = () => {
 }
 
 const useCurseDiceEffect = () => {
+  const animationsDisabled = useAnimationsDisabled()
   const dicesToCurse = useDicesToCurse()
   const curseDice = useCurseDice()
 
   useEffect(() => {
-    if (dicesToCurse.length === 0) return () => {}
+    if (dicesToCurse.length === 0) {
+      return () => {}
+    }
+
+    if (animationsDisabled) {
+      dicesToCurse.forEach((dice) => {
+        curseDice(dice)
+      })
+      return () => {}
+    }
 
     const timeout = setTimeout(() => {
       dicesToCurse.forEach((dice) => {

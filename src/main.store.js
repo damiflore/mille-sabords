@@ -4,6 +4,7 @@ import { cardIds } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
 const defaultState = {
+  animationsDisabled: false,
   gameCreated: false,
   gameStarted: false,
   players: [],
@@ -104,3 +105,4 @@ export const useWitchCardEffectUsed = () => store.useKeyedState("witchCardEffect
 export const useDiceRolledIds = () => store.useKeyedState("diceRolledIds")
 export const useDiceCursedIds = () => store.useKeyedState("diceCursedIds")
 export const useChestSlots = () => store.useKeyedState("chestSlots")
+export const useAnimationsDisabled = () => store.useKeyedState("animationsDisabled")

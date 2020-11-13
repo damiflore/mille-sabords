@@ -40,7 +40,6 @@ const getAllScrollableParent = (element) => {
     const scrollableParent = getScrollableParent(elementOrScrollableParent)
     if (scrollableParent) {
       scrollableParents.push(scrollableParent)
-      console.log(scrollableParent)
       if (scrollableParent === document) {
         return
       }

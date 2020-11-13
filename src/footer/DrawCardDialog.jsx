@@ -1,7 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useCurrentCardId } from "src/main.store.js"
+import { useCurrentCardId, useAnimationsDisabled } from "src/main.store.js"
 import { Image } from "src/generic/Image.jsx"
 import { useCardDeck } from "src/round/round.selectors.js"
 import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
@@ -139,6 +139,7 @@ const ButtonDrawCard = () => {
 }
 
 const ButtonShuffleDeck = ({ backCardRef }) => {
+  const animationsDisabled = useAnimationsDisabled()
   const shuffleDeck = useShuffleDeck()
   const [shufflePending, sufflePendingSetter] = React.useState(false)
 
@@ -152,6 +153,11 @@ const ButtonShuffleDeck = ({ backCardRef }) => {
     }
 
     shuffleDeck()
+
+    if (animationsDisabled) {
+      sufflePendingSetter(false)
+      return () => {}
+    }
     return animateDeckShuffle({
       backCard: backCardRef.current,
       duration: 1000,
@@ -181,6 +187,7 @@ const animateDeckShuffle = ({ backCard, duration, onfinish }) => {
 }
 
 const StartButton = ({ headerSmallCardRef, smallCardRef, backCardRef, topCardRef }) => {
+  const animationsDisabled = useAnimationsDisabled()
   const activateCurrentCard = useActivateCurrentCard()
 
   const [cardActivating, cardActivatingSetter] = React.useState(false)
@@ -197,13 +204,17 @@ const StartButton = ({ headerSmallCardRef, smallCardRef, backCardRef, topCardRef
       return () => {}
     }
 
-    const animationDuration = 500
+    if (animationsDisabled) {
+      activateCurrentCard()
+      return () => {}
+    }
+
     return animateCardActivation({
       headerSmallCard: headerSmallCardRef.current,
       smallCard: smallCardRef.current,
       backCard: backCardRef.current,
       topCard: topCardRef.current,
-      duration: animationDuration,
+      duration: 500,
       onfinish: () => {
         activateCurrentCard()
       },

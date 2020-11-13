@@ -1,6 +1,8 @@
 import React from "react"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Dialog } from "src/dialog/Dialog.jsx"
+import { useAnimationsDisabled } from "src/main.store.js"
+import { useDisableAnimations, useEnableAnimations } from "src/main.actions.js"
 
 import settingsCssUrl from "./settings.css"
 
@@ -34,7 +36,12 @@ export const Settings = () => {
     </>
   )
 }
+
 const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
+  const animationsDisabled = useAnimationsDisabled()
+  const disableAnimations = useDisableAnimations()
+  const enableAnimations = useEnableAnimations()
+
   return (
     <Dialog
       className="dialog-spacing-10 dialog-spacing-fluid dialog-spacing-top-fixed"
@@ -42,7 +49,22 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
       onRequestClose={closeSettingsDialog}
       requestCloseOnClickOutside={true}
     >
-      <div className="settings-dialog-content">Settings dialog content</div>
+      <div className="settings-dialog-content">
+        <label>
+          <input
+            type="checkbox"
+            checked={animationsDisabled}
+            onChange={(e) => {
+              if (e.target.checked) {
+                disableAnimations()
+              } else {
+                enableAnimations()
+              }
+            }}
+          />
+          Désactiver les animations
+        </label>
+      </div>
     </Dialog>
   )
 }

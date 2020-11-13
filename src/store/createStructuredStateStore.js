@@ -56,7 +56,12 @@ export const createStructuredStateStore = (
 
   const useState = () => getState()
 
-  const useKeyedState = (key) => useContext(StateContextMap[key])
+  const useKeyedState = (key) => {
+    if (import.meta.dev && !StateContextMap.hasOwnProperty(key)) {
+      throw new Error(`There is no ${key} property in the state`)
+    }
+    return useContext(StateContextMap[key])
+  }
 
   const useDispatch = () => useContext(DispatchContext)
 
