@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Score animation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
+    <style>
+      .dice {
+        width: 40px;
+        height: 40px;
+        background: violet;
+      }
+
+      .score-increase {
+        font-family: Arial;
+        font-size: 16px;
+        color: gold;
+        /* stroke: red;
+        stroke-width: 2px;
+        fill: black; */
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Score animation</h1>
+    <p>
+      Cliquer sur le bouton pour afficher une animation qui serq utilisée lorsqu'un élement de ui
+      influence le score (un dé par example)
+    </p>
+
+    <!-- <svg viewBox="0 0 100 100">
+      <text
+        x="50"
+        y="50"
+        text-anchor="middle"
+        alignment-baseline="middle"
+        style="fill: gold; stroke: black; font-size: 48px"
+      >
+        100
+      </text>
+    </svg>
+
+    <svg>
+      <text
+        text-anchor="middle"
+        alignment-baseline="middle"
+        style="fill: gold; stroke: black; font-size: 48px"
+      >
+        1000
+      </text>
+    </svg> -->
+
+    <div id="app"></div>
+    <script type="module">
+      import React from "react"
+      import ReactDOM from "react-dom"
+      import { animateSequence } from "src/animation/animation.util.js"
+      import { printPointInDocument } from "src/dom/dom.position.js"
+
+      const debug = false
+
+      const animateScoreIncrease = (domNode, value, { duration = 300 } = {}) => {
+        const documentScroll = {
+          left: window.pageXOffset || document.documentElement.scrollLeft,
+          top: window.pageYOffset || document.documentElement.scrollTop,
+        }
+        const domNodeRectangle = domNode.getBoundingClientRect()
+        const scoreDomNode = document.createElement("div")
+
+        scoreDomNode.innerHTML = `+${value}`
+        document.body.appendChild(scoreDomNode)
+        scoreDomNode.className = "score-increase"
+        scoreDomNode.style.position = "absolute"
+        scoreDomNode.style.visibility = "hidden"
+        const scoreDomNodeRectangle = scoreDomNode.getBoundingClientRect()
+
+        const domNodeLeft = documentScroll.left + domNodeRectangle.left
+        const domNodeXCenter = domNodeLeft + domNodeRectangle.width / 2
+        const domNodeTop = documentScroll.top + domNodeRectangle.top
+        const domNodeYCenter = domNodeTop + domNodeRectangle.height / 2
+
+        const scoreX = domNodeXCenter - scoreDomNodeRectangle.width / 2
+        const scoreY = domNodeYCenter - scoreDomNodeRectangle.height / 2
+        if (debug) {
+          printPointInDocument({ x: scoreX, y: scoreY }, { color: "green" })
+        }
+        scoreDomNode.style.left = `${scoreX}px`
+        scoreDomNode.style.top = `${scoreY}px`
+
+        const horizontalMove = 2
+        const verticalMove = -1 * scoreDomNodeRectangle.height * 1
+
+        if (debug) {
+          printPointInDocument({ x: scoreX, y: domNodeYCenter + verticalMove }, { color: "blue" })
+        }
+
+        scoreDomNode.style.removeProperty("visibility")
+        const teardown = () => {
+          document.body.removeChild(scoreDomNode)
+        }
+        const animation = scoreDomNode.animate(
+          [
+            {
+              opacity: 0,
+              transform: "translate(0px, 0px)",
+            },
+            {
+              offset: 0.2,
+              opacity: 1,
+              // transform: "translate(0px, 0px)",
+            },
+            {
+              offset: 0.9,
+              opacity: 1,
+              transform: `translate(${horizontalMove}px, ${verticalMove}px) scale(1.2)`,
+            },
+            {
+              opacity: 0,
+              transform: `translate(${horizontalMove}px, ${verticalMove}px) scale(1.2)`,
+            },
+          ],
+          {
+            duration,
+            fill: "forwards",
+          },
+        )
+
+        const returnValue = {
+          cancel: animation.cancel,
+          onfinish: () => {},
+        }
+
+        animation.oncancel = () => {
+          teardown()
+        }
+        animation.onfinish = () => {
+          teardown()
+          returnValue.onfinish()
+        }
+        return returnValue
+      }
+
+      const App = () => {
+        const domNodeRef = React.useRef()
+
+        return (
+          <>
+            <div ref={domNodeRef} className="dice"></div>
+            <button
+              onClick={() => {
+                animateSequence([
+                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
+                ])
+              }}
+            >
+              +100 piece
+            </button>
+            <button
+              onClick={() => {
+                animateSequence([
+                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
+                  () => animateScoreIncrease(domNodeRef.current, 200, { duration: 500 }),
+                ])
+              }}
+            >
+              +100 piece et +200 combinaison
+            </button>
+            <button
+              onClick={() => {
+                animateSequence([
+                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
+                  () => animateScoreIncrease(domNodeRef.current, 200, { duration: 500 }),
+                  () => animateScoreIncrease(domNodeRef.current, 500, { duration: 500 }),
+                ])
+              }}
+            >
+              +100 piece et +200 combinaison et + 500 coffre plein
+            </button>
+          </>
+        )
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>
