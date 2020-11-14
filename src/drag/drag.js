@@ -25,6 +25,7 @@ export const enableDragGesture = (
   let pendingGesture
   let removeMoveListener = () => {}
   let removeReleaseListener = () => {}
+  let cancelMoveThrottling = () => {}
 
   logger.debug("enable drag on", domNode)
 
@@ -45,13 +46,11 @@ export const enableDragGesture = (
       }
 
       handleGrip(mouseEventToPagePosition(mousedownEvent), mousedownEvent)
-      removeMoveListener = addDomEventListener(
-        document,
-        "mousemove",
-        throttle((mousemoveEvent) => {
-          handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
-        }),
-      )
+      const mousemoveThrottled = throttle((mousemoveEvent) => {
+        handleMove(mouseEventToPagePosition(mousemoveEvent), mousemoveEvent)
+      })
+      cancelMoveThrottling = () => mousemoveThrottled.cancel()
+      removeMoveListener = addDomEventListener(document, "mousemove", mousemoveThrottled)
       removeReleaseListener = addDomEventListener(document, "mouseup", (mouseupEvent) => {
         removeReleaseListener()
         removeMoveListener()
@@ -65,13 +64,11 @@ export const enableDragGesture = (
     "touchstart",
     (touchstartEvent) => {
       handleGrip(touchEventToPagePosition(touchstartEvent), touchstartEvent)
-      removeMoveListener = addDomEventListener(
-        document,
-        "touchmove",
-        throttle((touchmoveEvent) => {
-          handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
-        }),
-      )
+      const touchmoveThrottled = throttle((touchmoveEvent) => {
+        handleMove(touchEventToPagePosition(touchmoveEvent), touchmoveEvent)
+      })
+      cancelMoveThrottling = () => touchmoveThrottled.cancel()
+      removeMoveListener = addDomEventListener(document, "touchmove", touchmoveThrottled)
       removeReleaseListener = addDomEventListener(document, "touchend", (touchendEvent) => {
         removeReleaseListener()
         removeMoveListener()
@@ -184,6 +181,7 @@ export const enableDragGesture = (
     removeReleaseListener()
     clearTimeout(longGripTimeout)
     clearTimeout(dragIntentTimeout)
+    cancelMoveThrottling()
     handleCancel(event)
   }
 }
