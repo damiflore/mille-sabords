@@ -81,7 +81,7 @@ const getRectangleArea = ({ left, right, top, bottom }) => {
   return width * height
 }
 
-const getRectangleCenterPoint = ({ left, right, top, bottom }) => {
+export const getRectangleCenterPoint = ({ left, right, top, bottom }) => {
   return {
     x: left + (right - left) / 2,
     y: top + (bottom - top) / 2,

@@ -13,13 +13,26 @@
         background: violet;
       }
 
-      .score-increase {
+      .score-particle {
+        position: absolute;
         font-family: Arial;
         font-size: 16px;
         color: gold;
         /* stroke: red;
         stroke-width: 2px;
         fill: black; */
+      }
+
+      .score {
+        margin-top: 100px;
+        margin-left: 50px;
+        border: 1px solid black;
+        width: 5em;
+      }
+
+      .score--value {
+        display: inline-block;
+        /* transform-origin: left center; */
       }
     </style>
   </head>
@@ -57,130 +70,219 @@
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { animateSequence } from "src/animation/animation.util.js"
-      import { printPointInDocument } from "src/dom/dom.position.js"
+      import { printPointInDocument, getDomNodeRectangle } from "src/dom/dom.position.js"
+      import { getRectangleCenterPoint } from "src/helper/rectangle.js"
+      import { useSignalEmitter, useSignalListener } from "src/hooks.js"
+      import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
-      const debug = false
-
-      const animateScoreIncrease = (domNode, value, { duration = 300 } = {}) => {
-        const documentScroll = {
-          left: window.pageXOffset || document.documentElement.scrollLeft,
-          top: window.pageYOffset || document.documentElement.scrollTop,
-        }
-        const domNodeRectangle = domNode.getBoundingClientRect()
-        const scoreDomNode = document.createElement("div")
-
-        scoreDomNode.innerHTML = `+${value}`
-        document.body.appendChild(scoreDomNode)
-        scoreDomNode.className = "score-increase"
-        scoreDomNode.style.position = "absolute"
-        scoreDomNode.style.visibility = "hidden"
-        const scoreDomNodeRectangle = scoreDomNode.getBoundingClientRect()
-
-        const domNodeLeft = documentScroll.left + domNodeRectangle.left
-        const domNodeXCenter = domNodeLeft + domNodeRectangle.width / 2
-        const domNodeTop = documentScroll.top + domNodeRectangle.top
-        const domNodeYCenter = domNodeTop + domNodeRectangle.height / 2
-
-        const scoreX = domNodeXCenter - scoreDomNodeRectangle.width / 2
-        const scoreY = domNodeYCenter - scoreDomNodeRectangle.height / 2
-        if (debug) {
-          printPointInDocument({ x: scoreX, y: scoreY }, { color: "green" })
-        }
-        scoreDomNode.style.left = `${scoreX}px`
-        scoreDomNode.style.top = `${scoreY}px`
-
-        const horizontalMove = 2
-        const verticalMove = -1 * scoreDomNodeRectangle.height * 1
-
-        if (debug) {
-          printPointInDocument({ x: scoreX, y: domNodeYCenter + verticalMove }, { color: "blue" })
-        }
-
-        scoreDomNode.style.removeProperty("visibility")
-        const teardown = () => {
-          document.body.removeChild(scoreDomNode)
-        }
-        const animation = scoreDomNode.animate(
-          [
-            {
-              opacity: 0,
-              transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.2,
-              opacity: 1,
-              // transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.9,
-              opacity: 1,
-              transform: `translate(${horizontalMove}px, ${verticalMove}px) scale(1.2)`,
-            },
-            {
-              opacity: 0,
-              transform: `translate(${horizontalMove}px, ${verticalMove}px) scale(1.2)`,
-            },
-          ],
-          {
-            duration,
-            fill: "forwards",
-          },
-        )
-
-        const returnValue = {
-          cancel: animation.cancel,
-          onfinish: () => {},
-        }
-
-        animation.oncancel = () => {
-          teardown()
-        }
-        animation.onfinish = () => {
-          teardown()
-          returnValue.onfinish()
-        }
-        return returnValue
-      }
+      const debug = true
 
       const App = () => {
         const domNodeRef = React.useRef()
+        const totalScoreDomNodeRef = React.useRef()
+
+        const [totalScore, totalScoreSetter] = React.useState(0)
+        const [totalScoreWithoutParticles, totalScoreWithoutParticlesSetter] = React.useState(0)
+        const [scoreParticles, scoreParticlesSetter] = React.useState([])
+        const scoreParticleMergedSignal = useSignalEmitter()
+
+        // pendant qu'une particule bouge vers le total score
+        // celui ci doit rester l'ancien score
+        // donc on dit passe de 0 a 100 -> le score doit etre 0
+        // ensuite on dit 100 -> 500 -> le score doit afficher quoi ?
+
+        const increaseScore = (value) => {
+          const from = totalScore
+          const to = totalScore + value
+
+          totalScoreSetter(to)
+          totalScoreWithoutParticlesSetter(from)
+
+          const scoreParticle = {
+            value,
+            ...domNodeToScoreParticlePosition(domNodeRef.current),
+            onScoreParticleMerged: () => {
+              totalScoreWithoutParticlesSetter(to)
+              scoreParticlesSetter(
+                scoreParticles.filter(
+                  (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+                ),
+              )
+              scoreParticleMergedSignal.emit(scoreParticle)
+            },
+          }
+          scoreParticlesSetter([...scoreParticles, scoreParticle])
+        }
 
         return (
           <>
             <div ref={domNodeRef} className="dice"></div>
             <button
               onClick={() => {
-                animateSequence([
-                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
-                ])
+                increaseScore(100)
               }}
             >
               +100 piece
             </button>
             <button
               onClick={() => {
-                animateSequence([
-                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
-                  () => animateScoreIncrease(domNodeRef.current, 200, { duration: 500 }),
-                ])
+                increaseScore(100)
+                increaseScore(200)
               }}
             >
               +100 piece et +200 combinaison
             </button>
             <button
               onClick={() => {
-                animateSequence([
-                  () => animateScoreIncrease(domNodeRef.current, 100, { duration: 500 }),
-                  () => animateScoreIncrease(domNodeRef.current, 200, { duration: 500 }),
-                  () => animateScoreIncrease(domNodeRef.current, 500, { duration: 500 }),
-                ])
+                increaseScore(100)
+                increaseScore(200)
+                increaseScore(500)
               }}
             >
               +100 piece et +200 combinaison et + 500 coffre plein
             </button>
+
+            <TotalScore
+              value={totalScoreWithoutParticles}
+              scoreParticleMergedSignal={scoreParticleMergedSignal}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+            />
+
+            {scoreParticles.map((scoreParticle) => {
+              return (
+                <ScoreParticle
+                  key={scoreParticle.onScoreParticleMerged}
+                  totalScoreDomNodeRef={totalScoreDomNodeRef}
+                  scoreParticle={scoreParticle}
+                />
+              )
+            })}
           </>
         )
+      }
+
+      const TotalScore = ({ value, scoreParticleMergedSignal, totalScoreDomNodeRef }) => {
+        const scoreParticleMerged = useSignalListener(scoreParticleMergedSignal)
+
+        React.useEffect(() => {
+          if (!scoreParticleMerged) return
+
+          const totalScoreDomNode = totalScoreDomNodeRef.current
+          totalScoreDomNode.animate(
+            [
+              {
+                transform: "scale(1.5)",
+              },
+            ],
+            { duration: 300 },
+          )
+        }, [totalScoreDomNodeRef, scoreParticleMerged])
+
+        const totalScoreAnimatedValue = useAnimateTransitionUsingJs(value, { duration: 600 })
+
+        return (
+          <div className="score">
+            <p ref={totalScoreDomNodeRef} className="score--value">
+              {totalScoreAnimatedValue ? totalScoreAnimatedValue.value : value}
+            </p>
+          </div>
+        )
+      }
+
+      const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
+        const particleDomNodeRef = React.useRef()
+        React.useEffect(() => {
+          const particleDomNode = particleDomNodeRef.current
+          const totalScoreDomNode = totalScoreDomNodeRef.current
+
+          const particleDomNodeRectangle = getDomNodeRectangle(particleDomNode)
+          const totalScoreDomNodeRectangle = getDomNodeRectangle(totalScoreDomNode)
+
+          const particleWidth = particleDomNodeRectangle.right - particleDomNodeRectangle.left
+          const particleHeight = particleDomNodeRectangle.bottom - particleDomNodeRectangle.top
+          const startX = scoreParticle.x - particleWidth / 2
+          const startY = scoreParticle.y - particleHeight / 2
+          const intermediateX = startX + 5
+          const intermediateY = startY - particleHeight * 1.5
+          const endX = totalScoreDomNodeRectangle.left
+          const endY = totalScoreDomNodeRectangle.top
+
+          particleDomNode.style.left = `${startX}px`
+          particleDomNode.style.top = `${startY}px`
+
+          if (debug) {
+            printPointInDocument(
+              { x: startX, y: startY },
+              {
+                autoRemove: false,
+                color: "yellow",
+              },
+            )
+            printPointInDocument(
+              { x: intermediateX, y: intermediateY },
+              {
+                autoRemove: false,
+                color: "orange",
+              },
+            )
+            printPointInDocument(
+              { x: endX, y: endY },
+              {
+                autoRemove: false,
+                color: "red",
+              },
+            )
+          }
+
+          // en premier fait apparaitre avec opacité
+          const animation = particleDomNode.animate(
+            [
+              {
+                opacity: 0,
+                transform: "translate(0px, 0px)",
+              },
+              {
+                offset: 0.1,
+                opacity: 1,
+                // transform: "translate(0px, 0px)",
+              },
+              {
+                offset: 0.4,
+                opacity: 1,
+                transform: `translate(${intermediateX - startX}px, ${
+                  intermediateY - startY
+                }px) scale(1.2)`,
+              },
+              {
+                transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
+              },
+            ],
+            {
+              duration: 800,
+              fill: "forwards",
+            },
+          )
+          animation.onfinish = () => {
+            scoreParticle.onScoreParticleMerged()
+          }
+
+          return () => {
+            animation.cancel()
+          }
+        }, [])
+
+        return ReactDOM.createPortal(
+          <div ref={particleDomNodeRef} className="score-particle">
+            {scoreParticle.value}
+          </div>,
+          document.body,
+        )
+      }
+
+      const domNodeToScoreParticlePosition = (domNode) => {
+        const domNodeRectangle = getDomNodeRectangle(domNode)
+        const centerPoint = getRectangleCenterPoint(domNodeRectangle)
+        return centerPoint
       }
 
       ReactDOM.render(<App />, document.querySelector("#app"))

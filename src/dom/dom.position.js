@@ -63,7 +63,7 @@ export const findDomNodeClosestToRectangle = (domNodeCandidates, rectangle) => {
 
 export const printPointInDocument = (
   { x, y },
-  { color = "yellow", autoRemoveAfter = 2000 } = {},
+  { color = "yellow", autoRemove = true, autoRemoveAfter = 2000 } = {},
 ) => {
   const div = document.createElement("div")
   div.style.position = "absolute"
@@ -81,7 +81,7 @@ export const printPointInDocument = (
   }
 
   let autoRemoveTimeout
-  if (autoRemoveAfter) {
+  if (autoRemove) {
     autoRemoveTimeout = setTimeout(remove, autoRemoveAfter)
   }
 
