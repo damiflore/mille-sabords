@@ -1,6 +1,22 @@
 import React from "react"
 import { createSignal } from "src/helper/signal.js"
 
+export const useMountEffect = (effect) => {
+  React.useEffect(effect, [])
+}
+
+export const useUpdateEffect = (effect, dependencies = []) => {
+  const isInitialMount = React.useRef(true)
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return undefined
+    }
+
+    return effect()
+  }, dependencies)
+}
+
 // https://stackoverflow.com/a/61680184/2634179
 export const useBecomes = (becomesPredicate, deps) => {
   const transition = useTransition(becomesPredicate, deps)
