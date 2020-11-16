@@ -86,21 +86,35 @@
         const [scoreParticles, scoreParticlesSetter] = React.useState([])
         const scoreParticleMergedSignal = useSignalEmitter()
 
-        // pendant qu'une particule bouge vers le total score
-        // celui ci doit rester l'ancien score
-        // donc on dit passe de 0 a 100 -> le score doit etre 0
-        // ensuite on dit 100 -> 500 -> le score doit afficher quoi ?
+        const [diceKept, diceKeptSetter] = React.useState(false)
 
-        const increaseScore = (value) => {
-          const from = totalScore
-          const to = totalScore + value
+        const keepCoin = () => {
+          diceKeptSetter(true)
+        }
+        const unkeepCoin = () => {
+          diceKeptSetter(false)
+        }
 
-          totalScoreSetter(to)
-          totalScoreWithoutParticlesSetter(from)
+        const mountedRef = React.useRef(false)
+
+        React.useEffect(() => {
+          if (!mountedRef.current) {
+            mountedRef.current = true
+            return () => {}
+          }
+
+          if (!diceKept) {
+            const to = totalScore - 100
+            totalScoreSetter(to)
+            totalScoreWithoutParticlesSetter(to)
+            return () => {}
+          }
 
           const scoreParticle = {
-            value,
+            id: "coin-bonus-from-dice-1",
+            value: 100,
             ...domNodeToScoreParticlePosition(domNodeRef.current),
+            onScoreParticleCanceled: () => {},
             onScoreParticleMerged: () => {
               totalScoreWithoutParticlesSetter(to)
               scoreParticlesSetter(
@@ -111,32 +125,52 @@
               scoreParticleMergedSignal.emit(scoreParticle)
             },
           }
+          const from = totalScore
+          const to = totalScore + scoreParticle.value
+
+          totalScoreSetter(to)
+          totalScoreWithoutParticlesSetter(from)
           scoreParticlesSetter([...scoreParticles, scoreParticle])
-        }
+
+          return () => {
+            scoreParticlesSetter(
+              scoreParticles.filter(
+                (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+              ),
+            )
+          }
+        }, [diceKept])
 
         return (
           <>
             <div ref={domNodeRef} className="dice"></div>
             <button
               onClick={() => {
-                increaseScore(100)
+                keepCoin()
               }}
             >
-              +100 piece
+              Keep piece
             </button>
             <button
               onClick={() => {
-                increaseScore(100)
-                increaseScore(200)
+                unkeepCoin()
+              }}
+            >
+              Unkeep piece
+            </button>
+            <button
+              onClick={() => {
+                // increaseScore(100)
+                // increaseScore(200)
               }}
             >
               +100 piece et +200 combinaison
             </button>
             <button
               onClick={() => {
-                increaseScore(100)
-                increaseScore(200)
-                increaseScore(500)
+                // increaseScore(100)
+                // increaseScore(200)
+                // increaseScore(500)
               }}
             >
               +100 piece et +200 combinaison et + 500 coffre plein
@@ -151,7 +185,7 @@
             {scoreParticles.map((scoreParticle) => {
               return (
                 <ScoreParticle
-                  key={scoreParticle.onScoreParticleMerged}
+                  key={scoreParticle.id}
                   totalScoreDomNodeRef={totalScoreDomNodeRef}
                   scoreParticle={scoreParticle}
                 />
@@ -194,81 +228,14 @@
         React.useEffect(() => {
           const particleDomNode = particleDomNodeRef.current
           const totalScoreDomNode = totalScoreDomNodeRef.current
-
-          const particleDomNodeRectangle = getDomNodeRectangle(particleDomNode)
-          const totalScoreDomNodeRectangle = getDomNodeRectangle(totalScoreDomNode)
-
-          const particleWidth = particleDomNodeRectangle.right - particleDomNodeRectangle.left
-          const particleHeight = particleDomNodeRectangle.bottom - particleDomNodeRectangle.top
-          const startX = scoreParticle.x - particleWidth / 2
-          const startY = scoreParticle.y - particleHeight / 2
-          const intermediateX = startX + 5
-          const intermediateY = startY - particleHeight * 1.5
-          const endX = totalScoreDomNodeRectangle.left
-          const endY = totalScoreDomNodeRectangle.top
-
-          particleDomNode.style.left = `${startX}px`
-          particleDomNode.style.top = `${startY}px`
-
-          if (debug) {
-            printPointInDocument(
-              { x: startX, y: startY },
-              {
-                autoRemove: false,
-                color: "yellow",
-              },
-            )
-            printPointInDocument(
-              { x: intermediateX, y: intermediateY },
-              {
-                autoRemove: false,
-                color: "orange",
-              },
-            )
-            printPointInDocument(
-              { x: endX, y: endY },
-              {
-                autoRemove: false,
-                color: "red",
-              },
-            )
-          }
-
-          // en premier fait apparaitre avec opacité
-          const animation = particleDomNode.animate(
-            [
-              {
-                opacity: 0,
-                transform: "translate(0px, 0px)",
-              },
-              {
-                offset: 0.1,
-                opacity: 1,
-                // transform: "translate(0px, 0px)",
-              },
-              {
-                offset: 0.4,
-                opacity: 1,
-                transform: `translate(${intermediateX - startX}px, ${
-                  intermediateY - startY
-                }px) scale(1.2)`,
-              },
-              {
-                transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
-              },
-            ],
-            {
-              duration: 800,
-              fill: "forwards",
-            },
-          )
-          animation.onfinish = () => {
-            scoreParticle.onScoreParticleMerged()
-          }
-
-          return () => {
-            animation.cancel()
-          }
+          return animateScoreParticle({
+            x: scoreParticle.x,
+            y: scoreParticle.y,
+            particleDomNode,
+            totalScoreDomNode,
+            oncancel: scoreParticle.onScoreParticleCanceled,
+            onfinish: scoreParticle.onScoreParticleMerged,
+          })
         }, [])
 
         return ReactDOM.createPortal(
@@ -277,6 +244,92 @@
           </div>,
           document.body,
         )
+      }
+
+      const animateScoreParticle = ({
+        x,
+        y,
+        duration = 800,
+        particleDomNode,
+        totalScoreDomNode,
+        onfinish,
+        oncancel,
+      }) => {
+        const particleDomNodeRectangle = getDomNodeRectangle(particleDomNode)
+        const totalScoreDomNodeRectangle = getDomNodeRectangle(totalScoreDomNode)
+
+        const particleWidth = particleDomNodeRectangle.right - particleDomNodeRectangle.left
+        const particleHeight = particleDomNodeRectangle.bottom - particleDomNodeRectangle.top
+        const startX = x - particleWidth / 2
+        const startY = y - particleHeight / 2
+        const intermediateX = startX + 5
+        const intermediateY = startY - particleHeight * 1.5
+        const endX = totalScoreDomNodeRectangle.left
+        const endY = totalScoreDomNodeRectangle.top
+
+        particleDomNode.style.left = `${startX}px`
+        particleDomNode.style.top = `${startY}px`
+
+        if (debug) {
+          printPointInDocument(
+            { x: startX, y: startY },
+            {
+              autoRemove: false,
+              color: "yellow",
+            },
+          )
+          printPointInDocument(
+            { x: intermediateX, y: intermediateY },
+            {
+              autoRemove: false,
+              color: "orange",
+            },
+          )
+          printPointInDocument(
+            { x: endX, y: endY },
+            {
+              autoRemove: false,
+              color: "red",
+            },
+          )
+        }
+
+        // en premier fait apparaitre avec opacité
+        const animation = particleDomNode.animate(
+          [
+            {
+              opacity: 0,
+              transform: "translate(0px, 0px)",
+            },
+            {
+              offset: 0.1,
+              opacity: 1,
+              // transform: "translate(0px, 0px)",
+            },
+            {
+              offset: 0.4,
+              opacity: 1,
+              transform: `translate(${intermediateX - startX}px, ${
+                intermediateY - startY
+              }px) scale(1.2)`,
+            },
+            {
+              transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
+            },
+          ],
+          {
+            duration,
+            fill: "forwards",
+          },
+        )
+        animation.onfinish = () => {
+          onfinish()
+        }
+
+        return () => {
+          oncancel()
+          animation.cancel()
+        }
       }
 
       const domNodeToScoreParticlePosition = (domNode) => {
