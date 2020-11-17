@@ -7,7 +7,7 @@ import {
   useCurrentCardId,
   useCurrentCardActivated,
 } from "src/main.store.js"
-import { useSignal } from "src/hooks.js"
+import { useSignal } from "src/helper/signal.js"
 import { ContextProvider } from "src/main.context.js"
 // import { createSkullFromDice } from "src/test/test.material.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
@@ -28,15 +28,15 @@ export const Lab = () => {
   const openLab = React.useCallback(() => labOpenedSetter(true))
   const closeLab = React.useCallback(() => labOpenedSetter(false))
 
-  const playerAnimationSignal = useSignal()
+  const [playerAnimationListener, playerAnimationEmitter] = useSignal()
 
   return (
     <div id="lab">
       <Stylesheet href={labCssUrl} />
       <ContextProvider>
-        <Main playerAnimationSignal={playerAnimationSignal} />
+        <Main playerAnimationListener={playerAnimationListener} />
         {labOpened ? (
-          <GameLab closeLab={closeLab} playerAnimationSignal={playerAnimationSignal} />
+          <GameLab closeLab={closeLab} playerAnimationEmitter={playerAnimationEmitter} />
         ) : (
           <ButtonOpenLab onClick={openLab} />
         )}

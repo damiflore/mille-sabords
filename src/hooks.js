@@ -1,5 +1,4 @@
 import React from "react"
-import { createSignal } from "src/helper/signal.js"
 
 export const useMountEffect = (effect) => {
   React.useEffect(effect, [])
@@ -54,17 +53,4 @@ export const usePrevious = (value) => {
     ref.current = value
   }, [value])
   return ref.current
-}
-
-export const useSignal = () => {
-  const [signal] = React.useState(() => createSignal())
-  return signal
-}
-
-export const useSignalListener = (listen) => {
-  const [state, stateSetter] = React.useState()
-  React.useEffect(() => {
-    return listen(stateSetter)
-  }, [])
-  return state
 }

@@ -2,7 +2,7 @@ import React from "react"
 
 import { createAction, usePlayers, useCurrentPlayerId } from "src/main.store.js"
 
-export const ScoreBoardLab = ({ playerAnimationSignal }) => {
+export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
   const players = usePlayers()
   const currentPlayerId = useCurrentPlayerId()
   const setPlayerScore = useSetPlayerScore()
@@ -25,7 +25,7 @@ export const ScoreBoardLab = ({ playerAnimationSignal }) => {
                   const fromScore = player.score
                   const toScore = fromScore + 1000
                   setPlayerScore(player, toScore)
-                  playerAnimationSignal.emit({
+                  playerAnimationEmitter({
                     player,
                     score: {
                       from: fromScore,
@@ -41,7 +41,7 @@ export const ScoreBoardLab = ({ playerAnimationSignal }) => {
                   const fromScore = player.score
                   const toScore = fromScore - 1000
                   setPlayerScore(player, toScore)
-                  playerAnimationSignal.emit({
+                  playerAnimationEmitter({
                     player,
                     score: {
                       from: fromScore,

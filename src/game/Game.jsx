@@ -5,7 +5,7 @@ import { ScoreBoard } from "src/score-board/ScoreBoard.jsx"
 import { GameConfiguration } from "src/game/GameConfiguration.jsx"
 import { CharacterSelection } from "src/game/CharacterSelection.jsx"
 
-export const Game = ({ playerAnimationSignal }) => {
+export const Game = ({ playerAnimationListener }) => {
   const players = usePlayers()
   const currentPlayerId = useCurrentPlayerId()
   const roundStarted = useRoundStarted()
@@ -35,10 +35,11 @@ export const Game = ({ playerAnimationSignal }) => {
     }
   }, [roundOverPayload, currentPlayerId])
   React.useEffect(() => {
-    if (playerAnimationSignal) {
-      playerAnimationSignal.listen(playerAnimationSetter)
+    if (playerAnimationListener) {
+      return playerAnimationListener(playerAnimationSetter)
     }
-  }, [playerAnimationSignal])
+    return undefined
+  }, [playerAnimationListener])
 
   if (isOnGameConfigurationScreen) {
     return <GameConfiguration />
