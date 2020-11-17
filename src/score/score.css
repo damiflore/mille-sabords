@@ -45,6 +45,10 @@
   opacity: 0;
 }
 
+.round-score--value {
+  display: inline-block;
+}
+
 /* NEGATIVE SCORE(SWORD CHALLENGE) */
 .score-area .negative-round-score {
   z-index: 1;

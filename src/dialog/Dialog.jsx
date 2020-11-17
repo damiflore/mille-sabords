@@ -14,3 +14,14 @@ export const Dialog = (props) => {
     </>
   )
 }
+
+export const useDialogState = () => {
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+  const openDialog = () => {
+    setDialogIsOpen(true)
+  }
+  const closeDialog = () => {
+    setDialogIsOpen(false)
+  }
+  return [dialogIsOpen, openDialog, closeDialog]
+}

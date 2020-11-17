@@ -8,7 +8,7 @@ import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 import { symbolToImageUrl } from "src/symbols/symbols.js"
 import { cardIdToCard, isChestCard } from "src/cards/cards.js"
 
-import { RoundScore } from "src/score/RoundScore.jsx"
+import { RoundScore } from "src/score/score.round.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
 import cursedGridImageUrl from "src/chest/cursed-grid.png"
