@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useSignalListener } from "src/hooks.js"
+import { useSignalState } from "src/helper/signal.js"
 import { useCurrentCardId, useChestSlots } from "src/main.store.js"
 import { Image } from "src/generic/Image.jsx"
 import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
@@ -13,10 +13,10 @@ import { diceSize } from "src/dices/dicePosition.js"
 
 import cursedGridImageUrl from "src/chest/cursed-grid.png"
 
-export const Chest = ({ chestRef, diceOverChestSignal }) => {
+export const Chest = ({ chestRef, diceOverChestListener }) => {
   const chestSlots = useChestSlots()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
-  const diceOverChest = useSignalListener(diceOverChestSignal.listen)
+  const diceOverChest = useSignalState(diceOverChestListener)
   const currentCard = cardIdToCard(useCurrentCardId())
   const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 

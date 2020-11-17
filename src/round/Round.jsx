@@ -9,7 +9,7 @@ import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
-import { useSignal } from "src/hooks.js"
+import { useSignal } from "src/helper/signal.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { useCurrentCardActivated } from "src/main.store.js"
 
@@ -22,8 +22,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
     onRoundStart()
   }, [])
 
-  const diceOverRolledAreaSignal = useSignal()
-  const diceOverChestSignal = useSignal()
+  const [diceOverRolledAreaListener, diceOverRolledAreaEmitter] = useSignal()
+  const [diceOverChestListener, diceOverChestEmitter] = useSignal()
 
   const headerSmallCardRef = React.useRef()
 
@@ -33,8 +33,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
       <Header openScoreboard={openScoreboard} headerSmallCardRef={headerSmallCardRef} />
       {currentCardActivated ? (
         <RoundGameBoard
-          diceOverRolledAreaSignal={diceOverRolledAreaSignal}
-          diceOverChestSignal={diceOverChestSignal}
+          diceOverRolledAreaListener={diceOverRolledAreaListener}
+          diceOverChestListener={diceOverChestListener}
           openScoreboard={openScoreboard}
           onRoundOver={onRoundOver}
           onRoundMounted={(refs) => {
@@ -48,8 +48,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
           chestDomNode={roundMounted.chestDomNode}
           rolledAreaDomNode={roundMounted.rolledAreaDomNode}
           cursedAreaDomNode={roundMounted.cursedAreaDomNode}
-          onDiceOverChestChange={diceOverChestSignal.emit}
-          onDiceOverRolledAreaChange={diceOverRolledAreaSignal.emit}
+          onDiceOverChestChange={diceOverChestEmitter}
+          onDiceOverRolledAreaChange={diceOverRolledAreaEmitter}
         />
       ) : null}
       <DrawCardDialog
@@ -61,8 +61,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
 }
 
 const RoundGameBoard = ({
-  diceOverRolledAreaSignal,
-  diceOverChestSignal,
+  diceOverRolledAreaListener,
+  diceOverChestListener,
   onRoundMounted,
   onRoundOver,
 }) => {
@@ -84,13 +84,13 @@ const RoundGameBoard = ({
     <>
       <RoundEffects />
       <div className="chest-and-skulls">
-        <Chest chestRef={chestRef} diceOverChestSignal={diceOverChestSignal} />
+        <Chest chestRef={chestRef} diceOverChestListener={diceOverChestListener} />
         <SkullIsland cursedAreaRef={cursedAreaRef} />
       </div>
       <DiceOnGoing
         rolledAreaRef={rolledAreaRef}
         offscreenRef={offscreenRef}
-        diceOverRolledAreaSignal={diceOverRolledAreaSignal}
+        diceOverRolledAreaListener={diceOverRolledAreaListener}
       />
       <Footer onRoundOver={onRoundOver} rolledAreaRef={rolledAreaRef} />
     </>
