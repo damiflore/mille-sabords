@@ -45,28 +45,6 @@
       influence le score (un dé par example)
     </p>
 
-    <!-- <svg viewBox="0 0 100 100">
-      <text
-        x="50"
-        y="50"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        style="fill: gold; stroke: black; font-size: 48px"
-      >
-        100
-      </text>
-    </svg>
-
-    <svg>
-      <text
-        text-anchor="middle"
-        alignment-baseline="middle"
-        style="fill: gold; stroke: black; font-size: 48px"
-      >
-        1000
-      </text>
-    </svg> -->
-
     <div id="app"></div>
     <script type="module">
       import React from "react"
@@ -78,155 +56,40 @@
 
       const debug = false
 
-      const App = () => {
-        const domNodeRef = React.useRef()
-        const totalScoreDomNodeRef = React.useRef()
+      const TotalScoreStateContext = React.createContext()
+      const useTotalScoreState = () => React.useContext(TotalScoreStateContext)[0]
+      const useTotalScoreStateSetter = () => React.useContext(TotalScoreStateContext)[1]
 
-        const [totalScore, totalScoreSetter] = React.useState(0)
+      const Main = () => {
+        const minDelayBetweenParticles = 1000
 
-        const [scoreParticles, addScoreParticle, scoreParticleMergedSignal] = useScoreParticles()
-
-        // score displayed is score without taking into account score into particles
-        const totalScoreDisplayed = React.useMemo(() => {
-          const scoreInParticles = scoreParticles.reduce(
-            (previous, particle) => previous + particle.value,
-            0,
-          )
-          const totalScoreWithoutParticles = totalScore - scoreInParticles
-          console.log(
-            `totalScoreWithoutParticles updated to ${totalScoreWithoutParticles} (totalScore is ${totalScore})`,
-          )
-          return totalScoreWithoutParticles
-        }, [totalScore, scoreParticles])
-
-        const [diceKept, diceKeptSetter] = React.useState(false)
-        const keepCoin = () => {
-          diceKeptSetter(true)
-        }
-        const unkeepCoin = () => {
-          diceKeptSetter(false)
-        }
-        useUpdateEffect(() => {
-          if (diceKept) {
-            totalScoreSetter((totalScore) => {
-              const to = totalScore + 100
-              console.log(`dice kept, add 100 to total score -> ${to}`)
-              return to
-            })
-            const removeScoreParticle = addScoreParticle({
-              id: "coin-bonus",
-              value: 100,
-              ...domNodeToScoreParticlePosition(domNodeRef.current),
-            })
-            return () => {
-              console.log("removing coin particle because dice unkept")
-              removeScoreParticle()
-            }
-          }
-
-          totalScoreSetter((totalScore) => {
-            const to = totalScore - 100
-            console.log(`dice unkept, remove 100 from total score -> ${to}`)
-            return to
-          })
-          return () => {}
-        }, [diceKept])
-
-        const [groupOfFour, groupOfFourSetter] = React.useState(false)
-        const simulateGroupOfFourFound = () => {
-          groupOfFourSetter(true)
-        }
-        const simulateGroupOfFourLost = () => {
-          groupOfFourSetter(false)
-        }
-        useUpdateEffect(() => {
-          if (groupOfFour) {
-            const removeScoreParticle = addScoreParticle({
-              id: "group-bonus",
-              value: 200,
-              ...domNodeToScoreParticlePosition(domNodeRef.current),
-            })
-            totalScoreSetter((totalScore) => {
-              const to = totalScore + 200
-              console.log(`group of four found, add 200 to total score -> ${to}`)
-              return to
-            })
-            return () => {
-              console.log("removing bonus particle because group lost")
-              removeScoreParticle()
-            }
-          }
-
-          totalScoreSetter((totalScore) => {
-            const to = totalScore - 200
-            console.log(`group of four lost, remove 200 from total score -> ${to}`)
-            return to
-          })
-          return () => {}
-        }, [groupOfFour])
-
-        return (
-          <>
-            <div ref={domNodeRef} className="dice"></div>
-            <button onClick={keepCoin}>Keep piece</button>
-            <button onClick={unkeepCoin}>Unkeep piece</button>
-            <br />
-            <button
-              onClick={() => {
-                keepCoin()
-                simulateGroupOfFourFound()
-              }}
-            >
-              Keep 4eme piece
-            </button>
-            <button
-              onClick={() => {
-                unkeepCoin()
-                simulateGroupOfFourLost()
-              }}
-            >
-              Unkeep 4 eme piece
-            </button>
-
-            <TotalScore
-              value={totalScoreDisplayed}
-              scoreParticleMergedSignal={scoreParticleMergedSignal}
-              totalScoreDomNodeRef={totalScoreDomNodeRef}
-            />
-            {scoreParticles.map((scoreParticle) => {
-              return (
-                <ScoreParticle
-                  key={scoreParticle.id}
-                  totalScoreDomNodeRef={totalScoreDomNodeRef}
-                  scoreParticle={scoreParticle}
-                />
-              )
-            })}
-          </>
-        )
-      }
-
-      const useScoreParticles = ({ minDelayBetweenParticles = 1000 } = {}) => {
         const [scoreParticles, scoreParticlesSetter] = React.useState([])
-
         const addScoreParticleToState = (scoreParticle) => {
-          console.log(`adding score particle ${scoreParticle.id}`)
-          scoreParticlesSetter([...scoreParticles, scoreParticle])
-          return () => {
-            console.log(`removing score particle ${scoreParticle.id}`)
-            const scoreParticlesWithoutParticle = scoreParticles.filter(
-              (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+          scoreParticlesSetter((scoreParticles) => {
+            const scoreParticlesWithParticle = [...scoreParticles, scoreParticle]
+            console.log(
+              `adding ${scoreParticle.id}`,
+              scoreParticles,
+              "->",
+              scoreParticlesWithParticle,
             )
-            scoreParticlesSetter(scoreParticlesWithoutParticle)
-            // scoreParticlesSetter((scoreParticles) => {
-            //   console.log(`score particle ${scoreParticle.id} removed`)
-            //   return scoreParticles.filter(
-            //     (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-            //   )
-            // })
+            return scoreParticles
+          })
+          return () => {
+            scoreParticlesSetter((scoreParticles) => {
+              const scoreParticlesWithoutParticle = scoreParticles.filter(
+                (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+              )
+              console.log(
+                `removing ${scoreParticle.id}`,
+                scoreParticles,
+                `->`,
+                scoreParticlesWithoutParticle,
+              )
+              return scoreParticlesWithoutParticle
+            })
           }
         }
-
         const lastParticleAnimatedMsRef = React.useRef(null)
         const scoreParticleMergedSignal = useSignalEmitter()
         const addScoreParticle = ({ id, value, x, y }) => {
@@ -256,7 +119,184 @@
           return removeScoreParticleFromState
         }
 
-        return [scoreParticles, addScoreParticle, scoreParticleMergedSignal]
+        return (
+          <TotalScoreStateContext.Provider value={React.useState(0)}>
+            <App
+              scoreParticles={scoreParticles}
+              addScoreParticle={addScoreParticle}
+              scoreParticleMergedSignal={scoreParticleMergedSignal}
+            />
+          </TotalScoreStateContext.Provider>
+        )
+      }
+
+      const App = ({ scoreParticles, addScoreParticle, scoreParticleMergedSignal }) => {
+        const diceNodeRef = React.useRef()
+        const totalScoreDomNodeRef = React.useRef()
+
+        const [diceKept, diceKeptSetter] = React.useState(false)
+        const keepCoin = () => {
+          diceKeptSetter(true)
+        }
+        const unkeepCoin = () => {
+          diceKeptSetter(false)
+        }
+
+        const [groupOfFour, groupOfFourSetter] = React.useState(false)
+        const simulateGroupOfFourFound = () => {
+          groupOfFourSetter(true)
+        }
+        const simulateGroupOfFourLost = () => {
+          groupOfFourSetter(false)
+        }
+
+        return (
+          <>
+            <GameLogic
+              diceNodeRef={diceNodeRef}
+              diceKept={diceKept}
+              groupOfFour={groupOfFour}
+              addScoreParticle={addScoreParticle}
+            />
+            <Actions
+              keepCoin={keepCoin}
+              unkeepCoin={unkeepCoin}
+              simulateGroupOfFourFound={simulateGroupOfFourFound}
+              simulateGroupOfFourLost={simulateGroupOfFourLost}
+            />
+            <div ref={diceNodeRef} className="dice"></div>
+            <Scoring
+              scoreParticleMergedSignal={scoreParticleMergedSignal}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              scoreParticles={scoreParticles}
+            />
+          </>
+        )
+      }
+
+      const Actions = ({
+        keepCoin,
+        unkeepCoin,
+        simulateGroupOfFourFound,
+        simulateGroupOfFourLost,
+      }) => {
+        return (
+          <>
+            <button onClick={keepCoin}>Keep piece</button>
+            <button onClick={unkeepCoin}>Unkeep piece</button>
+            <br />
+            <button
+              onClick={() => {
+                keepCoin()
+                simulateGroupOfFourFound()
+              }}
+            >
+              Keep 4eme piece
+            </button>
+            <button
+              onClick={() => {
+                unkeepCoin()
+                simulateGroupOfFourLost()
+              }}
+            >
+              Unkeep 4 eme piece
+            </button>
+          </>
+        )
+      }
+
+      const GameLogic = ({ diceNodeRef, diceKept, groupOfFour, addScoreParticle }) => {
+        const totalScoreSetter = useTotalScoreStateSetter()
+
+        useUpdateEffect(() => {
+          if (diceKept) {
+            totalScoreSetter((totalScore) => {
+              const to = totalScore + 100
+              console.log(`dice kept, add 100 to total score -> ${to}`)
+              return to
+            })
+            const removeScoreParticle = addScoreParticle({
+              id: "coin-bonus-particle",
+              value: 100,
+              ...domNodeToScoreParticlePosition(diceNodeRef.current),
+            })
+            return () => {
+              console.log("removing coin particle because dice unkept")
+              removeScoreParticle()
+            }
+          }
+
+          totalScoreSetter((totalScore) => {
+            const to = totalScore - 100
+            console.log(`dice unkept, remove 100 from total score -> ${to}`)
+            return to
+          })
+          return () => {}
+        }, [diceKept])
+
+        useUpdateEffect(() => {
+          if (groupOfFour) {
+            const removeScoreParticle = addScoreParticle({
+              id: "group-bonus-particle",
+              value: 200,
+              ...domNodeToScoreParticlePosition(diceNodeRef.current),
+            })
+            totalScoreSetter((totalScore) => {
+              const to = totalScore + 200
+              console.log(`group of four found, add 200 to total score -> ${to}`)
+              return to
+            })
+            return () => {
+              console.log("removing bonus particle because group lost")
+              removeScoreParticle()
+            }
+          }
+
+          totalScoreSetter((totalScore) => {
+            const to = totalScore - 200
+            console.log(`group of four lost, remove 200 from total score -> ${to}`)
+            return to
+          })
+          return () => {}
+        }, [groupOfFour])
+
+        return null
+      }
+
+      const Scoring = ({ scoreParticleMergedSignal, totalScoreDomNodeRef, scoreParticles }) => {
+        const totalScore = useTotalScoreState()
+
+        // score displayed is score without taking into account score into particles
+        const totalScoreDisplayed = React.useMemo(() => {
+          const scoreInParticles = scoreParticles.reduce(
+            (previous, particle) => previous + particle.value,
+            0,
+          )
+          const totalScoreWithoutParticles = totalScore - scoreInParticles
+          console.log(
+            `totalScoreWithoutParticles updated to ${totalScoreWithoutParticles} (totalScore is ${totalScore})`,
+          )
+          return totalScoreWithoutParticles
+        }, [totalScore, scoreParticles])
+
+        return (
+          <>
+            <TotalScore
+              value={totalScoreDisplayed}
+              scoreParticleMergedSignal={scoreParticleMergedSignal}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+            />
+            {scoreParticles.map((scoreParticle) => {
+              return (
+                <ScoreParticle
+                  key={scoreParticle.id}
+                  totalScoreDomNodeRef={totalScoreDomNodeRef}
+                  scoreParticle={scoreParticle}
+                />
+              )
+            })}
+          </>
+        )
       }
 
       const TotalScore = ({ value, scoreParticleMergedSignal, totalScoreDomNodeRef }) => {
@@ -420,7 +460,7 @@
         return centerPoint
       }
 
-      ReactDOM.render(<App />, document.querySelector("#app"))
+      ReactDOM.render(<Main />, document.querySelector("#app"))
     </script>
   </body>
 </html>
