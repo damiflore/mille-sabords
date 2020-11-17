@@ -51,88 +51,23 @@
       import ReactDOM from "react-dom"
       import { printPointInDocument, getDomNodeRectangle } from "src/dom/dom.position.js"
       import { getRectangleCenterPoint } from "src/helper/rectangle.js"
-      import { useUpdateEffect, useSignalEmitter, useSignalListener } from "src/hooks.js"
+      import { useSignal, useSignalState } from "src/helper/signal.js"
+      import { useUpdateEffect } from "src/hooks.js"
       import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
       const debug = false
 
-      const TotalScoreStateContext = React.createContext()
-      const useTotalScoreState = () => React.useContext(TotalScoreStateContext)[0]
-      const useTotalScoreStateSetter = () => React.useContext(TotalScoreStateContext)[1]
-
       const Main = () => {
-        const minDelayBetweenParticles = 1000
-
-        const [scoreParticles, scoreParticlesSetter] = React.useState([])
-        const addScoreParticleToState = (scoreParticle) => {
-          scoreParticlesSetter((scoreParticles) => {
-            const scoreParticlesWithParticle = [...scoreParticles, scoreParticle]
-            console.log(
-              `adding ${scoreParticle.id}`,
-              scoreParticles,
-              "->",
-              scoreParticlesWithParticle,
-            )
-            return scoreParticles
-          })
-          return () => {
-            scoreParticlesSetter((scoreParticles) => {
-              const scoreParticlesWithoutParticle = scoreParticles.filter(
-                (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-              )
-              console.log(
-                `removing ${scoreParticle.id}`,
-                scoreParticles,
-                `->`,
-                scoreParticlesWithoutParticle,
-              )
-              return scoreParticlesWithoutParticle
-            })
-          }
-        }
-        const lastParticleAnimatedMsRef = React.useRef(null)
-        const scoreParticleMergedSignal = useSignalEmitter()
-        const addScoreParticle = ({ id, value, x, y }) => {
-          const lastParticleAnimatedMs = lastParticleAnimatedMsRef.current
-          lastParticleAnimatedMsRef.current = Date.now()
-          const animationDelay = scoreParticleAnimationDelayGetter(
-            lastParticleAnimatedMs,
-            minDelayBetweenParticles,
-          )
-          console.log(`${id} animation delay is ${animationDelay}`)
-
-          const scoreParticle = {
-            id,
-            value,
-            x,
-            y,
-            animationDelay,
-          }
-          const removeScoreParticleFromState = addScoreParticleToState(scoreParticle)
-          scoreParticle.onScoreParticleMerged = () => {
-            scoreParticleMergedSignal.emit(scoreParticle)
-            removeScoreParticleFromState()
-          }
-          // scoreParticle.onScoreParticleCanceled = () => {
-          //   console.log(`${id} particle animation canceled`)
-          // }
-          return removeScoreParticleFromState
-        }
-
-        return (
-          <TotalScoreStateContext.Provider value={React.useState(0)}>
-            <App
-              scoreParticles={scoreParticles}
-              addScoreParticle={addScoreParticle}
-              scoreParticleMergedSignal={scoreParticleMergedSignal}
-            />
-          </TotalScoreStateContext.Provider>
-        )
+        return <App />
       }
 
-      const App = ({ scoreParticles, addScoreParticle, scoreParticleMergedSignal }) => {
+      const App = () => {
         const diceNodeRef = React.useRef()
         const totalScoreDomNodeRef = React.useRef()
+
+        const [totalScore, totalScoreSetter] = React.useState(0)
+        const [scoreParticles, scoreParticlesSetter] = React.useState([])
+        const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
 
         const [diceKept, diceKeptSetter] = React.useState(false)
         const keepCoin = () => {
@@ -156,7 +91,9 @@
               diceNodeRef={diceNodeRef}
               diceKept={diceKept}
               groupOfFour={groupOfFour}
-              addScoreParticle={addScoreParticle}
+              totalScoreSetter={totalScoreSetter}
+              scoreParticlesSetter={scoreParticlesSetter}
+              scoreParticleMergedListener={scoreParticleMergedListener}
             />
             <Actions
               keepCoin={keepCoin}
@@ -166,9 +103,15 @@
             />
             <div ref={diceNodeRef} className="dice"></div>
             <Scoring
-              scoreParticleMergedSignal={scoreParticleMergedSignal}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              totalScore={totalScore}
+              scoreParticles={scoreParticles}
+              scoreParticleMergedListener={scoreParticleMergedListener}
+            />
+            <ScoringParticles
               totalScoreDomNodeRef={totalScoreDomNodeRef}
               scoreParticles={scoreParticles}
+              scoreParticleMergedEmitter={scoreParticleMergedEmitter}
             />
           </>
         )
@@ -205,8 +148,71 @@
         )
       }
 
-      const GameLogic = ({ diceNodeRef, diceKept, groupOfFour, addScoreParticle }) => {
-        const totalScoreSetter = useTotalScoreStateSetter()
+      const GameLogic = ({
+        diceNodeRef,
+        diceKept,
+        groupOfFour,
+        totalScoreSetter,
+        scoreParticlesSetter,
+        scoreParticleMergedListener,
+      }) => {
+        const minDelayBetweenParticles = 400
+        const lastParticleAnimatedMsRef = React.useRef(null)
+        const addScoreParticle = ({ id, value, x, y }) => {
+          const addScoreParticleToState = (scoreParticle) => {
+            scoreParticlesSetter((scoreParticles) => {
+              const scoreParticlesWithParticle = [...scoreParticles, scoreParticle]
+              console.log(
+                `adding ${scoreParticle.id}`,
+                scoreParticles,
+                "->",
+                scoreParticlesWithParticle,
+              )
+              return scoreParticlesWithParticle
+            })
+            return () => {
+              scoreParticlesSetter((scoreParticles) => {
+                const scoreParticlesWithoutParticle = scoreParticles.filter(
+                  (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+                )
+                console.log(
+                  `removing ${scoreParticle.id}`,
+                  scoreParticles,
+                  `->`,
+                  scoreParticlesWithoutParticle,
+                )
+                return scoreParticlesWithoutParticle
+              })
+            }
+          }
+
+          const lastParticleAnimatedMs = lastParticleAnimatedMsRef.current
+          lastParticleAnimatedMsRef.current = Date.now()
+          const animationDelay = scoreParticleAnimationDelayGetter(
+            lastParticleAnimatedMs,
+            minDelayBetweenParticles,
+          )
+          console.log(`${id} animation delay is ${animationDelay}`)
+
+          const scoreParticle = {
+            id,
+            value,
+            x,
+            y,
+            animationDelay,
+          }
+          const removeScoreParticleFromState = addScoreParticleToState(scoreParticle)
+          const stopListening = scoreParticleMergedListener((particleMerged) => {
+            if (particleMerged === scoreParticle) {
+              stopListening()
+              removeScoreParticleFromState()
+            }
+          })
+          return () => {
+            stopListening()
+            removeScoreParticleFromState()
+          }
+        }
 
         useUpdateEffect(() => {
           if (diceKept) {
@@ -263,9 +269,12 @@
         return null
       }
 
-      const Scoring = ({ scoreParticleMergedSignal, totalScoreDomNodeRef, scoreParticles }) => {
-        const totalScore = useTotalScoreState()
-
+      const Scoring = ({
+        totalScoreDomNodeRef,
+        totalScore,
+        scoreParticles,
+        scoreParticleMergedListener,
+      }) => {
         // score displayed is score without taking into account score into particles
         const totalScoreDisplayed = React.useMemo(() => {
           const scoreInParticles = scoreParticles.reduce(
@@ -280,27 +289,35 @@
         }, [totalScore, scoreParticles])
 
         return (
-          <>
-            <TotalScore
-              value={totalScoreDisplayed}
-              scoreParticleMergedSignal={scoreParticleMergedSignal}
-              totalScoreDomNodeRef={totalScoreDomNodeRef}
-            />
-            {scoreParticles.map((scoreParticle) => {
-              return (
-                <ScoreParticle
-                  key={scoreParticle.id}
-                  totalScoreDomNodeRef={totalScoreDomNodeRef}
-                  scoreParticle={scoreParticle}
-                />
-              )
-            })}
-          </>
+          <TotalScore
+            totalScoreDomNodeRef={totalScoreDomNodeRef}
+            value={totalScoreDisplayed}
+            scoreParticleMergedListener={scoreParticleMergedListener}
+          />
         )
       }
 
-      const TotalScore = ({ value, scoreParticleMergedSignal, totalScoreDomNodeRef }) => {
-        const scoreParticleMerged = useSignalListener(scoreParticleMergedSignal)
+      const ScoringParticles = ({
+        totalScoreDomNodeRef,
+        scoreParticles,
+        scoreParticleMergedEmitter,
+      }) => {
+        return scoreParticles.map((scoreParticle) => {
+          return (
+            <ScoreParticle
+              key={scoreParticle.id}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              scoreParticle={scoreParticle}
+              scoreParticleMergedEmitter={scoreParticleMergedEmitter}
+            />
+          )
+        })
+      }
+
+      const TotalScore = ({ value, scoreParticleMergedListener, totalScoreDomNodeRef }) => {
+        const scoreParticleMerged = scoreParticleMergedListener
+          ? useSignalState(scoreParticleMergedListener)
+          : false
 
         React.useEffect(() => {
           if (!scoreParticleMerged) return
@@ -327,7 +344,11 @@
         )
       }
 
-      const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
+      const ScoreParticle = ({
+        totalScoreDomNodeRef,
+        scoreParticleMergedEmitter,
+        scoreParticle,
+      }) => {
         const particleDomNodeRef = React.useRef()
         React.useEffect(() => {
           const particleDomNode = particleDomNodeRef.current
@@ -339,7 +360,9 @@
             y: scoreParticle.y,
             delay: scoreParticle.animationDelay,
             oncancel: scoreParticle.onScoreParticleCanceled,
-            onfinish: scoreParticle.onScoreParticleMerged,
+            onfinish: () => {
+              scoreParticleMergedEmitter(scoreParticle)
+            },
           })
         }, [])
 

@@ -9,7 +9,7 @@ import { Header } from "src/header/Header.jsx"
 import { Footer } from "src/footer/Footer.jsx"
 import { SkullIsland } from "src/skull-island/SkullIsland.jsx"
 import { DiceContainer } from "src/dices/DiceContainer.jsx"
-import { useSignalEmitter } from "src/hooks.js"
+import { useSignal } from "src/hooks.js"
 import { DrawCardDialog } from "src/footer/DrawCardDialog.jsx"
 import { useCurrentCardActivated } from "src/main.store.js"
 
@@ -22,8 +22,8 @@ export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
     onRoundStart()
   }, [])
 
-  const diceOverRolledAreaSignal = useSignalEmitter()
-  const diceOverChestSignal = useSignalEmitter()
+  const diceOverRolledAreaSignal = useSignal()
+  const diceOverChestSignal = useSignal()
 
   const headerSmallCardRef = React.useRef()
 

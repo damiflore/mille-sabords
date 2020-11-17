@@ -16,7 +16,7 @@ import cursedGridImageUrl from "src/chest/cursed-grid.png"
 export const Chest = ({ chestRef, diceOverChestSignal }) => {
   const chestSlots = useChestSlots()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
-  const diceOverChest = useSignalListener(diceOverChestSignal)
+  const diceOverChest = useSignalListener(diceOverChestSignal.listen)
   const currentCard = cardIdToCard(useCurrentCardId())
   const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 

@@ -56,15 +56,15 @@ export const usePrevious = (value) => {
   return ref.current
 }
 
-export const useSignalEmitter = () => {
+export const useSignal = () => {
   const [signal] = React.useState(() => createSignal())
   return signal
 }
 
-export const useSignalListener = (signal) => {
+export const useSignalListener = (listen) => {
   const [state, stateSetter] = React.useState()
   React.useEffect(() => {
-    return signal.listen(stateSetter)
+    return listen(stateSetter)
   }, [])
   return state
 }

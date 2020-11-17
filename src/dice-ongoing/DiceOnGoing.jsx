@@ -2,7 +2,7 @@ import React from "react"
 import { useSignalListener } from "src/hooks.js"
 
 export const DiceOnGoing = ({ rolledAreaRef, offscreenRef, diceOverRolledAreaSignal }) => {
-  const diceOverRolledArea = useSignalListener(diceOverRolledAreaSignal)
+  const diceOverRolledArea = useSignalListener(diceOverRolledAreaSignal.listen)
   return (
     <div className="dice-ongoing">
       <div className="map"></div>
