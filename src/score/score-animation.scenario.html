@@ -47,6 +47,17 @@
 
     <div id="app"></div>
     <script type="module">
+      /*
+      a faire:
+
+      réussir a rendre réutilisable pas mal de concept ici
+      l'idée ce serais de pouvoir réutiliser le concept d'un score total
+      avec des particule qui essaye de le rejoindre
+
+      comme ça l'implémentation dans le jeu devrait etre plus lisible et maintenable.
+      Et puis ce concept et assez utile on pourrait vouloir le réutiliser ailleurs dans le jeu
+      */
+
       import React from "react"
       import ReactDOM from "react-dom"
       import { printPointInDocument, getDomNodeRectangle } from "src/dom/dom.position.js"
@@ -66,8 +77,6 @@
         const totalScoreDomNodeRef = React.useRef()
 
         const [totalScore, totalScoreSetter] = React.useState(0)
-        const [scoreParticles, scoreParticlesSetter] = React.useState([])
-        const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
 
         const [diceKept, diceKeptSetter] = React.useState(false)
         const keepCoin = () => {
@@ -87,14 +96,6 @@
 
         return (
           <>
-            <GameLogic
-              diceNodeRef={diceNodeRef}
-              diceKept={diceKept}
-              groupOfFour={groupOfFour}
-              totalScoreSetter={totalScoreSetter}
-              scoreParticlesSetter={scoreParticlesSetter}
-              scoreParticleMergedListener={scoreParticleMergedListener}
-            />
             <Actions
               keepCoin={keepCoin}
               unkeepCoin={unkeepCoin}
@@ -103,15 +104,12 @@
             />
             <div ref={diceNodeRef} className="dice"></div>
             <Scoring
+              diceNodeRef={diceNodeRef}
               totalScoreDomNodeRef={totalScoreDomNodeRef}
               totalScore={totalScore}
-              scoreParticles={scoreParticles}
-              scoreParticleMergedListener={scoreParticleMergedListener}
-            />
-            <ScoringParticles
-              totalScoreDomNodeRef={totalScoreDomNodeRef}
-              scoreParticles={scoreParticles}
-              scoreParticleMergedEmitter={scoreParticleMergedEmitter}
+              totalScoreSetter={totalScoreSetter}
+              groupOfFour={groupOfFour}
+              diceKept={diceKept}
             />
           </>
         )
@@ -148,7 +146,48 @@
         )
       }
 
-      const GameLogic = ({
+      const Scoring = ({
+        diceNodeRef,
+        totalScoreDomNodeRef,
+        totalScore,
+        totalScoreSetter,
+        groupOfFour,
+        diceKept,
+      }) => {
+        const [scoreParticles, scoreParticlesSetter] = React.useState([])
+        const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
+
+        return (
+          <>
+            <ScoringLogic
+              diceNodeRef={diceNodeRef}
+              diceKept={diceKept}
+              groupOfFour={groupOfFour}
+              totalScoreSetter={totalScoreSetter}
+              scoreParticlesSetter={scoreParticlesSetter}
+              scoreParticleMergedListener={scoreParticleMergedListener}
+            />
+            <TotalScore
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              totalScore={totalScore}
+              scoreParticles={scoreParticles}
+              scoreParticleMergedListener={scoreParticleMergedListener}
+            />
+            {scoreParticles.map((scoreParticle) => {
+              return (
+                <ScoreParticle
+                  key={scoreParticle.id}
+                  totalScoreDomNodeRef={totalScoreDomNodeRef}
+                  scoreParticle={scoreParticle}
+                  scoreParticleMergedEmitter={scoreParticleMergedEmitter}
+                />
+              )
+            })}
+          </>
+        )
+      }
+
+      const ScoringLogic = ({
         diceNodeRef,
         diceKept,
         groupOfFour,
@@ -269,7 +308,7 @@
         return null
       }
 
-      const Scoring = ({
+      const TotalScore = ({
         totalScoreDomNodeRef,
         totalScore,
         scoreParticles,
@@ -288,33 +327,6 @@
           return totalScoreWithoutParticles
         }, [totalScore, scoreParticles])
 
-        return (
-          <TotalScore
-            totalScoreDomNodeRef={totalScoreDomNodeRef}
-            value={totalScoreDisplayed}
-            scoreParticleMergedListener={scoreParticleMergedListener}
-          />
-        )
-      }
-
-      const ScoringParticles = ({
-        totalScoreDomNodeRef,
-        scoreParticles,
-        scoreParticleMergedEmitter,
-      }) => {
-        return scoreParticles.map((scoreParticle) => {
-          return (
-            <ScoreParticle
-              key={scoreParticle.id}
-              totalScoreDomNodeRef={totalScoreDomNodeRef}
-              scoreParticle={scoreParticle}
-              scoreParticleMergedEmitter={scoreParticleMergedEmitter}
-            />
-          )
-        })
-      }
-
-      const TotalScore = ({ value, scoreParticleMergedListener, totalScoreDomNodeRef }) => {
         const scoreParticleMerged = scoreParticleMergedListener
           ? useSignalState(scoreParticleMergedListener)
           : false
@@ -333,12 +345,10 @@
           )
         }, [totalScoreDomNodeRef, scoreParticleMerged])
 
-        const totalScoreAnimatedValue = useAnimateTransitionUsingJs(value, { duration: 600 })
-
         return (
           <div className="score">
             <p ref={totalScoreDomNodeRef} className="score--value">
-              {totalScoreAnimatedValue ? totalScoreAnimatedValue.value : value}
+              <ValueWithAnimatedTransition value={totalScoreDisplayed} duration={600} />
             </p>
           </div>
         )
@@ -481,6 +491,11 @@
         const domNodeRectangle = getDomNodeRectangle(domNode)
         const centerPoint = getRectangleCenterPoint(domNodeRectangle)
         return centerPoint
+      }
+
+      const ValueWithAnimatedTransition = ({ value, duration }) => {
+        const animatedValue = useAnimateTransitionUsingJs(value, { duration })
+        return animatedValue ? animatedValue.value : value
       }
 
       ReactDOM.render(<Main />, document.querySelector("#app"))

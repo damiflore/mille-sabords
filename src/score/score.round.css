@@ -1,0 +1,10 @@
+.score-particle {
+  position: fixed;
+  font-family: Arial;
+  font-size: 16px;
+  color: gold;
+  visibility: hidden;
+  /* stroke: red;
+  stroke-width: 2px;
+  fill: black; */
+}

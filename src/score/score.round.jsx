@@ -1,10 +1,10 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useSignalState } from "src/helper/signal.js"
+import { useSignal, useSignalState } from "src/helper/signal.js"
 import { useCurrentCardId, useCurrentCardActivated, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
-import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
+import { ValueWithAnimatedTransition } from "src/animation/ValueWithAnimatedTransition.jsx"
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useDialogState } from "src/dialog/dialog.jsx"
@@ -14,6 +14,7 @@ import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx
 import { countSymbol } from "src/score/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
 import { ScoreRulesDialog } from "src/score/score.dialog.jsx"
+import { ScoreParticle } from "src/score/score.particle.jsx"
 
 const { useState, useEffect } = React
 
@@ -42,48 +43,78 @@ const useSwordChallengeOngoing = () => {
   return !challengeWon
 }
 
-const ScoreDisplay = ({ roundScoreDomNodeRef, particleMergedListener }) => {
+const ScoreDisplay = () => {
   const roundScore = useRoundScore()
   const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const swordChallengeOngoing = useSwordChallengeOngoing()
 
+  const roundScoreDomNodeRef = React.useRef()
   const [scoreDialogIsOpen, openScoreDialog, closeScoreDialog] = useDialogState()
-  const particleMerged = particleMergedListener ? useSignalState(particleMergedListener) : false
+  const [scoreParticles, scoreParticlesSetter] = React.useState([])
+  const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
+  const roundScoreDisplayed = useRoundScoreDisplayed({ roundScore, scoreParticles })
 
-  React.useEffect(() => {
-    if (!particleMerged) {
-      return undefined
-    }
-    const roundScoreDomNode = roundScoreDomNodeRef.current
-    return animateParticleMerge({
-      roundScoreDomNode,
-      duration: 300,
-    })
-  }, [particleMerged])
-
-  const roundScoreAnimatedValue = useAnimateTransitionUsingJs(roundScore, { duration: 600 })
+  useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
 
   return (
     <>
       {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
       {scoreMarked ? <StarRain /> : null}
       <button
-        ref={roundScoreDomNodeRef}
         className={`round-score ${swordChallengeOngoing ? "hidden" : ""}`}
         onClick={openScoreDialog}
       >
-        <span className="round-score--value">
-          {roundScoreAnimatedValue ? roundScoreAnimatedValue.value : roundScore}
+        <span ref={roundScoreDomNodeRef} className="round-score--value">
+          <ValueWithAnimatedTransition value={roundScoreDisplayed} duration={600} />
         </span>
       </button>
       {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
       <ScoreRulesDialog dialogIsOpen={scoreDialogIsOpen} closeDialog={closeScoreDialog} />
+
+      {scoreParticles.map((scoreParticle) => {
+        return (
+          <ScoreParticle
+            key={scoreParticle.id}
+            totalScoreDomNodeRef={roundScoreDomNodeRef}
+            scoreParticle={scoreParticle}
+            scoreParticleMergedEmitter={scoreParticleMergedEmitter}
+          />
+        )
+      })}
     </>
   )
 }
 
-const animateParticleMerge = ({ roundScoreDomNode, duration }) => {
+// score displayed is score without taking into account score into particles
+const useRoundScoreDisplayed = ({ roundScore, scoreParticles }) => {
+  const roundScoreDisplayed = React.useMemo(() => {
+    const scoreInParticles = scoreParticles.reduce(
+      (previous, particle) => previous + particle.value,
+      0,
+    )
+    const totalScoreWithoutParticles = roundScore - scoreInParticles
+    return totalScoreWithoutParticles
+  }, [roundScore, scoreParticles])
+  return roundScoreDisplayed
+}
+
+const useScoreParticleMergeEffect = ({ roundScoreDomNodeRef, scoreParticleMergedListener }) => {
+  const scoreParticleMerged = useSignalState(scoreParticleMergedListener)
+
+  React.useEffect(() => {
+    if (!scoreParticleMerged) {
+      return undefined
+    }
+    const roundScoreDomNode = roundScoreDomNodeRef.current
+    return animateScoreParticleMerge({
+      roundScoreDomNode,
+      duration: 300,
+    })
+  }, [scoreParticleMerged])
+}
+
+const animateScoreParticleMerge = ({ roundScoreDomNode, duration }) => {
   const animation = roundScoreDomNode.animate(
     [
       {
