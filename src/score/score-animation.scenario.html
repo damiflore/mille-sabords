@@ -14,7 +14,7 @@
       }
 
       .score-particle {
-        position: absolute;
+        position: fixed;
         font-family: Arial;
         font-size: 16px;
         color: gold;
@@ -76,7 +76,6 @@
       import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
 
       const debug = true
-      const MIN_DELAY_BETWEEN_PARTICLES = 500
 
       const App = () => {
         const domNodeRef = React.useRef()
@@ -84,59 +83,7 @@
 
         const [totalScore, totalScoreSetter] = React.useState(0)
         const [totalScoreDisplayed, totalScoreDisplayedSetter] = React.useState(0)
-        const [scoreParticles, scoreParticlesSetter] = React.useState([])
-        const scoreParticleMergedSignal = useSignalEmitter()
-
-        const lastParticleEmissionMsRef = React.useRef(null)
-
-        const spawnScoreParticle = ({ id, value, x, y }) => {
-          const emitParticle = () => {
-            lastParticleEmissionMsRef.current = Date.now()
-            const scoreParticle = {
-              id,
-              value,
-              x,
-              y,
-              onScoreParticleMerged: () => {
-                scoreParticlesSetter(
-                  scoreParticles.filter(
-                    (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-                  ),
-                )
-                scoreParticleMergedSignal.emit(scoreParticle)
-              },
-            }
-            scoreParticlesSetter([...scoreParticles, scoreParticle])
-            return () => {
-              scoreParticlesSetter(
-                scoreParticles.filter(
-                  (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-                ),
-              )
-            }
-          }
-
-          const lastParticleEmissionMs = lastParticleEmissionMsRef.current
-          if (!lastParticleEmissionMs) {
-            return emitParticle()
-          }
-
-          const nowMs = Date.now()
-          const msEllapsedSinceLastParticle = nowMs - lastParticleEmissionMs
-          const msToWait = MIN_DELAY_BETWEEN_PARTICLES - msEllapsedSinceLastParticle
-          if (msToWait <= 0) {
-            return emitParticle()
-          }
-
-          let cancelParticleAnimation = () => {}
-          const timeoutId = setTimeout(() => {
-            cancelParticleAnimation = emitParticle()
-          }, msToWait)
-          return () => {
-            clearTimeout(timeoutId)
-            cancelParticleAnimation()
-          }
-        }
+        const [scoreParticles, addScoreParticle, scoreParticleMergedSignal] = useScoreParticles()
 
         const [diceKept, diceKeptSetter] = React.useState(false)
         const keepCoin = () => {
@@ -185,7 +132,7 @@
         // (it does not care about totalScore)
         React.useEffect(() => {
           if (diceKept) {
-            return spawnScoreParticle({
+            return addScoreParticle({
               id: "coin-bonus-from-dice-1",
               value: 100,
               ...domNodeToScoreParticlePosition(domNodeRef.current),
@@ -225,7 +172,7 @@
         }, [groupOfFour, totalScore])
         React.useEffect(() => {
           if (groupOfFour) {
-            return spawnScoreParticle({
+            return addScoreParticle({
               id: "group-bonus-from-dice-1",
               value: 200,
               ...domNodeToScoreParticlePosition(domNodeRef.current),
@@ -274,7 +221,6 @@
               scoreParticleMergedSignal={scoreParticleMergedSignal}
               totalScoreDomNodeRef={totalScoreDomNodeRef}
             />
-
             {scoreParticles.map((scoreParticle) => {
               return (
                 <ScoreParticle
@@ -286,6 +232,66 @@
             })}
           </>
         )
+      }
+
+      const useScoreParticles = ({ minDelayBetweenParticles = 500 } = {}) => {
+        const [scoreParticles, scoreParticlesSetter] = React.useState([])
+        const lastParticleEmissionMsRef = React.useRef(null)
+        const scoreParticleMergedSignal = useSignalEmitter()
+
+        const addScoreParticleToState = (scoreParticle) => {
+          scoreParticlesSetter([...scoreParticles, scoreParticle])
+          return () => {
+            scoreParticlesSetter(
+              scoreParticles.filter(
+                (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
+              ),
+            )
+          }
+        }
+
+        const addScoreParticle = ({ id, value, x, y }) => {
+          const emitParticle = () => {
+            lastParticleEmissionMsRef.current = Date.now()
+            const scoreParticle = {
+              id,
+              value,
+              x,
+              y,
+            }
+            const removeScoreParticleFromState = addScoreParticleToState(scoreParticle)
+            scoreParticle.onScoreParticleMerged = () => {
+              removeScoreParticleFromState()
+              scoreParticleMergedSignal.emit(scoreParticle)
+            }
+            return () => {
+              removeScoreParticleFromState()
+            }
+          }
+
+          const lastParticleEmissionMs = lastParticleEmissionMsRef.current
+          if (!lastParticleEmissionMs) {
+            return emitParticle()
+          }
+
+          const nowMs = Date.now()
+          const msEllapsedSinceLastParticle = nowMs - lastParticleEmissionMs
+          const msToWait = minDelayBetweenParticles - msEllapsedSinceLastParticle
+          if (msToWait <= 0) {
+            return emitParticle()
+          }
+
+          let cancelParticleAnimation = () => {}
+          const timeoutId = setTimeout(() => {
+            cancelParticleAnimation = emitParticle()
+          }, msToWait)
+          return () => {
+            clearTimeout(timeoutId)
+            cancelParticleAnimation()
+          }
+        }
+
+        return [scoreParticles, addScoreParticle, scoreParticleMergedSignal]
       }
 
       const TotalScore = ({ value, scoreParticleMergedSignal, totalScoreDomNodeRef }) => {
@@ -331,11 +337,10 @@
           })
         }, [])
 
-        return ReactDOM.createPortal(
+        return (
           <div ref={particleDomNodeRef} className="score-particle">
             {scoreParticle.value}
-          </div>,
-          document.body,
+          </div>
         )
       }
 
