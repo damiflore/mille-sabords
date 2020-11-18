@@ -13,6 +13,7 @@ export const SYMBOL_SKULL = "skull"
 export const SYMBOL_SWORD = "sword"
 
 export const symbolIsSkull = (symbol) => symbol === SYMBOL_SKULL
+export const symbolIsCoin = (symbol) => symbol === SYMBOL_COIN
 
 const symbolUrlMap = {
   [SYMBOL_COIN]: symbolCoinUrl,

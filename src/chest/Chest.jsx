@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useSignalState } from "src/helper/signal.js"
@@ -7,6 +8,7 @@ import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 import { symbolToImageUrl } from "src/symbols/symbols.js"
 import { cardIdToCard, isChestCard } from "src/cards/cards.js"
+import { diceToVisibleSymbol } from "src/dices/dices.js"
 
 import { RoundScore } from "src/round/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
@@ -59,6 +61,20 @@ export const Chest = ({ chestRef, diceOverChestListener }) => {
       <RoundScore />
     </div>
   )
+}
+
+export const chestSlotContentToSymbol = (chestSlotContent, dices) => {
+  if (chestSlotContent && chestSlotContent.type === "symbol") {
+    return chestSlotContent.value
+  }
+
+  if (chestSlotContent && chestSlotContent.type === "dice") {
+    const diceId = chestSlotContent.value
+    const dice = dices[diceId]
+    return diceToVisibleSymbol(dice)
+  }
+
+  return null
 }
 
 const ChestSlot = ({ chestSlotContent }) => {

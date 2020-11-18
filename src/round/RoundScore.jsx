@@ -60,10 +60,11 @@ const ScoreDisplay = () => {
   const [scoreParticles, addScoreParticle] = useScoreParticles({
     onScoreParticleMerged: scoreParticleMergedEmitter,
   })
-  const roundScoreDisplayed = useScoreWithoutParticles({ score: roundScore, scoreParticles })
 
   useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
-  useRoundScoreParticleEffects({ addScoreParticle })
+  useRoundScoreParticleEffects({ roundScoreDomNodeRef, addScoreParticle })
+
+  const roundScoreDisplayed = useScoreWithoutParticles({ score: roundScore, scoreParticles })
 
   return (
     <>
