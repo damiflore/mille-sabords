@@ -1,6 +1,7 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
+import { useBecomes } from "src/hooks.js"
 import { useSignal, useSignalState } from "src/helper/signal.js"
 import { useCurrentCardId, useCurrentCardActivated, useScoreMarked } from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
@@ -8,7 +9,7 @@ import { ValueWithAnimatedTransition } from "src/animation/ValueWithAnimatedTran
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useDialogState } from "src/dialog/dialog.jsx"
-import { useBecomes } from "src/hooks.js"
+
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
 import { countSymbol } from "src/round/computeRoundScore.js"
@@ -17,7 +18,6 @@ import { RoundScoreRulesDialog } from "src/round/RoundScoreRulesDialog.jsx"
 import {
   ScoreParticle,
   useScoreParticles,
-  useScoreWithoutParticles,
 } from "src/score/score.particle.jsx"
 import { useRoundScoreParticleEffects } from "src/round/useRoundScoreParticleEffects.js"
 
@@ -62,9 +62,9 @@ const ScoreDisplay = () => {
   })
 
   useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
-  useRoundScoreParticleEffects({ roundScoreDomNodeRef, addScoreParticle })
-
-  const roundScoreDisplayed = useScoreWithoutParticles({ score: roundScore, scoreParticles })
+  const scoreInParticles = useRoundScoreParticleEffects({ addScoreParticle })
+  const scoreWithoutParticles = roundScore - scoreInParticles
+  console.log({ roundScore, scoreInParticles })
 
   return (
     <>
@@ -75,7 +75,7 @@ const ScoreDisplay = () => {
         onClick={openScoreDialog}
       >
         <span ref={roundScoreDomNodeRef} className="round-score--value">
-          <ValueWithAnimatedTransition value={roundScoreDisplayed} duration={600} />
+          <ValueWithAnimatedTransition value={scoreWithoutParticles} duration={600} />
         </span>
       </button>
       {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
