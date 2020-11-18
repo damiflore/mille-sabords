@@ -1,5 +1,5 @@
 import { assert } from "@jsenv/assert"
-import { computeRoundScore } from "src/score/computeRoundScore.js"
+import { computeRoundScore } from "src/round/computeRoundScore.js"
 import {
   createCoinFromDice,
   createDiamondFromDice,

@@ -6,7 +6,7 @@ import {
   createParrotFromDice,
   getFirstTwoSwordsChallengeCardFromDeck,
 } from "../test.material.js"
-import { computeRoundScore } from "src/score/computeRoundScore.js"
+import { computeRoundScore } from "src/round/computeRoundScore.js"
 
 // 8 coin
 {

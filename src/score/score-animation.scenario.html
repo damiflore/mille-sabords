@@ -65,6 +65,7 @@
       import { useSignal, useSignalState } from "src/helper/signal.js"
       import { useUpdateEffect } from "src/hooks.js"
       import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
+      import { useScoreParticles, useScoreWithoutParticles } from "src/score/score.particle.jsx"
 
       const debug = false
 
@@ -154,8 +155,10 @@
         groupOfFour,
         diceKept,
       }) => {
-        const [scoreParticles, scoreParticlesSetter] = React.useState([])
         const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
+        const [scoreParticles, addScoreParticle] = useScoreParticles({
+          onScoreParticleMerged: scoreParticleMergedEmitter,
+        })
 
         return (
           <>
@@ -164,7 +167,7 @@
               diceKept={diceKept}
               groupOfFour={groupOfFour}
               totalScoreSetter={totalScoreSetter}
-              scoreParticlesSetter={scoreParticlesSetter}
+              addScoreParticle={addScoreParticle}
               scoreParticleMergedListener={scoreParticleMergedListener}
             />
             <TotalScore
@@ -179,7 +182,6 @@
                   key={scoreParticle.id}
                   totalScoreDomNodeRef={totalScoreDomNodeRef}
                   scoreParticle={scoreParticle}
-                  scoreParticleMergedEmitter={scoreParticleMergedEmitter}
                 />
               )
             })}
@@ -192,67 +194,8 @@
         diceKept,
         groupOfFour,
         totalScoreSetter,
-        scoreParticlesSetter,
-        scoreParticleMergedListener,
+        addScoreParticle,
       }) => {
-        const minDelayBetweenParticles = 400
-        const lastParticleAnimatedMsRef = React.useRef(null)
-        const addScoreParticle = ({ id, value, x, y }) => {
-          const addScoreParticleToState = (scoreParticle) => {
-            scoreParticlesSetter((scoreParticles) => {
-              const scoreParticlesWithParticle = [...scoreParticles, scoreParticle]
-              console.log(
-                `adding ${scoreParticle.id}`,
-                scoreParticles,
-                "->",
-                scoreParticlesWithParticle,
-              )
-              return scoreParticlesWithParticle
-            })
-            return () => {
-              scoreParticlesSetter((scoreParticles) => {
-                const scoreParticlesWithoutParticle = scoreParticles.filter(
-                  (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-                )
-                console.log(
-                  `removing ${scoreParticle.id}`,
-                  scoreParticles,
-                  `->`,
-                  scoreParticlesWithoutParticle,
-                )
-                return scoreParticlesWithoutParticle
-              })
-            }
-          }
-
-          const lastParticleAnimatedMs = lastParticleAnimatedMsRef.current
-          lastParticleAnimatedMsRef.current = Date.now()
-          const animationDelay = scoreParticleAnimationDelayGetter(
-            lastParticleAnimatedMs,
-            minDelayBetweenParticles,
-          )
-          console.log(`${id} animation delay is ${animationDelay}`)
-
-          const scoreParticle = {
-            id,
-            value,
-            x,
-            y,
-            animationDelay,
-          }
-          const removeScoreParticleFromState = addScoreParticleToState(scoreParticle)
-          const stopListening = scoreParticleMergedListener((particleMerged) => {
-            if (particleMerged === scoreParticle) {
-              stopListening()
-              removeScoreParticleFromState()
-            }
-          })
-          return () => {
-            stopListening()
-            removeScoreParticleFromState()
-          }
-        }
-
         useUpdateEffect(() => {
           if (diceKept) {
             totalScoreSetter((totalScore) => {
@@ -314,18 +257,7 @@
         scoreParticles,
         scoreParticleMergedListener,
       }) => {
-        // score displayed is score without taking into account score into particles
-        const totalScoreDisplayed = React.useMemo(() => {
-          const scoreInParticles = scoreParticles.reduce(
-            (previous, particle) => previous + particle.value,
-            0,
-          )
-          const totalScoreWithoutParticles = totalScore - scoreInParticles
-          console.log(
-            `totalScoreWithoutParticles updated to ${totalScoreWithoutParticles} (totalScore is ${totalScore})`,
-          )
-          return totalScoreWithoutParticles
-        }, [totalScore, scoreParticles])
+        const totalScoreDisplayed = useScoreWithoutParticles({ score: totalScore, scoreParticles })
 
         const scoreParticleMerged = scoreParticleMergedListener
           ? useSignalState(scoreParticleMergedListener)
@@ -354,11 +286,7 @@
         )
       }
 
-      const ScoreParticle = ({
-        totalScoreDomNodeRef,
-        scoreParticleMergedEmitter,
-        scoreParticle,
-      }) => {
+      const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
         const particleDomNodeRef = React.useRef()
         React.useEffect(() => {
           const particleDomNode = particleDomNodeRef.current
@@ -369,10 +297,8 @@
             x: scoreParticle.x,
             y: scoreParticle.y,
             delay: scoreParticle.animationDelay,
-            oncancel: scoreParticle.onScoreParticleCanceled,
-            onfinish: () => {
-              scoreParticleMergedEmitter(scoreParticle)
-            },
+            oncancel: scoreParticle.oncancel,
+            onfinish: scoreParticle.onfinish,
           })
         }, [])
 
@@ -470,21 +396,6 @@
           oncancel()
           animation.cancel()
         }
-      }
-
-      const scoreParticleAnimationDelayGetter = (lastAnimationMs, minDelayBetweenParticles) => {
-        if (!lastAnimationMs) {
-          return 0
-        }
-
-        const nowMs = Date.now()
-        const msEllapsedSinceLastParticle = nowMs - lastAnimationMs
-        const msToWait = minDelayBetweenParticles - msEllapsedSinceLastParticle
-        if (msToWait <= 0) {
-          return 0
-        }
-
-        return msToWait
       }
 
       const domNodeToScoreParticlePosition = (domNode) => {

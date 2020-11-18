@@ -11,10 +11,15 @@ import { useDialogState } from "src/dialog/dialog.jsx"
 import { useBecomes } from "src/hooks.js"
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
-import { countSymbol } from "src/score/computeRoundScore.js"
+import { countSymbol } from "src/round/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
-import { ScoreRulesDialog } from "src/score/score.dialog.jsx"
-import { ScoreParticle } from "src/score/score.particle.jsx"
+import { RoundScoreRulesDialog } from "src/round/RoundScoreRulesDialog.jsx"
+import {
+  ScoreParticle,
+  useScoreParticles,
+  useScoreWithoutParticles,
+} from "src/score/score.particle.jsx"
+import { useRoundScoreParticleEffects } from "src/round/useRoundScoreParticleEffects.js"
 
 const { useState, useEffect } = React
 
@@ -51,11 +56,14 @@ const ScoreDisplay = () => {
 
   const roundScoreDomNodeRef = React.useRef()
   const [scoreDialogIsOpen, openScoreDialog, closeScoreDialog] = useDialogState()
-  const [scoreParticles, scoreParticlesSetter] = React.useState([])
   const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
-  const roundScoreDisplayed = useRoundScoreDisplayed({ roundScore, scoreParticles })
+  const [scoreParticles, addScoreParticle] = useScoreParticles({
+    onScoreParticleMerged: scoreParticleMergedEmitter,
+  })
+  const roundScoreDisplayed = useScoreWithoutParticles({ score: roundScore, scoreParticles })
 
   useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
+  useRoundScoreParticleEffects({ addScoreParticle })
 
   return (
     <>
@@ -70,7 +78,7 @@ const ScoreDisplay = () => {
         </span>
       </button>
       {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
-      <ScoreRulesDialog dialogIsOpen={scoreDialogIsOpen} closeDialog={closeScoreDialog} />
+      <RoundScoreRulesDialog dialogIsOpen={scoreDialogIsOpen} closeDialog={closeScoreDialog} />
 
       {scoreParticles.map((scoreParticle) => {
         return (
@@ -78,25 +86,11 @@ const ScoreDisplay = () => {
             key={scoreParticle.id}
             totalScoreDomNodeRef={roundScoreDomNodeRef}
             scoreParticle={scoreParticle}
-            scoreParticleMergedEmitter={scoreParticleMergedEmitter}
           />
         )
       })}
     </>
   )
-}
-
-// score displayed is score without taking into account score into particles
-const useRoundScoreDisplayed = ({ roundScore, scoreParticles }) => {
-  const roundScoreDisplayed = React.useMemo(() => {
-    const scoreInParticles = scoreParticles.reduce(
-      (previous, particle) => previous + particle.value,
-      0,
-    )
-    const totalScoreWithoutParticles = roundScore - scoreInParticles
-    return totalScoreWithoutParticles
-  }, [roundScore, scoreParticles])
-  return roundScoreDisplayed
 }
 
 const useScoreParticleMergeEffect = ({ roundScoreDomNodeRef, scoreParticleMergedListener }) => {

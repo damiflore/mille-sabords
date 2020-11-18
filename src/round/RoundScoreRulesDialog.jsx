@@ -6,7 +6,7 @@ import { Image } from "src/generic/Image.jsx"
 import { DialogWood } from "src/dialog/dialog.wood.jsx"
 import { symbolCoinUrl, symbolDiamondUrl } from "src/symbols/symbols.js"
 
-export const ScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
+export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
   return (
     <DialogWood
       className="score-rules-dialog"
