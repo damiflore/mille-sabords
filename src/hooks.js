@@ -4,9 +4,9 @@ export const useMountEffect = (effect) => {
   React.useEffect(effect, [])
 }
 
-export const useUpdateEffect = (effect, dependencies = []) => {
+export const useUpdateEffect = (effect, dependencies = [], { layout = false } = {}) => {
   const isInitialMount = React.useRef(true)
-  React.useEffect(() => {
+  ;(layout ? React.useLayoutEffect : React.useEffect)(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false
       return undefined
