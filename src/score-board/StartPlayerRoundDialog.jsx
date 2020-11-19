@@ -1,7 +1,7 @@
 import React from "react"
 import { Image } from "src/generic/Image.jsx"
 import { useStartPlayerRound } from "src/round/round.actions.js"
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { Dialog } from "src/dialog/dialog.component.jsx"
 
 export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) => {
   const startPlayerRound = useStartPlayerRound()

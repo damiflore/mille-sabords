@@ -8,7 +8,7 @@ import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 import { ValueWithAnimatedTransition } from "src/animation/ValueWithAnimatedTransition.jsx"
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
-import { useDialogState } from "src/dialog/dialog.jsx"
+import { useDialogState } from "src/dialog/dialog.component.jsx"
 
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"

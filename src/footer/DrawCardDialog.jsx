@@ -8,7 +8,7 @@ import { useDrawCard, useShuffleDeck } from "src/cards/cards.actions.js"
 import { useActivateCurrentCard } from "src/round/round.actions.js"
 
 import { cardsRules } from "src/cards/cards-rules.js"
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { Dialog } from "src/dialog/dialog.component.jsx"
 import { cardIdToCard, cardToImageUrl, cardDefaultUrl } from "src/cards/cards.js"
 import { SmallCard } from "src/cards/SmallCard.jsx"
 import { getDomNodeRectangle } from "src/dom/dom.position.js"

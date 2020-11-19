@@ -1,6 +1,6 @@
 import React from "react"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { Dialog } from "src/dialog/dialog.component.jsx"
 import { useAnimationsDisabled } from "src/main.store.js"
 import { useDisableAnimations, useEnableAnimations } from "src/main.actions.js"
 
