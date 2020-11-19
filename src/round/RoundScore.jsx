@@ -71,7 +71,11 @@ const ScoreDisplay = () => {
         onClick={openScoreDialog}
       >
         <span ref={roundScoreDomNodeRef} className="round-score--value">
-          <ValueWithAnimatedTransition value={scoreDisplayed} duration={600} />
+          <ValueWithAnimatedTransition
+            value={scoreDisplayed}
+            condition={(value, previousValue) => value > previousValue}
+            duration={600}
+          />
         </span>
       </button>
       {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}

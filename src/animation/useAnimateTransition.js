@@ -4,24 +4,31 @@ import React from "react"
 import { usePrevious } from "src/hooks.js"
 import { startJavaScriptAnimation } from "./startJavaScriptAnimation.js"
 
-export const useAnimateTransitionUsingJs = (value, { duration = 300, timingFunction } = {}) => {
+export const useAnimateTransitionUsingJs = (
+  value,
+  { duration = 300, timingFunction, condition } = {},
+) => {
   const [animatedValue, animatedValueSetter] = React.useState(null)
-  useAnimateTransition(value, (from, to) => {
-    animatedValueSetter({ value: from })
-    return startJavaScriptAnimation({
-      duration,
-      timingFunction,
-      onProgress: ({ progress }) => {
-        const value = Math.round(from + (to - from) * progress)
-        animatedValueSetter({
-          value,
-        })
-      },
-      onComplete: () => {
-        animatedValueSetter(null)
-      },
-    })
-  })
+  useAnimateTransition(
+    value,
+    (from, to) => {
+      animatedValueSetter({ value: from })
+      return startJavaScriptAnimation({
+        duration,
+        timingFunction,
+        onProgress: ({ progress }) => {
+          const value = Math.round(from + (to - from) * progress)
+          animatedValueSetter({
+            value,
+          })
+        },
+        onComplete: () => {
+          animatedValueSetter(null)
+        },
+      })
+    },
+    { condition },
+  )
   return animatedValue
 }
 
@@ -34,12 +41,12 @@ export const useAnimateTransitionUsingWebAnimation = (value, animate) => {
   })
 }
 
-const useAnimateTransition = (value, animate) => {
+const useAnimateTransition = (value, animate, { condition = () => true } = {}) => {
   const [transition, transitionSetter] = React.useState(null)
 
   const valuePrevious = usePrevious(value)
   React.useEffect(() => {
-    if (valuePrevious !== value) {
+    if (valuePrevious !== value && condition(value, valuePrevious)) {
       transitionSetter({
         from: valuePrevious,
         to: value,
