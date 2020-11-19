@@ -34,6 +34,7 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
   })
   useComboEffect({ addScoreParticle })
   usePerfectEffect({ addScoreParticle })
+  // reste le sword challenge
 }
 
 const useSymbolEffect = ({ symbol, symbolEffect }) => {
