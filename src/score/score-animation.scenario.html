@@ -14,13 +14,23 @@
       }
 
       .score-particle {
-        position: absolute;
-        font-family: Arial;
-        font-size: 16px;
-        color: gold;
-        /* stroke: red;
-        stroke-width: 2px;
-        fill: black; */
+        position: fixed;
+        /* visibility: hidden; */
+      }
+
+      /* @font-face {
+        font-family: "Pompadour";
+        src: url("./PompadourBlack.ttf");
+      } */
+
+      .score-particle--value {
+        font-family: Pompadour;
+        font-size: 55px;
+        /* color: gold; */
+        fill: gold;
+        stroke: black;
+        stroke-width: 1.5;
+        stroke-linecap: round;
       }
 
       .score {
@@ -40,103 +50,28 @@
   <body>
     <h1>Score animation</h1>
     <p>
-      Cliquer sur le bouton pour afficher une animation qui serq utilisée lorsqu'un élement de ui
+      Cliquer sur le bouton pour afficher une animation qui sera utilisée lorsqu'un élement de ui
       influence le score (un dé par example)
     </p>
-
-    <!-- <svg viewBox="0 0 100 100">
-      <text
-        x="50"
-        y="50"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        style="fill: gold; stroke: black; font-size: 48px"
-      >
-        100
-      </text>
-    </svg>
-
-    <svg>
-      <text
-        text-anchor="middle"
-        alignment-baseline="middle"
-        style="fill: gold; stroke: black; font-size: 48px"
-      >
-        1000
-      </text>
-    </svg> -->
 
     <div id="app"></div>
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { printPointInDocument, getDomNodeRectangle } from "src/dom/dom.position.js"
+      import { getDomNodeRectangle } from "src/dom/dom.position.js"
       import { getRectangleCenterPoint } from "src/helper/rectangle.js"
-      import { useUpdateEffect, useSignalEmitter, useSignalListener } from "src/hooks.js"
+      import { useSignal, useSignalState } from "src/helper/signal.js"
+      import { useUpdateEffect } from "src/hooks.js"
       import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
+      import { useScoreParticles, ScoreParticle } from "src/score/score.particle.jsx"
 
-      const debug = true
-      const MIN_DELAY_BETWEEN_PARTICLES = 500
+      const Main = () => {
+        return <App />
+      }
 
       const App = () => {
-        const domNodeRef = React.useRef()
+        const diceNodeRef = React.useRef()
         const totalScoreDomNodeRef = React.useRef()
-
-        const [totalScore, totalScoreSetter] = React.useState(0)
-        const [totalScoreDisplayed, totalScoreDisplayedSetter] = React.useState(0)
-        const [scoreParticles, scoreParticlesSetter] = React.useState([])
-        const scoreParticleMergedSignal = useSignalEmitter()
-
-        const lastParticleEmissionMsRef = React.useRef(null)
-
-        const spawnScoreParticle = ({ id, value, x, y }) => {
-          const emitParticle = () => {
-            lastParticleEmissionMsRef.current = Date.now()
-            const scoreParticle = {
-              id,
-              value,
-              x,
-              y,
-              onScoreParticleMerged: () => {
-                scoreParticlesSetter(
-                  scoreParticles.filter(
-                    (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-                  ),
-                )
-                scoreParticleMergedSignal.emit(scoreParticle)
-              },
-            }
-            scoreParticlesSetter([...scoreParticles, scoreParticle])
-            return () => {
-              scoreParticlesSetter(
-                scoreParticles.filter(
-                  (scoreParticleCandidate) => scoreParticleCandidate !== scoreParticle,
-                ),
-              )
-            }
-          }
-
-          const lastParticleEmissionMs = lastParticleEmissionMsRef.current
-          if (!lastParticleEmissionMs) {
-            return emitParticle()
-          }
-
-          const nowMs = Date.now()
-          const msEllapsedSinceLastParticle = nowMs - lastParticleEmissionMs
-          const msToWait = MIN_DELAY_BETWEEN_PARTICLES - msEllapsedSinceLastParticle
-          if (msToWait <= 0) {
-            return emitParticle()
-          }
-
-          let cancelParticleAnimation = () => {}
-          const timeoutId = setTimeout(() => {
-            cancelParticleAnimation = emitParticle()
-          }, msToWait)
-          return () => {
-            clearTimeout(timeoutId)
-            cancelParticleAnimation()
-          }
-        }
 
         const [diceKept, diceKeptSetter] = React.useState(false)
         const keepCoin = () => {
@@ -146,135 +81,109 @@
           diceKeptSetter(false)
         }
 
-        // score displayed is score without taking into account score into particles
-        React.useEffect(() => {
-          const scoreInParticles = scoreParticles.reduce(
-            (previous, particle) => previous + particle.value,
-            0,
-          )
-          const totalScoreWithoutParticles = totalScore - scoreInParticles
-          totalScoreDisplayedSetter(totalScoreWithoutParticles)
-        }, [totalScore, scoreParticles])
-
-        const diceKeptRef = React.useRef()
-        useUpdateEffect(() => {
-          const diceKeptPrevious = diceKeptRef.current
-          const diceBecomesKept = !diceKeptPrevious && diceKept
-          diceKeptRef.current = diceKept
-
-          if (diceBecomesKept) {
-            totalScoreSetter((totalScore) => {
-              const to = totalScore + 100
-              console.log(`dice kept, add 100 to total score -> ${to}`)
-              return to
-            })
-            return
-          }
-
-          const diceBecomesUnkept = diceKeptPrevious && !diceKept
-          if (diceBecomesUnkept) {
-            totalScoreSetter((totalScore) => {
-              const to = totalScore - 100
-              console.log(`dice unkept, remove 100 from total score -> ${to}`)
-              return to
-            })
-            return
-          }
-        }, [diceKept, totalScore])
-        // spawning particle happens when dice is kept only
-        // (it does not care about totalScore)
-        React.useEffect(() => {
-          if (diceKept) {
-            return spawnScoreParticle({
-              id: "coin-bonus-from-dice-1",
-              value: 100,
-              ...domNodeToScoreParticlePosition(domNodeRef.current),
-            })
-          }
-          return undefined
-        }, [diceKept])
-
         const [groupOfFour, groupOfFourSetter] = React.useState(false)
-        const simulateGroupOfFour = () => {
+        const simulateGroupOfFourFound = () => {
           groupOfFourSetter(true)
         }
-        const groupOfFourRef = React.useRef()
-        useUpdateEffect(() => {
-          const groupOfFourPrevious = groupOfFourRef.current
-          const groupOfFourBecomesTrue = !groupOfFourPrevious && groupOfFour
-          groupOfFourRef.current = groupOfFour
+        const simulateGroupOfFourLost = () => {
+          groupOfFourSetter(false)
+        }
 
-          if (groupOfFourBecomesTrue) {
-            totalScoreSetter((totalScore) => {
-              const to = totalScore + 200
-              console.log(`group of four found, add 200 to total score -> ${to}`)
-              return to
-            })
-            return
-          }
-
-          const groupOfFourBecomesFalse = groupOfFourPrevious && !groupOfFour
-          if (groupOfFourBecomesFalse) {
-            totalScoreSetter((totalScore) => {
-              const to = totalScore - 200
-              console.log(`group of four lost, remove 200 from total score -> ${to}`)
-              return to
-            })
-            return
-          }
-        }, [groupOfFour, totalScore])
-        React.useEffect(() => {
-          if (groupOfFour) {
-            return spawnScoreParticle({
-              id: "group-bonus-from-dice-1",
-              value: 200,
-              ...domNodeToScoreParticlePosition(domNodeRef.current),
-            })
-          }
-          return undefined
-        }, [groupOfFour])
+        let totalScore = 55
+        if (diceKept) {
+          totalScore += 100
+        }
+        if (groupOfFour) {
+          totalScore += 200
+        }
 
         return (
           <>
-            <div ref={domNodeRef} className="dice"></div>
+            <Actions
+              keepCoin={keepCoin}
+              unkeepCoin={unkeepCoin}
+              simulateGroupOfFourFound={simulateGroupOfFourFound}
+              simulateGroupOfFourLost={simulateGroupOfFourLost}
+            />
+            <div ref={diceNodeRef} className="dice"></div>
+            <Scoring
+              diceNodeRef={diceNodeRef}
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              totalScore={totalScore}
+              groupOfFour={groupOfFour}
+              diceKept={diceKept}
+            />
+          </>
+        )
+      }
+
+      const Actions = ({
+        keepCoin,
+        unkeepCoin,
+        simulateGroupOfFourFound,
+        simulateGroupOfFourLost,
+      }) => {
+        return (
+          <>
+            <button onClick={keepCoin}>Keep piece</button>
+            <button onClick={unkeepCoin}>Unkeep piece</button>
+            <br />
             <button
               onClick={() => {
                 keepCoin()
-              }}
-            >
-              Keep piece
-            </button>
-            <button
-              onClick={() => {
-                unkeepCoin()
-              }}
-            >
-              Unkeep piece
-            </button>
-            <button
-              onClick={() => {
-                keepCoin()
-                simulateGroupOfFour()
+                simulateGroupOfFourFound()
               }}
             >
               Keep 4eme piece
             </button>
             <button
               onClick={() => {
-                // increaseScore(100)
-                // increaseScore(200)
-                // increaseScore(500)
+                unkeepCoin()
+                simulateGroupOfFourLost()
               }}
             >
-              Keep 3eme piece + coffre plein
+              Unkeep 4 eme piece
             </button>
+          </>
+        )
+      }
 
-            <TotalScore
-              value={totalScoreDisplayed}
-              scoreParticleMergedSignal={scoreParticleMergedSignal}
-              totalScoreDomNodeRef={totalScoreDomNodeRef}
+      const Scoring = ({
+        diceNodeRef,
+        totalScoreDomNodeRef,
+        groupOfFour,
+        diceKept,
+        totalScore,
+      }) => {
+        const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
+        const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
+          totalScore,
+          // onScoreParticleAdded: ({ value }) => {
+          //   scoreDisplayedSetter((scoreDisplayed) => scoreDisplayed + value)
+          // },
+          // onScoreParticleRemoved: () => {
+          // scoreDisplayedSetter((scoreDisplayed) => scoreDisplayed + value)
+          // },
+          onScoreParticleMerged: (particle) => {
+            scoreParticleMergedEmitter(particle)
+          },
+        })
+
+        return (
+          <>
+            <ScoringLogic
+              diceNodeRef={diceNodeRef}
+              diceKept={diceKept}
+              groupOfFour={groupOfFour}
+              addScoreParticle={addScoreParticle}
+              scoreParticleMergedListener={scoreParticleMergedListener}
             />
-
+            <TotalScore
+              totalScoreDomNodeRef={totalScoreDomNodeRef}
+              scoreDisplayed={scoreDisplayed}
+              scoreParticles={scoreParticles}
+              scoreParticleMergedListener={scoreParticleMergedListener}
+            />
             {scoreParticles.map((scoreParticle) => {
               return (
                 <ScoreParticle
@@ -288,8 +197,48 @@
         )
       }
 
-      const TotalScore = ({ value, scoreParticleMergedSignal, totalScoreDomNodeRef }) => {
-        const scoreParticleMerged = useSignalListener(scoreParticleMergedSignal)
+      const ScoringLogic = ({ diceNodeRef, diceKept, groupOfFour, addScoreParticle }) => {
+        useUpdateEffect(() => {
+          if (diceKept) {
+            const removeScoreParticle = addScoreParticle({
+              id: "coin-bonus-particle",
+              value: 100,
+              ...domNodeToScoreParticlePosition(diceNodeRef.current),
+            })
+            return () => {
+              console.log("removing coin particle because dice unkept")
+              removeScoreParticle()
+            }
+          }
+          return () => {}
+        }, [diceKept])
+
+        useUpdateEffect(() => {
+          if (groupOfFour) {
+            const removeScoreParticle = addScoreParticle({
+              id: "group-bonus-particle",
+              value: 200,
+              ...domNodeToScoreParticlePosition(diceNodeRef.current),
+            })
+            return () => {
+              console.log("removing bonus particle because group lost")
+              removeScoreParticle()
+            }
+          }
+          return () => {}
+        }, [groupOfFour])
+
+        return null
+      }
+
+      const TotalScore = ({
+        totalScoreDomNodeRef,
+        scoreDisplayed,
+        scoreParticleMergedListener,
+      }) => {
+        const scoreParticleMerged = scoreParticleMergedListener
+          ? useSignalState(scoreParticleMergedListener)
+          : false
 
         React.useEffect(() => {
           if (!scoreParticleMerged) return
@@ -305,124 +254,13 @@
           )
         }, [totalScoreDomNodeRef, scoreParticleMerged])
 
-        const totalScoreAnimatedValue = useAnimateTransitionUsingJs(value, { duration: 600 })
-
         return (
           <div className="score">
             <p ref={totalScoreDomNodeRef} className="score--value">
-              {totalScoreAnimatedValue ? totalScoreAnimatedValue.value : value}
+              <ValueWithAnimatedTransition value={scoreDisplayed} duration={600} />
             </p>
           </div>
         )
-      }
-
-      const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
-        const particleDomNodeRef = React.useRef()
-        React.useEffect(() => {
-          const particleDomNode = particleDomNodeRef.current
-          const totalScoreDomNode = totalScoreDomNodeRef.current
-          return animateScoreParticle({
-            x: scoreParticle.x,
-            y: scoreParticle.y,
-            particleDomNode,
-            totalScoreDomNode,
-            oncancel: scoreParticle.onScoreParticleCanceled,
-            onfinish: scoreParticle.onScoreParticleMerged,
-          })
-        }, [])
-
-        return ReactDOM.createPortal(
-          <div ref={particleDomNodeRef} className="score-particle">
-            {scoreParticle.value}
-          </div>,
-          document.body,
-        )
-      }
-
-      const animateScoreParticle = ({
-        x,
-        y,
-        duration = 800,
-        particleDomNode,
-        totalScoreDomNode,
-        oncancel = () => {},
-        onfinish = () => {},
-      }) => {
-        const particleDomNodeRectangle = getDomNodeRectangle(particleDomNode)
-        const totalScoreDomNodeRectangle = getDomNodeRectangle(totalScoreDomNode)
-
-        const particleWidth = particleDomNodeRectangle.right - particleDomNodeRectangle.left
-        const particleHeight = particleDomNodeRectangle.bottom - particleDomNodeRectangle.top
-        const startX = x - particleWidth / 2
-        const startY = y - particleHeight / 2
-        const intermediateX = startX + 5
-        const intermediateY = startY - particleHeight * 1.5
-        const endX = totalScoreDomNodeRectangle.left
-        const endY = totalScoreDomNodeRectangle.top
-
-        particleDomNode.style.left = `${startX}px`
-        particleDomNode.style.top = `${startY}px`
-
-        if (debug) {
-          printPointInDocument(
-            { x: startX, y: startY },
-            {
-              autoRemove: false,
-              color: "yellow",
-            },
-          )
-          printPointInDocument(
-            { x: intermediateX, y: intermediateY },
-            {
-              autoRemove: false,
-              color: "orange",
-            },
-          )
-          printPointInDocument(
-            { x: endX, y: endY },
-            {
-              autoRemove: false,
-              color: "red",
-            },
-          )
-        }
-
-        // en premier fait apparaitre avec opacité
-        const animation = particleDomNode.animate(
-          [
-            {
-              opacity: 0,
-              transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.1,
-              opacity: 1,
-              // transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.4,
-              opacity: 1,
-              transform: `translate(${intermediateX - startX}px, ${
-                intermediateY - startY
-              }px) scale(1.2)`,
-            },
-            {
-              transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
-            },
-          ],
-          {
-            duration,
-            fill: "forwards",
-          },
-        )
-        animation.onfinish = () => {
-          onfinish()
-        }
-
-        return () => {
-          oncancel()
-          animation.cancel()
-        }
       }
 
       const domNodeToScoreParticlePosition = (domNode) => {
@@ -431,7 +269,12 @@
         return centerPoint
       }
 
-      ReactDOM.render(<App />, document.querySelector("#app"))
+      const ValueWithAnimatedTransition = ({ value, duration }) => {
+        const animatedValue = useAnimateTransitionUsingJs(value, { duration })
+        return animatedValue ? animatedValue.value : value
+      }
+
+      ReactDOM.render(<Main />, document.querySelector("#app"))
     </script>
   </body>
 </html>

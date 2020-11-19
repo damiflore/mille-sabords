@@ -124,36 +124,37 @@ This scenario is to show different size context and how to style dialog to
         flex-grow: 0;
       }
 
-       .dialog-border .dialog--insert-top,
-       .dialog-border .dialog--main,
-       .dialog-border .dialog--insert-bottom {
+      .dialog-border .dialog--insert-top,
+      .dialog-border .dialog--main,
+      .dialog-border .dialog--insert-bottom {
         border-width: 3px;
         border-color: black;
         border-style: solid;
         border-radius: 0.3em;
-       }
+      }
 
-       .dialog-border .dialog--insert-top {
-         border-bottom-width: 0;
-         border-bottom-left-radius: 0;
-         border-bottom-right-radius: 0;
-       }
+      .dialog-border .dialog--insert-top {
+        border-bottom-width: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
 
-       .dialog-border .dialog--main {
+      .dialog-border .dialog--main {
         border-radius: 0;
-         border-top-width: 0;
-         border-bottom-width: 0;
-       }
+        border-top-width: 0;
+        border-bottom-width: 0;
+      }
 
-       .dialog-border .dialog--insert-bottom {
-         border-top-width: 0;
-         border-top-left-radius: 0;
-         border-top-right-radius: 0;
-       }
+      .dialog-border .dialog--insert-bottom {
+        border-top-width: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
 
-       .dialog--insert-left, .dialog--insert-right {
-         overflow: hidden;
-       }
+      .dialog--insert-left,
+      .dialog--insert-right {
+        overflow: hidden;
+      }
     </style>
   </head>
 
@@ -165,14 +166,13 @@ This scenario is to show different size context and how to style dialog to
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
             <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>10% spacing + left/right/bottom fluid</p>
       <div class="container" style="width: 300px; height: 200px">
         <div
@@ -181,14 +181,13 @@ This scenario is to show different size context and how to style dialog to
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
             <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>10% spacing + left/right/bottom fluid + scroll</p>
       <div class="container" style="width: 400px; height: 200px">
         <div
@@ -206,20 +205,20 @@ This scenario is to show different size context and how to style dialog to
           </div>
         </div>
       </div>
+
       <p>10% spacing + bottom fluid</p>
       <div class="container" style="width: 200px; height: 200px">
         <div class="dialog--root dialog-spacing-10 dialog-spacing-bottom-fluid">
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
             <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>10% spacing + left/right fluid</p>
       <div class="container" style="width: 200px; height: 200px">
         <div
@@ -228,14 +227,13 @@ This scenario is to show different size context and how to style dialog to
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
             <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>10% spacing + left/right fluid + scroll</p>
       <div class="container" style="width: 200px; height: 200px">
         <div
@@ -253,34 +251,33 @@ This scenario is to show different size context and how to style dialog to
           </div>
         </div>
       </div>
+
       <p>10% spacing + all fluid</p>
       <div class="container" style="width: 300px; height: 200px">
         <div class="dialog--root dialog-spacing-10 dialog-spacing-fluid">
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
-                        <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+            <div class="dialog--main">
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>no spacing + fluid bottom</p>
       <div class="container" style="width: 300px; height: 200px">
         <div class="dialog--root dialog-spacing-0 dialog-spacing-bottom-fluid">
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
-                        <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+            <div class="dialog--main">
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>20% spacing + fluid left/right/bottom</p>
       <div class="container" style="width: 300px; height: 200px">
         <div
@@ -288,15 +285,14 @@ This scenario is to show different size context and how to style dialog to
         >
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
-                       <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+            <div class="dialog--main">
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
+
       <p>Dialog with borders (using absolute div)</p>
       <div class="container" style="width: 300px; height: 200px">
         <div
@@ -305,24 +301,22 @@ This scenario is to show different size context and how to style dialog to
           <div class="dialog--document">
             <div class="dialog--back"></div>
             <div class="dialog--insert-top">Header</div>
-                        <div class="dialog--main">
-              <div class="dialog--scrollable-content">
-                The dialog body
-              </div>
+            <div class="dialog--main">
+              <div class="dialog--scrollable-content">The dialog body</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>
         </div>
       </div>
-    </div>
-    <p>Dialog with rounded borders (reusing header, body and footer)</p>
-    <div class="container" style="width: 300px; height: 200px">
+
+      <p>Dialog with rounded borders (reusing header, body and footer)</p>
+      <div class="container" style="width: 300px; height: 200px">
         <div
           class="dialog--root dialog-border dialog-spacing-20 dialog-spacing-left-fluid dialog-spacing-right-fluid dialog-spacing-bottom-fluid"
         >
           <div class="dialog--document">
             <div class="dialog--insert-top">Header</div>
-                        <div class="dialog--main">
+            <div class="dialog--main">
               <div class="dialog--scrollable-content">
                 The dialog body
                 <div style="height: 300px; background: orange"></div>
@@ -332,8 +326,8 @@ This scenario is to show different size context and how to style dialog to
           </div>
         </div>
       </div>
-    </div>
-    <p>Dialog with left/right inserts</p>
+
+      <p>Dialog with left/right inserts</p>
       <div class="container" style="width: 300px; height: 200px">
         <div
           class="dialog--root dialog-border dialog-spacing-20 dialog-spacing-left-fluid dialog-spacing-right-fluid dialog-spacing-bottom-fluid"
@@ -346,7 +340,7 @@ This scenario is to show different size context and how to style dialog to
                 The dialog body
                 <div style="height: 300px; background: orange"></div>
               </div>
-             <div class="dialog--insert-right">Right insert</div>
+              <div class="dialog--insert-right">Right insert</div>
             </div>
             <div class="dialog--insert-bottom">Footer</div>
           </div>

@@ -5,7 +5,7 @@ import { useCurrentCardId } from "src/main.store.js"
 import { useSymbolsInChest } from "src/round/round.selectors.js"
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { SYMBOL_SWORD, symbolSwordUrl } from "src/symbols/symbols.js"
-import { countSymbol } from "src/score/computeRoundScore.js"
+import { countSymbol } from "src/round/computeRoundScore.js"
 import swordsDisabledImageUrl from "src/header/swords-disabled.png"
 
 export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {

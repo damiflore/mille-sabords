@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/dialog/dialog.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,kCAA2B,CAE3B,cACE,SACF,CAEA,gBACE,wBAAyB,CACzB,YAAa,CACb,qBACF,CAEA,cACE,eAAgB,CAChB,cAAe,CACf,iBAAkB,CAClB,aACF,CACA,YACE,qBAAsB,CACtB,aAAc,CACd,cAAe,CACf,+BACF,CACA,iBACE,WACF",
+  "file": "dialog-a209f25e.css",
+  "sourcesContent": [
+    "@import \"./dialog.wood.css\";\n\n.dialog--root {\n  z-index: 2;\n}\n\n.dialog-content {\n  background-color: #ffe7be;\n  display: flex;\n  flex-direction: column;\n}\n\n.dialog-label {\n  font-weight: 800;\n  font-size: 14px;\n  text-align: center;\n  color: #885708;\n}\n.dialog-box {\n  padding: 10px 5px 15px;\n  color: #885708;\n  font-size: 13px;\n  border-bottom: 2px solid #885708;\n}\n.dialog-box.last {\n  border: none;\n}\n"
+  ]
+}

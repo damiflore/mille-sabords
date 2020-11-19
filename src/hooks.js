@@ -1,13 +1,12 @@
 import React from "react"
-import { createSignal } from "src/helper/signal.js"
 
 export const useMountEffect = (effect) => {
   React.useEffect(effect, [])
 }
 
-export const useUpdateEffect = (effect, dependencies = []) => {
+export const useUpdateEffect = (effect, dependencies = [], { layout = false } = {}) => {
   const isInitialMount = React.useRef(true)
-  React.useEffect(() => {
+  ;(layout ? React.useLayoutEffect : React.useEffect)(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false
       return undefined
@@ -54,17 +53,4 @@ export const usePrevious = (value) => {
     ref.current = value
   }, [value])
   return ref.current
-}
-
-export const useSignalEmitter = () => {
-  const [signal] = React.useState(() => createSignal())
-  return signal
-}
-
-export const useSignalListener = (signal) => {
-  const [state, stateSetter] = React.useState()
-  React.useEffect(() => {
-    return signal.listen(stateSetter)
-  }, [])
-  return state
 }

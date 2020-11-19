@@ -13,7 +13,7 @@ import {
   usePlayers,
   useDices,
 } from "src/main.store.js"
-import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
+import { diceIsOnSkull } from "src/dices/dices.js"
 import {
   cardIdToCard,
   isChestCard,
@@ -22,8 +22,9 @@ import {
   isOneSkullCard,
   isTwoSkullsCard,
 } from "src/cards/cards.js"
+import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
 
-import { computeRoundScore } from "src/score/computeRoundScore.js"
+import { computeRoundScore } from "src/round/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
 
 const { useMemo } = React
@@ -52,16 +53,10 @@ export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) =>
 
 export const useSymbolsInChest = ({ dices = useDices(), chestSlots = useChestSlots() } = {}) => {
   return Object.keys(chestSlots).reduce((previous, chestSlot) => {
-    const chestSlotContent = chestSlots[chestSlot]
+    const symbol = chestSlotContentToSymbol(chestSlots[chestSlot], dices)
 
-    if (chestSlotContent && chestSlotContent.type === "symbol") {
-      return [...previous, chestSlotContent.value]
-    }
-
-    if (chestSlotContent && chestSlotContent.type === "dice") {
-      const diceId = chestSlotContent.value
-      const dice = dices[diceId]
-      return [...previous, diceToVisibleSymbol(dice)]
+    if (symbol) {
+      return [...previous, symbol]
     }
 
     return previous

@@ -32,6 +32,7 @@ const LoadScreen = (props) => {
   const [mainImportNamespace, mainImportNamespaceSetter] = React.useState(null)
   const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
   const [mainUrlsLoaded, mainsUrlsLoadedSetter] = React.useState(false)
+  const [, mainUrlErrorSetter] = React.useState()
 
   const urlTrackerTotalCount = useUrlTrackerTotalCount()
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
@@ -57,13 +58,19 @@ const LoadScreen = (props) => {
 
     mainImportLoadingSetter(true)
     ;(async () => {
-      // TODO: try/catch
-      const namespace = await import("./App.jsx")
-      mainImportLoadingSetter(false)
-      mainImportNamespaceSetter(namespace)
-      requestAsapCallback(() => {
-        mainUrlTrackerReadySetter(true)
-      })
+      try {
+        const namespace = await import("./App.jsx")
+        mainImportLoadingSetter(false)
+        mainImportNamespaceSetter(namespace)
+        requestAsapCallback(() => {
+          mainUrlTrackerReadySetter(true)
+        })
+      } catch (e) {
+        // https://github.com/facebook/react/issues/14981
+        mainUrlErrorSetter(() => {
+          throw e
+        })
+      }
     })()
   }, [loadscreenUrlsLoaded])
 

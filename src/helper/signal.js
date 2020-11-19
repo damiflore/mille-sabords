@@ -1,10 +1,21 @@
+import React from "react"
+
 export const createSignal = () => {
   let listeners = []
 
-  const listen = (callback) => {
-    let removed = false
+  const listen = (callback, { once = false } = {}) => {
+    if (once) {
+      const callbackOriginal = callback
+      callback = (...args) => {
+        stopListening()
+        callbackOriginal(...args)
+      }
+    }
+
     listeners = [...listeners, callback]
-    return () => {
+
+    let removed = false
+    const stopListening = () => {
       if (removed) return
       removed = true
       const listenersWithoutCallback = []
@@ -24,6 +35,7 @@ export const createSignal = () => {
       }
       listeners = listenersWithoutCallback
     }
+    return stopListening
   }
 
   const emit = (...args) => {
@@ -36,4 +48,17 @@ export const createSignal = () => {
     listen,
     emit,
   }
+}
+
+export const useSignal = () => {
+  const [signal] = React.useState(() => createSignal())
+  return [signal.listen, signal.emit]
+}
+
+export const useSignalState = (listen) => {
+  const [state, stateSetter] = React.useState()
+  React.useEffect(() => {
+    return listen(stateSetter)
+  }, [])
+  return state
 }

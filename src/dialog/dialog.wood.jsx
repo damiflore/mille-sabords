@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Dialog } from "src/dialog/Dialog.jsx"
+import { Dialog } from "src/dialog/dialog.component.jsx"
 
 export const DialogWood = ({ title, children, ...props }) => {
   return (
