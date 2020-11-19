@@ -5,6 +5,7 @@ import { getDomNodeRectangle } from "src/dom/dom.position.js"
 export const useScoreParticles = ({
   totalScore = 0,
   minDelayBetweenParticles = 400,
+  scoreParticleAnimationDuration = 800,
   onScoreParticleAdded = () => {},
   onScoreParticleRemoved = () => {},
   onScoreParticleMerged = () => {},
@@ -44,7 +45,14 @@ export const useScoreParticles = ({
   }
 
   const lastAnimationMsRef = React.useRef(null)
-  const addScoreParticle = ({ id, value, x, y }) => {
+  const addScoreParticle = ({
+    id,
+    value,
+    children = value,
+    x,
+    y,
+    animationDuration = scoreParticleAnimationDuration,
+  }) => {
     const lastAnimationMs = lastAnimationMsRef.current
     const animationDelay = scoreParticleAnimationDelayGetter(
       lastAnimationMs,
@@ -55,16 +63,18 @@ export const useScoreParticles = ({
     const scoreParticle = {
       id,
       value,
+      children,
       x,
       y,
       animationDelay,
+      animationDuration,
       oncancel: () => {
         // not really needed as long as code calling addScoreParticle
         // does it in a useEffect and returns removeScoreParticleFromState
         removeScoreParticleFromState()
       },
       onfinish: () => {
-        // removeScoreParticleFromState()
+        removeScoreParticleFromState()
         onScoreParticleMerged(scoreParticle)
         scoreSetter((score) => score + scoreParticle.value)
       },
@@ -116,6 +126,7 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
       totalScoreDomNode,
       x: scoreParticle.x,
       y: scoreParticle.y,
+      duration: scoreParticle.animationDuration,
       delay: scoreParticle.animationDelay,
       oncancel: scoreParticle.oncancel,
       onfinish: scoreParticle.onfinish,
@@ -125,7 +136,7 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
   return (
     <svg ref={particleDomNodeRef} className="score-particle">
       <text x="0" y="0" dominantBaseline="text-before-edge" className="score-particle--value">
-        {scoreParticle.value}
+        {scoreParticle.children}
       </text>
     </svg>
   )
@@ -136,7 +147,7 @@ const animateScoreParticle = ({
   totalScoreDomNode,
   x,
   y,
-  duration = 800,
+  duration,
   delay = 0,
   oncancel = () => {},
   onfinish = () => {},

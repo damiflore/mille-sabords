@@ -30,12 +30,12 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
             </div>
             <div className="column">
               <div className="column-title">Points</div>
-              <span className="points">+100</span>
-              <span className="points">+200</span>
-              <span className="points">+500</span>
-              <span className="points">+1000</span>
-              <span className="points">+2000</span>
-              <span className="points">+4000</span>
+              <span className="points">100</span>
+              <span className="points">200</span>
+              <span className="points">500</span>
+              <span className="points">1000</span>
+              <span className="points">2000</span>
+              <span className="points">4000</span>
             </div>
           </div>
         </div>
@@ -49,8 +49,8 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
             </div>
             <div className="column">
               <div className="column-title">Points</div>
-              <span className="points">+100</span>
-              <span className="points">+100</span>
+              <span className="points">100</span>
+              <span className="points">100</span>
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
             </div>
             <div className="column">
               <div className="column-title">Points</div>
-              <span className="points">+500</span>
+              <span className="points">500</span>
             </div>
           </div>
         </div>

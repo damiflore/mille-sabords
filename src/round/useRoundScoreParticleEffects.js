@@ -14,6 +14,7 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-coin`,
         value: 100,
+        children: "Pièce!",
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${chestSlot}"]`),
         ),
@@ -26,6 +27,7 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-diamond`,
         value: 100,
+        children: "Diamant!",
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${chestSlot}"]`),
         ),
@@ -45,7 +47,14 @@ const useSymbolEffect = ({ symbol, symbolEffect }) => {
       const chestSlotSymbol = chestSlotContentToSymbol(chestSlotContent, dices)
       return chestSlotSymbol && chestSlotSymbol === symbol
     })
-  }, [symbol, chestSlotUpdates, dices])
+  }, [
+    symbol,
+    chestSlotUpdates,
+    // don't put dices as dependency here oherwise movings dices in rolled area
+    // influences dices in chest and we replay the animation
+    // it could be fixed by listening only dices in the chestSlot ?
+    // dices
+  ])
 
   useUpdateEffect(() => {
     const effectReturnValues = updatesWithThatSymbol.map((updateWithThatSymbol) => {
@@ -64,8 +73,8 @@ const useSymbolEffect = ({ symbol, symbolEffect }) => {
 const useComboEffect = ({ addScoreParticle }) => {
   const chestSlots = useChestSlots()
   const dices = useDices()
-  const combos = React.useMemo(() => {
-    const combos = {}
+  const chestSlotsGroupedBySymbols = React.useMemo(() => {
+    const chestSlotsGroupedBySymbols = {}
     Object.keys(chestSlots).forEach((chestSlot) => {
       const chestSlotContent = chestSlots[chestSlot]
       const chestSlotSymbol = chestSlotContentToSymbol(chestSlotContent, dices)
@@ -73,56 +82,87 @@ const useComboEffect = ({ addScoreParticle }) => {
         return
       }
 
-      if (chestSlotSymbol in combos) {
-        combos[chestSlotSymbol].push(chestSlot)
+      if (chestSlotSymbol in chestSlotsGroupedBySymbols) {
+        chestSlotsGroupedBySymbols[chestSlotSymbol].push(chestSlot)
       } else {
-        combos[chestSlotSymbol] = [chestSlot]
+        chestSlotsGroupedBySymbols[chestSlotSymbol] = [chestSlot]
       }
     })
-    return combos
+    return chestSlotsGroupedBySymbols
   }, [chestSlots, dices])
+
+  const combos = React.useMemo(() => {
+    const combos = {}
+    Object.keys(chestSlotsGroupedBySymbols).forEach((symbol) => {
+      const slotsParticipatingToCombo = chestSlotsGroupedBySymbols[symbol]
+      const symbolCount = slotsParticipatingToCombo.length
+      const value = COMBO_SCORES[symbolCount]
+      if (!value) {
+        return
+      }
+      combos[symbol] = { slotsParticipatingToCombo, value }
+    })
+    return combos
+  }, [chestSlotsGroupedBySymbols])
+  const combosPreviousRef = React.useRef({})
+  React.useEffect(() => {
+    combosPreviousRef.current = combos
+  }, [combos])
 
   const chestSlotUpdates = useChestSlotUpdatesWithoutMoves()
   const comboUpdates = React.useMemo(() => {
     const comboUpdates = []
-    // une combo est update si un de ses chest slots a été modifié
+    const combosPrevious = combosPreviousRef.current
+
     Object.keys(combos).forEach((symbol) => {
-      const slotsParticipatingToCombo = combos[symbol]
-      const firstSlotUpated = slotsParticipatingToCombo.find((chestSlot) =>
-        chestSlotUpdates.some(
-          (chestSlotUpdateCandidate) => chestSlotUpdateCandidate.chestSlot === chestSlot,
-        ),
-      )
-      if (firstSlotUpated) {
-        comboUpdates.push({
-          symbol,
-          slotsParticipatingToCombo,
-          chestSlot: firstSlotUpated,
-        })
+      const comboPrevious = combosPrevious[symbol]
+      const combo = combos[symbol]
+      if (
+        comboPrevious &&
+        // si la combo est la meme
+        // -> on affiche rien parce que cette combo était déja la
+        // si le combo est inférieur (on unkeep un dé d'une combo de 4 donc on se retrouve avec une combo de 3)
+        // -> on affiche rien non plus parce qu'on veut pas réagir au unkeep, seulement au keep
+        comboPrevious.value >= combo.value
+      ) {
+        return
       }
+      comboUpdates.push({
+        symbol,
+        comboPrevious,
+        combo,
+      })
     })
     return comboUpdates
   }, [combos, chestSlotUpdates])
 
-  useUpdateEffect(() => {
-    const cleanupFunctions = comboUpdates.map(
-      ({ symbol, slotsParticipatingToCombo, chestSlot }) => {
-        const symbolCount = slotsParticipatingToCombo.length
-        const value = COMBO_SCORES[symbolCount]
-        if (!value) {
-          return () => {}
-        }
+  // const { slotsParticipatingToCombo } = combo
+  // const firstSlotUpdated = slotsParticipatingToCombo.find((chestSlot) =>
+  //   chestSlotUpdates.some(
+  //     (chestSlotUpdateCandidate) => chestSlotUpdateCandidate.chestSlot === chestSlot,
+  //   ),
+  // )
+  // if (!firstSlotUpdated) {
+  //   return
+  // }
 
-        const id = `${symbolCount}-${symbol}-combo`
-        return addScoreParticle({
-          id,
-          value,
-          ...chestSlotDomNodeToScoreParticlePosition(
-            document.querySelector(`[data-chest-slot="${chestSlot}"]`),
-          ),
-        })
-      },
-    )
+  useUpdateEffect(() => {
+    const cleanupFunctions = comboUpdates.map(({ symbol, comboPrevious, combo }) => {
+      const { slotsParticipatingToCombo } = combo
+      const chestSlot = slotsParticipatingToCombo[0]
+      const symbolCount = slotsParticipatingToCombo.length
+
+      const id = `${symbolCount}-${symbol}-combo`
+      const value = combo.value - (comboPrevious ? comboPrevious.value : 0)
+      return addScoreParticle({
+        id,
+        value,
+        children: `Combo ${symbolCount}!`,
+        ...chestSlotDomNodeToScoreParticlePosition(
+          document.querySelector(`[data-chest-slot="${chestSlot}"]`),
+        ),
+      })
+    })
     return () => {
       cleanupFunctions.forEach((cleanup) => {
         cleanup()
@@ -183,10 +223,6 @@ const chestSlotDomNodeToScoreParticlePosition = (chestSlotDomNode) => {
 }
 
 const usePerfectEffect = ({ addScoreParticle }) => {
-  // tout les dés dans le chests doivent rapporté des points
-  // il faut donc reprendre une partie du code qui provient de computeRoundScore
-  // et s'assurer de jouer cet effect que si on vient de le déclancher avec un dé
-
   const chestSlots = useChestSlots()
   const dices = useDices()
   const perfect = React.useMemo(() => {
@@ -222,6 +258,7 @@ const usePerfectEffect = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: "perfect",
         value: 500,
+        children: "Coffre parfait!",
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${perfectUpdate.chestSlot}"]`),
         ),

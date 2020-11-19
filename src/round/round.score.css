@@ -1,14 +1,19 @@
+@font-face {
+  font-family: "skullsandcrossbones";
+  src: url("../score/skullsandcrossbones.ttf");
+}
+
 .score-particle {
   position: fixed;
   visibility: hidden;
 }
 
 .score-particle--value {
-  font-family: Arial;
-  font-size: 25px;
+  font-family: skullsandcrossbones;
+  font-size: 35px;
   /* color: gold; */
-  fill: gold;
-  stroke: black;
+  fill: white;
+  /* stroke: black;
   stroke-width: 1;
-  stroke-linecap: round;
+  stroke-linecap: round; */
 }
