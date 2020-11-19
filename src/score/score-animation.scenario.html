@@ -15,13 +15,22 @@
 
       .score-particle {
         position: fixed;
-        font-family: Arial;
-        font-size: 16px;
-        color: gold;
-        visibility: hidden;
-        /* stroke: red;
-        stroke-width: 2px;
-        fill: black; */
+        /* visibility: hidden; */
+      }
+
+      /* @font-face {
+        font-family: "Pompadour";
+        src: url("./PompadourBlack.ttf");
+      } */
+
+      .score-particle--value {
+        font-family: Pompadour;
+        font-size: 55px;
+        /* color: gold; */
+        fill: gold;
+        stroke: black;
+        stroke-width: 1.5;
+        stroke-linecap: round;
       }
 
       .score {
@@ -47,27 +56,14 @@
 
     <div id="app"></div>
     <script type="module">
-      /*
-      a faire:
-
-      réussir a rendre réutilisable pas mal de concept ici
-      l'idée ce serais de pouvoir réutiliser le concept d'un score total
-      avec des particule qui essaye de le rejoindre
-
-      comme ça l'implémentation dans le jeu devrait etre plus lisible et maintenable.
-      Et puis ce concept et assez utile on pourrait vouloir le réutiliser ailleurs dans le jeu
-      */
-
       import React from "react"
       import ReactDOM from "react-dom"
-      import { printPointInDocument, getDomNodeRectangle } from "src/dom/dom.position.js"
+      import { getDomNodeRectangle } from "src/dom/dom.position.js"
       import { getRectangleCenterPoint } from "src/helper/rectangle.js"
       import { useSignal, useSignalState } from "src/helper/signal.js"
       import { useUpdateEffect } from "src/hooks.js"
       import { useAnimateTransitionUsingJs } from "src/animation/useAnimateTransition.js"
-      import { useScoreParticles } from "src/score/score.particle.jsx"
-
-      const debug = false
+      import { useScoreParticles, ScoreParticle } from "src/score/score.particle.jsx"
 
       const Main = () => {
         return <App />
@@ -265,118 +261,6 @@
             </p>
           </div>
         )
-      }
-
-      const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
-        const particleDomNodeRef = React.useRef()
-        React.useEffect(() => {
-          const particleDomNode = particleDomNodeRef.current
-          const totalScoreDomNode = totalScoreDomNodeRef.current
-          return animateScoreParticle({
-            particleDomNode,
-            totalScoreDomNode,
-            x: scoreParticle.x,
-            y: scoreParticle.y,
-            delay: scoreParticle.animationDelay,
-            oncancel: scoreParticle.oncancel,
-            onfinish: scoreParticle.onfinish,
-          })
-        }, [])
-
-        return (
-          <div ref={particleDomNodeRef} className="score-particle">
-            {scoreParticle.value}
-          </div>
-        )
-      }
-
-      const animateScoreParticle = ({
-        particleDomNode,
-        totalScoreDomNode,
-        x,
-        y,
-        duration = 800,
-        delay = 0,
-        oncancel = () => {},
-        onfinish = () => {},
-      }) => {
-        const particleDomNodeRectangle = getDomNodeRectangle(particleDomNode)
-        const totalScoreDomNodeRectangle = getDomNodeRectangle(totalScoreDomNode)
-
-        const particleWidth = particleDomNodeRectangle.right - particleDomNodeRectangle.left
-        const particleHeight = particleDomNodeRectangle.bottom - particleDomNodeRectangle.top
-        const startX = x - particleWidth / 2
-        const startY = y - particleHeight / 2
-        const intermediateX = startX + 5
-        const intermediateY = startY - particleHeight * 1.5
-        const endX = totalScoreDomNodeRectangle.left
-        const endY = totalScoreDomNodeRectangle.top
-
-        particleDomNode.style.left = `${startX}px`
-        particleDomNode.style.top = `${startY}px`
-
-        if (debug) {
-          printPointInDocument(
-            { x: startX, y: startY },
-            {
-              autoRemove: false,
-              color: "yellow",
-            },
-          )
-          printPointInDocument(
-            { x: intermediateX, y: intermediateY },
-            {
-              autoRemove: false,
-              color: "orange",
-            },
-          )
-          printPointInDocument(
-            { x: endX, y: endY },
-            {
-              autoRemove: false,
-              color: "red",
-            },
-          )
-        }
-
-        // en premier fait apparaitre avec opacité
-        const animation = particleDomNode.animate(
-          [
-            {
-              opacity: 0,
-              visibility: "visible",
-              transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.1,
-              opacity: 1,
-              // transform: "translate(0px, 0px)",
-            },
-            {
-              offset: 0.4,
-              opacity: 1,
-              transform: `translate(${intermediateX - startX}px, ${
-                intermediateY - startY
-              }px) scale(1.2)`,
-            },
-            {
-              transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
-            },
-          ],
-          {
-            duration,
-            delay,
-            fill: "forwards",
-          },
-        )
-        animation.onfinish = () => {
-          onfinish()
-        }
-
-        return () => {
-          oncancel()
-          animation.cancel()
-        }
       }
 
       const domNodeToScoreParticlePosition = (domNode) => {

@@ -99,6 +99,15 @@ const scoreParticleAnimationDelayGetter = (lastAnimationMs, minDelayBetweenParti
 
 export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
   const particleDomNodeRef = React.useRef()
+
+  React.useLayoutEffect(() => {
+    const particleDomNode = particleDomNodeRef.current
+    const textNode = particleDomNode.querySelector("text")
+    const textNodeBox = textNode.getBBox()
+    particleDomNode.setAttribute("width", textNodeBox.width)
+    particleDomNode.setAttribute("height", textNodeBox.height)
+  }, [])
+
   React.useEffect(() => {
     const particleDomNode = particleDomNodeRef.current
     const totalScoreDomNode = totalScoreDomNodeRef.current
@@ -114,9 +123,11 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
   }, [])
 
   return (
-    <div ref={particleDomNodeRef} className="score-particle">
-      {scoreParticle.value}
-    </div>
+    <svg ref={particleDomNodeRef} className="score-particle">
+      <text x="0" y="0" dominantBaseline="text-before-edge" className="score-particle--value">
+        {scoreParticle.value}
+      </text>
+    </svg>
   )
 }
 
