@@ -57,7 +57,12 @@ export const countSymbol = (symbolArray, symbol) => {
   return symbolArray.filter((symbolCandidate) => symbolCandidate === symbol).length
 }
 
-const computeScoreForSymbols = (symbols, perfectCount = 8) => {
+const computeScoreForSymbols = (symbols, perfectCount) => {
+  const { score, perfectBonus } = getScoreAndPerfectBonus(symbols, perfectCount)
+  return score + perfectBonus
+}
+
+export const getScoreAndPerfectBonus = (symbols, perfectCount = 8) => {
   let score = 0
   let usefullSymbol = 0
 
@@ -85,9 +90,10 @@ const computeScoreForSymbols = (symbols, perfectCount = 8) => {
     }
   })
 
-  if (usefullSymbol === perfectCount) score += 500
-
-  return score
+  return {
+    score,
+    perfectBonus: usefullSymbol === perfectCount ? 500 : 0,
+  }
 }
 
 const countSymbolsOccurences = (symbols) => {

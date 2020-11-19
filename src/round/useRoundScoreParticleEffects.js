@@ -5,6 +5,7 @@ import { getRectangleCenterPoint } from "src/helper/rectangle.js"
 import { useChestSlots, useDices } from "src/main.store.js"
 import { chestSlotContentToSymbol, compareChestSlotContent } from "src/chest/chest.jsx"
 import { SYMBOL_COIN, SYMBOL_DIAMOND } from "src/symbols/symbols.js"
+import { getScoreAndPerfectBonus } from "src/round/computeRoundScore.js"
 
 export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
   useSymbolEffect({
@@ -31,8 +32,8 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
       })
     },
   })
-
   useComboEffect({ addScoreParticle })
+  usePerfectEffect({ addScoreParticle })
 }
 
 const useSymbolEffect = ({ symbol, symbolEffect }) => {
@@ -178,4 +179,53 @@ const chestSlotDomNodeToScoreParticlePosition = (chestSlotDomNode) => {
   const domNodeRectangle = getDomNodeRectangle(chestSlotDomNode)
   const centerPoint = getRectangleCenterPoint(domNodeRectangle)
   return centerPoint
+}
+
+const usePerfectEffect = ({ addScoreParticle }) => {
+  // tout les dés dans le chests doivent rapporté des points
+  // il faut donc reprendre une partie du code qui provient de computeRoundScore
+  // et s'assurer de jouer cet effect que si on vient de le déclancher avec un dé
+
+  const chestSlots = useChestSlots()
+  const dices = useDices()
+  const perfect = React.useMemo(() => {
+    const symbols = []
+    Object.keys(chestSlots).forEach((chestSlot) => {
+      const chestSlotContent = chestSlots[chestSlot]
+      if (!chestSlotContent) {
+        return
+      }
+
+      const chestSlotHasDice = chestSlotContent.type === "dice"
+      if (!chestSlotHasDice) {
+        return
+      }
+
+      symbols.push(chestSlotContentToSymbol(chestSlotContent, dices))
+    })
+    const { perfectBonus } = getScoreAndPerfectBonus(symbols)
+    return Boolean(perfectBonus)
+  }, [chestSlots, dices])
+
+  const chestSlotUpdates = useChestSlotUpdatesWithoutMoves()
+  const perfectUpdate = React.useMemo(() => {
+    if (chestSlotUpdates.length === 0) return null
+    return {
+      perfect,
+      chestSlot: chestSlotUpdates[0].chestSlot,
+    }
+  }, [perfect, chestSlotUpdates])
+
+  useUpdateEffect(() => {
+    if (perfectUpdate && perfectUpdate.perfect) {
+      return addScoreParticle({
+        id: "perfect",
+        value: 500,
+        ...chestSlotDomNodeToScoreParticlePosition(
+          document.querySelector(`[data-chest-slot="${perfectUpdate.chestSlot}"]`),
+        ),
+      })
+    }
+    return undefined
+  }, [perfectUpdate])
 }
