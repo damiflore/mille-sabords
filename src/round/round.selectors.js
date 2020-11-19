@@ -22,7 +22,7 @@ import {
   isOneSkullCard,
   isTwoSkullsCard,
 } from "src/cards/cards.js"
-import { chestSlotContentToSymbol } from "src/chest/Chest.jsx"
+import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
 
 import { computeRoundScore } from "src/round/computeRoundScore.js"
 import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"

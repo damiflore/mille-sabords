@@ -3,7 +3,7 @@ import { useUpdateEffect } from "src/hooks.js"
 import { getDomNodeRectangle } from "src/dom/dom.position.js"
 import { getRectangleCenterPoint } from "src/helper/rectangle.js"
 import { useChestSlots, useDices } from "src/main.store.js"
-import { chestSlotContentToSymbol, compareChestSlotContent } from "src/chest/chest.jsx"
+import { chestSlotContentToSymbol, compareChestSlotContent } from "src/chest/chest.component.jsx"
 import { SYMBOL_COIN, SYMBOL_DIAMOND } from "src/symbols/symbols.js"
 import { getScoreAndPerfectBonus } from "src/round/computeRoundScore.js"
 
