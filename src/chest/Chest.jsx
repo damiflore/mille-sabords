@@ -22,20 +22,6 @@ export const Chest = ({ chestRef, diceOverChestListener }) => {
   const currentCard = cardIdToCard(useCurrentCardId())
   const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 
-  /*
-    to get better user experience we should instantiate 9 elements even if the dices are not kept
-    these elements would be valid drop target
-    so that user can choose to put the dice where he wants in the dice kept area
-
-    beware though because we still want user to drop a dice
-    anywhere in the kept area and dice will choose to drop where it intersects most
-
-    to achieve this the most intersecting drop target should win (how to do that remains to be found)
-
-    il faut vraiment le coder comme ça
-    parce que c'est plus simple a comprendre
-  */
-
   return (
     <div className="chest">
       <div
@@ -75,6 +61,25 @@ export const chestSlotContentToSymbol = (chestSlotContent, dices) => {
   }
 
   return null
+}
+
+export const compareChestSlotContent = (chestSlotContentLeft, chestSlotContentRight) => {
+  const leftHasContent = Boolean(chestSlotContentLeft)
+  const rightHasContent = Boolean(chestSlotContentRight)
+  if (!leftHasContent && !rightHasContent) {
+    return true
+  }
+  if (leftHasContent !== rightHasContent) {
+    return false
+  }
+
+  const leftType = chestSlotContentLeft.type
+  const rightType = chestSlotContentRight.type
+  if (leftType !== rightType) {
+    return false
+  }
+
+  return chestSlotContentLeft.value === chestSlotContentRight.value
 }
 
 const ChestSlot = ({ chestSlotContent }) => {

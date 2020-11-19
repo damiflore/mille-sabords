@@ -15,10 +15,7 @@ import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx
 import { countSymbol } from "src/round/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
 import { RoundScoreRulesDialog } from "src/round/RoundScoreRulesDialog.jsx"
-import {
-  ScoreParticle,
-  useScoreParticles,
-} from "src/score/score.particle.jsx"
+import { ScoreParticle, useScoreParticles } from "src/score/score.particle.jsx"
 import { useRoundScoreParticleEffects } from "src/round/useRoundScoreParticleEffects.js"
 
 const { useState, useEffect } = React
@@ -57,14 +54,13 @@ const ScoreDisplay = () => {
   const roundScoreDomNodeRef = React.useRef()
   const [scoreDialogIsOpen, openScoreDialog, closeScoreDialog] = useDialogState()
   const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
-  const [scoreParticles, addScoreParticle] = useScoreParticles({
+  const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
+    totalScore: roundScore,
     onScoreParticleMerged: scoreParticleMergedEmitter,
   })
 
+  useRoundScoreParticleEffects({ addScoreParticle })
   useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
-  const scoreInParticles = useRoundScoreParticleEffects({ addScoreParticle })
-  const scoreWithoutParticles = roundScore - scoreInParticles
-  console.log({ roundScore, scoreInParticles })
 
   return (
     <>
@@ -75,7 +71,7 @@ const ScoreDisplay = () => {
         onClick={openScoreDialog}
       >
         <span ref={roundScoreDomNodeRef} className="round-score--value">
-          <ValueWithAnimatedTransition value={scoreWithoutParticles} duration={600} />
+          <ValueWithAnimatedTransition value={scoreDisplayed} duration={600} />
         </span>
       </button>
       {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}

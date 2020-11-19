@@ -93,15 +93,13 @@
           groupOfFourSetter(false)
         }
 
-        let totalScore = 0
+        let totalScore = 55
         if (diceKept) {
           totalScore += 100
         }
         if (groupOfFour) {
           totalScore += 200
         }
-
-        const [scoreDisplayed, scoreDisplayedSetter] = React.useState(totalScore)
 
         return (
           <>
@@ -115,8 +113,7 @@
             <Scoring
               diceNodeRef={diceNodeRef}
               totalScoreDomNodeRef={totalScoreDomNodeRef}
-              scoreDisplayed={scoreDisplayed}
-              scoreDisplayedSetter={scoreDisplayedSetter}
+              totalScore={totalScore}
               groupOfFour={groupOfFour}
               diceKept={diceKept}
             />
@@ -158,20 +155,22 @@
       const Scoring = ({
         diceNodeRef,
         totalScoreDomNodeRef,
-        scoreDisplayed,
-        scoreDisplayedSetter,
         groupOfFour,
         diceKept,
+        totalScore,
       }) => {
         const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
-        const [scoreParticles, addScoreParticle] = useScoreParticles({
+        const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
+          totalScore,
           // onScoreParticleAdded: ({ value }) => {
-          //   scoreDisplayedSetter((scoreDisplayed) => scoreDisplayed - value)
-          // },
-          // onScoreParticleRemoved: ({ value }) => {
           //   scoreDisplayedSetter((scoreDisplayed) => scoreDisplayed + value)
           // },
-          onScoreParticleMerged: scoreParticleMergedEmitter,
+          // onScoreParticleRemoved: () => {
+          // scoreDisplayedSetter((scoreDisplayed) => scoreDisplayed + value)
+          // },
+          onScoreParticleMerged: (particle) => {
+            scoreParticleMergedEmitter(particle)
+          },
         })
 
         return (
@@ -180,7 +179,6 @@
               diceNodeRef={diceNodeRef}
               diceKept={diceKept}
               groupOfFour={groupOfFour}
-              scoreDisplayedSetter={scoreDisplayedSetter}
               addScoreParticle={addScoreParticle}
               scoreParticleMergedListener={scoreParticleMergedListener}
             />
@@ -203,20 +201,9 @@
         )
       }
 
-      const ScoringLogic = ({
-        diceNodeRef,
-        diceKept,
-        groupOfFour,
-        scoreDisplayedSetter,
-        addScoreParticle,
-      }) => {
+      const ScoringLogic = ({ diceNodeRef, diceKept, groupOfFour, addScoreParticle }) => {
         useUpdateEffect(() => {
           if (diceKept) {
-            scoreDisplayedSetter((scoreDisplayed) => {
-              const to = scoreDisplayed + 100
-              console.log(`dice kept, add 100 to total score -> ${to}`)
-              return to
-            })
             const removeScoreParticle = addScoreParticle({
               id: "coin-bonus-particle",
               value: 100,
@@ -227,21 +214,11 @@
               removeScoreParticle()
             }
           }
-          scoreDisplayedSetter((scoreDisplayed) => {
-            const to = scoreDisplayed - 100
-            console.log(`dice unkept, remove 100 from total score -> ${to}`)
-            return to
-          })
           return () => {}
         }, [diceKept])
 
         useUpdateEffect(() => {
           if (groupOfFour) {
-            scoreDisplayedSetter((scoreDisplayed) => {
-              const to = scoreDisplayed + 200
-              console.log(`group of four found, add 200 to total score -> ${to}`)
-              return to
-            })
             const removeScoreParticle = addScoreParticle({
               id: "group-bonus-particle",
               value: 200,
@@ -252,11 +229,6 @@
               removeScoreParticle()
             }
           }
-          scoreDisplayedSetter((scoreDisplayed) => {
-            const to = scoreDisplayed - 200
-            console.log(`group of four lost, remove 200 from total score -> ${to}`)
-            return to
-          })
           return () => {}
         }, [groupOfFour])
 
@@ -266,14 +238,8 @@
       const TotalScore = ({
         totalScoreDomNodeRef,
         scoreDisplayed,
-        scoreParticles,
         scoreParticleMergedListener,
       }) => {
-        scoreDisplayed -= scoreParticles.reduce(
-          (previous, particle) => previous + particle.value,
-          0,
-        )
-
         const scoreParticleMerged = scoreParticleMergedListener
           ? useSignalState(scoreParticleMergedListener)
           : false

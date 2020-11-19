@@ -3,12 +3,18 @@ import React from "react"
 import { getDomNodeRectangle } from "src/dom/dom.position.js"
 
 export const useScoreParticles = ({
+  totalScore = 0,
   minDelayBetweenParticles = 400,
   onScoreParticleAdded = () => {},
   onScoreParticleRemoved = () => {},
   onScoreParticleMerged = () => {},
 } = {}) => {
+  const [score, scoreSetter] = React.useState(totalScore)
   const [scoreParticles, scoreParticlesSetter] = React.useState([])
+
+  React.useEffect(() => {
+    scoreSetter(totalScore)
+  }, [totalScore])
 
   const addScoreParticleToState = (scoreParticle) => {
     // scoreParticlesSetter([...scoreParticles, scoreParticle])
@@ -32,6 +38,7 @@ export const useScoreParticles = ({
         )
         return scoreParticlesWithoutParticle
       })
+      scoreSetter((score) => score - scoreParticle.value)
       onScoreParticleRemoved(scoreParticle)
     }
   }
@@ -59,13 +66,20 @@ export const useScoreParticles = ({
       onfinish: () => {
         removeScoreParticleFromState()
         onScoreParticleMerged(scoreParticle)
+        scoreSetter((score) => score + scoreParticle.value)
       },
     }
     const removeScoreParticleFromState = addScoreParticleToState(scoreParticle)
     return removeScoreParticleFromState
   }
 
-  return [scoreParticles, addScoreParticle]
+  const scoreInParticles = scoreParticles.reduce(
+    (previous, particle) => previous + particle.value,
+    0,
+  )
+  const scoreDisplayed = score - scoreInParticles
+
+  return [scoreParticles, addScoreParticle, scoreDisplayed]
 }
 
 const scoreParticleAnimationDelayGetter = (lastAnimationMs, minDelayBetweenParticles) => {
