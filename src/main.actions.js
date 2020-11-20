@@ -1,5 +1,4 @@
-import { createAction } from "src/main.store.js"
-import { defaultState } from "src/main.store.js"
+import { createAction, defaultState } from "src/main.store.js"
 
 export const useDisableAnimations = createAction((state) => {
   return {
@@ -29,6 +28,6 @@ export const useEnableSound = createAction((state) => {
   }
 })
 
-export const useCancelGame = createAction((state) => {
+export const useCancelGame = createAction(() => {
   return defaultState
 })
