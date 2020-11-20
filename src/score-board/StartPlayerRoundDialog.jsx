@@ -2,19 +2,20 @@ import React from "react"
 import { Image } from "src/generic/Image.jsx"
 import { useStartPlayerRound } from "src/round/round.actions.js"
 import { Dialog } from "src/dialog/dialog.component.jsx"
+import { CloseIcon } from "src/dialog/CloseIcon.jsx"
 
 export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) => {
   const startPlayerRound = useStartPlayerRound()
   return (
     <Dialog
-      className="score-board-dialog dialog-spacing-10 dialog-spacing-fluid"
+      className="score-board-dialog dialog-spacing-10 dialog-spacing-fluid dialog-spacing-left-fixed dialog-spacing-right-fixed"
       isOpen={dialogIsOpen}
       onRequestClose={closeDialog}
       requestCloseOnClickOutside={true}
     >
       <div className="dialog-content">
-        <div className="cross" onClick={closeDialog}>
-          X
+        <div className="dialog-close" onClick={closeDialog}>
+          <CloseIcon />
         </div>
         <div className="dialog-body">
           <div>
@@ -24,6 +25,8 @@ export const StartPlayerRoundDialog = ({ closeDialog, dialogIsOpen, player }) =>
               className="player-img"
               src={player && player.character.img}
               alt="player"
+              width="40"
+              height="40"
               style={{
                 boxShadow: `inset 0px 0px 0px 4px ${(player && player.character.color) || "black"}`,
               }}

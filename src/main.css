@@ -13,6 +13,15 @@
 @import "./score-board/start-player-round-dialog.css";
 @import "./game/character-selection.css";
 
+@font-face {
+  font-family: "skullsandcrossbones";
+  src: url("./fonts/skullsandcrossbones.ttf");
+}
+@font-face {
+  font-family: "pirateTreasure";
+  src: url("./fonts/PirateTreasureDemo-4B3MB.otf");
+}
+
 body {
   font-family: arial, sans;
   color: #444444;

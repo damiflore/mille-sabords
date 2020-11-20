@@ -8,13 +8,15 @@ const SmallCardForward = ({ card, ...props }, ref) => {
     <div
       className="card current-card"
       ref={ref}
+      width="55"
+      height="55"
       style={{
         backgroundColor: card.color1,
         borderColor: card.color2,
       }}
       {...props}
     >
-      <Image src={cardToSmallImageUrl(card)} alt={card.type} />
+      <Image src={cardToSmallImageUrl(card)} alt={card.type} width="55" height="55" />
     </div>
   )
 }

@@ -6,11 +6,12 @@
   background-color: #bee1ff;
   border-radius: 10px;
 }
-.score-board-dialog .cross {
-  position: absolute;
-  right: 33px;
-  margin: 20px;
-  font-size: 20px;
+.score-board-dialog .dialog-close {
+  color: #082988;
+  background: #8ec9fc;
+  border: 2px solid #082988;
+  right: 30px;
+  top: 30px;
 }
 .score-board-dialog .dialog-body {
   height: 100%;
@@ -19,7 +20,7 @@
   justify-content: space-between;
   color: #082988;
   text-align: center;
-  margin: 30px 18px 15px;
+  margin: 40px 18px 15px;
 }
 .score-board-dialog .dialog-label {
   color: #082988;
@@ -30,7 +31,7 @@
   border-radius: 100%;
   background-color: #ffe7be;
   width: 100px;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .score-board-dialog .dialog-actions {
   width: 90%;

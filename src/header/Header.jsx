@@ -16,16 +16,16 @@ export const Header = ({ openScoreboard, headerSmallCardRef }) => {
 
   return (
     <div className="header">
-      <div className="card-container">
-        <div className="small-card">
-          {currentCard ? (
-            <HeaderSmallCard headerSmallCardRef={headerSmallCardRef} currentCard={currentCard} />
-          ) : (
-            <BackCard />
-          )}
+        <div className="card-container" style={{ opacity: currentCardActivated ? '1' : '0' }}>
+          <div className="small-card">
+            {currentCard ? (
+              <HeaderSmallCard headerSmallCardRef={headerSmallCardRef} currentCard={currentCard} />
+            ) : (
+              <BackCard />
+            )}
+          </div>
+          {currentCardActivated && <SwordChallengeIndicator />}
         </div>
-        {currentCardActivated && <SwordChallengeIndicator />}
-      </div>
       <CurrentPlayer openScoreboard={openScoreboard} />
       <TotalScore />
     </div>
@@ -84,6 +84,8 @@ const CurrentPlayer = ({ openScoreboard }) => {
       style={{
         borderColor: (player && player.character.color) || "white",
       }}
+      width="55"
+      height="55"
     />
   )
 }

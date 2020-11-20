@@ -14,7 +14,8 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-coin`,
         value: 100,
-        children: "Pièce!",
+        children: "+100",
+        animationType: 'moveToTotalScore',
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${chestSlot}"]`),
         ),
@@ -27,7 +28,8 @@ export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-diamond`,
         value: 100,
-        children: "Diamant!",
+        children: "+100",
+        animationType: 'moveToTotalScore',
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${chestSlot}"]`),
         ),
@@ -157,7 +159,8 @@ const useComboEffect = ({ addScoreParticle }) => {
       return addScoreParticle({
         id,
         value,
-        children: `Combo ${symbolCount}!`,
+        children: `Combo ${symbolCount}`,
+        animationType: 'popOnPlace',
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${chestSlot}"]`),
         ),
@@ -258,7 +261,8 @@ const usePerfectEffect = ({ addScoreParticle }) => {
       return addScoreParticle({
         id: "perfect",
         value: 500,
-        children: "Coffre parfait!",
+        children: "Coffre parfait",
+        animationType: 'popOnPlace',
         ...chestSlotDomNodeToScoreParticlePosition(
           document.querySelector(`[data-chest-slot="${perfectUpdate.chestSlot}"]`),
         ),

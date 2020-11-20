@@ -96,7 +96,11 @@ const TopCard = ({ topCardRef, smallCardRef, currentCard }) => {
         <div className="flip-card">
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <Image className="card default-card" src={cardDefaultUrl} />
+              <Image 
+                className="card default-card" 
+                src={cardDefaultUrl}
+                loadWhenIntersecting={false}
+              />
             </div>
             <div className="flip-card-back">
               <Image
@@ -268,8 +272,8 @@ const animateCardActivation = ({
         transform: "scale(0)",
         opacity: 0,
         position: "fixed",
-        top: "auto",
-        left: "auto",
+        top: `${headerSmallCardRectangle.top}.px`,
+        left: `${headerSmallCardRectangle.left}.px`,
       },
       {
         transform: "scale(1)",

@@ -57,21 +57,21 @@ const LoadScreen = (props) => {
     window.splashscreen.remove()
 
     mainImportLoadingSetter(true)
-    ;(async () => {
-      try {
-        const namespace = await import("./App.jsx")
-        mainImportLoadingSetter(false)
-        mainImportNamespaceSetter(namespace)
-        requestAsapCallback(() => {
-          mainUrlTrackerReadySetter(true)
-        })
-      } catch (e) {
-        // https://github.com/facebook/react/issues/14981
-        mainUrlErrorSetter(() => {
-          throw e
-        })
-      }
-    })()
+      ; (async () => {
+        try {
+          const namespace = await import("./App.jsx")
+          mainImportLoadingSetter(false)
+          mainImportNamespaceSetter(namespace)
+          requestAsapCallback(() => {
+            mainUrlTrackerReadySetter(true)
+          })
+        } catch (e) {
+          // https://github.com/facebook/react/issues/14981
+          mainUrlErrorSetter(() => {
+            throw e
+          })
+        }
+      })()
   }, [loadscreenUrlsLoaded])
 
   React.useEffect(() => {
@@ -99,12 +99,13 @@ const LoadScreen = (props) => {
         <Stylesheet href={loadscreenCssUrl} />
         <Image src={symbolSkullUrl} animateLoaded={false} />
         {mainImportLoading ? (
-          <p>Chargement du jeu</p>
+          <p className="text">Chargement du jeu...</p>
         ) : (
-          <p>
-            Chargement de fichiers ({urlTrackerLoadedCount}/{urlTrackerTotalCount})
-          </p>
-        )}
+            <>
+              <p className="text">Chargement des fichiers</p>
+              <div className="progress">{urlTrackerLoadedCount}/{urlTrackerTotalCount}</div>
+            </>
+          )}
       </div>
       {mainUrlsLoaded ? <ImagePreloader /> : null}
     </>

@@ -35,7 +35,7 @@ const ExtraSkull = ({ card }) => {
       style={{
         width: diceSize,
         height: diceSize,
-        color: "#fcfcfc",
+        color: "#eaeaea",
         margin: "1px 5px",
         backgroundColor: card.color1,
         borderColor: card.color2,

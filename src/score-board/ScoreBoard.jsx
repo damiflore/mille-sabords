@@ -53,12 +53,13 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, playerAnimation }) =
           </button>
         </div>
       )}
-      <Image className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" />
+      <Image className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" width="230" height="150" />
       <div className="users-path">
         {players.map((player) => (
           <PlayerPath
             key={player.id}
             player={player}
+            openedByUser={openedByUser}
             pathCoordinates={pathList[`path${player.id}`]}
             score={player.score}
             character={player.character}
@@ -95,6 +96,7 @@ const getNextPlayer = () => {
 const PlayerPath = ({
   pathCoordinates,
   player,
+  openedByUser,
   character,
   score,
   openStartPlayerRoundDialog,
@@ -176,9 +178,9 @@ const PlayerPath = ({
 
   return (
     <div className="user-path">
-      <svg viewBox="0 0 79.164 739.564">
-        <path d={pathCoordinates} className="path-background" />
-        <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground" />
+      <svg viewBox="0 0 79.164 739.564" width="50" height="450" fill="none" stroke="none">
+        <path d={pathCoordinates} className="path-background"/>
+        <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground"/>
         <circle
           ref={circleElementRef}
           r="13"
@@ -192,9 +194,9 @@ const PlayerPath = ({
       </svg>
       <div className="speech-bubble">{score}</div>
       <div
-        className={`user-avatar ${nextPlayer.character.id === character.id ? "next-player" : ""}`}
+        className={`user-avatar ${nextPlayer.character.id === character.id && !openedByUser ? "next-player" : ""}`}
         onClick={() => {
-          if (nextPlayer.character.id === character.id) openStartPlayerRoundDialog()
+          if (nextPlayer.character.id === character.id && !openedByUser ) openStartPlayerRoundDialog()
         }}
       >
         <Avatar character={character} />
@@ -212,6 +214,8 @@ const Avatar = ({ character }) => (
     className="player-img"
     src={character.img}
     alt="player"
+    width="40"
+    height="40"
     style={{
       boxShadow: `inset 0px 0px 0px 4px ${character.color || "black"}`,
     }}

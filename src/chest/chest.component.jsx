@@ -97,7 +97,7 @@ const ChestSlot = ({ chestSlotContent }) => {
         style={{
           width: diceSize,
           height: diceSize,
-          color: "#fcfcfc",
+          color: "#eaeaea",
           margin: "5px",
           backgroundColor: currentCard.color1,
           borderColor: currentCard.color2,

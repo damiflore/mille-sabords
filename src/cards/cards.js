@@ -87,11 +87,6 @@ const cardData = {
     color1: "#95C1E5",
     color2: "#3E57A6",
   },
-  [CARD_COIN]: {
-    type: CARD_COIN,
-    color1: "#99D380",
-    color2: "#39B100",
-  },
   [CARD_PIRATE]: {
     type: CARD_PIRATE,
     color1: "#E6A9AB",

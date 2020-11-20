@@ -14,6 +14,7 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
       onRequestClose={closeDialog}
       requestCloseOnClickOutside={true}
       title="Score"
+      spacingClasses="dialog-spacing-10 dialog-spacing-fixed"
     >
       <>
         <div className="dialog-box">
@@ -21,12 +22,12 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
           <div className="columns">
             <div className="column">
               <div className="column-title">Symbols identiques</div>
-              <span className="symbol-number">3</span>
-              <span className="symbol-number">4</span>
-              <span className="symbol-number">5</span>
-              <span className="symbol-number">6</span>
-              <span className="symbol-number">7</span>
-              <span className="symbol-number">8</span>
+              <span className="symbol-number">Combo 3</span>
+              <span className="symbol-number">Combo 4</span>
+              <span className="symbol-number">Combo 5</span>
+              <span className="symbol-number">Combo 6</span>
+              <span className="symbol-number">Combo 7</span>
+              <span className="symbol-number">Combo 8</span>
             </div>
             <div className="column">
               <div className="column-title">Points</div>
@@ -55,7 +56,7 @@ export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
           </div>
         </div>
         <div className="dialog-box last">
-          <div className="dialog-label">Bonus coffre plein</div>
+          <div className="dialog-label">Bonus coffre parfait</div>
           <div className="columns">
             <div className="column">
               <div className="column-title">Dés utilisés</div>

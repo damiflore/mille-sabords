@@ -32,8 +32,6 @@
   border-top: none;
   border-bottom: none;
   height: 100%;
-  /* margin-top: -5px;
-  margin-bottom: -5px; */
 }
 .dialog-border-top {
   margin-top: 5px;
@@ -48,7 +46,7 @@
   margin-right: 7px;
 }
 
-.dialog-title {
+.dialog-theme-wood .dialog-title {
   position: absolute;
   z-index: 1;
   top: -5px;
@@ -58,14 +56,25 @@
   padding: 10px;
   background-image: url(./stone.png);
   background-size: cover;
-  color: #e4e4e4;
-  font-size: 26px;
-  font-weight: 800;
-  -webkit-text-stroke: 2px #42351a;
+  color: white;
   text-align: center;
   text-transform: uppercase;
   border: 2px solid #817d75;
   border-radius: 5px;
+}
+.dialog-theme-wood .dialog-title .dialog-title-text {
+  font-family: skullsandcrossbones;
+  font-size: 26px;
+  font-weight: 300;
+  text-shadow: 0 0 8px black;
+  position: relative;
+  top: 4px;
+}
+
+.dialog-theme-wood .dialog-close {
+  color: #ffe5cf;
+  background: #c26e29;
+  border: 2px solid #ffe5cf;
 }
 
 .dialog-wood-body {

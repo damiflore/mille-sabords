@@ -49,6 +49,7 @@ export const useScoreParticles = ({
     id,
     value,
     children = value,
+    animationType = 'popOnPlace',
     x,
     y,
     animationDuration = scoreParticleAnimationDuration,
@@ -68,13 +69,14 @@ export const useScoreParticles = ({
       y,
       animationDelay,
       animationDuration,
+      animationType,
       oncancel: () => {
         // not really needed as long as code calling addScoreParticle
         // does it in a useEffect and returns removeScoreParticleFromState
         removeScoreParticleFromState()
       },
       onfinish: () => {
-        removeScoreParticleFromState()
+        // removeScoreParticleFromState()
         onScoreParticleMerged(scoreParticle)
         scoreSetter((score) => score + scoreParticle.value)
       },
@@ -121,6 +123,7 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
   React.useEffect(() => {
     const particleDomNode = particleDomNodeRef.current
     const totalScoreDomNode = totalScoreDomNodeRef.current
+
     return animateScoreParticle({
       particleDomNode,
       totalScoreDomNode,
@@ -128,6 +131,7 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
       y: scoreParticle.y,
       duration: scoreParticle.animationDuration,
       delay: scoreParticle.animationDelay,
+      animationType: scoreParticle.animationType,
       oncancel: scoreParticle.oncancel,
       onfinish: scoreParticle.onfinish,
     })
@@ -135,7 +139,7 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
 
   return (
     <svg ref={particleDomNodeRef} className="score-particle">
-      <text x="0" y="0" dominantBaseline="text-before-edge" className="score-particle--value">
+      <text x="0" y="0" dominantBaseline="text-before-edge" className={`score-particle--value ${scoreParticle.animationType}`}>
         {scoreParticle.children}
       </text>
     </svg>
@@ -149,6 +153,7 @@ const animateScoreParticle = ({
   y,
   duration,
   delay = 0,
+  animationType = 'popOnPlace',
   oncancel = () => {},
   onfinish = () => {},
 }) => {
@@ -168,33 +173,64 @@ const animateScoreParticle = ({
   particleDomNode.style.top = `${startY}px`
 
   // en premier fait apparaitre avec opacité
-  const animation = particleDomNode.animate(
-    [
+  var animation;
+  if (animationType === 'moveToTotalScore') {
+    animation = particleDomNode.animate(
+      [
+        {
+          opacity: 0,
+          visibility: "visible",
+          transform: "translate(0px, 0px)",
+        },
+        {
+          offset: 0.1,
+          opacity: 1,
+        },
+        {
+          offset: 0.4,
+          opacity: 1,
+          transform: `translate(${intermediateX - startX}px, ${intermediateY - startY}px) scale(1.2)`,
+        },
+        {
+          transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
+        },
+      ],
       {
-        opacity: 0,
-        visibility: "visible",
-        transform: "translate(0px, 0px)",
+        duration,
+        delay,
+        fill: "forwards",
       },
+    )
+  }
+  else if (animationType === 'popOnPlace') {
+    animation = particleDomNode.animate(
+      [
+        {
+          opacity: 0,
+          visibility: "visible",
+          transform: "translate(0px, 0px)",
+        },
+        {
+          offset: 0.1,
+          opacity: 1,
+        },
+        {
+          offset: 0.4,
+          opacity: 1,
+          transform: `scale(1.2)`,
+        },
+        {
+          // transform: `scale(0)`,
+        },
+      ],
       {
-        offset: 0.1,
-        opacity: 1,
-        // transform: "translate(0px, 0px)",
+        duration,
+        delay,
+        fill: "forwards",
       },
-      {
-        offset: 0.4,
-        opacity: 1,
-        transform: `translate(${intermediateX - startX}px, ${intermediateY - startY}px) scale(1.2)`,
-      },
-      {
-        transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
-      },
-    ],
-    {
-      duration,
-      delay,
-      fill: "forwards",
-    },
-  )
+    )
+  }
+
   animation.onfinish = () => {
     onfinish()
   }

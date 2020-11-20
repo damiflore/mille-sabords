@@ -6,6 +6,8 @@ import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 
 export const Image = ({
   loadWhenIntersecting = true,
+  // lorsque l'image est déja loadée il en faudrait pas attendre qu'elle soit intersectedpour pour utiliser le bon SRC
+  // dans ce cas, mettre ce paramètre à false dans le cas ou un utilise une image pour la seconde fois (ou plus)
   usePlaceholderWhileLoading = true,
   animateLoaded = true,
 
@@ -72,7 +74,7 @@ const AnimateImageLoaded = (props) => {
     statusRef.current = status
   }, [statusRef, status, nodeRef])
 
-  return <img {...props} ref={nodeRef} />
+  return <img {...props} ref={nodeRef}/>
 }
 
 const OnceImageLoadedSuspense = ({ fallback, src, children }) => {
@@ -96,4 +98,4 @@ const ImageNotIntersectingFallback = React.forwardRef((props, ref) => {
 })
 
 const TRANSPARENT_PNG_DATA_URL =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="

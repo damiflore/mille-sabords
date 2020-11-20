@@ -31,22 +31,26 @@ export const CharacterSelection = ({ players }) => {
                     }`}
                     key={character.id}
                     onClick={(event) => {
-                      event.target.animate(
-                        [
-                          { transform: "scale(1)" },
-                          { transform: "scale(1.3)" },
-                          { transform: "scale(1)" },
-                        ],
-                        {
-                          duration: 400,
-                          fill: "forwards",
-                        },
-                      )
-                      setPlayerCharacter(playerWithoutCharacter, character)
+                      if (characterIsAvailable(character, players)) {
+                        event.target.animate(
+                          [
+                            { transform: "scale(1)" },
+                            { transform: "scale(1.3)" },
+                            { transform: "scale(1)" },
+                          ],
+                          {
+                            duration: 400,
+                            fill: "forwards",
+                          },
+                        )
+                        setPlayerCharacter(playerWithoutCharacter, character)
+                        }
                     }}
                   >
                     <Image
                       className="character-img"
+                      width="40"
+                      height="40"
                       src={character && character.img}
                       alt="player"
                       style={{
@@ -108,6 +112,7 @@ const CrewMembers = () => {
                   style={{
                     border: `4px solid ${(player.character && player.character.color) || "black"}`,
                   }}
+                  loadWhenIntersecting={false}
                 />
               ) : (
                 <div className="placeholder-img"></div>

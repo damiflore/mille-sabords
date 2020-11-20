@@ -242,7 +242,6 @@
   justify-content: flex-end;
   padding: 0;
   text-align: center;
-  width: 80px;
 }
 .score-rules-dialog .column-title {
   font-size: 12px;
@@ -252,11 +251,10 @@
   border-radius: 3px;
   padding: 5px 10px;
   margin-left: 3px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
 }
 .score-rules-dialog .symbol-number {
-  width: 9px;
   margin: 3px auto;
   display: block;
   border: 2px solid #e4920b;

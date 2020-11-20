@@ -57,7 +57,7 @@ const ScoreDisplay = () => {
   const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
     totalScore: roundScore,
     minDelayBetweenParticles: 600,
-    scoreParticleAnimationDuration: 1200,
+    scoreParticleAnimationDuration: 800,
     onScoreParticleMerged: scoreParticleMergedEmitter,
   })
 

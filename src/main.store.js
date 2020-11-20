@@ -3,8 +3,9 @@ import { createStructuredStateStore } from "src/store/createStructuredStateStore
 import { cardIds } from "src/cards/cards.js"
 import { DICES } from "src/dices/dices.js"
 
-const defaultState = {
+export const defaultState = {
   animationsDisabled: false,
+  soundDisabled: false,
   gameCreated: false,
   gameStarted: false,
   players: [],
@@ -106,3 +107,4 @@ export const useDiceRolledIds = () => store.useKeyedState("diceRolledIds")
 export const useDiceCursedIds = () => store.useKeyedState("diceCursedIds")
 export const useChestSlots = () => store.useKeyedState("chestSlots")
 export const useAnimationsDisabled = () => store.useKeyedState("animationsDisabled")
+export const useSoundDisabled = () => store.useKeyedState("soundDisabled")

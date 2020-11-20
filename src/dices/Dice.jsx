@@ -10,6 +10,7 @@ import { diceSize } from "src/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "src/dices/dices.js"
 import { enableDragGesture } from "src/drag/drag.js"
 import { symbolToImageUrl } from "src/symbols/symbols.js"
+import { useDiceKeptIds } from "src/round/round.selectors.js"
 
 const { useEffect, useState } = React
 
@@ -34,6 +35,8 @@ export const Dice = ({
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
   const diceDomNodeSetter = useDiceDomNodeSetter(dice.id)
+  const diceKeptIds = useDiceKeptIds()
+  const isDiceKept = diceKeptIds.includes(dice.id)
 
   // local states
   const [diceGripped, diceGrippedSetter] = useState(false)
@@ -186,8 +189,8 @@ export const Dice = ({
             height="100%"
             rx="5"
             ry="5"
-            fill={onSkull ? "black" : "#fcfcfc"}
-            stroke={onSkull ? "black" : "#b9b9b9"}
+            fill={computeDiceColors(onSkull, isDiceKept).fill}
+            stroke={computeDiceColors(onSkull, isDiceKept).stroke}
             strokeWidth="1"
           ></rect>
           <image
@@ -202,4 +205,14 @@ export const Dice = ({
       </svg>
     </Portal>
   )
+}
+
+const computeDiceColors = (onSkull, isDiceKept) => {
+  if (onSkull) {
+    return { fill: 'black', stroke: 'black' }
+  } 
+  else if (isDiceKept) {
+    return { fill: 'none', stroke: 'none' }
+  }
+  return { fill: '#eaeaea', stroke: '#b9b9b9' }
 }
