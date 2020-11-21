@@ -35,7 +35,7 @@ export const Image = ({
     Component = <AnimateImageLoaded status={status} src={src} imageProps={props} />
   }
 
-  if (usePlaceholderWhileLoading) {
+  if (usePlaceholderWhileLoading && status !== "loaded") {
     const ComponentPrevious = Component
     Component = (
       <OnceImageLoadedSuspense status={status} fallback={<FallbackWhileLoading {...props} />}>
@@ -44,7 +44,7 @@ export const Image = ({
     )
   }
 
-  if (loadWhenIntersecting) {
+  if (loadWhenIntersecting && status !== "loaded") {
     const ComponentPrevious = Component
     Component = (
       <OnceIntersectingSuspense

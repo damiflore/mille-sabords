@@ -96,11 +96,7 @@ const TopCard = ({ topCardRef, smallCardRef, currentCard }) => {
         <div className="flip-card">
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <Image 
-                className="card default-card" 
-                src={cardDefaultUrl}
-                loadWhenIntersecting={false}
-              />
+              <Image className="card default-card" src={cardDefaultUrl} />
             </div>
             <div className="flip-card-back">
               <Image
