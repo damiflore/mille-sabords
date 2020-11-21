@@ -78,9 +78,9 @@ const AnimateImageLoaded = ({ status, src, imageProps }) => {
     // mais bon quelque part l'image étant déja loadé il n'y a pas d'animation
     // et c'est ce qu'on veut
     if (mounted && statusPrevious !== status && status === "loaded") {
-      node.animate([{ opacity: 0 }, { opacity: 1 }], {
+      const opacity = window.getComputedStyle(node).getPropertyValue("opacity")
+      node.animate([{ opacity: 0 }, { opacity }], {
         duration: 300,
-        fill: "forwards",
       })
     }
   }, [status, nodeRef])
