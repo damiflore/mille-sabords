@@ -20,10 +20,10 @@ export const Image = ({
   ...props
 }) => {
   const [status] = useImage(src)
-  const imageLoadEnds = useUrlLoadingNotifier(src)
+  const [imageFetchEnd] = useUrlLoadingNotifier(src)
   React.useEffect(() => {
     if (status === "loaded") {
-      imageLoadEnds()
+      imageFetchEnd()
     }
   }, [status])
 
@@ -74,7 +74,7 @@ const AnimateImageLoaded = (props) => {
     statusRef.current = status
   }, [statusRef, status, nodeRef])
 
-  return <img {...props} ref={nodeRef}/>
+  return <img {...props} ref={nodeRef} />
 }
 
 const OnceImageLoadedSuspense = ({ fallback, src, children }) => {

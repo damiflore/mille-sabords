@@ -41,12 +41,12 @@ export const useUrlLoadingNotifier = (url) => {
     // if (import.meta.dev) {
     //   console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
     // }
-    return () => {}
+    return [() => {}, () => {}]
   }
 
   const dispatch = contextValue[1]
 
-  const loadStarts = () => {
+  const fetchStart = () => {
     dispatch((state) => {
       if (url in state) {
         // console.log("start loading early return", url, state[url])
@@ -62,7 +62,29 @@ export const useUrlLoadingNotifier = (url) => {
     })
   }
 
-  const loadEnds = () => {
+  const fetchAbort = () => {
+    dispatch((state) => {
+      if (!state.hasOwnProperty(url)) {
+        return state
+      }
+
+      const status = state[url].status
+      if (status !== "loading") {
+        return state
+      }
+
+      const stateWithoutUrl = {}
+      Object.keys(state).forEach((key) => {
+        if (key !== url) {
+          stateWithoutUrl[key] = state[key]
+        }
+      })
+
+      return stateWithoutUrl
+    })
+  }
+
+  const fetchEnd = () => {
     dispatch((state) => {
       if (url in state && state[url].status === "loaded") {
         // console.log("end loading early return", url, state[url])
@@ -79,20 +101,27 @@ export const useUrlLoadingNotifier = (url) => {
   }
 
   React.useEffect(() => {
-    loadStarts()
+    fetchStart()
+    return () => {
+      fetchAbort()
+    }
   }, [])
 
-  return loadEnds
+  return [fetchEnd, fetchAbort]
 }
 
 export const useDOMNodeLoadingNotifier = (url) => {
-  const loadEnds = useUrlLoadingNotifier(url)
+  const [domNodeFetchEnd] = useUrlLoadingNotifier(url)
 
-  const nodeRefCallback = (node) => {
-    if (node) {
-      addLoadedListener(node, loadEnds)
-    }
-  }
+  const nodeRefCallback = React.useCallback(
+    (node) => {
+      if (node) {
+        return addLoadedListener(node, domNodeFetchEnd)
+      }
+      return undefined
+    },
+    [domNodeFetchEnd],
+  )
 
   return nodeRefCallback
 }
@@ -110,7 +139,7 @@ const useUrlLoadingState = () => {
 
 export const useSingleUrlLoadingTracker = (url) => useUrlLoadingState()[url]
 
-const addLoadedListener = (domNode, callback) => {
+export const addLoadedListener = (domNode, callback) => {
   const removeLoadListener = addDomEventListener(domNode, "load", () => {
     removeErrorListener()
     callback()
