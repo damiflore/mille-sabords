@@ -3,7 +3,12 @@ import React from "react"
 
 import { useBecomes } from "src/hooks.js"
 import { useSignal, useSignalState } from "src/helper/signal.js"
-import { useCurrentCardId, useCurrentCardActivated, useScoreMarked } from "src/main.store.js"
+import {
+  useCurrentCardId,
+  useCurrentCardActivated,
+  useScoreMarked,
+  useAnimationsDisabled,
+} from "src/main.store.js"
 import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
 import { ValueWithAnimatedTransition } from "src/animation/ValueWithAnimatedTransition.jsx"
 
@@ -46,13 +51,32 @@ const useSwordChallengeOngoing = () => {
 }
 
 const ScoreDisplay = () => {
-  const roundScore = useRoundScore()
   const currentCard = cardIdToCard(useCurrentCardId())
   const scoreMarked = useScoreMarked()
   const swordChallengeOngoing = useSwordChallengeOngoing()
-
-  const roundScoreDomNodeRef = React.useRef()
   const [scoreDialogIsOpen, openScoreDialog, closeScoreDialog] = useDialogState()
+
+  const animationsDisabled = useAnimationsDisabled()
+
+  return (
+    <>
+      {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
+      {scoreMarked ? <StarRain /> : null}
+      <button
+        className={`round-score ${swordChallengeOngoing ? "hidden" : ""}`}
+        onClick={openScoreDialog}
+      >
+        {animationsDisabled ? <ScoreWithoutAnimation /> : <ScoreWithAnimations />}
+      </button>
+      {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
+      <RoundScoreRulesDialog dialogIsOpen={scoreDialogIsOpen} closeDialog={closeScoreDialog} />
+    </>
+  )
+}
+
+const ScoreWithAnimations = () => {
+  const roundScore = useRoundScore()
+  const roundScoreDomNodeRef = React.useRef()
   const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
   const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
     totalScore: roundScore,
@@ -66,23 +90,13 @@ const ScoreDisplay = () => {
 
   return (
     <>
-      {isPirateCard(currentCard) ? <DoubleScoreIndicator /> : null}
-      {scoreMarked ? <StarRain /> : null}
-      <button
-        className={`round-score ${swordChallengeOngoing ? "hidden" : ""}`}
-        onClick={openScoreDialog}
-      >
-        <span ref={roundScoreDomNodeRef} className="round-score--value">
-          <ValueWithAnimatedTransition
-            value={scoreDisplayed}
-            condition={(value, previousValue) => value > previousValue}
-            duration={600}
-          />
-        </span>
-      </button>
-      {isSwordChallengeCard(currentCard) ? <NegativeScoreSign /> : null}
-      <RoundScoreRulesDialog dialogIsOpen={scoreDialogIsOpen} closeDialog={closeScoreDialog} />
-
+      <span className="round-score--value">
+        <ValueWithAnimatedTransition
+          value={scoreDisplayed}
+          condition={(value, previousValue) => value > previousValue}
+          duration={600}
+        />
+      </span>
       {scoreParticles.map((scoreParticle) => {
         return (
           <ScoreParticle
@@ -94,6 +108,11 @@ const ScoreDisplay = () => {
       })}
     </>
   )
+}
+
+const ScoreWithoutAnimation = () => {
+  const roundScore = useRoundScore()
+  return <span className="round-score--value">{roundScore}</span>
 }
 
 const useScoreParticleMergeEffect = ({ roundScoreDomNodeRef, scoreParticleMergedListener }) => {
