@@ -9,14 +9,17 @@ import {
   useScoreMarked,
   useAnimationsDisabled,
 } from "src/main.store.js"
-import { useRoundScore, useSymbolsInChest } from "src/round/round.selectors.js"
+import {
+  useRoundScore,
+  useSymbolsInChest,
+  useSwordQuantityRequired,
+} from "src/round/round.selectors.js"
 import { ValueWithAnimatedTransition } from "src/animation/ValueWithAnimatedTransition.jsx"
 
 import { cardIdToCard, isPirateCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { useDialogState } from "src/dialog/dialog.component.jsx"
 
 import { SYMBOL_SWORD } from "src/symbols/symbols.js"
-import { useSwordQuantityRequired } from "src/header/SwordChallengeIndicator.jsx"
 import { countSymbol } from "src/round/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
 import { RoundScoreRulesDialog } from "src/round/RoundScoreRulesDialog.jsx"
@@ -90,7 +93,7 @@ const ScoreWithAnimations = () => {
 
   return (
     <>
-      <span className="round-score--value">
+      <span ref={roundScoreDomNodeRef} className="round-score--value">
         <ValueWithAnimatedTransition
           value={scoreDisplayed}
           condition={(value, previousValue) => value > previousValue}
@@ -125,19 +128,25 @@ const useScoreParticleMergeEffect = ({ roundScoreDomNodeRef, scoreParticleMerged
     const roundScoreDomNode = roundScoreDomNodeRef.current
     return animateScoreParticleMerge({
       roundScoreDomNode,
-      duration: 300,
     })
   }, [scoreParticleMerged])
 }
 
-const animateScoreParticleMerge = ({ roundScoreDomNode, duration }) => {
+const animateScoreParticleMerge = ({
+  roundScoreDomNode,
+  duration = 500,
+  easing = "ease-in-out",
+}) => {
   const animation = roundScoreDomNode.animate(
     [
       {
-        transform: "scale(1.5)",
+        transform: "scale(1.8)",
       },
     ],
-    { duration },
+    {
+      duration,
+      easing,
+    },
   )
   return () => {
     animation.cancel()

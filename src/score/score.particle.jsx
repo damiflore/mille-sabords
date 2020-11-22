@@ -49,7 +49,7 @@ export const useScoreParticles = ({
     id,
     value,
     children = value,
-    animationType = 'popOnPlace',
+    animationType = "popOnPlace",
     x,
     y,
     animationDuration = scoreParticleAnimationDuration,
@@ -139,7 +139,12 @@ export const ScoreParticle = ({ totalScoreDomNodeRef, scoreParticle }) => {
 
   return (
     <svg ref={particleDomNodeRef} className="score-particle">
-      <text x="0" y="0" dominantBaseline="text-before-edge" className={`score-particle--value ${scoreParticle.animationType}`}>
+      <text
+        x="0"
+        y="0"
+        dominantBaseline="text-before-edge"
+        className={`score-particle--value ${scoreParticle.animationType}`}
+      >
         {scoreParticle.children}
       </text>
     </svg>
@@ -153,7 +158,7 @@ const animateScoreParticle = ({
   y,
   duration,
   delay = 0,
-  animationType = 'popOnPlace',
+  animationType = "popOnPlace",
   oncancel = () => {},
   onfinish = () => {},
 }) => {
@@ -173,8 +178,8 @@ const animateScoreParticle = ({
   particleDomNode.style.top = `${startY}px`
 
   // en premier fait apparaitre avec opacité
-  var animation;
-  if (animationType === 'moveToTotalScore') {
+  var animation
+  if (animationType === "moveToTotalScore") {
     animation = particleDomNode.animate(
       [
         {
@@ -189,7 +194,9 @@ const animateScoreParticle = ({
         {
           offset: 0.4,
           opacity: 1,
-          transform: `translate(${intermediateX - startX}px, ${intermediateY - startY}px) scale(1.2)`,
+          transform: `translate(${intermediateX - startX}px, ${
+            intermediateY - startY
+          }px) scale(1.2)`,
         },
         {
           transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1.2)`,
@@ -201,8 +208,7 @@ const animateScoreParticle = ({
         fill: "forwards",
       },
     )
-  }
-  else if (animationType === 'popOnPlace') {
+  } else if (animationType === "popOnPlace") {
     animation = particleDomNode.animate(
       [
         {
