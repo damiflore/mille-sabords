@@ -76,7 +76,7 @@ export const useScoreParticles = ({
         removeScoreParticleFromState()
       },
       onfinish: () => {
-        // removeScoreParticleFromState()
+        removeScoreParticleFromState()
         onScoreParticleMerged(scoreParticle)
         scoreSetter((score) => score + scoreParticle.value)
       },
