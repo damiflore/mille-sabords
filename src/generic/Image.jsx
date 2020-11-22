@@ -16,33 +16,35 @@ export const Image = ({
   intersectionThreshold,
   FallbackWhileNotIntersecting = ImageNotIntersectingFallback,
   FallbackWhileLoading = ImageLoadingFallback,
+  useImageStatusHook = useImage,
+
   src,
   ...props
 }) => {
-  const [status] = useImage(src)
-  const imageLoadEnds = useUrlLoadingNotifier(src)
+  const [status] = useImageStatusHook(src)
+  const [imageFetchEnd] = useUrlLoadingNotifier(src)
   React.useEffect(() => {
     if (status === "loaded") {
-      imageLoadEnds()
+      imageFetchEnd()
     }
   }, [status])
 
-  let Component = <img {...props} src={src} />
+  let Component = <img src={src} {...props} />
 
   if (animateLoaded) {
-    Component = <AnimateImageLoaded {...props} src={src} />
+    Component = <AnimateImageLoaded status={status} src={src} imageProps={props} />
   }
 
-  if (usePlaceholderWhileLoading) {
+  if (usePlaceholderWhileLoading && status !== "loaded") {
     const ComponentPrevious = Component
     Component = (
-      <OnceImageLoadedSuspense src={src} fallback={<FallbackWhileLoading {...props} />}>
+      <OnceImageLoadedSuspense status={status} fallback={<FallbackWhileLoading {...props} />}>
         {ComponentPrevious}
       </OnceImageLoadedSuspense>
     )
   }
 
-  if (loadWhenIntersecting) {
+  if (loadWhenIntersecting && status !== "loaded") {
     const ComponentPrevious = Component
     Component = (
       <OnceIntersectingSuspense
@@ -59,42 +61,48 @@ export const Image = ({
   return Component
 }
 
-const AnimateImageLoaded = (props) => {
+const AnimateImageLoaded = ({ status, src, imageProps }) => {
+  const mountedRef = React.useRef(false)
   const nodeRef = React.useRef()
-  const statusRef = React.useRef()
-  const [status] = useImage(props.src)
+  const statusRef = React.useRef(status)
 
-  React.useEffect(() => {
-    if (statusRef.current !== status && status === "loaded") {
-      nodeRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
+  React.useLayoutEffect(() => {
+    const mounted = mountedRef.current
+    const node = nodeRef.current
+    const statusPrevious = statusRef.current
+    mountedRef.current = true
+    statusRef.current = status
+
+    // ça ne marche pas vraiment parce que ce composant est mount
+    // que lorsque l'image est load et du coup il n'y aura pas d'animation
+    // mais bon quelque part l'image étant déja loadé il n'y a pas d'animation
+    // et c'est ce qu'on veut
+    if (mounted && statusPrevious !== status && status === "loaded") {
+      const opacity = window.getComputedStyle(node).getPropertyValue("opacity")
+      node.animate([{ opacity: 0 }, { opacity }], {
         duration: 300,
-        fill: "forwards",
       })
     }
-    statusRef.current = status
-  }, [statusRef, status, nodeRef])
+  }, [status, nodeRef])
 
-  return <img {...props} ref={nodeRef}/>
+  return <img ref={nodeRef} src={src} {...imageProps} />
 }
 
-const OnceImageLoadedSuspense = ({ fallback, src, children }) => {
-  const [status] = useImage(src)
-
+const OnceImageLoadedSuspense = ({ fallback, status, children }) => {
   if (status !== "loaded") {
     return fallback
   }
-
   return children
 }
 
 // eslint-disable-next-line react/display-name
 const ImageLoadingFallback = React.forwardRef((props, ref) => {
-  return <img src={TRANSPARENT_PNG_DATA_URL} {...props} ref={ref} />
+  return <img src={TRANSPARENT_PNG_DATA_URL} ref={ref} {...props} />
 })
 
 // eslint-disable-next-line react/display-name
 const ImageNotIntersectingFallback = React.forwardRef((props, ref) => {
-  return <img src={TRANSPARENT_PNG_DATA_URL} {...props} ref={ref} />
+  return <img src={TRANSPARENT_PNG_DATA_URL} ref={ref} {...props} />
 })
 
 const TRANSPARENT_PNG_DATA_URL =

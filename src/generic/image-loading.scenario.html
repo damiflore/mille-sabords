@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image loading scenario</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../favicon.png" />
+    <script type="importmap" src="../../importmap.dev.importmap"></script>
+  </head>
+
+  <body>
+    <h1>Image loading manual tests</h1>
+    <p>Ensure image are can be lazy loaded, are animated when loaded an so on.</p>
+
+    <div id="app"></div>
+    <script type="module">
+      import React from "react"
+      import ReactDOM from "react-dom"
+      import { Image } from "src/generic/Image.jsx"
+
+      const App = () => {
+        const ImageLoadingControllableWithButtons = ({ src }) => {
+          const [mount, mountSetter] = React.useState(false)
+          const [status, statusSetter] = React.useState(null)
+          const useImageStatusHook = () => {
+            return [status, null]
+          }
+
+          return (
+            <>
+              <button
+                onClick={() => {
+                  statusSetter("loading")
+                }}
+              >
+                Start fetching url
+              </button>
+              <button
+                onClick={() => {
+                  statusSetter(null)
+                }}
+              >
+                Cancel fetching url
+              </button>
+              <button
+                onClick={() => {
+                  statusSetter("loaded")
+                }}
+              >
+                End fetching url
+              </button>
+              <button
+                onClick={() => {
+                  mountSetter(true)
+                }}
+              >
+                Mount image
+              </button>
+              <button
+                onClick={() => {
+                  mountSetter(false)
+                }}
+              >
+                Unmount image
+              </button>
+              {mount ? <Image src={src} useImageStatusHook={useImageStatusHook} /> : null}
+            </>
+          )
+        }
+
+        return (
+          <>
+            <p>Basic image</p>
+            <ImageLoadingControllableWithButtons src="../../favicon.png" />
+          </>
+        )
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>
