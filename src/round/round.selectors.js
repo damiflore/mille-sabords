@@ -21,11 +21,18 @@ import {
   isDiamondCard,
   isOneSkullCard,
   isTwoSkullsCard,
+  isSwordChallengeCard,
 } from "src/cards/cards.js"
 import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
 
-import { computeRoundScore } from "src/round/computeRoundScore.js"
-import { symbolIsSkull, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_SKULL } from "src/symbols/symbols.js"
+import { computeRoundScore, countSymbol } from "src/round/computeRoundScore.js"
+import {
+  symbolIsSkull,
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+  SYMBOL_SKULL,
+  SYMBOL_SWORD,
+} from "src/symbols/symbols.js"
 
 const { useMemo } = React
 
@@ -245,4 +252,23 @@ export const useRoundScore = ({
       }),
     [currentCardId, symbolsInChest, scoreMarked, markScoreAllowed],
   )
+}
+
+export const useSwordChallengeOnGoing = () => {
+  const currentCardId = useCurrentCardId()
+  const card = cardIdToCard(currentCardId)
+  const symbolsInChest = useSymbolsInChest()
+  const quantityKept = countSymbol(symbolsInChest, SYMBOL_SWORD)
+  const quantityRequired = useSwordQuantityRequired()
+
+  if (!isSwordChallengeCard(card)) {
+    return false
+  }
+  return quantityKept < quantityRequired
+}
+
+export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {
+  const card = cardIdToCard(currentCardId)
+  if (isSwordChallengeCard(card)) return card.numberOfSwords
+  return null
 }

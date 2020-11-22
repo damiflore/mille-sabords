@@ -6,8 +6,6 @@ import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
 
 export const Image = ({
   loadWhenIntersecting = true,
-  // lorsque l'image est déja loadée il en faudrait pas attendre qu'elle soit intersectedpour pour utiliser le bon SRC
-  // dans ce cas, mettre ce paramètre à false dans le cas ou un utilise une image pour la seconde fois (ou plus)
   usePlaceholderWhileLoading = true,
   animateLoaded = true,
 

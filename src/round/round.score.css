@@ -9,7 +9,7 @@
 }
 
 .score-particle--value.popOnPlace {
-  font-family: skullsandcrossbones;
+  /* font-family: skullsandcrossbones; */
   font-weight: 700;
   font-size: 35px;
   fill: white;

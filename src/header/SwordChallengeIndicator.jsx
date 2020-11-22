@@ -2,17 +2,11 @@ import React from "react"
 
 import { Image } from "src/generic/Image.jsx"
 import { useCurrentCardId } from "src/main.store.js"
-import { useSymbolsInChest } from "src/round/round.selectors.js"
+import { useSymbolsInChest, useSwordQuantityRequired } from "src/round/round.selectors.js"
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { SYMBOL_SWORD, symbolSwordUrl } from "src/symbols/symbols.js"
 import { countSymbol } from "src/round/computeRoundScore.js"
 import swordsDisabledImageUrl from "src/header/swords-disabled.png"
-
-export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {
-  const card = cardIdToCard(currentCardId)
-  if (isSwordChallengeCard(card)) return card.numberOfSwords
-  return null
-}
 
 export const SwordChallengeIndicator = () => {
   const currentCardId = useCurrentCardId()

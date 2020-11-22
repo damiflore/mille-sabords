@@ -14,6 +14,18 @@ export const SYMBOL_SWORD = "sword"
 
 export const symbolIsSkull = (symbol) => symbol === SYMBOL_SKULL
 export const symbolIsCoin = (symbol) => symbol === SYMBOL_COIN
+export const symbolIsDiamond = (symbol) => symbol === SYMBOL_DIAMOND
+export const symbolIsMonkey = (symbol) => symbol === SYMBOL_MONKEY
+export const symbolIsParrot = (symbol) => symbol === SYMBOL_PARROT
+
+export const SYMBOLS = [
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
+  SYMBOL_MONKEY,
+  SYMBOL_PARROT,
+  SYMBOL_SKULL,
+  SYMBOL_SWORD,
+]
 
 const symbolUrlMap = {
   [SYMBOL_COIN]: symbolCoinUrl,
