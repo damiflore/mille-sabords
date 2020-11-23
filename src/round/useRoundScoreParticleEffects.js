@@ -1,7 +1,6 @@
+/* eslint-disable import/max-dependencies */
 import React from "react"
 import { useUpdateEffect } from "src/hooks.js"
-import { getDomNodeRectangle } from "src/dom/dom.position.js"
-import { getRectangleCenterPoint } from "src/helper/rectangle.js"
 import { useChestSlots, useDices, useCurrentCardId } from "src/main.store.js"
 import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
 import { cardIdToCard, isAnimalsCard } from "src/cards/cards.js"
@@ -11,21 +10,17 @@ import {
   symbolIsMonkey,
   symbolIsParrot,
   SYMBOLS,
+  SYMBOL_COIN,
+  SYMBOL_DIAMOND,
 } from "src/symbols/symbols.js"
 import { getScoreAndPerfectBonus } from "src/round/computeRoundScore.js"
 import { useSwordChallengeOnGoing } from "src/round/round.selectors.js"
 
 export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
-  // le sword challenge
-  // il faut le faire, et aussi il est tres important parce que
-  // tant qu'il est actif les coin,diamond et combo sont désactivé
-  // et au moment ou le sword challenge est complété
-  // on veut afficher tout ce qui se débloque
-
-  useComboEffect({ addScoreParticle })
-  usePerfectEffect({ addScoreParticle })
   useCoinEffect({ addScoreParticle })
   useDiamondEffect({ addScoreParticle })
+  useComboEffect({ addScoreParticle })
+  usePerfectEffect({ addScoreParticle })
 }
 
 const useCoinEffect = ({ addScoreParticle }) => {
@@ -45,12 +40,10 @@ const useCoinEffect = ({ addScoreParticle }) => {
 
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-coin`,
+        type: "bonus",
         value: 100,
-        children: "+100",
-        animationType: "moveToTotalScore",
-        ...chestSlotDomNodeToScoreParticlePosition(
-          document.querySelector(`[data-chest-slot="${chestSlot}"]`),
-        ),
+        symbol: SYMBOL_COIN,
+        chestSlot,
       })
     }, [effectSuspended, chestSlotContentIsCoin])
   })
@@ -73,12 +66,10 @@ const useDiamondEffect = ({ addScoreParticle }) => {
 
       return addScoreParticle({
         id: `chest-slot-${chestSlot}-diamond`,
+        type: "bonus",
         value: 100,
-        children: "+100",
-        animationType: "moveToTotalScore",
-        ...chestSlotDomNodeToScoreParticlePosition(
-          document.querySelector(`[data-chest-slot="${chestSlot}"]`),
-        ),
+        symbol: SYMBOL_DIAMOND,
+        chestSlot,
       })
     }, [effectSuspended, chestSlotContentIsDiamond])
   })
@@ -114,10 +105,8 @@ const usePerfectEffect = ({ addScoreParticle }) => {
 
     return addScoreParticle({
       id: "perfect",
+      type: "perfect",
       value: 500,
-      children: "Coffre parfait",
-      animationType: "popOnPlace",
-      ...chestSlotDomNodeToScoreParticlePosition(document.querySelector(`.chest .box`)),
     })
   }, [effectSuspended, perfect])
 }
@@ -151,8 +140,8 @@ const useComboEffect = ({ addScoreParticle }) => {
     const comboScorePreviousRef = React.useRef(comboScore)
     // si la combo vient se se produire -> animation
     // si la combo part -> on annule l'ancienne
-    // si la combo increases -> animation de la nouvelle et on annule pas l'ancienne
-    // si la conbo decrease -> on annule juste l'ancienne
+    // si la combo increases -> annule l'ancienne + joue la nouvelle
+    // si la combo decrease -> on annule juste l'ancienne
     // attention avec la carte animals on a 2 fois la combo singe et perroquet
     // donc il ne faudra en faire que une
     const animationRef = React.useRef(() => {})
@@ -160,9 +149,9 @@ const useComboEffect = ({ addScoreParticle }) => {
     useUpdateEffect(() => {
       const comboScorePrevious = comboScorePreviousRef.current
       // const comboFound = Boolean(!comboScorePrevious && comboScore)
-      // const comboIncreased = Boolean(
-      //   comboScorePrevious && comboScore && comboScorePrevious < comboScore,
-      // )
+      const comboIncreased = Boolean(
+        comboScorePrevious && comboScore && comboScorePrevious < comboScore,
+      )
       const comboDecreased = Boolean(
         comboScorePrevious && comboScore && comboScorePrevious > comboScore,
       )
@@ -178,34 +167,41 @@ const useComboEffect = ({ addScoreParticle }) => {
         return undefined
       }
 
+      if (comboIncreased) {
+        animationRef.current()
+      }
+
       const id = `${symbolCount}-${symbol}-combo`
       const value = comboScore - comboScorePrevious
       const cleanupScoreParticle = addScoreParticle({
         id,
+        type: "combo",
         value,
-        children: `Combo ${symbolCount}`,
-        animationType: "popOnPlace",
-        ...chestSlotDomNodeToScoreParticlePosition(document.querySelector(`.chest .box`)),
+        symbol,
+        symbolCount,
       })
       animationRef.current = cleanupScoreParticle
 
       const chestSlotAnimationCleanups = chestSlotsWithThatSymbol.map((chestSlotWithThatSymbol) => {
-        const chestSlotDomNode = document.querySelector(
-          `[data-chest-slot="${chestSlotWithThatSymbol}"]`,
+        const chestSlotDomNodeSymbol = document.querySelector(
+          `[data-chest-slot="${chestSlotWithThatSymbol}"] image`,
         )
         // attention: l'animation de combo
         // peut etre delay
-        // et dans ce cas on voudrait que le scaling se fasse en meme temps
-        const animation = chestSlotDomNode.animate(
+        // et dans ce cas on voudrait que le scaling se fasse en meme temps ?
+        const animation = chestSlotDomNodeSymbol.animate(
           [
             {
               transform: "scale(1)",
+              transformOrigin: "center center",
             },
             {
               transform: "scale(1.2)",
+              transformOrigin: "center center",
             },
             {
               transform: "scale(1)",
+              transformOrigin: "center center",
             },
           ],
           { duration: 400 },
@@ -248,46 +244,4 @@ const COMBO_SCORES = {
   6: 1000,
   7: 2000,
   8: 4000,
-}
-
-// const useChestSlotUpdatesWithoutMoves = () => {
-//   const chestSlots = useChestSlots()
-//   const chestSlotsPreviousRef = React.useRef(null)
-
-//   const chestSlotsUpdates = React.useMemo(() => {
-//     const chestSlotsPrevious = chestSlotsPreviousRef.current
-//     chestSlotsPreviousRef.current = chestSlots
-
-//     const updates = []
-//     if (chestSlotsPrevious === null) {
-//       return updates
-//     }
-
-//     Object.keys(chestSlots).forEach((chestSlot) => {
-//       const chestSlotContent = chestSlots[chestSlot]
-//       const chestSlotContentPreviousSlot = Object.keys(chestSlotsPrevious).find(
-//         (chestSlotPrevious) => {
-//           const chestSlotContentPrevious = chestSlotsPrevious[chestSlotPrevious]
-//           return compareChestSlotContent(chestSlotContent, chestSlotContentPrevious)
-//         },
-//       )
-//       if (!chestSlotContentPreviousSlot) {
-//         const chestSlotContentPrevious = chestSlotsPrevious[chestSlot]
-//         updates.push({
-//           chestSlot,
-//           chestSlotContentPrevious,
-//           chestSlotContent,
-//         })
-//       }
-//     })
-//     return updates
-//   }, [chestSlots])
-
-//   return chestSlotsUpdates
-// }
-
-const chestSlotDomNodeToScoreParticlePosition = (chestSlotDomNode) => {
-  const domNodeRectangle = getDomNodeRectangle(chestSlotDomNode)
-  const centerPoint = getRectangleCenterPoint(domNodeRectangle)
-  return centerPoint
 }

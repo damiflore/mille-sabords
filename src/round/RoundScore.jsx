@@ -23,7 +23,8 @@ import { SYMBOL_SWORD } from "src/symbols/symbols.js"
 import { countSymbol } from "src/round/computeRoundScore.js"
 import { StarRain } from "src/game-design/StarRain.jsx"
 import { RoundScoreRulesDialog } from "src/round/RoundScoreRulesDialog.jsx"
-import { ScoreParticle, useScoreParticles } from "src/score/score.particle.jsx"
+import { useScoreParticles } from "src/score/useScoreParticles.js"
+import { RoundScoreParticle } from "src/round/RoundScoreParticle.jsx"
 import { useRoundScoreParticleEffects } from "src/round/useRoundScoreParticleEffects.js"
 
 const { useState, useEffect } = React
@@ -83,13 +84,23 @@ const ScoreWithAnimations = () => {
   const [scoreParticleMergedListener, scoreParticleMergedEmitter] = useSignal()
   const [scoreParticles, addScoreParticle, scoreDisplayed] = useScoreParticles({
     totalScore: roundScore,
-    minDelayBetweenParticles: 600,
-    scoreParticleAnimationDuration: 800,
     onScoreParticleMerged: scoreParticleMergedEmitter,
   })
 
   useRoundScoreParticleEffects({ addScoreParticle })
   useScoreParticleMergeEffect({ roundScoreDomNodeRef, scoreParticleMergedListener })
+
+  const minDelayBetweenParticles = 600
+  const lastScoreParticleMsRef = React.useRef(null)
+  const animationDelayGetter = () => {
+    const lastScoreParticleMs = lastScoreParticleMsRef.current
+    const animationDelay = scoreParticleAnimationDelayGetter(
+      lastScoreParticleMs,
+      minDelayBetweenParticles,
+    )
+    lastScoreParticleMsRef.current = Date.now() + animationDelay
+    return animationDelay
+  }
 
   return (
     <>
@@ -102,15 +113,31 @@ const ScoreWithAnimations = () => {
       </span>
       {scoreParticles.map((scoreParticle) => {
         return (
-          <ScoreParticle
+          <RoundScoreParticle
             key={scoreParticle.id}
             totalScoreDomNodeRef={roundScoreDomNodeRef}
             scoreParticle={scoreParticle}
+            animationDelayGetter={animationDelayGetter}
           />
         )
       })}
     </>
   )
+}
+
+const scoreParticleAnimationDelayGetter = (lastScoreParticleMs, minDelayBetweenParticles) => {
+  if (!lastScoreParticleMs) {
+    return 0
+  }
+
+  const nowMs = Date.now()
+  const msEllapsedSinceLastParticle = nowMs - lastScoreParticleMs
+  const msToWait = minDelayBetweenParticles - msEllapsedSinceLastParticle
+  if (msToWait <= 0) {
+    return 0
+  }
+
+  return msToWait
 }
 
 const ScoreWithoutAnimation = () => {

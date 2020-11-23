@@ -1,14 +1,18 @@
-.score-particle {
+.score-particle--symbol,
+.score-particle--combo,
+.score-particle--perfect {
   position: fixed;
   visibility: hidden;
+  pointer-events: none;
 }
 
-.score-particle--value.moveToTotalScore {
+.score-particle--symbol {
   font-size: 20px;
   fill: white;
 }
 
-.score-particle--value.popOnPlace {
+.score-particle--combo text,
+.score-particle--perfect text {
   /* font-family: skullsandcrossbones; */
   font-weight: 700;
   font-size: 35px;
