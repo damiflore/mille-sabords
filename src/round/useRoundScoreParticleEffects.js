@@ -158,6 +158,10 @@ const useComboEffect = ({ addScoreParticle }) => {
       // const comboLost = Boolean(comboScorePrevious && !comboScore)
       comboScorePreviousRef.current = comboScore
 
+      // ne tiens pas compte des parrot lorsqu'ils sont transformé
+      // en singe par la carte animals
+      if (isAnimalsCard(currentCard) && symbolIsParrot(symbol)) return undefined
+
       if (effectSuspended) return undefined
 
       if (!comboScore) return undefined
@@ -216,7 +220,7 @@ const useComboEffect = ({ addScoreParticle }) => {
           chestSlotAnimationCleanup()
         })
       }
-    }, [effectSuspended, comboScore])
+    }, [effectSuspended, currentCard, comboScore])
   })
 }
 
