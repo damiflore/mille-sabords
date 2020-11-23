@@ -53,7 +53,13 @@ export const ScoreBoard = ({ openedByUser, closeScoreboard, playerAnimation }) =
           </button>
         </div>
       )}
-      <Image className="win-treasure-img" src={winTreasureUrl} alt="win-treasure" width="230" height="150" />
+      <Image
+        className="win-treasure-img"
+        src={winTreasureUrl}
+        alt="win-treasure"
+        width="230"
+        height="150"
+      />
       <div className="users-path">
         {players.map((player) => (
           <PlayerPath
@@ -179,8 +185,8 @@ const PlayerPath = ({
   return (
     <div className="user-path">
       <svg viewBox="0 0 79.164 739.564" width="50" height="450" fill="none" stroke="none">
-        <path d={pathCoordinates} className="path-background"/>
-        <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground"/>
+        <path d={pathCoordinates} className="path-background" />
+        <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground" />
         <circle
           ref={circleElementRef}
           r="13"
@@ -194,9 +200,12 @@ const PlayerPath = ({
       </svg>
       <div className="speech-bubble">{score}</div>
       <div
-        className={`user-avatar ${nextPlayer.character.id === character.id && !openedByUser ? "next-player" : ""}`}
+        className={`user-avatar ${
+          nextPlayer.character.id === character.id && !openedByUser ? "next-player" : ""
+        }`}
         onClick={() => {
-          if (nextPlayer.character.id === character.id && !openedByUser ) openStartPlayerRoundDialog()
+          if (nextPlayer.character.id === character.id && !openedByUser)
+            openStartPlayerRoundDialog()
         }}
       >
         <Avatar character={character} />
