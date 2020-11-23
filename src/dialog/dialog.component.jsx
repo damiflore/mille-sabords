@@ -15,8 +15,8 @@ export const Dialog = (props) => {
   )
 }
 
-export const useDialogState = () => {
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+export const useDialogState = (initialValue = false) => {
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(initialValue)
   const openDialog = () => {
     setDialogIsOpen(true)
   }
