@@ -12,6 +12,7 @@
 @import "./score-board/score-board.css";
 @import "./score-board/start-player-round-dialog.css";
 @import "./game/character-selection.css";
+@import "./game/game-configuration.css";
 
 @font-face {
   font-family: "skullsandcrossbones";

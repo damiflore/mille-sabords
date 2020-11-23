@@ -5,20 +5,26 @@ export const GameConfiguration = () => {
   const setPlayerCount = useSetPlayerCount()
 
   return (
-    <div>
-      <p>Combien de joueur?</p>
-      {[1, 2, 3, 4, 5].map((playerCount) => {
-        return (
-          <button
-            key={playerCount}
-            onClick={() => {
-              setPlayerCount(playerCount)
-            }}
-          >
-            {playerCount === 1 ? "1 joueur" : `${playerCount} joueurs`}
-          </button>
-        )
-      })}
+    <div className="game-configuration">
+      <div className="background-image"/>
+      <div className="content">
+        <div className="title">A l’abordage !</div>
+        <div className="subtitle">Combien de joueurs participent à l’aventure ?</div>
+        <div className="buttons">
+        {[1, 2, 3, 4, 5].map((playerCount) => {
+          return (
+            <button
+              key={playerCount}
+              onClick={() => {
+                setPlayerCount(playerCount)
+              }}
+            >
+              {playerCount}
+            </button>
+          )
+        })}
+        </div>
+      </div>
     </div>
   )
 }

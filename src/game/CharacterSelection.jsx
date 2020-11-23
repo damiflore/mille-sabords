@@ -79,8 +79,8 @@ export const CharacterSelection = ({ players }) => {
 
       {!playerWithoutCharacter && (
         <div className="crew-completed">
-          <p>L&lsquo;équipage est au complet !</p>
-          <Image src={cardToSmallImageUrl({ type: CARD_TWO_SWORDS_CHALLENGE })} />
+          <p>L’équipage est au complet !</p>
+          <Image style={{ 'opacity': 0.5 }} src={cardToSmallImageUrl({ type: CARD_TWO_SWORDS_CHALLENGE })} />
           <button
             onClick={() => {
               startGame()
@@ -99,7 +99,7 @@ const CrewMembers = () => {
 
   return (
     <div className={`crew ${players.length > 3 ? "large-crew" : ""}`}>
-      <p>Votre équipage:</p>
+      <div className="title">Votre equipage:</div>
       <ul>
         {players.map((player) => {
           return (
@@ -107,6 +107,8 @@ const CrewMembers = () => {
               {player.character ? (
                 <Image
                   className="crew-member-img"
+                  width="40px"
+                  height="40px"
                   src={player.character && player.character.img}
                   alt="player"
                   style={{

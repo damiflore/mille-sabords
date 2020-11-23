@@ -29,6 +29,8 @@
   font-size: 30px;
 }
 #loadscreen img {
-  width: 60%;
+  max-width: 60%;
+  height: auto;
   margin-top: 60px;
+  max-height: 500px;
 }

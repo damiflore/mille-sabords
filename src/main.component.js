@@ -102,7 +102,7 @@ const LoadScreen = (props) => {
           <p className="text">Chargement du jeu...</p>
         ) : (
             <>
-              <p className="text">Chargement des fichiers</p>
+              <p className="text">Chargement du jeu...</p>
               <div className="progress">{urlTrackerLoadedCount}/{urlTrackerTotalCount}</div>
             </>
           )}

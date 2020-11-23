@@ -63,6 +63,14 @@
 }
 
 /* CHARACTERS LIST */
+.character-selection-page .title {
+  font-family: ArrrMateyBb;
+  text-align: center;
+  color: #082988;
+  font-weight: normal;
+  font-size: 86px;
+  margin: 45px 0;
+}
 .character-selection-page p {
   padding: 10px 30px;
   font-size: 19px;
