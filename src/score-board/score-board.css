@@ -87,6 +87,7 @@
 /* AVATAR */
 .score-board-container .user-avatar {
   padding-top: 17px;
+  max-height: 50px;
 }
 .score-board-container .user-avatar svg {
   width: 70px;
