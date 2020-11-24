@@ -194,7 +194,7 @@ export const Dice = ({
             strokeWidth="1"
           ></rect>
           <image
-            xlinkHref={symbolToImageUrl(diceToVisibleSymbol(dice))}
+            href={symbolToImageUrl(diceToVisibleSymbol(dice))}
             draggable="false"
             style={{
               width: "100%",
@@ -210,7 +210,7 @@ export const Dice = ({
 const computeDiceColors = (onSkull, isDiceKept) => {
   if (onSkull) {
     return { fill: 'black', stroke: 'black' }
-  } 
+  }
   else if (isDiceKept) {
     return { fill: 'none', stroke: 'none' }
   }

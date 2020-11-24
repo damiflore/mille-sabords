@@ -187,9 +187,11 @@ const useComboEffect = ({ addScoreParticle }) => {
       animationRef.current = cleanupScoreParticle
 
       const chestSlotAnimationCleanups = chestSlotsWithThatSymbol.map((chestSlotWithThatSymbol) => {
-        const chestSlotDomNodeSymbol = document.querySelector(
-          `[data-chest-slot="${chestSlotWithThatSymbol}"] image`,
-        )
+        const chestSlotDomNodeSymbol =
+          document.querySelector(`[data-chest-slot="${chestSlotWithThatSymbol}"] image`) ||
+          // symbol coming from coin or diamond card have a different html structure
+          // (they use an <img> tag)
+          document.querySelector(`[data-chest-slot="${chestSlotWithThatSymbol}"] img`)
         // attention: l'animation de combo
         // peut etre delay
         // et dans ce cas on voudrait que le scaling se fasse en meme temps ?

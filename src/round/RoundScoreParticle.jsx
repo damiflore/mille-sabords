@@ -64,7 +64,7 @@ const ScoreParticleTreasure = ({
 
   return (
     <svg ref={particleDomNodeRef} width="32" height="32" className="score-particle--symbol">
-      <image xlinkHref={symbolUrl} width="32" height="32" />,
+      <image href={symbolUrl} width="32" height="32" />,
     </svg>
   )
 }
