@@ -4,6 +4,7 @@ import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 import winTreasureUrl from "src/score-board/win-treasure.png"
+import { symbolSkullUrl } from "src/symbols/symbols.js"
 
 const SCORE_MAX = 6000
 
@@ -110,39 +111,78 @@ const PlayerPath = ({
 }) => {
   const pathForegroundElementRef = React.useRef(null)
   const circleElementRef = React.useRef(null)
+  const animation3SkullsElementRef = React.useRef(null)
   const nextPlayer = getNextPlayer()
 
-  const [scoreAnimation, scoreAnimationSetter] = React.useState()
+  const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
+  const [symbolsAnimation, symbolsAnimationSetter] = React.useState(null)
+  const [skullsAnimation, skullsAnimationSetter] = React.useState(false)
 
   React.useEffect(() => {
     if (playerAnimation && playerAnimation.player === player) {
-      scoreAnimationSetter(playerAnimation.score)
+      if (playerAnimation.roundOverReason === "user-collect") {
+        scoreAnimationSetter(playerAnimation.score)
+        symbolsAnimationSetter(playerAnimation.symbolsInChest)
+      } else if (playerAnimation.roundOverReason === "3-skulls") {
+        skullsAnimationSetter(true)
+      } else if (playerAnimation.roundOverReason === "chalenge-failed") {
+        scoreAnimationSetter(playerAnimation.score)
+      }
     } else {
       scoreAnimationSetter(null)
     }
   }, [playerAnimation, player])
 
+  // 3 skulls animation
   React.useEffect(() => {
-    if (!scoreAnimation) return () => {}
+    // The payer has 3 skulls and marks a score of zéro
+    if (skullsAnimation) {
+      // 3 skulls falling on the avatar icon
+      const animation3SkullsElement = animation3SkullsElementRef.current
+      animation3SkullsElement.classList.add("animation-3skulls--active")
+    }
+  }, [skullsAnimation])
 
+  // symbols animation
+  React.useEffect(() => {
+    if (symbolsAnimation) {
+      console.log(symbolsAnimation)
+    }
+  }, [symbolsAnimation])
+
+  // score progress animation
+  React.useEffect(() => {
+    if (!scoreAnimation) return undefined
     const { from, to } = scoreAnimation
-    const pathForegroundElement = pathForegroundElementRef.current
-    const pathLength = pathForegroundElement.getTotalLength()
-    const pathForegroundAnimation = pathForegroundElement.animate(
+
+    // the player marks a positive or negative score
+    if (from < to) {
+      console.log("positive score !")
+    }
+    if (from > to) {
+      console.log("negative score !")
+    }
+
+    // Circle animation
+    const circleElement = circleElementRef.current
+    const circleAnimation = circleElement.animate(
       [
-        { strokeDashoffset: ratioToStrokeDashOffset(from / SCORE_MAX, pathLength) },
-        { strokeDashoffset: ratioToStrokeDashOffset(to / SCORE_MAX, pathLength) },
+        { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
+        { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
       ],
       {
         duration: 1000,
         fill: "forwards",
       },
     )
-    const circleElement = circleElementRef.current
-    const circleAnimation = circleElement.animate(
+
+    // path animation
+    const pathForegroundElement = pathForegroundElementRef.current
+    const pathLength = pathForegroundElement.getTotalLength()
+    const pathForegroundAnimation = pathForegroundElement.animate(
       [
-        { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
-        { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
+        { strokeDashoffset: ratioToStrokeDashOffset(from / SCORE_MAX, pathLength) },
+        { strokeDashoffset: ratioToStrokeDashOffset(to / SCORE_MAX, pathLength) },
       ],
       {
         duration: 1000,
@@ -208,6 +248,29 @@ const PlayerPath = ({
             openStartPlayerRoundDialog()
         }}
       >
+        <div className="animation-3skulls" ref={animation3SkullsElementRef}>
+          <Image
+            width="30"
+            height="30"
+            className="skull skull-1"
+            src={symbolSkullUrl}
+            animateLoaded={false}
+          />
+          <Image
+            width="30"
+            height="30"
+            className="skull skull-2"
+            src={symbolSkullUrl}
+            animateLoaded={false}
+          />
+          <Image
+            width="30"
+            height="30"
+            className="skull skull-3"
+            src={symbolSkullUrl}
+            animateLoaded={false}
+          />
+        </div>
         <Avatar character={character} />
       </div>
     </div>

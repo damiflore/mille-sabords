@@ -88,6 +88,7 @@
 .score-board-container .user-avatar {
   padding-top: 17px;
   max-height: 50px;
+  position: relative;
 }
 .score-board-container .user-avatar svg {
   width: 70px;
@@ -154,4 +155,88 @@
   border-bottom: 0;
   margin-left: -6px;
   margin-bottom: -6px;
+}
+
+/* SUCCESS & FAILURE ANIMATIONS */
+.animation-3skulls {
+  display: none;
+  justify-content: center;
+}
+.animation-3skulls--active {
+  display: flex;
+}
+.animation-3skulls .skull {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+}
+.animation-3skulls .skull-1 {
+  opacity: 0;
+  animation: fallToRight 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-3skulls .skull-2 {
+  opacity: 0;
+  animation: fallToLeft 0.8s 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-3skulls .skull-3 {
+  opacity: 0;
+  animation: fallToRight 0.7s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;  
+}
+
+@keyframes fallToRight {
+  0% {
+    transform: translate(-5px, -100px) rotate(-13deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0, -22px) rotate(0);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(24px, -36px) rotate(13deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(35px, -36px) rotate(25deg);
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(56px, 60px) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fallToLeft {
+  0% {
+    transform: translate(5px, -100px) rotate(13deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0, -22px) rotate(0);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(-24px, -36px) rotate(-13deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-35px, -36px) rotate(-25deg);
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-56px, 60px) rotate(-35deg);
+    opacity: 0;
+  }
 }

@@ -19,7 +19,7 @@ export const Game = ({ playerAnimationListener }) => {
   const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
 
   React.useEffect(() => {
-    if (roundOverPayload && roundOverPayload.reason === "score-marked") {
+    if (roundOverPayload) {
       const player = players.find((player) => player.id === currentPlayerId)
       const roundScore = roundOverPayload.value
       const fromScore = player.score - roundScore
@@ -29,11 +29,14 @@ export const Game = ({ playerAnimationListener }) => {
           from: fromScore < 0 ? 0 : fromScore,
           to: player.score,
         },
+        roundOverReason: roundOverPayload.reason,
+        symbolsInChest: roundOverPayload.symbolsInChest,
       })
     } else {
       playerAnimationSetter(null)
     }
   }, [roundOverPayload, currentPlayerId])
+
   React.useEffect(() => {
     if (playerAnimationListener) {
       return playerAnimationListener(playerAnimationSetter)

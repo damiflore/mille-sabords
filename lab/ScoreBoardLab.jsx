@@ -53,6 +53,22 @@ export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
                 Score -1000
               </button>
               <button
+                onClick={() => {
+                  const fromScore = player.score
+                  const toScore = fromScore
+                  setPlayerScore(player, toScore)
+                  playerAnimationEmitter({
+                    player,
+                    score: {
+                      from: fromScore,
+                      to: toScore,
+                    },
+                  })
+                }}
+              >
+                Score +0
+              </button>
+              <button
                 disabled={isCurrentPlayer}
                 onClick={() => {
                   setAsCurrentPlayer(player)

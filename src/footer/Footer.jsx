@@ -7,16 +7,15 @@ import {
   useMarkScoreButtonVisible,
   useStartNextRoundAllowed,
   useRoundScore,
+  useThreeSkullsOrMoreInCursedArea,
+  useSwordChallengeOnGoing,
+  useSymbolsInChest,
 } from "src/round/round.selectors.js"
 
 import { ButtonRoll } from "./ButtonRoll.js"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
 
 export const Footer = ({ onRoundOver, rolledAreaRef }) => {
-  // const roundStarted = useRoundStarted()
-  // if (!roundStarted && !dialogIsOpen) openDialog()
-  // TODO: fix bug in DialogBase: dialog cannot be instantiated open
-
   return (
     <div className="footer actions">
       <ButtonRoll rolledAreaRef={rolledAreaRef} />
@@ -60,6 +59,17 @@ const ButtonEndRound = ({ onRoundOver }) => {
   const startNextRoundAllowed = useStartNextRoundAllowed()
   const endPlayerRound = useEndPlayerRound()
   const roundScore = useRoundScore()
+  const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
+  const swordChallengeOnGoing = useSwordChallengeOnGoing()
+  const symbolsInChest = useSymbolsInChest()
+
+  const computeReason = () => {
+    if (threeSkullsOrMoreInCursedArea) return "3-skulls"
+    // sword challenge is ongoing means is not resolved
+    // if the user clicks on 'Terminer mon tour' with an unresolved challenge, it means that he failed it
+    if (swordChallengeOnGoing) return "chalenge-failed"
+    return "user-collect"
+  }
 
   if (startNextRoundAllowed) {
     return (
@@ -67,19 +77,14 @@ const ButtonEndRound = ({ onRoundOver }) => {
         <button
           onClick={() => {
             // ici on sait que le round est terminé
-            // on peut dire a ceux que ça intéresse
-            // comment ça s'est passé (scoreboard)
-            // qui va alors animer le fait qu'on a marqué un score
-            // on devrait aussi animer le cas ou on fail sword challenge
-            // et le cas ou on se tape 3 tete
+            // on dit a ceux que ça intéresse comment ça s'est passé (scoreboard)
+            // qui va alors animer le fait qu'on a marqué un score, fail sword challenge
+            // ou qu'on s'est tapé 3 tete
             endPlayerRound()
             onRoundOver({
-              // a faire ici:
-              // si on fail sword-challenge ou qu'on fait 3 skulls
-              // alors la raison doit changer
-              // et le scoreboard fera une autre animation
-              reason: "score-marked",
+              reason: computeReason(),
               value: roundScore,
+              symbolsInChest,
             })
           }}
         >
