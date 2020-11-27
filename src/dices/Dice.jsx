@@ -1,3 +1,4 @@
+/* eslint-disable import/max-dependencies */
 /* eslint-disable no-nested-ternary */
 import React from "react"
 
@@ -209,10 +210,9 @@ export const Dice = ({
 
 const computeDiceColors = (onSkull, isDiceKept) => {
   if (onSkull) {
-    return { fill: 'black', stroke: 'black' }
+    return { fill: "black", stroke: "black" }
+  } else if (isDiceKept) {
+    return { fill: "none", stroke: "none" }
   }
-  else if (isDiceKept) {
-    return { fill: 'none', stroke: 'none' }
-  }
-  return { fill: '#eaeaea', stroke: '#b9b9b9' }
+  return { fill: "#eaeaea", stroke: "#b9b9b9" }
 }
