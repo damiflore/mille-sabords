@@ -18,15 +18,15 @@ export const Game = ({ playerAnimationListener }) => {
 
   const isOnScoreboardScreen = !roundStarted || scoreboardOpenedByUser
 
+  const player = players.find((player) => player.id === currentPlayerId)
+  const playerScoreWhenRoundStartedRef = React.useRef(null)
+
   React.useEffect(() => {
     if (roundOverPayload) {
-      const player = players.find((player) => player.id === currentPlayerId)
-      const roundScore = roundOverPayload.value
-      const fromScore = player.score - roundScore
       playerAnimationSetter({
         player,
         score: {
-          from: fromScore < 0 ? 0 : fromScore,
+          from: playerScoreWhenRoundStartedRef.current,
           to: player.score,
         },
         roundOverReason: roundOverPayload.reason,
@@ -70,6 +70,7 @@ export const Game = ({ playerAnimationListener }) => {
         scoreboardOpenedByUserSetter(true)
       }}
       onRoundStart={() => {
+        playerScoreWhenRoundStartedRef.current = player.score
         roundOverPayloadSetter(null)
       }}
       onRoundOver={(roundOverPayload) => {

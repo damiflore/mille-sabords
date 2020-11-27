@@ -31,6 +31,16 @@ export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
                       from: fromScore,
                       to: toScore,
                     },
+                    roundOverReason: "user-collect",
+                    symbolsInChest: [
+                      "diamond",
+                      "coin",
+                      "sword",
+                      "sword",
+                      "sword",
+                      "monkey",
+                      "coin",
+                    ],
                   })
                 }}
               >
@@ -47,6 +57,7 @@ export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
                       from: fromScore,
                       to: toScore,
                     },
+                    roundOverReason: "user-collect",
                   })
                 }}
               >
@@ -63,10 +74,11 @@ export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
                       from: fromScore,
                       to: toScore,
                     },
+                    roundOverReason: "3-skulls",
                   })
                 }}
               >
-                Score +0
+                3 Skulls
               </button>
               <button
                 disabled={isCurrentPlayer}

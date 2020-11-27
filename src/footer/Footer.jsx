@@ -64,6 +64,7 @@ const ButtonEndRound = ({ onRoundOver }) => {
   const symbolsInChest = useSymbolsInChest()
 
   const computeReason = () => {
+    // TODO: case of the treasure chest card => some score will be marked even if 3 skulls (canMarkScore ?)
     if (threeSkullsOrMoreInCursedArea) return "3-skulls"
     // sword challenge is ongoing means is not resolved
     // if the user clicks on 'Terminer mon tour' with an unresolved challenge, it means that he failed it

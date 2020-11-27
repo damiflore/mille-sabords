@@ -1,7 +1,10 @@
 .score-board-container {
   height: 100%;
-  background-image: url("./sand.jpg");
+  background-image: url("./sea.jpg");
   background-size: 400px;
+  background-size: 400px;
+  background-color: #b8deff;
+  background-blend-mode: soft-light;
 }
 .score-board-container .cross {
   position: absolute;
@@ -40,11 +43,15 @@
   margin: 0 auto;
   display: block;
   padding-top: 10px;
+  /* temporary */
+  display: none;
 }
 .score-board-container .users-path {
   display: flex;
   align-items: end;
   justify-content: center;
+  /* temporary */
+  margin-top: 20px;
 }
 
 /* PATH */
@@ -56,22 +63,23 @@
 }
 .score-board-container .user-path svg {
   width: auto;
-  height: 55vh;
+  height: 73vh;
   overflow: visible;
 }
 .score-board-container path.path-background,
 .score-board-container path.path-foreground {
   fill: none;
-  stroke-width: 4px;
+  stroke-width: 2px;
   stroke-dasharray: 825;
   stroke-dashoffset: 825;
 }
 .score-board-container path.path-background {
-  stroke: #756e63;
-  stroke-dasharray: 10px;
+  stroke: #a6a29c;
+  stroke-dasharray: 7px;
 }
 .score-board-container path.path-foreground {
-  stroke: white;
+  stroke: #269bb5;
+  stroke-width: 4px;
 }
 
 /* SCORE INDICATOR */
@@ -81,7 +89,13 @@
 }
 .score-board-container .score-indicator {
   position: absolute;
+}
+.score-board-container .boat {
+  width: 70px;
+  height: 70px;
+  transform: translate(-30px, -50px);
   offset-distance: 100%;
+  offset-rotate: 0deg;  
 }
 
 /* AVATAR */
@@ -137,7 +151,7 @@
   background: #c7401b;
   border-radius: 0.4em;
   margin: 0 auto;
-  margin-top: 12px;
+  margin-top: 20px;
   font-size: 12px;
   padding: 7px 0;
   width: 100%;
@@ -158,12 +172,11 @@
 }
 
 /* SUCCESS & FAILURE ANIMATIONS */
+
+/* 3 skulls */
 .animation-3skulls {
-  display: none;
-  justify-content: center;
-}
-.animation-3skulls--active {
   display: flex;
+  justify-content: center;
 }
 .animation-3skulls .skull {
   position: absolute;
@@ -182,7 +195,6 @@
   opacity: 0;
   animation: fallToRight 0.7s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;  
 }
-
 @keyframes fallToRight {
   0% {
     transform: translate(-5px, -100px) rotate(-13deg);
@@ -211,7 +223,6 @@
     opacity: 0;
   }
 }
-
 @keyframes fallToLeft {
   0% {
     transform: translate(5px, -100px) rotate(13deg);
@@ -225,6 +236,73 @@
     opacity: 1;
   }
   65% {
+    transform: translate(-24px, -36px) rotate(-13deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-35px, -36px) rotate(-25deg);
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-56px, 60px) rotate(-35deg);
+    opacity: 0;
+  }
+}
+
+/* symbols */
+.animation-symbols {
+  display: flex;
+  justify-content: center;
+  justify-content: center;
+  transform: translate(-14px, -38px);
+  offset-distance: 100%;
+  offset-rotate: 0deg;  
+}
+.animation-symbols .symbol {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+}
+.animation-symbols .symbol-1 { animation: popRight 0.7s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-2 { animation: popLeft 0.6s 0.1s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-3 { animation: popRight 0.6s 0.3s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-4 { animation: popLeft 0.7s 0.4s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-5 { animation: popRight 0.7s 0.6s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-6 { animation: popLeft 0.6s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-7 { animation: popRight 0.5s 0.9s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-8 { animation: popLeft 0.6s 1.2s cubic-bezier(0.4, 0, 1, 1) forwards; }
+
+@keyframes popRight {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(24px, -36px) rotate(13deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(35px, -36px) rotate(25deg);
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(56px, 60px) rotate(35deg);
+    opacity: 0;
+  }
+}
+@keyframes popLeft {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 0;
+  }
+  50% {
     transform: translate(-24px, -36px) rotate(-13deg);
     opacity: 1;
   }

@@ -4,7 +4,8 @@ import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
 import winTreasureUrl from "src/score-board/win-treasure.png"
-import { symbolSkullUrl } from "src/symbols/symbols.js"
+import boarUrl from "src/score-board/boat.png"
+import { symbolSkullUrl, symbolToImageUrl } from "src/symbols/symbols.js"
 
 const SCORE_MAX = 6000
 
@@ -110,12 +111,14 @@ const PlayerPath = ({
   playerAnimation,
 }) => {
   const pathForegroundElementRef = React.useRef(null)
-  const circleElementRef = React.useRef(null)
+  const boatElementRef = React.useRef(null)
   const animation3SkullsElementRef = React.useRef(null)
+  const animationSymbolsElementRef = React.useRef(null)
+
   const nextPlayer = getNextPlayer()
 
   const [scoreAnimation, scoreAnimationSetter] = React.useState(null)
-  const [symbolsAnimation, symbolsAnimationSetter] = React.useState(null)
+  const [symbolsAnimation, symbolsAnimationSetter] = React.useState([])
   const [skullsAnimation, skullsAnimationSetter] = React.useState(false)
 
   React.useEffect(() => {
@@ -133,39 +136,22 @@ const PlayerPath = ({
     }
   }, [playerAnimation, player])
 
-  // 3 skulls animation
-  React.useEffect(() => {
-    // The payer has 3 skulls and marks a score of zéro
-    if (skullsAnimation) {
-      // 3 skulls falling on the avatar icon
-      const animation3SkullsElement = animation3SkullsElementRef.current
-      animation3SkullsElement.classList.add("animation-3skulls--active")
-    }
-  }, [skullsAnimation])
-
-  // symbols animation
-  React.useEffect(() => {
-    if (symbolsAnimation) {
-      console.log(symbolsAnimation)
-    }
-  }, [symbolsAnimation])
+  // // symbols animation
+  // React.useEffect(() => {
+  //   if (symbolsAnimation) {
+  //     console.log(symbolsAnimation)
+  //     //  HERE
+  //   }
+  // }, [symbolsAnimation])
 
   // score progress animation
   React.useEffect(() => {
     if (!scoreAnimation) return undefined
     const { from, to } = scoreAnimation
 
-    // the player marks a positive or negative score
-    if (from < to) {
-      console.log("positive score !")
-    }
-    if (from > to) {
-      console.log("negative score !")
-    }
-
-    // Circle animation
-    const circleElement = circleElementRef.current
-    const circleAnimation = circleElement.animate(
+    // Boat animation along the path
+    const boatElement = boatElementRef.current
+    const boatAnimation = boatElement.animate(
       [
         { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
         { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
@@ -176,9 +162,27 @@ const PlayerPath = ({
       },
     )
 
+    // Symbols animation along the path (if exist)
+    const symbolsElement = animationSymbolsElementRef.current
+    let symbolsAnimation = null
+    if (symbolsElement) {
+      symbolsAnimation = symbolsElement.animate(
+        [
+          { offsetDistance: ratioToOffsetDistance(from / SCORE_MAX) },
+          { offsetDistance: ratioToOffsetDistance(to / SCORE_MAX) },
+        ],
+        {
+          duration: 1000,
+          fill: "forwards",
+        },
+      )
+    }
+
     // path animation
     const pathForegroundElement = pathForegroundElementRef.current
     const pathLength = pathForegroundElement.getTotalLength()
+    console.log("from", from)
+    console.log("to", to)
     const pathForegroundAnimation = pathForegroundElement.animate(
       [
         { strokeDashoffset: ratioToStrokeDashOffset(from / SCORE_MAX, pathLength) },
@@ -191,25 +195,18 @@ const PlayerPath = ({
     )
 
     pathForegroundAnimation.onfinish = () => {
-      if (circleAnimation.playState === "finished") scoreAnimationSetter(null)
+      if (boatAnimation.playState === "finished") scoreAnimationSetter(null)
     }
-    circleAnimation.onfinish = () => {
+    boatAnimation.onfinish = () => {
       if (pathForegroundAnimation.playState === "finished") scoreAnimationSetter(null)
     }
 
     return () => {
       pathForegroundAnimation.cancel()
-      circleAnimation.cancel()
+      boatAnimation.cancel()
+      if (symbolsAnimation) symbolsAnimation.cancel()
     }
   }, [scoreAnimation])
-
-  // uncomment to test score animation
-  // React.useEffect(() => {
-  //   scoreAnimationSetter({
-  //     from: 0,
-  //     to: -1000,
-  //   })
-  // }, [])
 
   React.useEffect(() => {
     // path-foreground line fill
@@ -227,16 +224,39 @@ const PlayerPath = ({
       <svg viewBox="0 0 79.164 739.564" width="50" height="450" fill="none" stroke="none">
         <path d={pathCoordinates} className="path-background" />
         <path ref={pathForegroundElementRef} d={pathCoordinates} className="path-foreground" />
-        <circle
-          ref={circleElementRef}
-          r="13"
-          fill={character.color || "white"}
-          className="score-indicator"
-          style={{
-            offsetPath: `path('${pathCoordinates}')`,
-            offsetDistance: ratioToOffsetDistance(score / SCORE_MAX),
-          }}
-        />
+        <g className="score-indicator">
+          <image
+            ref={boatElementRef}
+            href={boarUrl}
+            width="26"
+            height="26"
+            className="boat"
+            style={{
+              offsetPath: `path('${pathCoordinates}')`,
+              offsetDistance: ratioToOffsetDistance(score / SCORE_MAX),
+            }}
+          />
+          {symbolsAnimation && symbolsAnimation.length > 0 && (
+            <g
+              className="animation-symbols"
+              ref={animationSymbolsElementRef}
+              style={{
+                offsetPath: `path('${pathCoordinates}')`,
+                offsetDistance: ratioToOffsetDistance(score / SCORE_MAX),
+              }}
+            >
+              {symbolsAnimation.map((symbol, index) => (
+                <image
+                  key={index}
+                  width="30"
+                  height="30"
+                  className={`symbol symbol-${index + 1}`}
+                  href={symbolToImageUrl(symbol)}
+                />
+              ))}
+            </g>
+          )}
+        </g>
       </svg>
       <div className="speech-bubble">{score}</div>
       <div
@@ -248,29 +268,11 @@ const PlayerPath = ({
             openStartPlayerRoundDialog()
         }}
       >
-        <div className="animation-3skulls" ref={animation3SkullsElementRef}>
-          <Image
-            width="30"
-            height="30"
-            className="skull skull-1"
-            src={symbolSkullUrl}
-            animateLoaded={false}
-          />
-          <Image
-            width="30"
-            height="30"
-            className="skull skull-2"
-            src={symbolSkullUrl}
-            animateLoaded={false}
-          />
-          <Image
-            width="30"
-            height="30"
-            className="skull skull-3"
-            src={symbolSkullUrl}
-            animateLoaded={false}
-          />
-        </div>
+        {skullsAnimation && (
+          <div className="animation-3skulls" ref={animation3SkullsElementRef}>
+            <ThreeSkullsAnimated />
+          </div>
+        )}
         <Avatar character={character} />
       </div>
     </div>
@@ -280,6 +282,20 @@ const PlayerPath = ({
 const ratioToOffsetDistance = (ratio) => `${ratio * 100}%`
 
 const ratioToStrokeDashOffset = (ratio, pathLength) => pathLength - ratio * pathLength
+
+const ThreeSkullsAnimated = () =>
+  new Array(3)
+    .fill("")
+    .map((item, index) => (
+      <Image
+        key={index}
+        width="30"
+        height="30"
+        className={`skull skull-${index + 1}`}
+        src={symbolSkullUrl}
+        animateLoaded={false}
+      />
+    ))
 
 const Avatar = ({ character }) => (
   <Image
