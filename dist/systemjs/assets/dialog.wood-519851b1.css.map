@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/dialog/dialog.wood.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,iCACE,sBACF,CAEA,+CACE,wBACF,CAEA,iFAEE,cACF,CAEA,kFAIE,uBAA2B,CAC3B,uBACF,CACA,yCAEE,wCAAoC,CACpC,qBAAsB,CACtB,WAAY,CACZ,iBACF,CACA,yCAEE,uCAAmC,CACnC,UAAW,CACX,eAAgB,CAChB,kBAAmB,CACnB,WACF,CACA,mBACE,cACF,CACA,sBACE,eACF,CACA,oBACE,eACF,CACA,qBACE,gBACF,CAEA,iCACE,iBAAkB,CAClB,SAAU,CACV,QAAS,CACT,QAAS,CACT,gBAAiB,CACjB,SAAU,CACV,YAAa,CACb,wCAAkC,CAClC,qBAAsB,CACtB,UAAY,CACZ,iBAAkB,CAClB,wBAAyB,CACzB,wBAAyB,CACzB,iBACF,CACA,oDACE,+BAAgC,CAChC,cAAe,CACf,eAAgB,CAChB,wBAA0B,CAC1B,iBAAkB,CAClB,OACF,CAEA,iCACE,aAAc,CACd,kBAAmB,CACnB,wBACF,CAEA,kBACE,YAAa,CACb,kBACF,CAEA,mBACE,SACF",
+  "file": "dialog.wood-519851b1.css",
+  "sourcesContent": [
+    ".dialog-theme-wood .dialog--main {\n  background: transparent;\n}\n\n.dialog-theme-wood .dialog--scrollable-content {\n  background-color: #ffe7be;\n}\n\n.dialog-theme-wood .dialog--insert-left,\n.dialog-theme-wood .dialog--insert-right {\n  min-width: 37px;\n}\n\n.dialog-border-top,\n.dialog-border-bottom,\n.dialog-border-left,\n.dialog-border-right {\n  background-position: center;\n  background-size: contain;\n}\n.dialog-border-top,\n.dialog-border-bottom {\n  background-image: url(\"./wood2.png\");\n  background-size: cover;\n  height: 30px;\n  border-radius: 3px;\n}\n.dialog-border-left,\n.dialog-border-right {\n  background-image: url(\"./wood.png\");\n  width: 30px;\n  border-top: none;\n  border-bottom: none;\n  height: 100%;\n}\n.dialog-border-top {\n  margin-top: 5px;\n}\n.dialog-border-bottom {\n  margin-bottom: 0;\n}\n.dialog-border-left {\n  margin-left: 7px;\n}\n.dialog-border-right {\n  margin-right: 7px;\n}\n\n.dialog-theme-wood .dialog-title {\n  position: absolute;\n  z-index: 1;\n  top: -5px;\n  left: 50%;\n  margin-left: -30%;\n  width: 60%;\n  padding: 10px;\n  background-image: url(./stone.png);\n  background-size: cover;\n  color: white;\n  text-align: center;\n  text-transform: uppercase;\n  border: 2px solid #817d75;\n  border-radius: 5px;\n}\n.dialog-theme-wood .dialog-title .dialog-title-text {\n  font-family: skullsandcrossbones;\n  font-size: 26px;\n  font-weight: 300;\n  text-shadow: 0 0 8px black;\n  position: relative;\n  top: 4px;\n}\n\n.dialog-theme-wood .dialog-close {\n  color: #ffe5cf;\n  background: #c26e29;\n  border: 2px solid #ffe5cf;\n}\n\n.dialog-wood-body {\n  display: flex;\n  flex-direction: row;\n}\n\n.dialog-border-top {\n  z-index: 1;\n}\n"
+  ]
+}

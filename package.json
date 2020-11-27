@@ -27,13 +27,13 @@
     "prettier-format-stage": "npm run prettier-format -- --staged",
     "prettier-check": "npm run prettier-format -- --dry-run",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
-    "generate-systemjs-bundle": "node --experimental-top-level-await ./script/generate-systemjs-bundle/generate-systemjs-bundle.js",
+    "generate-systemjs-build": "node --experimental-top-level-await ./script/generate-systemjs-build/generate-systemjs-build.js",
     "generate-import-map": "node --experimental-top-level-await ./script/generate-import-map/generate-import-map.js",
     "generate-lighthouse-report": "node --experimental-top-level-await ./script/generate-lighthouse-report/generate-lighthouse-report.js",
     "build": "npm run dist",
     "start": "node --experimental-top-level-await ./script/start/start.js",
     "postinstall": "npm run generate-import-map",
-    "dist": "npm run generate-systemjs-bundle"
+    "dist": "npm run generate-systemjs-build"
   },
   "engines": {
     "node": "14.x"
@@ -49,7 +49,7 @@
     "@babel/plugin-transform-react-jsx": "7.12.5",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.3",
-    "@jsenv/core": "16.7.3",
+    "@jsenv/core": "17.0.0",
     "@jsenv/eslint-config": "12.8.0",
     "@jsenv/file-size-impact": "6.0.1",
     "@jsenv/lighthouse-score-impact": "2.4.2",
