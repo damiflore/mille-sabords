@@ -7,11 +7,13 @@ executeTestPlan({
     "./src/**/*.test.html": {
       browser: {
         launch: launchChromiumTab,
+        allocatedMs: 60 * 1000,
       },
     },
     "./test/**/*.test.html": {
       browser: {
         launch: launchChromiumTab,
+        allocatedMs: 60 * 1000,
       },
     },
   },
