@@ -7,11 +7,11 @@ const projectDirectoryUrl = new URL("../../", import.meta.url)
 
 const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
-const bundleDirectoryUrl = resolveUrl("./dist/systemjs/", projectDirectoryUrl)
-const mainHtmlFileUrl = resolveUrl("index.prod.html", bundleDirectoryUrl)
+const buildDirectoryUrl = resolveUrl("./dist/systemjs/", projectDirectoryUrl)
+const mainHtmlFileUrl = resolveUrl("index.prod.html", buildDirectoryUrl)
 
 const SECONDS_IN_30_DAYS = 60 * 60 * 24 * 30
-const BUNDLE_FILE_CACHE_VALIDITY_IN_SECONDS = SECONDS_IN_30_DAYS
+const BUILD_FILE_CACHE_VALIDITY_IN_SECONDS = SECONDS_IN_30_DAYS
 
 export const serverPromise = startServer({
   logLevel: process.env.LOG_LEVEL || "info",
@@ -24,16 +24,16 @@ export const serverPromise = startServer({
     if (ressource === "/") {
       ressource = "/index.prod.html"
     }
-    const fileUrl = resolveUrl(ressource.slice(1), bundleDirectoryUrl)
+    const fileUrl = resolveUrl(ressource.slice(1), buildDirectoryUrl)
     const longTermCacheEnabled =
-      fileUrl !== mainHtmlFileUrl && fileUrl.startsWith(bundleDirectoryUrl)
+      fileUrl !== mainHtmlFileUrl && fileUrl.startsWith(buildDirectoryUrl)
 
     return serveFile(fileUrl, {
       cancellationToken,
       method,
       headers,
       cacheControl: longTermCacheEnabled
-        ? `private,max-age=${BUNDLE_FILE_CACHE_VALIDITY_IN_SECONDS},immutable`
+        ? `private,max-age=${BUILD_FILE_CACHE_VALIDITY_IN_SECONDS},immutable`
         : `private,max-age=0,must-revalidate`,
       etagEnabled: true,
     })

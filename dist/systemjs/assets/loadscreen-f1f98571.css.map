@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../loadscreen.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,WACE,uBAA0B,CAC1B,qCACF,CAEA,YACE,eAAgB,CAChB,WAAY,CACZ,YAAa,CACb,cAAe,CACf,YAAa,CACb,MAAO,CACP,KAAM,CACN,OAAQ,CACR,QAAS,CACT,YAAa,CACb,qBAAsB,CACtB,kBAAmB,CACnB,eAAiB,CACjB,UACF,CACA,kBACE,uBAAwB,CACxB,cACF,CAEA,sBACE,sBAAwB,CACxB,cACF,CACA,gBACE,aAAc,CACd,WAAY,CACZ,eAAgB,CAChB,gBACF",
+  "file": "loadscreen-f1f98571.css",
+  "sourcesContent": [
+    "@font-face {\n  font-family: \"ArrrMateyBb\";\n  src: url(\"src/fonts/ArrrMateyBb-wn3.ttf\");\n}\n\n#loadscreen {\n  overflow: hidden;\n  width: 100vw;\n  height: 100vh;\n  position: fixed;\n  z-index: 1000;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  background: black;\n  color: white;\n}\n#loadscreen .text {\n  font-family: ArrrMateyBb;\n  font-size: 60px;\n}\n\n#loadscreen .progress {\n  font-family: arial, sans;\n  font-size: 30px;\n}\n#loadscreen img {\n  max-width: 60%;\n  height: auto;\n  margin-top: 60px;\n  max-height: 500px;\n}"
+  ]
+}

@@ -1,0 +1,2 @@
+@font-face{font-family:ArrrMateyBb;src:url(ArrrMateyBb-wn3-3d20259e.ttf)}#loadscreen{overflow:hidden;width:100vw;height:100vh;position:fixed;z-index:1000;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;background:#000;color:#fff}#loadscreen .text{font-family:ArrrMateyBb;font-size:60px}#loadscreen .progress{font-family:arial,sans;font-size:30px}#loadscreen img{max-width:60%;height:auto;margin-top:60px;max-height:500px}
+/*# sourceMappingURL=loadscreen-f1f98571.css.map */

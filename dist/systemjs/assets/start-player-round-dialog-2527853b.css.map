@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/score-board/start-player-round-dialog.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,gDACE,sBACF,CAEA,oCACE,wBAAyB,CACzB,kBACF,CACA,kCACE,aAAc,CACd,kBAAmB,CACnB,wBAAyB,CACzB,UAAW,CACX,QACF,CACA,iCACE,WAAY,CACZ,YAAa,CACb,qBAAsB,CACtB,6BAA8B,CAC9B,aAAc,CACd,iBAAkB,CAClB,qBACF,CACA,kCACE,aAAc,CACd,cACF,CACA,gCACE,WAAY,CACZ,kBAAmB,CACnB,wBAAyB,CACzB,WAAY,CACZ,aACF,CACA,oCACE,SAAU,CAEV,kBACF,CACA,2CACE,SAAU,CACV,WAAY,CACZ,YAAa,CACb,qBAAsB,CACtB,kBAAmB,CACnB,sBAAuB,CACvB,aAAc,CACd,gBAAiB,CACjB,cAAe,CACf,eAAiB,CACjB,wBAAyB,CACzB,aAAc,CACd,wBAAyB,CACzB,wBACF",
+  "file": "start-player-round-dialog-2527853b.css",
+  "sourcesContent": [
+    ".score-board-dialog .dialog--scrollable-content {\n  background: transparent;\n}\n\n.score-board-dialog .dialog-content {\n  background-color: #bee1ff;\n  border-radius: 10px;\n}\n.score-board-dialog .dialog-close {\n  color: #082988;\n  background: #8ec9fc;\n  border: 2px solid #082988;\n  right: 30px;\n  top: 30px;\n}\n.score-board-dialog .dialog-body {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  color: #082988;\n  text-align: center;\n  margin: 40px 18px 15px;\n}\n.score-board-dialog .dialog-label {\n  color: #082988;\n  font-size: 18px;\n}\n.score-board-dialog .player-img {\n  height: auto;\n  border-radius: 100%;\n  background-color: #ffe7be;\n  width: 100px;\n  margin: 20px 0;\n}\n.score-board-dialog .dialog-actions {\n  width: 90%;\n  margin-bottom: 20px;\n  margin: 0 auto 20px auto;\n}\n.score-board-dialog .dialog-actions button {\n  width: 90%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto;\n  padding: 7px 13px;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n  color: #082988;\n  background-color: #8ec9fc;\n  border: 3px solid #082988;\n}\n"
+  ]
+}
