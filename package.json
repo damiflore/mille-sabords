@@ -10,13 +10,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "module": "index.js",
+  "module": "main.js",
   "browser": "dist/systemjs/main.js",
   "type": "module",
   "files": [
     "/dist/",
     "/src/",
-    "/index.js"
+    "/main.js"
   ],
   "scripts": {
     "start-exploring": "node ./script/start-exploring/start-exploring.js",
@@ -41,6 +41,7 @@
   "dependencies": {
     "@jsenv/logger": "3.4.0",
     "@jsenv/server": "4.2.0",
+    "@jsenv/pwa": "1.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "systemjs": "6.7.1"
