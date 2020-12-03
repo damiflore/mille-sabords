@@ -3,7 +3,7 @@
     "mille-sabords/": "./",
     "systemjs/dist/": "./node_modules/systemjs/dist/",
     "@jsenv/logger": "./node_modules/@jsenv/logger/index.js",
-    "mille-sabords": "./index.js",
+    "mille-sabords": "./main.js",
     "systemjs/s.js": "./node_modules/systemjs/dist/s.min.js",
     "@jsenv/pwa/": "./node_modules/@jsenv/pwa/",
     "@jsenv/pwa": "./node_modules/@jsenv/pwa/main.js",
