@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "file": "index.js",
+  "file": "main.js",
   "sources": [
     "../../node_modules/@jsenv/core/helpers/babel/typeof/typeof.js",
     "../../node_modules/object-assign/index.js",
@@ -60,7 +60,7 @@
     "../../src/dom/dom.main.js",
     "../../createMilleSabordGame.js",
     "../../src/main.context.js",
-    "../../index.js"
+    "../../main.js"
   ],
   "sourcesContent": [
     "const nativeTypeOf = (obj) => typeof obj\n\nconst customTypeOf = (obj) => {\n  return obj &&\n    typeof Symbol === \"function\" &&\n    obj.constructor === Symbol &&\n    obj !== Symbol.prototype\n    ? \"symbol\"\n    : typeof obj\n}\n\nexport default typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\"\n  ? nativeTypeOf\n  : customTypeOf\n",
