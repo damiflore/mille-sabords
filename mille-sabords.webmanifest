@@ -1,7 +1,7 @@
 {
-  "name": "webmanifest name",
-  "short_name": "webmanifest short_name",
-  "description": "webmanifest description",
+  "name": "Mille sabords",
+  "short_name": "Mille sabords",
+  "description": "Le trésor se gagne aux dés",
   "icons": [
     {
       "src": "./icons/pwa-icon.png",
@@ -11,6 +11,6 @@
   ],
   "start_url": "/",
   "display": "fullscreen",
-  "theme_color": "green",
-  "background_color": "orange"
+  "theme_color": "lightblue",
+  "background_color": "black"
 }
