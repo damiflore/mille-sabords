@@ -10,7 +10,10 @@ await buildProject({
   systemJsUrl: "/node_modules/systemjs/dist/s.js",
   buildDirectoryClean: true,
   entryPointMap: {
-    "./index.html": "./index.prod.html",
+    "./main.html": "./main.prod.html",
+  },
+  serviceWorkers: {
+    "./service-worker.js": "./service-worker.js",
   },
   // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
   // as main js entry point
