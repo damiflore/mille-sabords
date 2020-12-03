@@ -1,9 +1,9 @@
 /* globals self, config */
 
-self.importScripts("./node_modules/@jsenv/core/src/sw.preconfig.js")
+self.importScripts("./node_modules/@jsenv/pwa/src/service-worker.setup.js")
 
 config.cacheName = "mille-sabords"
 config.urlMap = { "/": "main.prod.html" }
 config.extraUrlsToCacheOnInstall = []
 
-self.importScripts("./node_modules/@jsenv/core/src/sw.jsenv.js")
+self.importScripts("./node_modules/@jsenv/pwa/src/service-worker.main.js")
