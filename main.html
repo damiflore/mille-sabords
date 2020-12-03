@@ -4,7 +4,8 @@
     <title>Mille sabords</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./favicon.png" />
+    <link rel="icon" href="./icons/favicon.png" />
+    <link rel="manifest" href="./mille-sabords.webmanifest" />
     <link rel="prefetch" href="./loadscreen.css" as="style" />
     <link rel="prefetch" href="./mille-sabord.css" as="style" />
     <script type="importmap" src="./importmap.prod.importmap"></script>
@@ -212,6 +213,15 @@
           }, 300)
         },
       }
+    </script>
+    <script>
+      // we have to register early to this event in case browser dispatch it quickly
+      // other scripts will have to check window.beforeinstallpromptEvent
+      // presence, otherwise listen the before install prompt event
+      window.addEventListener("beforeinstallprompt", (beforeinstallpromptEvent) => {
+        beforeinstallpromptEvent.preventDefault()
+        window.beforeinstallpromptEvent = beforeinstallpromptEvent
+      })
     </script>
   </body>
 </html>

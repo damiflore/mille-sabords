@@ -1,4 +1,5 @@
 import React from "react"
+import { listenInstallPromptAvailable } from "@jsenv/pwa"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Dialog, useDialogState } from "src/dialog/dialog.component.jsx"
 import { useAnimationsDisabled, useSoundDisabled } from "src/main.store.js"
@@ -17,6 +18,11 @@ import settingsCssUrl from "./settings.css"
 
 export const Settings = () => {
   const [settingsDialogIsOpen, openSettingsDialog, closeSettingsDialog] = useDialogState()
+  const [promptInstall, promptInstallSetter] = React.useState()
+
+  React.useEffect(() => {
+    return listenInstallPromptAvailable(promptInstallSetter)
+  }, [])
 
   return (
     <>
@@ -37,12 +43,13 @@ export const Settings = () => {
       <SettingsDialog
         settingsDialogIsOpen={settingsDialogIsOpen}
         closeSettingsDialog={closeSettingsDialog}
+        promptInstall={promptInstall}
       />
     </>
   )
 }
 
-const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
+const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog, promptInstall }) => {
   const animationsDisabled = useAnimationsDisabled()
   const disableAnimations = useDisableAnimations()
   const enableAnimations = useEnableAnimations()
@@ -127,6 +134,7 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
             Annuler la partie
           </button>
         </div>
+        {promptInstall ? <ButtonInstallApp promptInstall={promptInstall} /> : null}
         <ConfirmCancelGameDialog
           confirmCancelGameDialogIsOpen={confirmCancelGameDialogIsOpen}
           closeConfirmCancelGameDialog={closeConfirmCancelGameDialog}
@@ -135,6 +143,10 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
       </div>
     </Dialog>
   )
+}
+
+const ButtonInstallApp = ({ promptInstall }) => {
+  return <button onClick={promptInstall()}>Installer application</button>
 }
 
 const CheckIcon = () => (

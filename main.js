@@ -5,4 +5,8 @@ createMilleSabordGame({
   into: document.querySelector("#app"),
 })
 
-registerServiceWorker("/service-worker.js")
+registerServiceWorker("/service-worker.js", {
+  onstatechange: (state) => {
+    console.log("service worker state change", state)
+  },
+})
