@@ -1,5 +1,5 @@
 import React from "react"
-import { listenInstallPromptAvailable } from "@jsenv/pwa"
+import { useAddToHomescreen } from "./add-to-home-screen.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Dialog, useDialogState } from "src/dialog/dialog.component.jsx"
 import { useAnimationsDisabled, useSoundDisabled } from "src/main.store.js"
@@ -18,11 +18,6 @@ import settingsCssUrl from "./settings.css"
 
 export const Settings = () => {
   const [settingsDialogIsOpen, openSettingsDialog, closeSettingsDialog] = useDialogState()
-  const [promptInstall, promptInstallSetter] = React.useState()
-
-  React.useEffect(() => {
-    return listenInstallPromptAvailable(promptInstallSetter)
-  }, [])
 
   return (
     <>
@@ -43,13 +38,12 @@ export const Settings = () => {
       <SettingsDialog
         settingsDialogIsOpen={settingsDialogIsOpen}
         closeSettingsDialog={closeSettingsDialog}
-        promptInstall={promptInstall}
       />
     </>
   )
 }
 
-const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog, promptInstall }) => {
+const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
   const animationsDisabled = useAnimationsDisabled()
   const disableAnimations = useDisableAnimations()
   const enableAnimations = useEnableAnimations()
@@ -134,7 +128,7 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog, promptInsta
             Annuler la partie
           </button>
         </div>
-        {promptInstall ? <ButtonInstallApp promptInstall={promptInstall} /> : null}
+        <ButtonInstallApp />
         <ConfirmCancelGameDialog
           confirmCancelGameDialogIsOpen={confirmCancelGameDialogIsOpen}
           closeConfirmCancelGameDialog={closeConfirmCancelGameDialog}
@@ -145,8 +139,22 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog, promptInsta
   )
 }
 
-const ButtonInstallApp = ({ promptInstall }) => {
-  return <button onClick={promptInstall()}>Installer application</button>
+const ButtonInstallApp = () => {
+  const [available, prompt] = useAddToHomescreen()
+
+  if (!available) {
+    return null
+  }
+
+  return (
+    <button
+      onClick={() => {
+        prompt()
+      }}
+    >
+      Installer application
+    </button>
+  )
 }
 
 const CheckIcon = () => (
