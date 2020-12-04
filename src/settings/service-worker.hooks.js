@@ -1,8 +1,8 @@
 import React from "react"
 import {
   serviceWorkerIsAvailable,
-  serviceWorkerUpdateIsAvailable,
-  listenServiceWorkerUpdateAvailable,
+  getServiceWorkerUpdate,
+  listenServiceWorkerUpdate,
   checkServiceWorkerUpdate,
   activateServiceWorkerUpdating,
 } from "@jsenv/pwa/src/navigatorController.js"
@@ -11,14 +11,14 @@ export const useServiceWorkerIsAvailable = () => {
   return serviceWorkerIsAvailable()
 }
 
-export const useServiceWorkerUpdateIsAvailable = () => {
-  const [available, availableSetter] = React.useState(serviceWorkerUpdateIsAvailable())
+export const useServiceWorkerUpdate = () => {
+  const [update, updateSetter] = React.useState(getServiceWorkerUpdate())
   React.useEffect(() => {
-    return listenServiceWorkerUpdateAvailable(() => {
-      availableSetter(serviceWorkerUpdateIsAvailable())
+    return listenServiceWorkerUpdate(() => {
+      updateSetter(getServiceWorkerUpdate())
     })
   }, [])
-  return available
+  return update
 }
 
 export const useCheckServiceWorkerUpdate = () => {

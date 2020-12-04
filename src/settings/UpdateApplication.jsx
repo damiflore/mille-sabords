@@ -2,7 +2,7 @@
 import React from "react"
 import {
   useServiceWorkerIsAvailable,
-  useServiceWorkerUpdateIsAvailable,
+  useServiceWorkerUpdate,
   useCheckServiceWorkerUpdate,
   useActivateServiceWorkerUpdating,
 } from "./service-worker.hooks.js"
@@ -19,7 +19,7 @@ export const UpdateApplication = ({ settingsDialogIsOpen }) => {
 
 const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
   const checkServiceWorkerUpdate = useCheckServiceWorkerUpdate()
-  const serviceWorkerUpdateIsAvailable = useServiceWorkerUpdateIsAvailable()
+  const serviceWorkerUpdate = useServiceWorkerUpdate()
 
   React.useEffect(() => {
     if (checkOnOpen && settingsDialogIsOpen) {
@@ -30,54 +30,53 @@ const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
   return (
     <fieldset style={{ minHeight: "4em" }}>
       <legend>Mise a jour</legend>
-      {serviceWorkerUpdateIsAvailable ? <UpdateAvailable /> : <UpdateNotAvailable />}
+      {serviceWorkerUpdate ? (
+        <UpdateAvailable serviceWorkerUpdate={serviceWorkerUpdate} />
+      ) : (
+        <UpdateNotAvailable />
+      )}
     </fieldset>
   )
 }
 
-const UpdateAvailable = () => {
+const UpdateAvailable = ({ serviceWorkerUpdate }) => {
+  const { willBecomeNavigatorController, navigatorWillReload } = serviceWorkerUpdate
   const activateServiceWorkerUpdating = useActivateServiceWorkerUpdating()
+
   const [updatingStatus, updatingStatusSetter] = React.useState("")
-  const [reloadInfo, reloadInfoSetter] = React.useState({})
 
   const update = async () => {
     updatingStatusSetter("updating")
     await activateServiceWorkerUpdating({
       onActivating: () => updatingStatusSetter("activating"),
-      onActivated: ({ serviceWorkerWillControlNavigator, navigatorWillReload }) => {
-        updatingStatusSetter("activated")
-        reloadInfoSetter({
-          shouldReload: serviceWorkerWillControlNavigator,
-          willReload: navigatorWillReload,
-        })
-      },
-      onBecomesNavigatorController: () => {
-        updatingStatusSetter("")
-      },
+      onActivated: () => updatingStatusSetter("activated"),
+      onBecomesNavigatorController: () => updatingStatusSetter(""),
     })
   }
+
+  // idéalement on affichera un truc genre tooltip quelque part
+  // pour dire mise a jour activée au lieu de le montrer dans la ui
+  // React.useEffect(() => {
+
+  // })
 
   return (
     <>
       <p>
-        {updatingStatus === ""
-          ? "Mise a jour prête, an attente de rechargement pour l'installer."
-          : null}
-        {updatingStatus === "updating" || updatingStatus === "activating"
-          ? "Activation de la mise a jour..."
-          : null}
-        {updatingStatus === "activated" && reloadInfo.willReload
+        {updatingStatus === "" && willBecomeNavigatorController ? "Mise a jour prête" : null}
+        {updatingStatus === "updating" || updatingStatus === "activating" ? "Mise a jour..." : null}
+        {updatingStatus === "activated" && navigatorWillReload
           ? `Mise a jour activée, la page va se recharger`
           : null}
-        {updatingStatus === "activated" && !reloadInfo.willReload && reloadInfo.shouldReload
+        {updatingStatus === "activated" && !navigatorWillReload && willBecomeNavigatorController
           ? `Mise a jour activée, recharger la page pour installer`
           : null}
-        {updatingStatus === "activated" && !reloadInfo.willReload && !reloadInfo.shouldReload
+        {updatingStatus === "activated" && !navigatorWillReload && !willBecomeNavigatorController
           ? `Mise a jour activée`
           : null}
       </p>
       <button disabled={Boolean(updatingStatus)} onClick={update}>
-        Recharger
+        {navigatorWillReload ? `Recharger pour mettre a jour` : `Mettre a jour`}
       </button>
     </>
   )
