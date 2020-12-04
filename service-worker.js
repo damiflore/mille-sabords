@@ -8,3 +8,5 @@ config.extraUrlsToCacheOnInstall = []
 config.disableNavigationPreload = true
 
 self.importScripts("./node_modules/@jsenv/pwa/src/service-worker.main.js")
+
+// foo

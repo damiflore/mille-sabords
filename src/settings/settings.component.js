@@ -1,5 +1,6 @@
+/* eslint-disable import/max-dependencies */
+/* eslint-disable no-nested-ternary */
 import React from "react"
-import { useAddToHomescreen } from "./add-to-home-screen.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Dialog, useDialogState } from "src/dialog/dialog.component.jsx"
 import { useAnimationsDisabled, useSoundDisabled } from "src/main.store.js"
@@ -13,6 +14,8 @@ import {
 import { CloseIcon } from "src/dialog/CloseIcon.jsx"
 import { symbolMonkeyUrl } from "src/symbols/symbols.js"
 import { Image } from "src/generic/Image.jsx"
+import { useAddToHomescreen } from "./add-to-home-screen.hooks.js"
+import { UpdateApplication } from "./UpdateApplication.jsx"
 
 import settingsCssUrl from "./settings.css"
 
@@ -128,7 +131,8 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
             Annuler la partie
           </button>
         </div>
-        <ButtonInstallApp />
+        <AddToHomescreen />
+        <UpdateApplication settingsDialogIsOpen={settingsDialogIsOpen} />
         <ConfirmCancelGameDialog
           confirmCancelGameDialogIsOpen={confirmCancelGameDialogIsOpen}
           closeConfirmCancelGameDialog={closeConfirmCancelGameDialog}
@@ -139,7 +143,7 @@ const SettingsDialog = ({ settingsDialogIsOpen, closeSettingsDialog }) => {
   )
 }
 
-const ButtonInstallApp = () => {
+const AddToHomescreen = () => {
   const [available, prompt] = useAddToHomescreen()
 
   if (!available) {
