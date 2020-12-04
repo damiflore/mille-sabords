@@ -57,7 +57,7 @@ const UpdateAvailable = ({ serviceWorkerUpdate }) => {
   return (
     <>
       <p>
-        {updatingStatus === "" && shouldBecomeNavigatorController ? "Mise a jour prête" : null}
+        {updatingStatus === "" ? "Mise a jour prête" : null}
         {updatingStatus === "updating" || updatingStatus === "activating" ? "Mise a jour..." : null}
         {updatingStatus === "activated" && navigatorWillReload
           ? `Mise a jour activée, la page va se recharger`
