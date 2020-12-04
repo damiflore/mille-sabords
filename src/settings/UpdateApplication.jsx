@@ -54,12 +54,6 @@ const UpdateAvailable = ({ serviceWorkerUpdate }) => {
     })
   }
 
-  // idéalement on affichera un truc genre tooltip quelque part
-  // pour dire mise a jour activée au lieu de le montrer dans la ui
-  // React.useEffect(() => {
-
-  // })
-
   return (
     <>
       <p>
