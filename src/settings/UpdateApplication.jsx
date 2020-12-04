@@ -40,7 +40,7 @@ const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
 }
 
 const UpdateAvailable = ({ serviceWorkerUpdate }) => {
-  const { willBecomeNavigatorController, navigatorWillReload } = serviceWorkerUpdate
+  const { shouldBecomeNavigatorController, navigatorWillReload } = serviceWorkerUpdate
   const activateServiceWorkerUpdating = useActivateServiceWorkerUpdating()
 
   const [updatingStatus, updatingStatusSetter] = React.useState("")
@@ -57,15 +57,15 @@ const UpdateAvailable = ({ serviceWorkerUpdate }) => {
   return (
     <>
       <p>
-        {updatingStatus === "" && willBecomeNavigatorController ? "Mise a jour prête" : null}
+        {updatingStatus === "" && shouldBecomeNavigatorController ? "Mise a jour prête" : null}
         {updatingStatus === "updating" || updatingStatus === "activating" ? "Mise a jour..." : null}
         {updatingStatus === "activated" && navigatorWillReload
           ? `Mise a jour activée, la page va se recharger`
           : null}
-        {updatingStatus === "activated" && !navigatorWillReload && willBecomeNavigatorController
+        {updatingStatus === "activated" && !navigatorWillReload && shouldBecomeNavigatorController
           ? `Mise a jour activée, recharger la page pour installer`
           : null}
-        {updatingStatus === "activated" && !navigatorWillReload && !willBecomeNavigatorController
+        {updatingStatus === "activated" && !navigatorWillReload && !shouldBecomeNavigatorController
           ? `Mise a jour activée`
           : null}
       </p>
