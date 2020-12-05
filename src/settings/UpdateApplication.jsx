@@ -82,13 +82,18 @@ const UpdateNotAvailable = () => {
 
   const check = async () => {
     updateAttemptStatusSetter("fetching")
-    const found = await checkServiceWorkerUpdate()
-    if (found) {
-      // no need to handle that case because
-      // an update is now available
-      // meaning <UpdateAvailable /> will take over.
-    } else {
-      updateAttemptStatusSetter("notfound")
+    try {
+      const found = await checkServiceWorkerUpdate()
+      if (found) {
+        // no need to handle that case because
+        // an update is now available
+        // meaning <UpdateAvailable /> will take over.
+      } else {
+        updateAttemptStatusSetter("notfound")
+      }
+    } catch (e) {
+      updateAttemptStatusSetter("failed")
+      console.error(e)
     }
   }
 
@@ -97,6 +102,7 @@ const UpdateNotAvailable = () => {
       <p>
         {updateAttemptStatus === "fetching" ? "Recherche de mise a jour..." : null}
         {updateAttemptStatus === "notfound" ? "Pas de mise a jour disponible." : null}
+        {updateAttemptStatus === "failed" ? "Une erreur est survenue." : null}
       </p>
       <button disabled={updateAttemptStatus === "fetching"} onClick={check}>
         Chercher
