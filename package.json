@@ -41,7 +41,7 @@
   "dependencies": {
     "@jsenv/logger": "3.4.0",
     "@jsenv/server": "4.2.0",
-    "@jsenv/pwa": "2.6.3",
+    "@jsenv/pwa": "2.7.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "systemjs": "6.7.1"
