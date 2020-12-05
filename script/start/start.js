@@ -8,7 +8,7 @@ const projectDirectoryUrl = new URL("../../", import.meta.url)
 const resolveUrl = (specifier, baseUrl) => String(new URL(specifier, baseUrl))
 
 const buildDirectoryUrl = resolveUrl("./dist/systemjs/", projectDirectoryUrl)
-const mainHtmlFileUrl = resolveUrl("index.prod.html", buildDirectoryUrl)
+const mainHtmlFileUrl = resolveUrl("main.prod.html", buildDirectoryUrl)
 
 const SECONDS_IN_30_DAYS = 60 * 60 * 24 * 30
 const BUILD_FILE_CACHE_VALIDITY_IN_SECONDS = SECONDS_IN_30_DAYS
@@ -22,7 +22,7 @@ export const serverPromise = startServer({
   redirectHttpToHttps: Boolean(process.env.HTTPS),
   requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
     if (ressource === "/") {
-      ressource = "/index.prod.html"
+      ressource = "/main.prod.html"
     }
     const fileUrl = resolveUrl(ressource.slice(1), buildDirectoryUrl)
     const longTermCacheEnabled =
