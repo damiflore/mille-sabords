@@ -40,13 +40,13 @@
 }
 
 .settings-dialog-content .dialog-simple-title {
-    font-family: ArrrMateyBb;
-    text-align: center;
-    font-size: 100px;
-    color: #a52a2a;
-    position: relative;
-    top: -35px;
-    text-shadow: 3px -4px 0px #fff0d2;
+  font-family: ArrrMateyBb;
+  text-align: center;
+  font-size: 100px;
+  color: #a52a2a;
+  position: relative;
+  top: -35px;
+  text-shadow: 3px -4px 0px #fff0d2;
 }
 
 .settings-dialog-content .setting-element {
@@ -88,6 +88,9 @@
   color: #a52a2a;
   background-color: #fff0d2;
   border: 2px solid #a52a2a;
+}
+.settings-dialog-content button:disabled {
+  color: rgba(16, 16, 16, 0.3);
 }
 
 .dialog--root.confirm-cancel-game-dialog {

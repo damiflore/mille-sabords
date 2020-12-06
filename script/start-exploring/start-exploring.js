@@ -6,7 +6,7 @@ startExploring({
   compileServerPort: 3472,
   explorableConfig: {
     "app": {
-      "./index.html": true,
+      "./main.html": true,
       "./lab.html": true,
     },
     "manual tests": {

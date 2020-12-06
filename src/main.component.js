@@ -8,7 +8,8 @@ import {
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
 } from "src/loading/loading.main.js"
-import { ImagePreloader } from "src/loading/ImagePreloader.jsx"
+import { useWaitABit } from "src/loading/loading.hooks.js"
+import { Preloader } from "src/loading/Preloader.jsx"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
 import { Image } from "src/generic/Image.jsx"
 
@@ -24,7 +25,7 @@ const MainRaw = (props) => {
 
 const LoadScreen = (props) => {
   const loadscreenRef = React.useRef()
-  const [loadscreenUrlTrackerReady, loadscreenUrlTrackerReadySetter] = React.useState(false)
+  const loadscreenUrlTrackerReady = useWaitABit()
   const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] = React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
@@ -36,12 +37,6 @@ const LoadScreen = (props) => {
 
   const urlTrackerTotalCount = useUrlTrackerTotalCount()
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
-
-  React.useEffect(() => {
-    return requestAsapCallback(() => {
-      loadscreenUrlTrackerReadySetter(true)
-    })
-  }, [])
 
   React.useEffect(() => {
     if (loadscreenUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
@@ -57,21 +52,21 @@ const LoadScreen = (props) => {
     window.splashscreen.remove()
 
     mainImportLoadingSetter(true)
-      ; (async () => {
-        try {
-          const namespace = await import("./App.jsx")
-          mainImportLoadingSetter(false)
-          mainImportNamespaceSetter(namespace)
-          requestAsapCallback(() => {
-            mainUrlTrackerReadySetter(true)
-          })
-        } catch (e) {
-          // https://github.com/facebook/react/issues/14981
-          mainUrlErrorSetter(() => {
-            throw e
-          })
-        }
-      })()
+    ;(async () => {
+      try {
+        const namespace = await import("./App.jsx")
+        mainImportLoadingSetter(false)
+        mainImportNamespaceSetter(namespace)
+        requestAsapCallback(() => {
+          mainUrlTrackerReadySetter(true)
+        })
+      } catch (e) {
+        // https://github.com/facebook/react/issues/14981
+        mainUrlErrorSetter(() => {
+          throw e
+        })
+      }
+    })()
   }, [loadscreenUrlsLoaded])
 
   React.useEffect(() => {
@@ -101,13 +96,15 @@ const LoadScreen = (props) => {
         {mainImportLoading ? (
           <p className="text">Chargement du jeu...</p>
         ) : (
-            <>
-              <p className="text">Chargement du jeu...</p>
-              <div className="progress">{urlTrackerLoadedCount}/{urlTrackerTotalCount}</div>
-            </>
-          )}
+          <>
+            <p className="text">Chargement du jeu...</p>
+            <div className="progress">
+              {urlTrackerLoadedCount}/{urlTrackerTotalCount}
+            </div>
+          </>
+        )}
       </div>
-      {mainUrlsLoaded ? <ImagePreloader /> : null}
+      {mainUrlsLoaded ? <Preloader /> : null}
     </>
   )
 }
