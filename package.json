@@ -41,7 +41,7 @@
   "dependencies": {
     "@jsenv/logger": "3.4.0",
     "@jsenv/server": "4.2.0",
-    "@jsenv/pwa": "2.7.0",
+    "@jsenv/pwa": "3.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "systemjs": "6.7.1"
@@ -50,7 +50,7 @@
     "@babel/plugin-transform-react-jsx": "7.12.5",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.3",
-    "@jsenv/core": "17.1.0-alpha.1",
+    "@jsenv/core": "17.1.0-alpha.4",
     "@jsenv/eslint-config": "12.8.0",
     "@jsenv/file-size-impact": "6.0.1",
     "@jsenv/lighthouse-score-impact": "2.4.2",

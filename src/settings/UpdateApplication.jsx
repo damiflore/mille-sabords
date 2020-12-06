@@ -4,7 +4,7 @@ import {
   useServiceWorkerIsAvailable,
   useServiceWorkerUpdate,
   useCheckServiceWorkerUpdate,
-  useActivateServiceWorkerUpdating,
+  useActivateServiceWorkerUpdate,
 } from "./service-worker.hooks.js"
 
 export const UpdateApplication = ({ settingsDialogIsOpen }) => {
@@ -41,13 +41,13 @@ const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
 
 const UpdateAvailable = ({ serviceWorkerUpdate }) => {
   const { shouldBecomeNavigatorController, navigatorWillReload } = serviceWorkerUpdate
-  const activateServiceWorkerUpdating = useActivateServiceWorkerUpdating()
+  const activateServiceWorkerUpdate = useActivateServiceWorkerUpdate()
 
   const [updatingStatus, updatingStatusSetter] = React.useState("")
 
   const update = async () => {
     updatingStatusSetter("updating")
-    await activateServiceWorkerUpdating({
+    await activateServiceWorkerUpdate({
       onActivating: () => updatingStatusSetter("activating"),
       onActivated: () => updatingStatusSetter("activated"),
       onBecomesNavigatorController: () => updatingStatusSetter(""),

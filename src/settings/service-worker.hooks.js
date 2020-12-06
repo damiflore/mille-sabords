@@ -4,8 +4,8 @@ import {
   getServiceWorkerUpdate,
   listenServiceWorkerUpdate,
   checkServiceWorkerUpdate,
-  activateServiceWorkerUpdating,
-} from "@jsenv/pwa/src/navigatorController.js"
+  activateServiceWorkerUpdate,
+} from "@jsenv/pwa"
 
 export const useServiceWorkerIsAvailable = () => {
   return serviceWorkerIsAvailable()
@@ -25,6 +25,6 @@ export const useCheckServiceWorkerUpdate = () => {
   return checkServiceWorkerUpdate
 }
 
-export const useActivateServiceWorkerUpdating = () => {
-  return activateServiceWorkerUpdating
+export const useActivateServiceWorkerUpdate = () => {
+  return activateServiceWorkerUpdate
 }

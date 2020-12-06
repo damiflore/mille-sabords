@@ -1,4 +1,4 @@
-import { buildProject } from "@jsenv/core"
+import { buildProject, jsenvServiceWorkerFinalizer } from "@jsenv/core"
 import * as jsenvConfig from "../../jsenv.config.js"
 
 // this is to get the production build of react
@@ -15,6 +15,7 @@ await buildProject({
   serviceWorkers: {
     "./service-worker.js": "./service-worker.js",
   },
+  serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
   // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
   // as main js entry point
   preserveEntrySignatures: false,
