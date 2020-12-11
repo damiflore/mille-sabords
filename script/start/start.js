@@ -19,23 +19,24 @@ export const serverPromise = startServer({
   http2: Boolean(process.env.HTTPS),
   ip: "",
   port: process.env.PORT || 0,
-  redirectHttpToHttps: Boolean(process.env.HTTPS),
-  requestToResponse: ({ cancellationToken, ressource, method, headers }) => {
-    if (ressource === "/") {
-      ressource = "/main.prod.html"
+  requestToResponse: (request) => {
+    if (request.ressource === "/") {
+      request = {
+        ...request,
+        ressource: "/main.prod.html",
+      }
     }
-    const fileUrl = resolveUrl(ressource.slice(1), buildDirectoryUrl)
+    const fileUrl = resolveUrl(request.ressource.slice(1), buildDirectoryUrl)
     const longTermCacheEnabled =
       fileUrl !== mainHtmlFileUrl && fileUrl.startsWith(buildDirectoryUrl)
 
-    return serveFile(fileUrl, {
-      cancellationToken,
-      method,
-      headers,
+    return serveFile(request, {
+      rootDirectoryUrl: buildDirectoryUrl,
       cacheControl: longTermCacheEnabled
         ? `private,max-age=${BUILD_FILE_CACHE_VALIDITY_IN_SECONDS},immutable`
         : `private,max-age=0,must-revalidate`,
       etagEnabled: true,
+      compressionEnabled: true,
     })
   },
 })
