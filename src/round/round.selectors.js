@@ -140,6 +140,19 @@ export const useRollDiceAllowed = ({
   return true
 }
 
+export const useCursedCount = ({
+  dicesToCurse = useDicesToCurse(),
+  skullCountInCursedArea = useSkullCountInCursedArea(),
+} = {}) => {
+  const skullBeingCursedCount = dicesToCurse.length
+  const cursedCount = skullBeingCursedCount + skullCountInCursedArea
+  return cursedCount
+}
+
+export const useThreeSkullsOrMore = ({ cursedCount = useCursedCount() } = {}) => {
+  return cursedCount > 2
+}
+
 export const useThreeSkullsOrMoreInCursedArea = ({
   skullCountInCursedArea = useSkullCountInCursedArea(),
 } = {}) => {

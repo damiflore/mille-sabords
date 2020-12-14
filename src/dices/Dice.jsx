@@ -31,7 +31,33 @@ export const Dice = ({
   onDiceDragEnd,
   disapear,
   appear,
+  traceUpdate = false,
 }) => {
+  if (import.meta.dev && traceUpdate) {
+    useTraceUpdate(
+      {
+        dice,
+        diceAnimation,
+        anmationDebug,
+        parentNode,
+        zIndex,
+        x,
+        y,
+        rotation,
+        draggable,
+        onDiceClick,
+        onDiceDrag,
+        onDiceDrop,
+        onDiceDragEnd,
+        disapear,
+        appear,
+      },
+      (propsUpdated) => {
+        console.log(`dice ${dice.id} re-render because:`, propsUpdated)
+      },
+    )
+  }
+
   // state from contexts
   const mainDomNode = useMainDomNode()
   const diceDomNode = useDiceDomNode(dice.id)
@@ -206,6 +232,27 @@ export const Dice = ({
       </svg>
     </Portal>
   )
+}
+
+const useTraceUpdate = (
+  props,
+  onUpdate = (changedProps) => {
+    console.log("Changed props:", changedProps)
+  },
+) => {
+  const prev = React.useRef(props)
+  React.useEffect(() => {
+    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+      if (prev.current[k] !== v) {
+        ps[k] = [prev.current[k], v]
+      }
+      return ps
+    }, {})
+    if (Object.keys(changedProps).length > 0) {
+      onUpdate(changedProps)
+    }
+    prev.current = props
+  })
 }
 
 const computeDiceColors = (onSkull, isDiceKept) => {
