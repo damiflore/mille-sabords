@@ -112,8 +112,11 @@ const LoadScreen = (props) => {
 const ErrorScreen = ({ error }) => {
   window.splashscreen.remove()
   return (
-    <div>
-      An error occured<pre>{typeof error === "object" ? error.stack : error}</pre>
+    <div style={{ maxWidth: "100vw" }}>
+      <div style={{ margin: "10px 15px" }}>An error occured</div>
+      <pre style={{ overflow: "auto", margin: "10px 15px" }}>
+        {typeof error === "object" ? error.stack : error}
+      </pre>
     </div>
   )
 }
