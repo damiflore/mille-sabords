@@ -1,4 +1,5 @@
 import { buildProject, jsenvServiceWorkerFinalizer } from "@jsenv/core"
+import { copyFileSystemNode, resolveUrl } from "@jsenv/util"
 import * as jsenvConfig from "../../jsenv.config.js"
 
 // this is to get the production build of react
@@ -20,5 +21,11 @@ await buildProject({
   // as main js entry point
   preserveEntrySignatures: false,
   minify: true,
-  manifestFile: true,
+  assetManifestFile: true,
+  assetManifestFileRelativeUrl: "asset-manifest.json",
 })
+
+const robotsProjectFileUrl = resolveUrl("robots.txt", jsenvConfig.projectDirectoryUrl)
+const buildDirectoryUrl = resolveUrl("dist/systemjs/", jsenvConfig.projectDirectoryUrl)
+const robotsBuildFileUrl = resolveUrl("robots.txt", buildDirectoryUrl)
+await copyFileSystemNode(robotsProjectFileUrl, robotsBuildFileUrl)
