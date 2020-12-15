@@ -11,6 +11,8 @@ const run = async () => {
   await generateLighthouseReport(server.origin, {
     projectDirectoryUrl: new URL("../../", import.meta.url),
     runCount: 4,
+    // prevent a CERT_INVALID error
+    // thrown by lighthouse on jsenv self signed certificate
     ignoreCertificateErrors: true,
   })
 
