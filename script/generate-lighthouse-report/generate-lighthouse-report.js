@@ -4,7 +4,7 @@ const run = async () => {
   await import("../generate-systemjs-build/generate-systemjs-build.js")
 
   process.env.LOG_LEVEL = "warn"
-  // process.env.HTTPS = true
+  process.env.HTTPS = true
   const { serverPromise } = await import("../start/start.js")
   const server = await serverPromise
 

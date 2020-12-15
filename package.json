@@ -32,6 +32,7 @@
     "generate-lighthouse-report": "node --experimental-top-level-await ./script/generate-lighthouse-report/generate-lighthouse-report.js",
     "build": "npm run dist",
     "start": "node --experimental-top-level-await ./script/start/start.js",
+    "start-dev": "node ./script/start/start-dev.js",
     "postinstall": "npm run generate-import-map",
     "dist": "npm run generate-systemjs-build"
   },
@@ -40,7 +41,7 @@
   },
   "dependencies": {
     "@jsenv/logger": "3.4.0",
-    "@jsenv/server": "5.2.2",
+    "@jsenv/server": "5.2.3",
     "@jsenv/pwa": "3.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
