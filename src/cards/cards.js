@@ -1,26 +1,29 @@
 /* eslint-disable import/max-dependencies */
-import cardOneSkullUrl from "src/cards/card_1skull.png"
-import cardTwoSkullsUrl from "src/cards/card_2skulls.png"
-import cardTwoSwordChallengeUrl from "src/cards/card_2sword-challenge.png"
-import cardThreeSwordChallengeUrl from "src/cards/card_3sword-challenge.png"
-import cardFourSwordChallengeUrl from "src/cards/card_4sword-challenge.png"
-import cardAnimalsUrl from "src/cards/card_animals.png"
-import cardChestUrl from "src/cards/card_chest.png"
-import cardCoinUrl from "src/cards/card_coin.png"
-import cardDefaultUrl from "src/cards/card_default.png"
-import cardDiamondUrl from "src/cards/card_diamond.png"
-import cardPirateUrl from "src/cards/card_pirate.png"
-import cardWitchUrl from "src/cards/card_witch.png"
+const cardOneSkullSmallUrl = new URL("/src/cards/card_small-1skull.png", import.meta.url)
+const cardTwoSkullsSmallUrl = new URL("/src/cards/card_small-2skulls.png", import.meta.url)
+const cardSwordChallengeSmallUrl = new URL(
+  "/src/cards/card_small-sword-challenge.png",
+  import.meta.url,
+)
+const cardAnimalsSmallUrl = new URL("/src/cards/card_small-animals.png", import.meta.url)
+const cardChestSmallUrl = new URL("/src/cards/card_small-chest.png", import.meta.url)
+const cardCoinSmallUrl = new URL("/src/cards/card_small-coin.png", import.meta.url)
+const cardDiamondSmallUrl = new URL("/src/cards/card_small-diamond.png", import.meta.url)
+const cardPirateSmallUrl = new URL("/src/cards/card_small-pirate.png", import.meta.url)
+const cardWitchSmallUrl = new URL("/src/cards/card_small-witch.png", import.meta.url)
 
-import cardOneSkullSmallUrl from "src/cards/card_small-1skull.png"
-import cardTwoSkullsSmallUrl from "src/cards/card_small-2skulls.png"
-import cardSwordChallengeSmallUrl from "src/cards/card_small-sword-challenge.png"
-import cardAnimalsSmallUrl from "src/cards/card_small-animals.png"
-import cardChestSmallUrl from "src/cards/card_small-chest.png"
-import cardCoinSmallUrl from "src/cards/card_small-coin.png"
-import cardDiamondSmallUrl from "src/cards/card_small-diamond.png"
-import cardPirateSmallUrl from "src/cards/card_small-pirate.png"
-import cardWitchSmallUrl from "src/cards/card_small-witch.png"
+const cardOneSkullUrl = new URL("/src/cards/card_1skull.png", import.meta.url)
+const cardTwoSkullsUrl = new URL("/src/cards/card_2skulls.png", import.meta.url)
+const cardTwoSwordChallengeUrl = new URL("/src/cards/card_2sword-challenge.png", import.meta.url)
+const cardThreeSwordChallengeUrl = new URL("/src/cards/card_3sword-challenge.png", import.meta.url)
+const cardFourSwordChallengeUrl = new URL("/src/cards/card_4sword-challenge.png", import.meta.url)
+const cardAnimalsUrl = new URL("/src/cards/card_animals.png", import.meta.url)
+const cardChestUrl = new URL("/src/cards/card_chest.png", import.meta.url)
+const cardCoinUrl = new URL("/src/cards/card_coin.png", import.meta.url)
+const cardDefaultUrl = new URL("/src/cards/card_default.png", import.meta.url)
+const cardDiamondUrl = new URL("/src/cards/card_diamond.png", import.meta.url)
+const cardPirateUrl = new URL("/src/cards/card_pirate.png", import.meta.url)
+const cardWitchUrl = new URL("/src/cards/card_witch.png", import.meta.url)
 
 export const CARD_ANIMALS = "animals"
 export const CARD_CHEST = "chest"

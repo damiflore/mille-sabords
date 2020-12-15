@@ -13,7 +13,7 @@ import { diceToVisibleSymbol } from "src/dices/dices.js"
 import { RoundScore } from "src/round/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-import cursedGridImageUrl from "src/chest/cursed-grid.png"
+const cursedGridImageUrl = new URL("/src/chest/cursed-grid.png", import.meta.url)
 
 export const Chest = ({ chestRef, diceOverChestListener }) => {
   const chestSlots = useChestSlots()

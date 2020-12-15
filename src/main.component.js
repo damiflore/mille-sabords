@@ -13,7 +13,7 @@ import { Preloader } from "src/loading/Preloader.jsx"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
 import { Image } from "src/generic/Image.jsx"
 
-import loadscreenCssUrl from "../loadscreen.css"
+const loadscreenCssUrl = new URL("../loadscreen.css", import.meta.url)
 
 const MainRaw = (props) => {
   return (
