@@ -3,6 +3,7 @@ import { reportFileSizeImpact, readGithubWorkflowEnv, raw, gzip } from "@jsenv/f
 reportFileSizeImpact({
   ...readGithubWorkflowEnv(),
   buildCommand: "npm run dist",
+  transformations: { raw, gzip },
   trackingConfig: {
     script: {
       "./dist/systemjs/**/*.js": true,
@@ -33,5 +34,7 @@ reportFileSizeImpact({
       "./dist/systemjs/**/*.svg": false,
     },
   },
-  transformations: { raw, gzip },
+  manifestConfig: {
+    "./dist/**/asset-manifest.json": true,
+  },
 })
