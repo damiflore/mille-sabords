@@ -16,10 +16,13 @@ import React from "react"
 import { addLoadedListener, useUrlLoadingNotifier } from "src/loading/loading.main.js"
 
 export const Stylesheet = ({ href }) => {
-  const [fetchEnd] = useUrlLoadingNotifier(href)
+  const [fetchStart, fetchEnd] = useUrlLoadingNotifier(href)
 
   React.useEffect(() => {
-    return injectStylesheetIntoDocument(href, { onload: fetchEnd })
+    fetchStart()
+    return injectStylesheetIntoDocument(href, {
+      onload: fetchEnd,
+    })
   }, [href])
 
   return null

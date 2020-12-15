@@ -24,7 +24,7 @@ import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { firstFocusableDescendantOrSelf, trapFocusInside } from "./focus-trap.js"
 import { trapScrollInside } from "./scroll-trap.js"
 
-const dialogBaseCssUrl = new URL("./dialog.base.css", import.meta.url)
+const dialogBaseCssUrl = new URL("/src/dialog/dialog.base.css", import.meta.url)
 
 const { useEffect } = React
 

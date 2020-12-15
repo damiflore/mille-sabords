@@ -2,7 +2,8 @@ import React from "react"
 
 import { useUrlLoadingNotifier } from "src/loading/loading.main.js"
 import { useImage } from "src/loading/useImage.js"
-import { OnceIntersectingSuspense } from "./OnceIntersectingSuspense.js"
+import { usePrevious } from "../hooks.js"
+import { useIntersecting } from "./useIntersecting.js"
 
 export const Image = ({
   loadWhenIntersecting = true,
@@ -19,78 +20,64 @@ export const Image = ({
   src,
   ...props
 }) => {
-  const [status] = useImageStatusHook(src)
-  const [imageFetchEnd] = useUrlLoadingNotifier(src)
+  const [status, startLoadingImage] = useImageStatusHook(src, { lazy: loadWhenIntersecting })
+  const statusPrevious = usePrevious(status)
+
+  const [imageFetchStart, imageFetchEnd] = useUrlLoadingNotifier(src)
   React.useEffect(() => {
-    if (status === "loaded") {
+    if (statusPrevious !== "loading" && status === "loading") {
+      imageFetchStart()
+    }
+    if (statusPrevious !== "loaded" && status === "loaded") {
       imageFetchEnd()
     }
-  }, [status])
+  }, [statusPrevious, status])
 
-  let Component = <img src={src} {...props} />
+  const [domNodeRefForIntersection, intersecting] = useIntersecting({
+    root: intersectionRoot,
+    rootMargin: intersectionRootMargin,
+    threshold: intersectionThreshold,
+  })
 
-  if (animateLoaded) {
-    Component = <AnimateImageLoaded status={status} src={src} imageProps={props} />
+  const intersectingPrevious = usePrevious(intersecting)
+  React.useEffect(() => {
+    // console.log({ src, loadWhenIntersecting, intersectingPrevious, intersecting })
+    if (loadWhenIntersecting && !intersectingPrevious && intersecting) {
+      // console.log("start loading", String(src))
+      startLoadingImage()
+    }
+  }, [loadWhenIntersecting, intersectingPrevious, intersecting])
+
+  const [domNodeRefForAnimation, startAnimation] = useImageLoadAnimation()
+  React.useLayoutEffect(() => {
+    if (animateLoaded && statusPrevious !== "loaded" && status === "loaded") {
+      startAnimation()
+    }
+  }, [animateLoaded, statusPrevious, status])
+
+  if (loadWhenIntersecting && status !== "loaded" && !intersecting) {
+    return <FallbackWhileNotIntersecting ref={domNodeRefForIntersection} />
   }
 
   if (usePlaceholderWhileLoading && status !== "loaded") {
-    const ComponentPrevious = Component
-    Component = (
-      <OnceImageLoadedSuspense status={status} fallback={<FallbackWhileLoading {...props} />}>
-        {ComponentPrevious}
-      </OnceImageLoadedSuspense>
-    )
+    return <FallbackWhileLoading />
   }
 
-  if (loadWhenIntersecting && status !== "loaded") {
-    const ComponentPrevious = Component
-    Component = (
-      <OnceIntersectingSuspense
-        fallback={({ ref }) => <FallbackWhileNotIntersecting ref={ref} {...props} />}
-        root={intersectionRoot}
-        rootMargin={intersectionRootMargin}
-        threshold={intersectionThreshold}
-      >
-        {ComponentPrevious}
-      </OnceIntersectingSuspense>
-    )
-  }
-
-  return Component
+  return <img src={src} ref={domNodeRefForAnimation} {...props} />
 }
 
-const AnimateImageLoaded = ({ status, src, imageProps }) => {
-  const mountedRef = React.useRef(false)
-  const nodeRef = React.useRef()
-  const statusRef = React.useRef(status)
+const useImageLoadAnimation = () => {
+  const domNodeRef = React.useRef()
 
-  React.useLayoutEffect(() => {
-    const mounted = mountedRef.current
-    const node = nodeRef.current
-    const statusPrevious = statusRef.current
-    mountedRef.current = true
-    statusRef.current = status
+  const startAnimation = React.useCallback(() => {
+    const domNode = domNodeRef.current
+    const opacity = window.getComputedStyle(domNode).getPropertyValue("opacity")
+    domNode.animate([{ opacity: 0 }, { opacity }], {
+      duration: 300,
+    })
+  })
 
-    // ça ne marche pas vraiment parce que ce composant est mount
-    // que lorsque l'image est load et du coup il n'y aura pas d'animation
-    // mais bon quelque part l'image étant déja loadé il n'y a pas d'animation
-    // et c'est ce qu'on veut
-    if (mounted && statusPrevious !== status && status === "loaded") {
-      const opacity = window.getComputedStyle(node).getPropertyValue("opacity")
-      node.animate([{ opacity: 0 }, { opacity }], {
-        duration: 300,
-      })
-    }
-  }, [status, nodeRef])
-
-  return <img ref={nodeRef} src={src} {...imageProps} />
-}
-
-const OnceImageLoadedSuspense = ({ fallback, status, children }) => {
-  if (status !== "loaded") {
-    return fallback
-  }
-  return children
+  return [domNodeRef, startAnimation]
 }
 
 // eslint-disable-next-line react/display-name
