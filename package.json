@@ -42,7 +42,7 @@
   "dependencies": {
     "@jsenv/logger": "3.4.0",
     "@jsenv/server": "5.2.3",
-    "@jsenv/pwa": "3.0.5",
+    "@jsenv/pwa": "3.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "systemjs": "6.8.1"
@@ -54,7 +54,7 @@
     "@jsenv/core": "17.2.0",
     "@jsenv/eslint-config": "12.8.0",
     "@jsenv/file-size-impact": "6.0.4",
-    "@jsenv/lighthouse-score-impact": "2.4.3",
+    "@jsenv/lighthouse-score-impact": "2.4.5",
     "@jsenv/node-module-import-map": "12.2.1",
     "@jsenv/prettier-check-project": "5.6.1",
     "eslint": "7.15.0",

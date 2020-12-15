@@ -2,5 +2,6 @@ import { reportLighthouseScoreImpact, readGithubWorkflowEnv } from "@jsenv/light
 
 reportLighthouseScoreImpact({
   ...readGithubWorkflowEnv(),
+  logLevel: 'debug',
   jsonFileGenerateCommand: "npm run generate-lighthouse-report",
 })
