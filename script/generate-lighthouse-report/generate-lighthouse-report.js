@@ -4,8 +4,6 @@ const run = async () => {
   await import("../generate-systemjs-build/generate-systemjs-build.js")
 
   process.env.LOG_LEVEL = "warn"
-  // let's try once more with lighthouse in https, if it keep taking 40min to finihs
-  // we'll switch back to http
   process.env.HTTPS = true
   const { serverPromise } = await import("../start/start.js")
   const server = await serverPromise
