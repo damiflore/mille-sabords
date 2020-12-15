@@ -23,7 +23,7 @@
           const [mount, mountSetter] = React.useState(false)
           const [status, statusSetter] = React.useState(null)
           const useImageStatusHook = () => {
-            return [status, null]
+            return [status, () => {}]
           }
 
           return (
@@ -71,7 +71,7 @@
         return (
           <>
             <p>Basic image</p>
-            <ImageLoadingControllableWithButtons src="../../favicon.png" />
+            <ImageLoadingControllableWithButtons src="./favicon.png" />
           </>
         )
       }

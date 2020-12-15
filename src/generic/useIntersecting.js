@@ -1,28 +1,23 @@
 import React from "react"
 
-export const OnceIntersectingSuspense = ({
-  fallback,
-  root,
-  rootMargin,
-  threshold = 0,
-  children,
-}) => {
+export const useIntersecting = ({ root, rootMargin, threshold = 0 }) => {
   const [isIntersecting, isIntersectingSetter] = React.useState(false)
-  const [node, nodeSetter] = React.useState(null)
+  const domNodeRef = React.useRef()
 
   React.useEffect(() => {
-    if (!node) {
-      return () => {}
+    const domNode = domNodeRef.current
+    if (!domNode) {
+      return null
     }
     if (isIntersecting) {
-      return () => {}
+      return null
     }
 
     // https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API
     const observer = new window.IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          observer.unobserve(node)
+          observer.unobserve(domNode)
           isIntersectingSetter(true)
         } else {
           isIntersectingSetter(false)
@@ -34,16 +29,12 @@ export const OnceIntersectingSuspense = ({
         threshold,
       },
     )
-    observer.observe(node)
+    observer.observe(domNode)
 
     return () => {
       observer.disconnect()
     }
-  }, [node, isIntersecting])
+  }, [isIntersecting])
 
-  if (!isIntersecting) {
-    return fallback({ ref: nodeSetter })
-  }
-
-  return <>{children}</>
+  return [domNodeRef, isIntersecting]
 }

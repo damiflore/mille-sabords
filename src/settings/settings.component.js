@@ -17,7 +17,7 @@ import { Image } from "src/generic/Image.jsx"
 import { useAddToHomescreen } from "./add-to-home-screen.hooks.js"
 import { UpdateApplication } from "./UpdateApplication.jsx"
 
-import settingsCssUrl from "./settings.css"
+const settingsCssUrl = new URL("./settings.css", import.meta.url)
 
 export const Settings = () => {
   const [settingsDialogIsOpen, openSettingsDialog, closeSettingsDialog] = useDialogState()

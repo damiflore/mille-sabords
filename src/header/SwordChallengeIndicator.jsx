@@ -6,7 +6,8 @@ import { useSymbolsInChest, useSwordQuantityRequired } from "src/round/round.sel
 import { cardIdToCard, isSwordChallengeCard } from "src/cards/cards.js"
 import { SYMBOL_SWORD, symbolSwordUrl } from "src/symbols/symbols.js"
 import { countSymbol } from "src/round/computeRoundScore.js"
-import swordsDisabledImageUrl from "src/header/swords-disabled.png"
+
+const swordsDisabledImageUrl = new URL("/src/header/swords-disabled.png", import.meta.url)
 
 export const SwordChallengeIndicator = () => {
   const currentCardId = useCurrentCardId()

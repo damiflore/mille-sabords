@@ -36,20 +36,24 @@ export const useUrlTrackerAllLoaded = () => {
 }
 
 export const useUrlLoadingNotifier = (url) => {
-  const contextValue = React.useContext(UrlLoadingContext)
-  if (!contextValue) {
-    // if (import.meta.dev) {
-    //   console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
-    // }
-    return [() => {}, () => {}]
-  }
+  url = String(url)
 
-  const dispatch = contextValue[1]
+  const contextValue = React.useContext(UrlLoadingContext)
+  const dispatch = contextValue ? contextValue[1] : undefined
+
+  React.useEffect(() => {
+    if (dispatch) {
+      return fetchAbort
+    }
+    return null
+  }, [])
 
   const fetchStart = () => {
     dispatch((state) => {
       if (url in state) {
-        // console.log("start loading early return", url, state[url])
+        if (logs) {
+          // console.log("start loading early return", url, state[url])
+        }
         return state
       }
       if (logs) {
@@ -73,6 +77,9 @@ export const useUrlLoadingNotifier = (url) => {
         return state
       }
 
+      if (logs) {
+        console.log("abort loading", url)
+      }
       const stateWithoutUrl = {}
       Object.keys(state).forEach((key) => {
         if (key !== url) {
@@ -100,18 +107,18 @@ export const useUrlLoadingNotifier = (url) => {
     })
   }
 
-  React.useEffect(() => {
-    fetchStart()
-    return () => {
-      fetchAbort()
-    }
-  }, [])
+  if (!contextValue) {
+    // if (import.meta.dev) {
+    //   console.warn(`useUrlLoadingNotifier was called on a component without UrlLoadingContext`)
+    // }
+    return [() => {}, () => {}, () => {}]
+  }
 
-  return [fetchEnd, fetchAbort]
+  return [fetchStart, fetchEnd, fetchAbort]
 }
 
 export const useDOMNodeLoadingNotifier = (url) => {
-  const [domNodeFetchEnd] = useUrlLoadingNotifier(url)
+  const [, domNodeFetchEnd] = useUrlLoadingNotifier(url)
 
   const nodeRefCallback = React.useCallback(
     (node) => {

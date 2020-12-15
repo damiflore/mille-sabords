@@ -3,10 +3,10 @@ import { Image } from "src/generic/Image.jsx"
 import { usePlayers, useRoundStarted } from "src/main.store.js"
 import { useCurrentPlayer } from "src/round/round.selectors.js"
 import { StartPlayerRoundDialog } from "src/score-board/StartPlayerRoundDialog.jsx"
-import winTreasureUrl from "src/score-board/win-treasure.png"
-import boarUrl from "src/score-board/boat.png"
 import { symbolSkullUrl, symbolToImageUrl } from "src/symbols/symbols.js"
 
+const winTreasureUrl = new URL("/src/score-board/win-treasure.png", import.meta.url)
+const boarUrl = new URL("/src/score-board/boat.png", import.meta.url)
 const SCORE_MAX = 6000
 
 const pathList = {

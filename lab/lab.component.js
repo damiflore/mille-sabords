@@ -16,7 +16,8 @@ import { ScoreBoardLab } from "lab/ScoreBoardLab.jsx"
 import { CardDrawingLab } from "lab/CardDrawingLab.jsx"
 import { CardActivationLab } from "lab/CardActivationLab.jsx"
 import { GameBoardLab } from "lab/GameBoardLab.jsx"
-import labCssUrl from "lab/lab.css"
+
+const labCssUrl = new URL("/lab/lab.css", import.meta.url)
 
 export const Lab = () => {
   const [labOpened, labOpenedSetter] = React.useState(

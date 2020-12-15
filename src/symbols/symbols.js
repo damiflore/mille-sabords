@@ -1,9 +1,9 @@
-import symbolCoinUrl from "src/dices/dice_coin.png"
-import symbolDiamondUrl from "src/dices/dice_diamond.png"
-import symbolMonkeyUrl from "src/dices/dice_monkey.png"
-import symbolParrotUrl from "src/dices/dice_parrot.png"
-import symbolSkullUrl from "src/dices/dice_skull.png"
-import symbolSwordUrl from "src/dices/dice_sword.png"
+const symbolCoinUrl = new URL("/src/dices/dice_coin.png", import.meta.url)
+const symbolDiamondUrl = new URL("/src/dices/dice_diamond.png", import.meta.url)
+const symbolMonkeyUrl = new URL("/src/dices/dice_monkey.png", import.meta.url)
+const symbolParrotUrl = new URL("/src/dices/dice_parrot.png", import.meta.url)
+const symbolSkullUrl = new URL("/src/dices/dice_skull.png", import.meta.url)
+const symbolSwordUrl = new URL("/src/dices/dice_sword.png", import.meta.url)
 
 export const SYMBOL_COIN = "coin"
 export const SYMBOL_DIAMOND = "diamond"

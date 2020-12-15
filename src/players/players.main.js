@@ -1,9 +1,9 @@
-import luffyUrl from "./Luffy.png"
-import missFortuneUrl from "./MissFortune.png"
-import jackSparrowUrl from "./JackSparrow.png"
-import barbeRougeUrl from "./BarbeRouge.png"
-import ginetteBouletteUrl from "./GinetteBoulette.png"
-import capitaineCrochetUrl from "./CapitaineCrochet.png"
+const luffyUrl = new URL("/src/players/Luffy.png", import.meta.url).href
+const missFortuneUrl = new URL("/src/players/MissFortune.png", import.meta.url).href
+const jackSparrowUrl = new URL("/src/players/JackSparrow.png", import.meta.url).href
+const barbeRougeUrl = new URL("/src/players/BarbeRouge.png", import.meta.url).href
+const ginetteBouletteUrl = new URL("/src/players/GinetteBoulette.png", import.meta.url).href
+const capitaineCrochetUrl = new URL("/src/players/CapitaineCrochet.png", import.meta.url).href
 
 export const createPlayers = (characters) => {
   return characters.map((character, index) => {

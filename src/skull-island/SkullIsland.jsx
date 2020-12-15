@@ -5,7 +5,8 @@ import { useCurrentCardId, useCurrentCardActivated } from "src/main.store.js"
 import { cardIdToCard, isOneSkullCard, isTwoSkullsCard, isWitchCard } from "src/cards/cards.js"
 import { diceSize } from "src/dices/dicePosition.js"
 import { symbolSkullUrl } from "src/symbols/symbols.js"
-import wichLabelImageUrl from "src/skull-island/witch-label.png"
+
+const wichLabelImageUrl = new URL("/src/skull-island/witch-label.png", import.meta.url)
 
 export const SkullIsland = ({ cursedAreaRef }) => {
   const currentCard = cardIdToCard(useCurrentCardId())

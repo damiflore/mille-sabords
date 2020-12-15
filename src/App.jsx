@@ -6,7 +6,7 @@ import { Game } from "src/game/Game.jsx"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { Settings } from "src/settings/settings.component.js"
 
-import milleSabordsCssUrl from "../mille-sabord.css"
+const milleSabordsCssUrl = new URL("../mille-sabord.css", import.meta.url)
 
 export const App = (props) => {
   return (

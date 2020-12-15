@@ -16,7 +16,7 @@ const BUILD_FILE_CACHE_VALIDITY_IN_SECONDS = SECONDS_IN_30_DAYS
 export const serverPromise = startServer({
   logLevel: process.env.LOG_LEVEL || "info",
   protocol: process.env.HTTPS ? "https" : "http",
-  http2: Boolean(process.env.HTTPS),
+  http2: Boolean(process.env.HTTP2),
   ip: "",
   port: process.env.PORT || 0,
   requestToResponse: (request) => {

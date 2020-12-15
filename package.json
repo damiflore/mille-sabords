@@ -32,6 +32,7 @@
     "generate-lighthouse-report": "node --experimental-top-level-await ./script/generate-lighthouse-report/generate-lighthouse-report.js",
     "build": "npm run dist",
     "start": "node --experimental-top-level-await ./script/start/start.js",
+    "start-dev": "node ./script/start/start-dev.js",
     "postinstall": "npm run generate-import-map",
     "dist": "npm run generate-systemjs-build"
   },
@@ -40,8 +41,8 @@
   },
   "dependencies": {
     "@jsenv/logger": "3.4.0",
-    "@jsenv/server": "5.2.2",
-    "@jsenv/pwa": "3.0.5",
+    "@jsenv/server": "5.2.3",
+    "@jsenv/pwa": "3.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "systemjs": "6.8.1"
@@ -50,10 +51,10 @@
     "@babel/plugin-transform-react-jsx": "7.12.5",
     "@jsenv/assert": "2.2.1",
     "@jsenv/codecov-upload": "3.4.3",
-    "@jsenv/core": "17.1.8",
+    "@jsenv/core": "17.2.0",
     "@jsenv/eslint-config": "12.8.0",
     "@jsenv/file-size-impact": "6.0.4",
-    "@jsenv/lighthouse-score-impact": "2.4.2",
+    "@jsenv/lighthouse-score-impact": "2.4.5",
     "@jsenv/node-module-import-map": "12.2.1",
     "@jsenv/prettier-check-project": "5.6.1",
     "eslint": "7.15.0",
