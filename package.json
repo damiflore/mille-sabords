@@ -56,7 +56,7 @@
     "@jsenv/eslint-config": "12.9.1",
     "@jsenv/file-size-impact": "6.0.6",
     "@jsenv/lighthouse-score-impact": "2.4.8",
-    "@jsenv/node-module-import-map": "12.3.0",
+    "@jsenv/node-module-import-map": "13.0.0-alpha.5",
     "@jsenv/prettier-check-project": "5.6.1",
     "@jsenv/util": "4.0.6",
     "eslint": "7.21.0",

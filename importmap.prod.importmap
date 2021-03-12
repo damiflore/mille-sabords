@@ -1,49 +1,11 @@
 {
   "imports": {
-    "@jsenv/logger/": "./node_modules/@jsenv/logger/",
-    "mille-sabords/": "./",
-    "systemjs/dist/": "./node_modules/systemjs/dist/",
     "@jsenv/logger": "./node_modules/@jsenv/logger/main.node.js",
     "mille-sabords": "./main.js",
-    "systemjs/s.js": "./node_modules/systemjs/dist/s.min.js",
-    "@jsenv/pwa/": "./node_modules/@jsenv/pwa/",
     "@jsenv/pwa": "./node_modules/@jsenv/pwa/main.js",
     "react-dom": "./node_modules/react-dom/index.js",
-    "systemjs": "./node_modules/systemjs/dist/system.min.js",
     "react": "./node_modules/react/index.js",
-    "src/": "./src/",
-    "test/": "./test/",
-    "lab/": "./lab/"
+    "src/": "./src/"
   },
-  "scopes": {
-    "./node_modules/object-assign/": {
-      "object-assign/": "./node_modules/object-assign/"
-    },
-    "./node_modules/loose-envify/": {
-      "loose-envify/": "./node_modules/loose-envify/",
-      "js-tokens": "./node_modules/js-tokens/index.js"
-    },
-    "./node_modules/js-tokens/": {
-      "js-tokens/": "./node_modules/js-tokens/"
-    },
-    "./node_modules/react-dom/": {
-      "object-assign": "./node_modules/object-assign/index.js",
-      "loose-envify": "./node_modules/loose-envify/index.js",
-      "react-dom/": "./node_modules/react-dom/",
-      "scheduler": "./node_modules/scheduler/index.js"
-    },
-    "./node_modules/scheduler/": {
-      "object-assign": "./node_modules/object-assign/index.js",
-      "loose-envify": "./node_modules/loose-envify/index.js",
-      "scheduler/": "./node_modules/scheduler/"
-    },
-    "./node_modules/systemjs/": {
-      "systemjs/": "./node_modules/systemjs/"
-    },
-    "./node_modules/react/": {
-      "object-assign": "./node_modules/object-assign/index.js",
-      "loose-envify": "./node_modules/loose-envify/index.js",
-      "react/": "./node_modules/react/"
-    }
-  }
+  "scopes": {}
 }

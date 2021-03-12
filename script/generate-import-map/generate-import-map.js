@@ -1,27 +1,18 @@
-import {
-  generateImportMapForProject,
-  getImportMapFromNodeModules,
-  getImportMapFromFile,
-} from "@jsenv/node-module-import-map"
+import { getImportMapFromProjectFiles, writeImportMapFile } from "@jsenv/node-module-import-map"
 import { projectDirectoryUrl } from "../../jsenv.config.js"
 
-const generateFile = async (
-  importMapFileRelativeUrl,
-  { packageIncludedPredicate, includeDevDependencies = false } = {},
-) => {
-  await generateImportMapForProject(
+const generateFile = async (importMapFileRelativeUrl, { dev } = {}) => {
+  await writeImportMapFile(
     [
-      getImportMapFromNodeModules({
+      getImportMapFromProjectFiles({
         projectDirectoryUrl,
-        packageIncludedPredicate,
-        projectPackageDevDependenciesIncluded: includeDevDependencies,
+        dev,
       }),
-      getImportMapFromFile(new URL("./importmap.project.importmap", projectDirectoryUrl)),
     ],
     {
       projectDirectoryUrl,
       importMapFileRelativeUrl,
-      jsConfigFile: includeDevDependencies,
+      jsConfigFile: dev,
       jsConfigBase: {
         jsx: "react",
       },
@@ -30,10 +21,8 @@ const generateFile = async (
 }
 
 generateFile("importmap.prod.importmap", {
-  packageIncludedPredicate: ({ packageName }) => {
-    return !["@jsenv/server"].includes(packageName)
-  },
+  dev: false,
 })
 generateFile("importmap.dev.importmap", {
-  includeDevDependencies: true,
+  dev: true,
 })
