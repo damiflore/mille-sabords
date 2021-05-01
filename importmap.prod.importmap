@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@jsenv/logger": "./node_modules/@jsenv/logger/main.node.js",
+    "@jsenv/logger": "./node_modules/@jsenv/logger/main.browser.js",
     "mille-sabords": "./main.js",
     "@jsenv/pwa": "./node_modules/@jsenv/pwa/main.js",
     "react-dom": "./node_modules/react-dom/index.js",
