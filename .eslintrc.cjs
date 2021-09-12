@@ -19,9 +19,7 @@ const eslintConfig = composeEslintConfig(
   // use "@babel/eslint-parser" until top level await is supported by ESLint default parser
   {
     parser: "@babel/eslint-parser",
-    parserOptions: {
-      requireConfigFile: false,
-    },
+    parserOptions: {},
   },
 
   // Files in this repository are meant to be executed in browser
@@ -68,6 +66,19 @@ const eslintConfig = composeEslintConfig(
       },
     },
     rules: jsenvEslintRulesForReact,
+  },
+
+  // jsx
+  {
+    parser: "@babel/eslint-parser",
+    parserOptions: {
+      ecmaFeatures: {
+        jsx: true,
+      },
+    },
+    settings: {
+      extensions: [".jsx"],
+    },
   },
 
   // Enable HTML plugin

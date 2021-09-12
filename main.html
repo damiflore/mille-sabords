@@ -6,228 +6,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./icons/favicon.png" />
     <link rel="manifest" href="./mille-sabords.webmanifest" />
-    <link rel="prefetch" href="./loadscreen.css" as="style" />
-    <link rel="prefetch" href="./mille-sabord.css" as="style" />
+
     <script type="importmap" src="./dev.importmap"></script>
+    <!--
+    Why dev.importmap?
+    -> We want to execute this file in "development" mode meaning you we
+    can add custom behaviour to help developper experience. When this file is built, the importmap
+    is replaced by "prod.importmap" so that the custom developer code is treeshaked.
+    -->
+
+    <link rel="prefetch" href="./loadscreen.css" as="style" crossorigin />
+    <link rel="prefetch" href="./mille-sabord.css" as="style" crossorigin />
   </head>
 
   <body>
-    <div id="splashscreen" data-step="loading">
-      <style>
-        #splashscreen {
-          position: fixed;
-          z-index: 1000;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          background: black;
-          color: white;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+    <noscript>
+      <h1>JavaScript is required</h1>
+      <p>This page needs JavaScript to run but JavaScript is not available</p>
+    </noscript>
+    <!--
+    Explanation of this HTMl file and why it's the way it is
 
-          opacity: 0;
-          /* transform: scale(0); */
+    First thing user sees is the HTML in this file. If HTML was empty,
+    user would see a blank page. To have something better to show, there is
+    inline HTML, CSS and JS to immediatly display something called "splashscreen".
 
-          animation-name: splashin;
-          animation-duration: 0.4s;
-          animation-delay: 0.1s;
-          /* in case browser is very fast, don't display at all */
-          animation-fill-mode: forwards;
-        }
+    splashscreen has several reponsabilities:
+    1. Be the first thing a user see
+    2. Load the main js file from network (boot/boot.js)
+    3. When loading main js takes times, invite user to wait
+    4. When loading fails (due to a network error), display an error message
+    5. When main js file throws, display an error message
 
-        #splashscreen[data-step="loading"] + #app {
-          visibility: hidden;
-          /*
-          avoid big image to create a scroll
-          or if the game is too big it will
-          increase splashscreen size
-          */
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-        }
+    As splashscreen is inline it loads instantly but it also means it cannot go too far
+    in terms of user experience and features: it should stay small and simple.
+    A good compromise is to enrich the splashscreen into boot/boot.js to provide a better loading experience
+    while the whole app is still loading
 
-        #splashscreen[data-step="loaded"] {
-          animation-name: splashout;
-          animation-fill-mode: forwards;
-        }
-
-        @keyframes splashin {
-          from {
-            opacity: 0;
-            /* transform: scale(0); */
-          }
-
-          to {
-            opacity: 1;
-            /* transform: scale(1); */
-          }
-        }
-
-        @keyframes splashout {
-          from {
-            opacity: 1;
-          }
-
-          to {
-            opacity: 0;
-            display: none;
-          }
-        }
-
-        #splashscreen #splashscreen-text {
-          display: flex;
-          justify-content: center;
-          flex: 1;
-          width: 80%;
-        }
-
-        #splashscreen #errorscreen {
-          display: block;
-        }
-
-        #splashscreen #errorscreen details {
-          max-width: 500px;
-        }
-
-        #splashscreen details pre {
-          overflow: auto;
-        }
-
-        #splashscreen img {
-          animation: loading 1.3s ease-in-out infinite alternate;
-        }
-
-        @keyframes loading {
-          0% {
-            transform: rotate(-90deg) scale(1);
-          }
-
-          100% {
-            transform: rotate(90deg) scale(1.3);
-          }
-        }
-      </style>
-      <h1>Mille sabords</h1>
-      <div id="splashscreen-text">
-        <noscript>
-          <h1>JavaScript est requis</h1>
-          <p>
-            Ce jeu a besoin de Javascript pour fonctionner et JavaScript n'est
-            pas disponible.
-          </p>
-        </noscript>
+    From user point of view it goes like this:
+    1. splashscreen is immediatly displayed
+    2. Very shortly after JS and CSS comes to improve the loading experience.
+    3. splashscreen fades away and website is displayed
+    -->
+    <div id="app" data-booting></div>
+    <style>
+      #app[data-booting] {
+        width: 100%;
+        height: 100%;
+        visibility: hidden; /* Hides app while its booting */
+        overflow: hidden; /* While app is booting layout might be broken -> prevent scrollbar */
+      }
+    </style>
+    <div id="splashscreen">
+      <div id="splashscreen_logo">
+        <img src="./src/logo.png" data-jsenv-force-inline />
       </div>
-      <div id="splashscreen-text-variants" style="display: none">
-        <div id="loader">
+      <div id="splashscreen_brand">Mille sabords</div>
+      <div id="splashscreen_message"></div>
+      <div style="display: none">
+        <div id="booting_start"></div>
+        <div id="booting_is_slow">
           <img src="src/dices/dice_monkey.png" width="50" height="50" />
         </div>
-        <div id="network-error-screen">
-          Une erreur est survenue pendant le chargement du fichier principal.
-        </div>
-        <div id="runtime-error-screen">
-          <p>
-            Une erreur est survenu pendant l'exécution du fichier principal.
-          </p>
+        <div id="booting_error">
+          <p>An error occured while booting</p>
           <br />
           <details>
-            <summary>Voir le détail</summary>
-            <h6 id="runtime-error-title">${runtimeErrorTitle}</h6>
-            <pre id="runtime-error-message">${runtimeErrorMessage}</pre>
+            <summary>See error stack</summary>
+            <pre id="boot_runtime_error_stack">${errorStack}</pre>
           </details>
         </div>
       </div>
     </div>
-    <div id="app"></div>
-    <script id="main-script" type="module" src="./main.js"></script>
-    <script async>
-      const splashscreenElement = document.querySelector("#splashscreen")
 
-      const activateSplashscreenVariant = (variantId, data = {}) => {
-        const activeVariantContainer = document.querySelector(
-          "#splashscreen-text",
+    <script type="module">
+      window.splashscreen = {
+        /*
+         * takeOver is implemented later in this script.
+         * takeOver is meant to be called by code that want to take responsability
+         * of what is displayed in the splashscreen
+         *
+         * It is used by boot/boot.js once it starts to render a different UI in the splashscreen
+         */
+        takeOver: () => {},
+        /*
+         * appIsReady is implemented later in this script.
+         * appIsReady is meant to be called once the app inside <div id="app"></div>
+         * is ready to be displayed to the user (HTML rendered and CSS, images, fonts, ... are loaded).
+         *
+         * It is used by app/app.js once it has rendered the HTML and font is loaded
+         */
+        appIsReady: () => {},
+      }
+
+      const appNode = document.querySelector("#app")
+      const splashscreenNode = document.querySelector("#splashscreen")
+
+      const BOOTING_START = "booting_start"
+      const BOOTING_IS_SLOW = "booting_is_slow"
+      const BOOTING_ERROR = "booting_error"
+
+      const boot = async () => {
+        // In case page takes more than 2,5s to boot
+        const bootingIsSlowTimeout = setTimeout(() => {
+          setBootingState(BOOTING_IS_SLOW)
+        }, 2500)
+        // De-comment the await below to test the case where boot is slow
+        // await new Promise((resolve) => {
+        //   setTimeout(resolve, 3500)
+        // })
+
+        window.splashscreen.takeOver = () => {
+          clearTimeout(bootingIsSlowTimeout)
+        }
+
+        // In case boot main file loads and execute fast, splashscreen would
+        // fadein + fadeout too soon creating a blink.
+        // -> To prevent the blink we wait at leat 700ms before actually removing the splashscreen
+        // Other strategies are valid and could be preferred instead of this one.
+        const minMsEllapsed = new Promise((resolve) => {
+          setTimeout(resolve, 700)
+        })
+        window.splashscreen.appIsReady = async () => {
+          clearTimeout(bootingIsSlowTimeout)
+          appNode.removeAttribute("data-booting")
+
+          await minMsEllapsed
+          splashscreenNode.setAttribute("data-booting-done", "")
+          // Wait the end of the "splashout" animation before killing splashscreen entirely
+          setTimeout(() => {
+            // Here splashscreen is "killed" with display: 'none' but it could also
+            // be removed from the DOM
+            splashscreenNode.style.display = "none"
+          }, 300)
+        }
+
+        try {
+          setBootingState(BOOTING_START)
+          await import("./src/boot/boot.js")
+        } catch (error) {
+          clearTimeout(bootingIsSlowTimeout)
+
+          setBootingState(BOOTING_ERROR, {
+            errorStack:
+              error.stack ||
+              `<No stack associated with this error> (Check devtools to get more info)`,
+          })
+          throw error
+        }
+      }
+
+      const setBootingState = (nextBootingState, data = {}) => {
+        //  bootingState = nextBootingState
+
+        const splashscreenMessageNode = document.querySelector(
+          "#splashscreen_message",
         )
-        activeVariantContainer.innerHTML = ""
-        const variantModel = document.querySelector(`#${variantId}`)
+        splashscreenMessageNode.innerHTML = ""
+        const variantModel = document.querySelector(`#${nextBootingState}`)
         const variantInstance = variantModel.cloneNode(true)
 
-        const visitNode = (node) => {
-          if (node.nodeName === "#text") {
-            node.textContent = node.textContent.replace(
-              /\${(\w*)}/g,
-              (_, key) => {
-                return data.hasOwnProperty(key) ? data[key] : ""
-              },
-            )
-          } else {
-            Array.from(node.childNodes).forEach((node) => {
-              visitNode(node)
-            })
-          }
+        replaceNodeVariables(variantInstance, data)
+        splashscreenMessageNode.appendChild(variantInstance)
+      }
+
+      const replaceNodeVariables = (node, data) => {
+        if (node.nodeName === "#text") {
+          node.textContent = node.textContent.replace(
+            /\${(\w*)}/g,
+            (_, key) => {
+              return data.hasOwnProperty(key) ? data[key] : ""
+            },
+          )
+          return
         }
-        visitNode(variantInstance)
 
-        activeVariantContainer.appendChild(variantInstance)
-        return variantInstance
-      }
-
-      // montre un loader ou quelque chose parce que le site met un peu de temps a se load
-      const showLoaderTimeout = setTimeout(() => {
-        activateSplashscreenVariant("loader")
-      }, 2500)
-
-      // detect main script load error
-      const mainScript = document.querySelector("script#main-script")
-      mainScript.onerror = () => {
-        clearTimeout(showLoaderTimeout)
-        activateSplashscreenVariant("network-error-screen")
-      }
-      // uncomment the line below to test the case of a network error
-      // mainScript.onerror();
-
-      // detect main script parse or execute error
-      const errorEventCallback = (errorEvent) => {
-        window.removeEventListener("error", errorEventCallback)
-        const {
-          message,
-          filename,
-          lineno: lineNumber,
-          colno: columnNumber,
-        } = errorEvent
-
-        clearTimeout(showLoaderTimeout)
-        activateSplashscreenVariant("runtime-error-screen", {
-          runtimeErrorTitle: filename
-            ? `${filename}:${lineNumber}:${columnNumber}`
-            : "<Aucun fichier associé a cette erreur>",
-          runtimeErrorMessage:
-            message ||
-            `<Aucun message associé a cette erreur>
-(Ouvrir les devtools pour en savoir plus)`,
+        Array.from(node.childNodes).forEach((node) => {
+          replaceNodeVariables(node, data)
         })
       }
-      window.addEventListener("error", errorEventCallback)
 
-      window.splashscreen = {
-        remove: () => {
-          // uncomment the line below to test the case of an infite loading
-          // return
-
-          // here the main script should call this when it's ready to display something
-          // because the main script might be loading some images and stuff
-          // we should first display an other screen showing what the main script is doing
-          // (likely loading assets)
-          // we must create this component which does not exists yet
-          clearTimeout(showLoaderTimeout)
-          window.removeEventListener("error", errorEventCallback)
-          splashscreenElement.setAttribute("data-step", "loaded")
-          setTimeout(() => {
-            splashscreenElement.style.display = "none"
-          }, 300)
-        },
-      }
+      boot()
     </script>
     <script>
       // we have to register early to this event in case browser dispatch it quickly
