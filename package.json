@@ -2,6 +2,7 @@
   "name": "mille-sabords",
   "description": "Web version of a dice game called mille sabords",
   "version": "0.0.1",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,7 +12,6 @@
     "access": "public"
   },
   "module": "main.js",
-  "importmap": "./importmap.project.importmap",
   "browser": "dist/systemjs/main.js",
   "type": "module",
   "files": [
@@ -31,14 +31,13 @@
     "prettier-format-stage": "npm run prettier-format -- --staged",
     "prettier-check": "npm run prettier-format -- --dry-run",
     "upload-coverage": "node ./script/upload-coverage/upload-coverage.js",
-    "generate-systemjs-build": "node --experimental-top-level-await ./script/generate-systemjs-build/generate-systemjs-build.js",
-    "generate-import-map": "node --experimental-top-level-await ./script/generate-import-map/generate-import-map.js",
-    "generate-lighthouse-report": "node --experimental-top-level-await ./script/generate-lighthouse-report/generate-lighthouse-report.js",
-    "build": "npm run dist",
-    "start": "node --experimental-top-level-await ./script/start/start.js",
+    "build": "node ./script/build/build.mjs",
+    "generate-importmap": "node ./script/importmap/generate-importmap.mjs",
+    "generate-lighthouse-report": "node ./script/generate-lighthouse-report/generate-lighthouse-report.js",
+    "start": "node ./script/start/start.js",
     "start-dev": "node ./script/start/start-dev.js",
-    "postinstall": "npm run generate-import-map",
-    "dist": "npm run generate-systemjs-build"
+    "postinstall": "npm run generate-importmap",
+    "dist": "npm run dist"
   },
   "dependencies": {
     "@jsenv/logger": "4.0.0",
@@ -49,16 +48,16 @@
     "systemjs": "6.8.3"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "7.13.12",
+    "@babel/plugin-transform-react-jsx": "7.14.9",
     "@jsenv/assert": "2.2.5",
     "@jsenv/codecov-upload": "3.4.3",
     "@jsenv/core": "17.10.0",
     "@jsenv/eslint-config": "14.0.0",
     "@jsenv/file-size-impact": "7.0.0",
+    "@jsenv/filesystem": "2.1.1",
+    "@jsenv/importmap-node-module": "2.2.0",
     "@jsenv/lighthouse-score-impact": "2.4.8",
-    "@jsenv/node-module-import-map": "13.4.1",
     "@jsenv/prettier-check-project": "5.6.1",
-    "@jsenv/util": "4.0.6",
     "eslint": "7.25.0",
     "eslint-plugin-react": "7.23.2",
     "playwright-chromium": "1.10.0",
