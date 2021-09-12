@@ -1,4 +1,4 @@
-import { createRequire } from "module"
+import { createRequire } from "node:module"
 import { jsenvBabelPluginMap, convertCommonJsWithRollup } from "@jsenv/core"
 
 const require = createRequire(import.meta.url)
@@ -6,8 +6,6 @@ const require = createRequire(import.meta.url)
 const transformReactJSX = require("@babel/plugin-transform-react-jsx")
 
 export const projectDirectoryUrl = String(new URL("./", import.meta.url))
-
-export const importMapFileRelativeUrl = `importmap.prod.importmap`
 
 export const babelPluginMap = {
   ...jsenvBabelPluginMap,

@@ -8,7 +8,7 @@
     <link rel="manifest" href="./mille-sabords.webmanifest" />
     <link rel="prefetch" href="./loadscreen.css" as="style" />
     <link rel="prefetch" href="./mille-sabord.css" as="style" />
-    <script type="importmap" src="./importmap.prod.importmap"></script>
+    <script type="importmap" src="./dev.importmap"></script>
   </head>
 
   <body>
@@ -114,7 +114,10 @@
       <div id="splashscreen-text">
         <noscript>
           <h1>JavaScript est requis</h1>
-          <p>Ce jeu a besoin de Javascript pour fonctionner et JavaScript n'est pas disponible.</p>
+          <p>
+            Ce jeu a besoin de Javascript pour fonctionner et JavaScript n'est
+            pas disponible.
+          </p>
         </noscript>
       </div>
       <div id="splashscreen-text-variants" style="display: none">
@@ -125,7 +128,9 @@
           Une erreur est survenue pendant le chargement du fichier principal.
         </div>
         <div id="runtime-error-screen">
-          <p>Une erreur est survenu pendant l'exécution du fichier principal.</p>
+          <p>
+            Une erreur est survenu pendant l'exécution du fichier principal.
+          </p>
           <br />
           <details>
             <summary>Voir le détail</summary>
@@ -141,16 +146,21 @@
       const splashscreenElement = document.querySelector("#splashscreen")
 
       const activateSplashscreenVariant = (variantId, data = {}) => {
-        const activeVariantContainer = document.querySelector("#splashscreen-text")
+        const activeVariantContainer = document.querySelector(
+          "#splashscreen-text",
+        )
         activeVariantContainer.innerHTML = ""
         const variantModel = document.querySelector(`#${variantId}`)
         const variantInstance = variantModel.cloneNode(true)
 
         const visitNode = (node) => {
           if (node.nodeName === "#text") {
-            node.textContent = node.textContent.replace(/\${(\w*)}/g, (_, key) => {
-              return data.hasOwnProperty(key) ? data[key] : ""
-            })
+            node.textContent = node.textContent.replace(
+              /\${(\w*)}/g,
+              (_, key) => {
+                return data.hasOwnProperty(key) ? data[key] : ""
+              },
+            )
           } else {
             Array.from(node.childNodes).forEach((node) => {
               visitNode(node)
@@ -180,7 +190,12 @@
       // detect main script parse or execute error
       const errorEventCallback = (errorEvent) => {
         window.removeEventListener("error", errorEventCallback)
-        const { message, filename, lineno: lineNumber, colno: columnNumber } = errorEvent
+        const {
+          message,
+          filename,
+          lineno: lineNumber,
+          colno: columnNumber,
+        } = errorEvent
 
         clearTimeout(showLoaderTimeout)
         activateSplashscreenVariant("runtime-error-screen", {
@@ -218,10 +233,13 @@
       // we have to register early to this event in case browser dispatch it quickly
       // other scripts will have to check window.beforeinstallpromptEvent
       // presence, otherwise listen the before install prompt event
-      window.addEventListener("beforeinstallprompt", (beforeinstallpromptEvent) => {
-        beforeinstallpromptEvent.preventDefault()
-        window.beforeinstallpromptEvent = beforeinstallpromptEvent
-      })
+      window.addEventListener(
+        "beforeinstallprompt",
+        (beforeinstallpromptEvent) => {
+          beforeinstallpromptEvent.preventDefault()
+          window.beforeinstallpromptEvent = beforeinstallpromptEvent
+        },
+      )
     </script>
   </body>
 </html>
