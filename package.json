@@ -37,30 +37,38 @@
     "start": "node ./script/start/start.js",
     "start-dev": "node ./script/start/start-dev.js",
     "postinstall": "npm run generate-importmap",
+    "install-playwright": "npx playwright install-deps && npx playwright install",
+    "install-certificate-authority": "node ./script/start/install_certificate_authority.mjs",
     "dist": "npm run dist"
   },
   "dependencies": {
-    "@jsenv/logger": "4.0.0",
-    "@jsenv/server": "6.0.1",
-    "@jsenv/pwa": "3.0.7",
+    "@jsenv/logger": "4.0.1",
+    "@jsenv/server": "7.1.0",
+    "@jsenv/pwa": "4.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "systemjs": "6.8.3"
+    "systemjs": "6.10.3"
   },
   "devDependencies": {
+    "@babel/core": "7.15.5",
+    "@babel/eslint-parser": "7.15.4",
     "@babel/plugin-transform-react-jsx": "7.14.9",
-    "@jsenv/assert": "2.2.5",
-    "@jsenv/codecov-upload": "3.4.3",
-    "@jsenv/core": "17.10.0",
-    "@jsenv/eslint-config": "14.0.0",
-    "@jsenv/file-size-impact": "7.0.0",
+    "@jsenv/assert": "2.3.1",
+    "@jsenv/codecov-upload": "3.5.0",
+    "@jsenv/core": "19.7.0",
+    "@jsenv/eslint-config": "16.0.1",
+    "@jsenv/file-size-impact": "10.0.3",
     "@jsenv/filesystem": "2.1.1",
+    "@jsenv/https-local": "1.0.2",
+    "@jsenv/importmap-eslint-resolver": "5.1.2",
     "@jsenv/importmap-node-module": "2.2.0",
-    "@jsenv/lighthouse-score-impact": "2.4.8",
+    "@jsenv/lighthouse-score-impact": "2.6.0",
     "@jsenv/prettier-check-project": "5.6.1",
-    "eslint": "7.25.0",
-    "eslint-plugin-react": "7.23.2",
-    "playwright-chromium": "1.10.0",
-    "prettier": "2.2.1"
+    "eslint": "7.32.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-html": "6.1.2",
+    "eslint-plugin-react": "7.25.1",
+    "playwright-chromium": "1.14.1",
+    "prettier": "2.4.0"
   }
 }
