@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "sources": [
+    "../../src/helper/asap.js",
+    "../../src/boot/boot.js"
+  ],
+  "names": [
+    "window",
+    "requestIdleCallback",
+    "callback",
+    "requestId",
+    "timeout",
+    "cancelIdleCallback",
+    "requestAnimationFrame",
+    "cancelAnimationFrame",
+    "nextIDLEPromise",
+    "e",
+    "arguments",
+    "length",
+    "n",
+    "Promise",
+    "resolve",
+    "module",
+    "then",
+    "aw",
+    "createMilleSabordGame",
+    "into",
+    "document",
+    "querySelector",
+    "onError",
+    "splashscreen",
+    "appIsReady",
+    "onReady"
+  ],
+  "mappings": "mFAAmCA,OAAOC,oBACtC,SAACC,GAAAA,IACOC,EAAYH,OAAOC,oBAAoBC,EAAU,CAAEE,QAAS,MAAA,OAC3D,WACLJ,OAAOK,mBAAmBF,KAG9B,SAACD,GAAAA,IACOC,EAAYH,OAAOM,sBAAsBJ,GAAAA,OACxC,WACLF,OAAOO,qBAAqBJ,UAIvBK,EAAkBR,OAAOC,oBAClC,WAAA,IAAAQ,EAAAC,UAAAC,OAAA,QAAA,IAAAD,UAAA,GAAAA,UAAA,GAAoB,GAAAE,EAAAH,EAAjBL,QAAAA,OAAAA,IAAAA,EAAU,GAAAQ,EAAA,OACJ,IAAIC,SAAQ,SAACC,GAClBd,OAAOC,oBAAoBa,EAAS,CAAEV,QAAAA,QAG1C,WAAA,OACS,IAAIS,SAAQ,SAACC,GAClBd,OAAOM,sBAAsBQ,gBChBGC,EAAAA,OAAO,YAAAC,MAAA,SAAAP,GAAA,OAAAA,EAAAQ,oBDIXd,ICJ5Be,EAAAA,EAAAA,8JAIFV,cAENU,EAAsB,CACpBC,KAAMC,SAASC,cAAc,QAC7BC,QAAS,WACPtB,OAAOuB,aAAaC,cAEtBC,QAAS,WACPzB,OAAOuB,aAAaC,gBAAAA,EAAAA,IAAAA,OAAAA,OAAAA,CAAAA,UAAAA",
+  "sourcesContent": [
+    "export const requestAsapCallback = window.requestIdleCallback\n  ? (callback) => {\n      const requestId = window.requestIdleCallback(callback, { timeout: 400 })\n      return () => {\n        window.cancelIdleCallback(requestId)\n      }\n    }\n  : (callback) => {\n      const requestId = window.requestAnimationFrame(callback)\n      return () => {\n        window.cancelAnimationFrame(requestId)\n      }\n    }\n\nexport const nextIDLEPromise = window.requestIdleCallback\n  ? ({ timeout = 60 } = {}) => {\n      return new Promise((resolve) => {\n        window.requestIdleCallback(resolve, { timeout })\n      })\n    }\n  : () => {\n      return new Promise((resolve) => {\n        window.requestAnimationFrame(resolve)\n      })\n    }\n",
+    "import { nextIDLEPromise } from \"src/helper/asap.js\"\n\n// window.splashscreen.takeOver() means this code is taking responsability of the splashscreen.\n// It prevents main.html to display <div id=\"booting_is_slow\"></div> to the user\n// window.splashscreen.takeOver()\n\nconst { createMilleSabordGame } = await import(\"../app.js\")\n// createMilleSabordGame can be very expensive so we wait a bit\n// to let navigator an opportunity to cooldown.\n// This should help to save battery power and RAM\nawait nextIDLEPromise()\n\ncreateMilleSabordGame({\n  into: document.querySelector(\"#app\"),\n  onError: () => {\n    window.splashscreen.appIsReady()\n  },\n  onReady: () => {\n    window.splashscreen.appIsReady()\n  },\n})\n"
+  ]
+}
