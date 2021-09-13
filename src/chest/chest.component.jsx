@@ -8,19 +8,21 @@ import { useThreeSkullsOrMoreInCursedArea } from "src/round/round.selectors.js"
 
 import { symbolToImageUrl } from "src/symbols/symbols.js"
 import { cardIdToCard, isChestCard } from "src/cards/cards.js"
-import { diceToVisibleSymbol } from "src/dices/dices.js"
-
 import { RoundScore } from "src/round/RoundScore.jsx"
 import { diceSize } from "src/dices/dicePosition.js"
 
-const cursedGridImageUrl = new URL("/src/chest/cursed-grid.png", import.meta.url)
+const cursedGridImageUrl = new URL(
+  "/src/chest/cursed-grid.png",
+  import.meta.url,
+)
 
 export const Chest = ({ chestRef, diceOverChestListener }) => {
   const chestSlots = useChestSlots()
   const threeSkullsOrMoreInCursedArea = useThreeSkullsOrMoreInCursedArea()
   const diceOverChest = useSignalState(diceOverChestListener)
   const currentCard = cardIdToCard(useCurrentCardId())
-  const protectedByChestCard = threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
+  const protectedByChestCard =
+    threeSkullsOrMoreInCursedArea && isChestCard(currentCard)
 
   return (
     <div className="chest">
@@ -42,28 +44,19 @@ export const Chest = ({ chestRef, diceOverChestListener }) => {
         <div className="top-right-corner"></div>
         <div className="bottom-left-corner"></div>
         <div className="bottom-right-corner"></div>
-        {threeSkullsOrMoreInCursedArea && !protectedByChestCard ? <CursedCover /> : null}
+        {threeSkullsOrMoreInCursedArea && !protectedByChestCard ? (
+          <CursedCover />
+        ) : null}
       </div>
       <RoundScore />
     </div>
   )
 }
 
-export const chestSlotContentToSymbol = (chestSlotContent, dices) => {
-  if (chestSlotContent && chestSlotContent.type === "symbol") {
-    return chestSlotContent.value
-  }
-
-  if (chestSlotContent && chestSlotContent.type === "dice") {
-    const diceId = chestSlotContent.value
-    const dice = dices[diceId]
-    return diceToVisibleSymbol(dice)
-  }
-
-  return null
-}
-
-export const compareChestSlotContent = (chestSlotContentLeft, chestSlotContentRight) => {
+export const compareChestSlotContent = (
+  chestSlotContentLeft,
+  chestSlotContentRight,
+) => {
   const leftHasContent = Boolean(chestSlotContentLeft)
   const rightHasContent = Boolean(chestSlotContentRight)
   if (!leftHasContent && !rightHasContent) {

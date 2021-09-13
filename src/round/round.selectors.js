@@ -23,7 +23,7 @@ import {
   isTwoSkullsCard,
   isSwordChallengeCard,
 } from "src/cards/cards.js"
-import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
+import { chestSlotContentToSymbol } from "src/chest/chest.util.js"
 
 import { computeRoundScore, countSymbol } from "src/round/computeRoundScore.js"
 import {
@@ -44,21 +44,30 @@ export const useCurrentPlayer = ({
   currentPlayerId = useCurrentPlayerId(),
   players = usePlayers(),
 } = {}) => {
-  return players.find((playerCandidate) => playerCandidate.id === currentPlayerId)
+  return players.find(
+    (playerCandidate) => playerCandidate.id === currentPlayerId,
+  )
 }
 
 export const usePlayer = (playerId, { players = usePlayers() } = {}) =>
   players.find((playerCandidate) => playerCandidate.id === playerId)
 
-export const useHasNeverRolled = ({ rollCount = useRollCount() } = {}) => rollCount === 0
+export const useHasNeverRolled = ({ rollCount = useRollCount() } = {}) =>
+  rollCount === 0
 
-export const useHasRolledOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 0
+export const useHasRolledOnce = ({ rollCount = useRollCount() } = {}) =>
+  rollCount > 0
 
-export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) => rollCount === 1
+export const useIsFirstRoll = ({ rollCount = useRollCount() } = {}) =>
+  rollCount === 1
 
-export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) => rollCount > 1
+export const useHasRolledMoreThanOnce = ({ rollCount = useRollCount() } = {}) =>
+  rollCount > 1
 
-export const useSymbolsInChest = ({ dices = useDices(), chestSlots = useChestSlots() } = {}) => {
+export const useSymbolsInChest = ({
+  dices = useDices(),
+  chestSlots = useChestSlots(),
+} = {}) => {
   return Object.keys(chestSlots).reduce((previous, chestSlot) => {
     const symbol = chestSlotContentToSymbol(chestSlots[chestSlot], dices)
 
@@ -76,7 +85,9 @@ export const useRemainingSpotInCursedArea = ({
   return 3 - skullCountInCursedArea
 }
 
-export const useHasDicesToCurse = ({ dicesToCurse = useDicesToCurse() } = {}) => {
+export const useHasDicesToCurse = ({
+  dicesToCurse = useDicesToCurse(),
+} = {}) => {
   return dicesToCurse.length > 0
 }
 
@@ -149,7 +160,9 @@ export const useCursedCount = ({
   return cursedCount
 }
 
-export const useThreeSkullsOrMore = ({ cursedCount = useCursedCount() } = {}) => {
+export const useThreeSkullsOrMore = ({
+  cursedCount = useCursedCount(),
+} = {}) => {
   return cursedCount > 2
 }
 
@@ -163,7 +176,10 @@ export const useSkullCountInCursedArea = ({
   diceCursedIds = useDiceCursedIds(),
   symbolsFromCard = useSymbolsFromCard(),
 } = {}) => {
-  return diceCursedIds.length + symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
+  return (
+    diceCursedIds.length +
+    symbolsFromCard.filter((symbol) => symbolIsSkull(symbol)).length
+  )
 }
 
 const useSymbolsFromCard = ({ currentCardId = useCurrentCardId() } = {}) => {
@@ -280,7 +296,9 @@ export const useSwordChallengeOnGoing = () => {
   return quantityKept < quantityRequired
 }
 
-export const useSwordQuantityRequired = ({ currentCardId = useCurrentCardId() } = {}) => {
+export const useSwordQuantityRequired = ({
+  currentCardId = useCurrentCardId(),
+} = {}) => {
   const card = cardIdToCard(currentCardId)
   if (isSwordChallengeCard(card)) return card.numberOfSwords
   return null

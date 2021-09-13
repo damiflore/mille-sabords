@@ -2,7 +2,7 @@
 import React from "react"
 import { useUpdateEffect } from "src/hooks.js"
 import { useChestSlots, useDices, useCurrentCardId } from "src/main.store.js"
-import { chestSlotContentToSymbol } from "src/chest/chest.component.jsx"
+import { chestSlotContentToSymbol } from "src/chest/chest.util.js"
 import { cardIdToCard, isAnimalsCard } from "src/cards/cards.js"
 import {
   symbolIsCoin,
@@ -31,7 +31,8 @@ const useCoinEffect = ({ addScoreParticle }) => {
   Object.keys(chestSlots).forEach((chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
     const chestSlotSymbol = chestSlotContentToSymbol(chestSlotContent, dices)
-    const chestSlotContentIsCoin = chestSlotSymbol && symbolIsCoin(chestSlotSymbol)
+    const chestSlotContentIsCoin =
+      chestSlotSymbol && symbolIsCoin(chestSlotSymbol)
 
     useUpdateEffect(() => {
       if (effectSuspended) return undefined
@@ -57,7 +58,8 @@ const useDiamondEffect = ({ addScoreParticle }) => {
   Object.keys(chestSlots).forEach((chestSlot) => {
     const chestSlotContent = chestSlots[chestSlot]
     const chestSlotSymbol = chestSlotContentToSymbol(chestSlotContent, dices)
-    const chestSlotContentIsDiamond = chestSlotSymbol && symbolIsDiamond(chestSlotSymbol)
+    const chestSlotContentIsDiamond =
+      chestSlotSymbol && symbolIsDiamond(chestSlotSymbol)
 
     useUpdateEffect(() => {
       if (effectSuspended) return undefined
@@ -186,36 +188,42 @@ const useComboEffect = ({ addScoreParticle }) => {
       })
       animationRef.current = cleanupScoreParticle
 
-      const chestSlotAnimationCleanups = chestSlotsWithThatSymbol.map((chestSlotWithThatSymbol) => {
-        const chestSlotDomNodeSymbol =
-          document.querySelector(`[data-chest-slot="${chestSlotWithThatSymbol}"] image`) ||
-          // symbol coming from coin or diamond card have a different html structure
-          // (they use an <img> tag)
-          document.querySelector(`[data-chest-slot="${chestSlotWithThatSymbol}"] img`)
-        // attention: l'animation de combo
-        // peut etre delay
-        // et dans ce cas on voudrait que le scaling se fasse en meme temps ?
-        const animation = chestSlotDomNodeSymbol.animate(
-          [
-            {
-              transform: "scale(1)",
-              transformOrigin: "center center",
-            },
-            {
-              transform: "scale(1.2)",
-              transformOrigin: "center center",
-            },
-            {
-              transform: "scale(1)",
-              transformOrigin: "center center",
-            },
-          ],
-          { duration: 400 },
-        )
-        return () => {
-          animation.cancel()
-        }
-      })
+      const chestSlotAnimationCleanups = chestSlotsWithThatSymbol.map(
+        (chestSlotWithThatSymbol) => {
+          const chestSlotDomNodeSymbol =
+            document.querySelector(
+              `[data-chest-slot="${chestSlotWithThatSymbol}"] image`,
+            ) ||
+            // symbol coming from coin or diamond card have a different html structure
+            // (they use an <img> tag)
+            document.querySelector(
+              `[data-chest-slot="${chestSlotWithThatSymbol}"] img`,
+            )
+          // attention: l'animation de combo
+          // peut etre delay
+          // et dans ce cas on voudrait que le scaling se fasse en meme temps ?
+          const animation = chestSlotDomNodeSymbol.animate(
+            [
+              {
+                transform: "scale(1)",
+                transformOrigin: "center center",
+              },
+              {
+                transform: "scale(1.2)",
+                transformOrigin: "center center",
+              },
+              {
+                transform: "scale(1)",
+                transformOrigin: "center center",
+              },
+            ],
+            { duration: 400 },
+          )
+          return () => {
+            animation.cancel()
+          }
+        },
+      )
       return () => {
         cleanupScoreParticle()
         chestSlotAnimationCleanups.forEach((chestSlotAnimationCleanup) => {
