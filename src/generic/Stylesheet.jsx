@@ -13,15 +13,21 @@ to have only one <link> injected.
 */
 
 import React from "react"
-import { addLoadedListener, useUrlLoadingNotifier } from "src/loading/loading.main.js"
+import {
+  addLoadedListener,
+  useUrlLoadingNotifier,
+} from "src/loading/loading.main.js"
 
-export const Stylesheet = ({ href }) => {
+export const Stylesheet = ({ href, onLoad = () => {} }) => {
   const [fetchStart, fetchEnd] = useUrlLoadingNotifier(href)
 
   React.useEffect(() => {
     fetchStart()
     return injectStylesheetIntoDocument(href, {
-      onload: fetchEnd,
+      onload: () => {
+        fetchEnd()
+        onLoad()
+      },
     })
   }, [href])
 
@@ -68,15 +74,17 @@ const memoizeLinksByHref = (fn) => {
   }
 }
 
-const injectStylesheetIntoDocument = memoizeLinksByHref((href, { onload = () => {} } = {}) => {
-  const link = document.createElement("link")
-  link.rel = "stylesheet"
-  link.type = "text/css"
-  const removeLoadedListener = addLoadedListener(link, onload)
-  link.href = href
-  document.head.appendChild(link)
-  return () => {
-    removeLoadedListener()
-    document.head.removeChild(link)
-  }
-})
+const injectStylesheetIntoDocument = memoizeLinksByHref(
+  (href, { onload = () => {} } = {}) => {
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.type = "text/css"
+    const removeLoadedListener = addLoadedListener(link, onload)
+    link.href = href
+    document.head.appendChild(link)
+    return () => {
+      removeLoadedListener()
+      document.head.removeChild(link)
+    }
+  },
+)

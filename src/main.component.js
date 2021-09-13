@@ -42,13 +42,14 @@ const ErrorScreen = ({ error, onError }) => {
   )
 }
 
-const LoadScreen = ({ onReady, ...props }) => {
+const LoadScreen = ({ rootNode, onReady, ...props }) => {
   const loadscreenRef = React.useRef()
   const loadscreenUrlTrackerReady = useWaitABit()
   const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] =
     React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
+  const [fontsReady, fontsReadySetter] = React.useState(false)
   const [mainImportLoading, mainImportLoadingSetter] = React.useState(false)
   const [mainImportNamespace, mainImportNamespaceSetter] = React.useState(null)
   const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
@@ -57,6 +58,20 @@ const LoadScreen = ({ onReady, ...props }) => {
 
   const urlTrackerTotalCount = useUrlTrackerTotalCount()
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
+
+  React.useEffect(() => {
+    // we are ready, the loading screen replaces the splashscreen
+    if (fontsReady) {
+      rootNode.querySelector(`#main-container`).setAttribute("data-loading", "")
+      onReady()
+    }
+  }, [fontsReady])
+
+  React.useEffect(() => {
+    if (mainUrlsLoaded) {
+      rootNode.querySelector(`#main-container`).removeAttribute("data-loading")
+    }
+  }, [mainUrlsLoaded])
 
   React.useEffect(() => {
     if (
@@ -71,9 +86,6 @@ const LoadScreen = ({ onReady, ...props }) => {
     if (!loadscreenUrlsLoaded) {
       return
     }
-
-    // we are ready, the loading screen replaces the splashscreen
-    onReady()
 
     mainImportLoadingSetter(true)
     ;(async () => {
@@ -114,11 +126,35 @@ const LoadScreen = ({ onReady, ...props }) => {
     }
   }, [loadscreenRef, mainUrlsLoaded])
 
+  React.useEffect(() => {
+    // wait max 400ms for main font
+    const timeout = setTimeout(() => {
+      fontsReadySetter(true)
+    }, 400)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
+
   return (
     <>
-      {mainImportNamespace ? <mainImportNamespace.App {...props} /> : null}
+      <div id="main-container">
+        {mainImportNamespace ? <mainImportNamespace.App {...props} /> : null}
+      </div>
       <div id="loadscreen" ref={loadscreenRef}>
-        <Stylesheet href={loadscreenCssUrl} />
+        <Stylesheet
+          href={loadscreenCssUrl}
+          onLoad={() => {
+            document.fonts.ready.then(
+              () => {
+                fontsReadySetter(true)
+              },
+              () => {
+                fontsReadySetter(true)
+              },
+            )
+          }}
+        />
         <Image src={symbolSkullUrl} animateLoaded={false} />
         {mainImportLoading ? (
           <p className="text">Chargement du jeu...</p>
