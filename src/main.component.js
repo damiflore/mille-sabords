@@ -15,7 +15,11 @@ import { Image } from "src/generic/Image.jsx"
 
 const loadscreenCssUrl = new URL("../loadscreen.css", import.meta.url)
 
-const MainRaw = (props) => {
+const MainRaw = ({ error, onError, ...props }) => {
+  if (error) {
+    return <ErrorScreen error={error} onError={onError} />
+  }
+
   return (
     <UrlLoadingProvider>
       <LoadScreen {...props}></LoadScreen>
@@ -23,10 +27,26 @@ const MainRaw = (props) => {
   )
 }
 
-const LoadScreen = (props) => {
+const ErrorScreen = ({ error, onError }) => {
+  React.useEffect(() => {
+    onError(error)
+  }, [])
+
+  return (
+    <div style={{ maxWidth: "100vw" }}>
+      <div style={{ margin: "10px 15px" }}>An error occured</div>
+      <pre style={{ overflow: "auto", margin: "10px 15px" }}>
+        {typeof error === "object" ? error.stack : error}
+      </pre>
+    </div>
+  )
+}
+
+const LoadScreen = ({ onReady, ...props }) => {
   const loadscreenRef = React.useRef()
   const loadscreenUrlTrackerReady = useWaitABit()
-  const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] = React.useState(false)
+  const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] =
+    React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
   const [mainImportLoading, mainImportLoadingSetter] = React.useState(false)
@@ -39,7 +59,10 @@ const LoadScreen = (props) => {
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    if (loadscreenUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
+    if (
+      loadscreenUrlTrackerReady &&
+      urlTrackerLoadedCount === urlTrackerTotalCount
+    ) {
       loadscreenUrlsLoadedSetter(true)
     }
   }, [loadscreenUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
@@ -49,7 +72,8 @@ const LoadScreen = (props) => {
       return
     }
 
-    window.splashscreen.remove()
+    // we are ready, the loading screen replaces the splashscreen
+    onReady()
 
     mainImportLoadingSetter(true)
     ;(async () => {
@@ -77,10 +101,13 @@ const LoadScreen = (props) => {
 
   React.useEffect(() => {
     if (mainUrlsLoaded && loadscreenRef) {
-      const animation = loadscreenRef.current.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 300,
-        fill: "forwards",
-      })
+      const animation = loadscreenRef.current.animate(
+        [{ opacity: 1 }, { opacity: 0 }],
+        {
+          duration: 300,
+          fill: "forwards",
+        },
+      )
       animation.onfinish = () => {
         loadscreenRef.current.style.display = "none"
       }
@@ -109,16 +136,4 @@ const LoadScreen = (props) => {
   )
 }
 
-const ErrorScreen = ({ error }) => {
-  window.splashscreen.remove()
-  return (
-    <div style={{ maxWidth: "100vw" }}>
-      <div style={{ margin: "10px 15px" }}>An error occured</div>
-      <pre style={{ overflow: "auto", margin: "10px 15px" }}>
-        {typeof error === "object" ? error.stack : error}
-      </pre>
-    </div>
-  )
-}
-
-export const Main = catchError(MainRaw, ErrorScreen)
+export const Main = catchError(MainRaw)

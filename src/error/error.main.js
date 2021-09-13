@@ -1,6 +1,6 @@
 import React from "react"
 
-export const catchError = (LowerLevelComponent, ComponentDisplayedOnError) => {
+export const catchError = (LowerLevelComponent) => {
   class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props)
@@ -19,7 +19,7 @@ export const catchError = (LowerLevelComponent, ComponentDisplayedOnError) => {
 
     render() {
       if (this.state.hasError) {
-        return <ComponentDisplayedOnError error={this.state.error} />
+        return <LowerLevelComponent {...this.props} error={this.state.error} />
       }
       return <LowerLevelComponent {...this.props} />
     }
