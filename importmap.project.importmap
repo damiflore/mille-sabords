@@ -1,7 +1,0 @@
-{
-  "imports": {
-    "src/": "./src/",
-    "test/": "./test/",
-    "lab/": "./lab/"
-  }
-}
