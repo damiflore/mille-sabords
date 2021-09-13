@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node ./script/start/start_dev_server.mjs",
-    "eslint-check": "node ./node_modules/eslint/bin/eslint.js . --ext=.js,.html",
+    "eslint-check": "node ./node_modules/eslint/bin/eslint.js . --ext=.js,.html,.mjs",
     "generate-importmap": "node ./script/importmap/generate_importmap.mjs",
     "generate-lighthouse-report": "node ./script/lighthouse/generate_lighthouse_report.mjs --local",
     "measure-file-sizes": "node ./script/file_size/generate_file_size_report.mjs --local",
@@ -56,6 +56,7 @@
     "@jsenv/https-local": "1.0.2",
     "@jsenv/importmap-eslint-resolver": "5.1.2",
     "@jsenv/importmap-node-module": "2.2.1",
+    "@jsenv/lighthouse-impact": "1.2.1",
     "@jsenv/lighthouse-score-impact": "2.6.0",
     "@jsenv/prettier-check-project": "5.6.1",
     "eslint": "7.32.0",

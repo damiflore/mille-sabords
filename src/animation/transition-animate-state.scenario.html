@@ -17,18 +17,21 @@
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { usePrevious } from "src/hooks.js"
       import { useAnimateTransitionUsingJs } from "./useAnimateTransition.js"
 
       const App = () => {
         const [score, scoreSetter] = React.useState(0)
-        const scorePrevious = usePrevious(score)
+        // const scorePrevious = usePrevious(score)
 
-        const scoreAnimatedValue = useAnimateTransitionUsingJs(score, { duration: 2000 })
+        const scoreAnimatedValue = useAnimateTransitionUsingJs(score, {
+          duration: 2000,
+        })
 
         return (
           <>
-            <span>score: {scoreAnimatedValue ? scoreAnimatedValue.value : score}</span>
+            <span>
+              score: {scoreAnimatedValue ? scoreAnimatedValue.value : score}
+            </span>
             <button
               onClick={() => {
                 scoreSetter(score + 100)
