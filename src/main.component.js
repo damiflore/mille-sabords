@@ -1,6 +1,6 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
-import { requestAsapCallback } from "src/helper/asap.js"
+import { nextIDLEPromise } from "src/helper/asap.js"
 import { Stylesheet } from "src/generic/Stylesheet.jsx"
 import { catchError } from "src/error/error.main.js"
 import {
@@ -93,9 +93,8 @@ const LoadScreen = ({ rootNode, onReady, ...props }) => {
         const namespace = await import("./App.jsx")
         mainImportLoadingSetter(false)
         mainImportNamespaceSetter(namespace)
-        requestAsapCallback(() => {
-          mainUrlTrackerReadySetter(true)
-        })
+        await nextIDLEPromise()
+        mainUrlTrackerReadySetter(true)
       } catch (e) {
         // https://github.com/facebook/react/issues/14981
         mainUrlErrorSetter(() => {
