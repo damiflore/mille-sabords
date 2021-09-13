@@ -10,16 +10,25 @@ const woodUrl = new URL("/src/wood.jpg", import.meta.url)
 const pirateHookUrl = new URL("/src/chest/pirate-hook.png", import.meta.url)
 const pirateHook2Url = new URL("/src/chest/pirate-hook-02.png", import.meta.url)
 const woodBoxUrl = new URL("/src/chest/wood-box.jpg", import.meta.url)
-const treasureMapUrl = new URL("/src/dice-ongoing/treasure-map.png", import.meta.url)
-const witchLabelUrl = new URL("/src/skull-island/witch-label.png", import.meta.url)
-const skullBottleUrl = new URL("/src/skull-island/skull-bottle.png", import.meta.url)
+const treasureMapUrl = new URL(
+  "/src/dice-ongoing/treasure-map.png",
+  import.meta.url,
+)
+const witchLabelUrl = new URL(
+  "/src/skull-island/witch-label.png",
+  import.meta.url,
+)
+const skullBottleUrl = new URL(
+  "/src/skull-island/skull-bottle.png",
+  import.meta.url,
+)
 
 export const Preloader = () => {
   const waited = useWaitABit()
 
   React.useEffect(() => {
     if (waited) {
-      registerServiceWorker("/service-worker.js")
+      registerServiceWorker("/service_worker.js")
     }
   }, [waited])
 

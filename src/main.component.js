@@ -15,7 +15,11 @@ import { Image } from "src/generic/Image.jsx"
 
 const loadscreenCssUrl = new URL("../loadscreen.css", import.meta.url)
 
-const MainRaw = (props) => {
+const MainRaw = ({ error, onError, ...props }) => {
+  if (error) {
+    return <ErrorScreen error={error} onError={onError} />
+  }
+
   return (
     <UrlLoadingProvider>
       <LoadScreen {...props}></LoadScreen>
@@ -23,12 +27,29 @@ const MainRaw = (props) => {
   )
 }
 
-const LoadScreen = (props) => {
+const ErrorScreen = ({ error, onError }) => {
+  React.useEffect(() => {
+    onError(error)
+  }, [])
+
+  return (
+    <div style={{ maxWidth: "100vw" }}>
+      <div style={{ margin: "10px 15px" }}>An error occured</div>
+      <pre style={{ overflow: "auto", margin: "10px 15px" }}>
+        {typeof error === "object" ? error.stack : error}
+      </pre>
+    </div>
+  )
+}
+
+const LoadScreen = ({ rootNode, onReady, ...props }) => {
   const loadscreenRef = React.useRef()
   const loadscreenUrlTrackerReady = useWaitABit()
-  const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] = React.useState(false)
+  const [loadscreenUrlsLoaded, loadscreenUrlsLoadedSetter] =
+    React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
+  const [fontsReady, fontsReadySetter] = React.useState(false)
   const [mainImportLoading, mainImportLoadingSetter] = React.useState(false)
   const [mainImportNamespace, mainImportNamespaceSetter] = React.useState(null)
   const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
@@ -39,7 +60,24 @@ const LoadScreen = (props) => {
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    if (loadscreenUrlTrackerReady && urlTrackerLoadedCount === urlTrackerTotalCount) {
+    // we are ready, the loading screen replaces the splashscreen
+    if (fontsReady) {
+      rootNode.querySelector(`#main-container`).setAttribute("data-loading", "")
+      onReady()
+    }
+  }, [fontsReady])
+
+  React.useEffect(() => {
+    if (mainUrlsLoaded) {
+      rootNode.querySelector(`#main-container`).removeAttribute("data-loading")
+    }
+  }, [mainUrlsLoaded])
+
+  React.useEffect(() => {
+    if (
+      loadscreenUrlTrackerReady &&
+      urlTrackerLoadedCount === urlTrackerTotalCount
+    ) {
       loadscreenUrlsLoadedSetter(true)
     }
   }, [loadscreenUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
@@ -48,8 +86,6 @@ const LoadScreen = (props) => {
     if (!loadscreenUrlsLoaded) {
       return
     }
-
-    window.splashscreen.remove()
 
     mainImportLoadingSetter(true)
     ;(async () => {
@@ -77,21 +113,48 @@ const LoadScreen = (props) => {
 
   React.useEffect(() => {
     if (mainUrlsLoaded && loadscreenRef) {
-      const animation = loadscreenRef.current.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 300,
-        fill: "forwards",
-      })
+      const animation = loadscreenRef.current.animate(
+        [{ opacity: 1 }, { opacity: 0 }],
+        {
+          duration: 300,
+          fill: "forwards",
+        },
+      )
       animation.onfinish = () => {
         loadscreenRef.current.style.display = "none"
       }
     }
   }, [loadscreenRef, mainUrlsLoaded])
 
+  React.useEffect(() => {
+    // wait max 400ms for main font
+    const timeout = setTimeout(() => {
+      fontsReadySetter(true)
+    }, 400)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
+
   return (
     <>
-      {mainImportNamespace ? <mainImportNamespace.App {...props} /> : null}
+      <div id="main-container">
+        {mainImportNamespace ? <mainImportNamespace.App {...props} /> : null}
+      </div>
       <div id="loadscreen" ref={loadscreenRef}>
-        <Stylesheet href={loadscreenCssUrl} />
+        <Stylesheet
+          href={loadscreenCssUrl}
+          onLoad={() => {
+            document.fonts.ready.then(
+              () => {
+                fontsReadySetter(true)
+              },
+              () => {
+                fontsReadySetter(true)
+              },
+            )
+          }}
+        />
         <Image src={symbolSkullUrl} animateLoaded={false} />
         {mainImportLoading ? (
           <p className="text">Chargement du jeu...</p>
@@ -109,16 +172,4 @@ const LoadScreen = (props) => {
   )
 }
 
-const ErrorScreen = ({ error }) => {
-  window.splashscreen.remove()
-  return (
-    <div style={{ maxWidth: "100vw" }}>
-      <div style={{ margin: "10px 15px" }}>An error occured</div>
-      <pre style={{ overflow: "auto", margin: "10px 15px" }}>
-        {typeof error === "object" ? error.stack : error}
-      </pre>
-    </div>
-  )
-}
-
-export const Main = catchError(MainRaw, ErrorScreen)
+export const Main = catchError(MainRaw)

@@ -1,5 +1,5 @@
 import React from "react"
-import { listenAddToHomescreenAvailable, promptAddToHomescreen } from "@jsenv/pwa"
+import { addToHomescreen } from "@jsenv/pwa"
 
 export const useAddToHomescreen = () => {
   const available = useAddToHomescreenAvailable()
@@ -8,15 +8,18 @@ export const useAddToHomescreen = () => {
 }
 
 const useAddToHomescreenAvailable = () => {
-  const [addToHomescreenAvailable, addToHomescreenAvailableSetter] = React.useState()
+  const [addToHomescreenAvailable, addToHomescreenAvailableSetter] =
+    React.useState()
 
   React.useEffect(() => {
-    return listenAddToHomescreenAvailable(addToHomescreenAvailableSetter)
+    return addToHomescreen.listenAvailabilityChange(() => {
+      addToHomescreenAvailableSetter(addToHomescreen.isAvailable())
+    })
   }, [])
 
   return addToHomescreenAvailable
 }
 
 const useAddToHomescreenPrompt = () => {
-  return React.useCallback(promptAddToHomescreen)
+  return React.useCallback(addToHomescreen.prompt)
 }
