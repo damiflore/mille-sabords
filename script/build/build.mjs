@@ -17,6 +17,7 @@ await buildProject({
   ...jsenvConfig,
   format: "systemjs",
   systemJsUrl: "/node_modules/systemjs/dist/s.js",
+  buildDirectoryRelativeUrl: "./dist/systemjs",
   buildDirectoryClean: true,
   entryPointMap: {
     "./main.html": "./main.prod.html",
@@ -25,7 +26,7 @@ await buildProject({
     "./dev.importmap": "./prod.importmap",
   },
   serviceWorkers: {
-    "./service-worker.js": "./service-worker.js",
+    "./service_worker.js": "./service_worker.js",
   },
   serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
   // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
