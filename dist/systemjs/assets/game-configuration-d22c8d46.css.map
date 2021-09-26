@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../src/game/game-configuration.css"
+    "../../../.jsenv/out-build/best/src/app/game/game-configuration.css"
   ],
   "names": [],
   "mappings": "AAAA,oBACI,WAAY,CACZ,UACJ,CACA,sCAQI,gCAAiC,CAJjC,wBAAyB,CACzB,+CAAuD,CACvD,uBAA2B,CAC3B,qBAAsB,CANtB,WAAY,CAEZ,UAAY,CADZ,UAOJ,CACA,6BASI,kBAAmB,CAHnB,YAAa,CACb,qBAAsB,CANtB,WAAY,CAOZ,sBAAuB,CANvB,cAAe,CAEf,iBAAkB,CAClB,KAAM,CAFN,uBAOJ,CACA,2BAGI,aAAc,CAFd,uBAAwB,CAIxB,cAAe,CADf,eAAmB,CAEnB,kBAAmB,CAJnB,iBAKJ,CACA,8BAEI,aAAc,CACd,cAAe,CAFf,iBAGJ,CACA,6BACI,aAAc,CACd,iBACJ,CACA,2BAII,kBAAmB,CADnB,wBAAyB,CAIzB,kBAAmB,CALnB,aAAc,CADd,eAAiB,CAQjB,WAAY,CAHZ,UAAW,CADX,YAAa,CAGb,UAEJ",

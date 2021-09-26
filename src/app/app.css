@@ -16,11 +16,11 @@
 
 @font-face {
   font-family: "skullsandcrossbones";
-  src: url("./fonts/skullsandcrossbones.ttf");
+  src: url("../fonts/skullsandcrossbones.ttf");
 }
 @font-face {
   font-family: "pirateTreasure";
-  src: url("./fonts/pirate_treasure_demo_4b3mb.otf");
+  src: url("../fonts/pirate_treasure_demo_4b3mb.otf");
 }
 
 body {

@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../.jsenv/out-build/best/src/app_loader/app_loader.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,WAGE,iBAAkB,CAFlB,uBAA0B,CAC1B,uCAEF,CAEA,cACE,uBAAwB,CACxB,cACF",
+  "file": "app_loader-4e7737fc.css",
+  "sourcesContent": [
+    "@font-face {\n  font-family: \"ArrrMateyBb\";\n  src: url(\"../fonts/arrr_matey_bb_wn3.ttf\");\n  font-display: swap;\n}\n\n#splashscreen {\n  font-family: ArrrMateyBb;\n  font-size: 50px;\n}\n"
+  ]
+}

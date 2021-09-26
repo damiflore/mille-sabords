@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../src/score-board/start-player-round-dialog.css"
+    "../../../.jsenv/out-build/best/src/app/score-board/start-player-round-dialog.css"
   ],
   "names": [],
   "mappings": "AAAA,gDACE,sBACF,CAEA,oCACE,wBAAyB,CACzB,kBACF,CACA,kCAEE,kBAAmB,CACnB,wBAAyB,CAFzB,aAAc,CAGd,UAAW,CACX,QACF,CACA,iCAKE,aAAc,CAHd,YAAa,CACb,qBAAsB,CAFtB,WAAY,CAGZ,6BAA8B,CAG9B,qBAAsB,CADtB,iBAEF,CACA,kCACE,aAAc,CACd,cACF,CACA,gCAGE,wBAAyB,CADzB,kBAAmB,CADnB,WAAY,CAIZ,aAAc,CADd,WAEF,CACA,oCAGE,kBAAwB,CAFxB,SAGF,CACA,2CAKE,kBAAmB,CAQnB,wBAAyB,CACzB,wBAAyB,CAFzB,aAAc,CATd,YAAa,CACb,qBAAsB,CAKtB,cAAe,CACf,eAAiB,CARjB,WAAY,CAIZ,sBAAuB,CACvB,aAAc,CACd,gBAAiB,CAGjB,wBAAyB,CAVzB,SAcF",
