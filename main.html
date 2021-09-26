@@ -40,7 +40,7 @@
     <link rel="preload" href="./src/app_loader/app_loader.css" as="style" />
     <link rel="modulepreload" href="./src/app_loader/app_loader.js" />
     <link rel="preload" href="./src/app/app.css" as="style" />
-    <link rel="modulepreload" href="./src/app/app.js" />
+    <link rel="modulepreload" href="./src/app/app.jsx" />
   </head>
 
   <body>
@@ -88,13 +88,15 @@
       <div id="splashscreen_message"></div>
       <div style="display: none">
         <div id="booting_start"></div>
-        <img
-          src="./src/app/dices/dice_monkey.png"
-          alt="Booting..."
-          width="50"
-          height="50"
-          data-jsenv-force-inline
-        />
+        <div id="booting_is_slow">
+          <img
+            src="./src/app/dices/dice_monkey.png"
+            alt="Booting..."
+            width="50"
+            height="50"
+            data-jsenv-force-inline
+          />
+        </div>
         <div id="booting_error">
           <p>An error occured while booting</p>
           <br />
