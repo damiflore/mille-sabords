@@ -1,7 +1,12 @@
 import React from "react"
-import { useCardIds, useDispatch, useCardUsedIds } from "src/main.store.js"
-import { cardIdToCard, cardToSmallImageUrl } from "src/cards/cards.js"
-import { useEndPlayerRound } from "src/round/round.actions.js"
+
+import {
+  useCardIds,
+  useDispatch,
+  useCardUsedIds,
+} from "root/src/app/main.store.js"
+import { cardIdToCard, cardToSmallImageUrl } from "root/src/app/cards/cards.js"
+import { useEndPlayerRound } from "root/src/app/round/round.actions.js"
 
 export const CardDrawingLab = () => {
   const cardIds = useCardIds()
@@ -74,7 +79,11 @@ const useMoveCardToTopOfTheDeck = () => {
       const cardIndex = cardIds.indexOf(cardId)
       return {
         ...state,
-        cardIds: [cardId, ...cardIds.slice(0, cardIndex), ...cardIds.slice(cardIndex + 1)],
+        cardIds: [
+          cardId,
+          ...cardIds.slice(0, cardIndex),
+          ...cardIds.slice(cardIndex + 1),
+        ],
       }
     })
   }
@@ -87,7 +96,9 @@ const useMoveCardToUsedCards = () => {
       const { cardIds, cardUsedIds } = state
       return {
         ...state,
-        cardIds: cardIds.filter((cardIdCandidate) => cardIdCandidate !== cardId),
+        cardIds: cardIds.filter(
+          (cardIdCandidate) => cardIdCandidate !== cardId,
+        ),
         cardUsedIds: [...cardUsedIds, cardId],
       }
     })

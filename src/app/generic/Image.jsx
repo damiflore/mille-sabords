@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useUrlLoadingNotifier } from "root/src/app/loading/loading.main.js"
+import { useUrlLoadingNotifier } from "root/src/app/loading/loading.main.jsx"
 import { useImage } from "root/src/app/loading/useImage.js"
 
 import { usePrevious } from "../hooks.js"

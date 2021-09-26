@@ -1,6 +1,6 @@
 import { createLogger } from "@jsenv/logger"
 
-import { createStructuredStateStore } from "root/src/app/store/createStructuredStateStore.js"
+import { createStructuredStateStore } from "root/src/app/store/createStructuredStateStore.jsx"
 import { cardIds } from "root/src/app/cards/cards.js"
 import { DICES } from "root/src/app/dices/dices.js"
 

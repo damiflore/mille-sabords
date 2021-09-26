@@ -22,8 +22,6 @@ await writeImportMapFiles({
       initialImportMap: {
         imports: {
           "root/": "./",
-          "test/": "./test/",
-          "lab/": "./lab/",
           "#env": "./env.dev.js",
         },
       },
@@ -36,8 +34,6 @@ await writeImportMapFiles({
       initialImportMap: {
         imports: {
           "root/": "./",
-          "test/": "./test/",
-          "lab/": "./lab/",
           "#env": "./env.prod.js",
         },
       },

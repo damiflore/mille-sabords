@@ -1,6 +1,10 @@
 import React from "react"
 
-import { createAction, usePlayers, useCurrentPlayerId } from "src/main.store.js"
+import {
+  createAction,
+  usePlayers,
+  useCurrentPlayerId,
+} from "root/src/app/main.store.js"
 
 export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
   const players = usePlayers()

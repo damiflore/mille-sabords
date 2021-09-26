@@ -6,18 +6,18 @@ import {
   useGameStarted,
   useCurrentCardId,
   useCurrentCardActivated,
-} from "src/main.store.js"
-import { useSignal } from "src/helper/signal.js"
-import { ContextProvider } from "src/main.context.js"
-// import { createSkullFromDice } from "src/test/test.material.js"
-import { Stylesheet } from "src/generic/Stylesheet.jsx"
-import { Main } from "src/main.component.js"
-import { ScoreBoardLab } from "lab/ScoreBoardLab.jsx"
-import { CardDrawingLab } from "lab/CardDrawingLab.jsx"
-import { CardActivationLab } from "lab/CardActivationLab.jsx"
-import { GameBoardLab } from "lab/GameBoardLab.jsx"
+} from "root/src/app/main.store.js"
+import { useSignal } from "root/src/app/helper/signal.js"
+import { ContextProvider } from "root/src/app/main.context.jsx"
+// import { createSkullFromDice } from "root/src/app/test/test.material.js"
+import { Stylesheet } from "root/src/app/generic/Stylesheet.jsx"
+import { Main } from "root/src/app/main.component.jsx"
+import { ScoreBoardLab } from "root/lab/ScoreBoardLab.jsx"
+import { CardDrawingLab } from "root/lab/CardDrawingLab.jsx"
+import { CardActivationLab } from "root/lab/CardActivationLab.jsx"
+import { GameBoardLab } from "root/lab/GameBoardLab.jsx"
 
-const labCssUrl = new URL("/lab/lab.css", import.meta.url)
+const labCssUrl = new URL("./lab.css", import.meta.url)
 
 export const Lab = () => {
   const [labOpened, labOpenedSetter] = React.useState(
@@ -37,7 +37,10 @@ export const Lab = () => {
       <ContextProvider>
         <Main playerAnimationListener={playerAnimationListener} />
         {labOpened ? (
-          <GameLab closeLab={closeLab} playerAnimationEmitter={playerAnimationEmitter} />
+          <GameLab
+            closeLab={closeLab}
+            playerAnimationEmitter={playerAnimationEmitter}
+          />
         ) : (
           <ButtonOpenLab onClick={openLab} />
         )}

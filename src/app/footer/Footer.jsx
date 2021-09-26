@@ -16,7 +16,7 @@ import {
 } from "root/src/app/round/round.selectors.js"
 import { symbolSkullUrl } from "root/src/app/symbols/symbols.js"
 
-import { ButtonRoll } from "./ButtonRoll.js"
+import { ButtonRoll } from "./ButtonRoll.jsx"
 
 export const Footer = ({ onRoundOver, rolledAreaRef }) => {
   return (

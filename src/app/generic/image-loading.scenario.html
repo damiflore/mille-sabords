@@ -4,19 +4,22 @@
     <title>Image loading scenario</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="../../favicon.png" />
-    <script type="importmap" src="../../importmap.dev.importmap"></script>
+    <link rel="icon" href="../../../../favicon.png" />
+    <script type="importmap" src="../../../../dev.importmap"></script>
   </head>
 
   <body>
     <h1>Image loading manual tests</h1>
-    <p>Ensure image are can be lazy loaded, are animated when loaded an so on.</p>
+    <p>
+      Ensure image are can be lazy loaded, are animated when loaded an so on.
+    </p>
 
     <div id="app"></div>
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { Image } from "src/generic/Image.jsx"
+
+      import { Image } from "root/src/app/generic/Image.jsx"
 
       const App = () => {
         const ImageLoadingControllableWithButtons = ({ src }) => {
@@ -63,7 +66,9 @@
               >
                 Unmount image
               </button>
-              {mount ? <Image src={src} useImageStatusHook={useImageStatusHook} /> : null}
+              {mount ? (
+                <Image src={src} useImageStatusHook={useImageStatusHook} />
+              ) : null}
             </>
           )
         }

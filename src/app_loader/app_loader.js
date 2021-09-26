@@ -69,7 +69,7 @@ export const loadApp = async ({ updateSplashscreenText }) => {
 }
 
 const importApp = async ({ onJsReady = () => {} }) => {
-  const app = await import("../app/app.js")
+  const app = await import("../app/app.jsx")
   onJsReady()
   return app
 }

@@ -13,7 +13,7 @@ import {
   useDiceDomNode,
   useDiceDomNodeSetter,
   useMainDomNode,
-} from "root/src/app/dom/dom.main.js"
+} from "root/src/app/dom/dom.main.jsx"
 import { diceSize } from "root/src/app/dices/dicePosition.js"
 import { diceIsOnSkull, diceToVisibleSymbol } from "root/src/app/dices/dices.js"
 import { enableDragGesture } from "root/src/app/drag/drag.js"

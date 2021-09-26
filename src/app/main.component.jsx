@@ -8,12 +8,12 @@ import React from "react"
 
 import { DEV } from "#env"
 import { nextIDLEPromise } from "root/src/app/helper/asap.js"
-import { catchError } from "root/src/app/error/error.main.js"
+import { catchError } from "root/src/app/error/error.main.jsx"
 import {
   UrlLoadingProvider,
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
-} from "root/src/app/loading/loading.main.js"
+} from "root/src/app/loading/loading.main.jsx"
 import { useWaitABit } from "root/src/app/loading/loading.hooks.js"
 import { Preloader } from "root/src/app/loading/Preloader.jsx"
 
@@ -96,7 +96,7 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
 
     ;(async () => {
       try {
-        const namespace = await import("./App.jsx")
+        const namespace = await import("./root.jsx")
         mainImportNamespaceSetter(namespace)
         await nextIDLEPromise()
         mainUrlTrackerReadySetter(true)

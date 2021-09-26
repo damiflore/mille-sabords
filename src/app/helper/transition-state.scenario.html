@@ -18,16 +18,22 @@
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { useTransition } from "src/hooks.js"
+
+      import { useTransition } from "root/src/app/hooks.js"
 
       const App = () => {
         const [score, scoreSetter] = React.useState(0)
-        const scoreTransition = useTransition((scorePrevious) => scorePrevious !== score, [score])
+        const scoreTransition = useTransition(
+          (scorePrevious) => scorePrevious !== score,
+          [score],
+        )
 
         return (
           <>
             <span>score: {score}</span>
-            <pre>score transition: {JSON.stringify(scoreTransition, null, "  ")}</pre>
+            <pre>
+              score transition: {JSON.stringify(scoreTransition, null, "  ")}
+            </pre>
             <button
               onClick={() => {
                 scoreSetter(score + 100)
