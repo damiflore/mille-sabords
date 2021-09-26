@@ -28,6 +28,7 @@ await buildProject({
     "./service_worker.js": "./service_worker.js",
   },
   serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
+  preserveEntrySignatures: false,
   minify: true,
   minifyHtmlOptions: {
     collapseWhitespace: true,
