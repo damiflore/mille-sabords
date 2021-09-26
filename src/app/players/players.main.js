@@ -1,11 +1,13 @@
-const luffyUrl = new URL("./Luffy.png", import.meta.url).href
-const missFortuneUrl = new URL("./miss_fortune.png", import.meta.url).href
-const jackSparrowUrl = new URL("./JackSparrow.png", import.meta.url).href
-const barbeRougeUrl = new URL("./BarbeRouge.png", import.meta.url).href
-const ginetteBouletteUrl = new URL("./GinetteBoulette.png", import.meta.url)
-  .href
-const capitaineCrochetUrl = new URL("./CapitaineCrochet.png", import.meta.url)
-  .href
+const luffyUrl = String(new URL("./Luffy.png", import.meta.url))
+const missFortuneUrl = String(new URL("./miss_fortune.png", import.meta.url))
+const jackSparrowUrl = String(new URL("./JackSparrow.png", import.meta.url))
+const barbeRougeUrl = String(new URL("./BarbeRouge.png", import.meta.url))
+const ginetteBouletteUrl = String(
+  new URL("./GinetteBoulette.png", import.meta.url),
+)
+const capitaineCrochetUrl = String(
+  new URL("./CapitaineCrochet.png", import.meta.url),
+)
 
 export const createPlayers = (characters) => {
   return characters.map((character, index) => {
