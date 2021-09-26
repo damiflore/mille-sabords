@@ -7,6 +7,13 @@ const transformReactJSX = require("@babel/plugin-transform-react-jsx")
 
 export const projectDirectoryUrl = String(new URL("./", import.meta.url))
 
+export const runtimeSupport = {
+  chrome: "65",
+  edge: "17",
+  firefox: "62",
+  safari: "14",
+}
+
 export const babelPluginMap = {
   ...jsenvBabelPluginMap,
   "transform-react-jsx": [
