@@ -65,7 +65,13 @@ const eslintConfig = composeEslintConfig(
         version: "detect",
       },
     },
-    rules: jsenvEslintRulesForReact,
+    rules: {
+      ...jsenvEslintRulesForReact,
+      "react/jsx-filename-extension": [
+        "error",
+        { extensions: [".jsx", ".html"] },
+      ],
+    },
   },
 
   // jsx

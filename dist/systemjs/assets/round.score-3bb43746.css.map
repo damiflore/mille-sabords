@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../src/round/round.score.css"
+    "../../../.jsenv/out-build/best/src/app/round/round.score.css"
   ],
   "names": [],
   "mappings": "AAAA,wEAKE,mBAAoB,CAFpB,cAAe,CACf,iBAEF,CAEA,wBAEE,SAAW,CADX,cAEF,CAEA,0DAKE,SAAW,CACX,cAAe,CACf,cAAe,CACf,oBAAqB,CAJrB,cAAe,CADf,eAMF",

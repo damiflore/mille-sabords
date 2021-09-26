@@ -7,9 +7,9 @@ import {
   useDiceCursedIds,
   useChestSlots,
   createAction,
-} from "src/main.store.js"
-import { Image } from "src/generic/Image.jsx"
-import { useDiceDomNode } from "src/dom/dom.main.js"
+} from "root/src/app/main.store.js"
+import { Image } from "root/src/app/generic/Image.jsx"
+import { useDiceDomNode } from "root/src/app/dom/dom.main.jsx"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -17,10 +17,13 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "src/symbols/symbols.js"
-import { faces } from "src/dices/dices.js"
-import { useResetRound, useEndPlayerRound } from "src/round/round.actions.js"
-import { useUncurseDice } from "src/dices/dices.actions.js"
+} from "root/src/app/symbols/symbols.js"
+import { faces } from "root/src/app/dices/dices.js"
+import {
+  useResetRound,
+  useEndPlayerRound,
+} from "root/src/app/round/round.actions.js"
+import { useUncurseDice } from "root/src/app/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()
@@ -83,7 +86,8 @@ const DiceVariants = ({ dice }) => {
       {VARIANTS.map((variant) => {
         return <DiceVariant key={variant} variant={variant} dice={dice} />
       })}
-      Location: {diceToAreaName(dice, { diceRolledIds, diceCursedIds, chestSlots })}
+      Location:{" "}
+      {diceToAreaName(dice, { diceRolledIds, diceCursedIds, chestSlots })}
       <button
         disabled={!diceDomNode}
         onClick={() => {
@@ -134,7 +138,9 @@ const diceToAreaName = (dice, { diceRolledIds, diceCursedIds, chestSlots }) => {
 const DiceVariant = ({ dice, variant }) => {
   const cheatDice = useCheatDice()
   const uncheatDice = useUncheatDice()
-  const isCurrent = diceIsCheated(dice) ? dice.faces[0] === variant : variant === "random"
+  const isCurrent = diceIsCheated(dice)
+    ? dice.faces[0] === variant
+    : variant === "random"
 
   return (
     <button
@@ -153,7 +159,11 @@ const DiceVariant = ({ dice, variant }) => {
       {variant === "random" ? (
         "?"
       ) : (
-        <Image width="32" height="32" src={`src/dices/dice_${variant}.png`} />
+        <Image
+          width="32"
+          height="32"
+          src={`../src/dices/dice_${variant}.png`}
+        />
       )}
     </button>
   )

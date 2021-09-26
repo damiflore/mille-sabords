@@ -1,5 +1,6 @@
 import React from "react"
-import { useUndrawCard } from "src/cards/cards.actions.js"
+
+import { useUndrawCard } from "root/src/app/cards/cards.actions.js"
 
 export const CardActivationLab = () => {
   const undrawCard = useUndrawCard()

@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "src/symbols/symbols.js"
+} from "root/src/app/symbols/symbols.js"
 import {
   cardIds,
   cardIdToCard,
@@ -14,12 +14,16 @@ import {
   isCoinCard,
   isPirateCard,
   isTwoSwordsChallengeCard,
-} from "src/cards/cards.js"
+} from "root/src/app/cards/cards.js"
 
-export const getFirstAnimalsCardFromDeck = () => getFirstCardFromDeckMatching(isAnimalsCard)
-export const getFirstChestCardFromDeck = () => getFirstCardFromDeckMatching(isChestCard)
-export const getFirstCoinCardFromDeck = () => getFirstCardFromDeckMatching(isCoinCard)
-export const getFirstPirateCardFromDeck = () => getFirstCardFromDeckMatching(isPirateCard)
+export const getFirstAnimalsCardFromDeck = () =>
+  getFirstCardFromDeckMatching(isAnimalsCard)
+export const getFirstChestCardFromDeck = () =>
+  getFirstCardFromDeckMatching(isChestCard)
+export const getFirstCoinCardFromDeck = () =>
+  getFirstCardFromDeckMatching(isCoinCard)
+export const getFirstPirateCardFromDeck = () =>
+  getFirstCardFromDeckMatching(isPirateCard)
 export const getFirstTwoSwordsChallengeCardFromDeck = () =>
   getFirstCardFromDeckMatching(isTwoSwordsChallengeCard)
 const getFirstCardFromDeckMatching = (predicate) => {

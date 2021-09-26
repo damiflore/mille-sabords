@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../../../dev.importmap"></script>
+    <style>
+      #app {
+        border: 1px solid black;
+        width: 400px;
+        height: 400px;
+        position: relative;
+        margin: 20px;
+        float: left;
+      }
+
+      #canvas {
+        border: 1px solid black;
+      }
+
+      .rectangle {
+        width: 40px;
+        height: 40px;
+        background: grey;
+        cursor: move;
+        position: absolute;
+      }
+      .rectangle[data-colliding] {
+        background: red !important;
+      }
+
+      .point {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: yellow;
+        border: 1px solid red;
+        margin-left: -3px;
+        margin-top: -3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="result"></div>
+    <script type="module">
+      import { lineCollidesWithLine } from "root/src/app/helper/geometry.js"
+
+      const drawRectangle = (points, color) => {
+        points.forEach((point) => {
+          const pointNode = document.createElement("div")
+          pointNode.className = "point"
+          pointNode.style.left = `${point.x}px`
+          pointNode.style.top = `${point.y}px`
+          pointNode.style.backgroundColor = color
+          document.querySelector("#app").appendChild(pointNode)
+        })
+      }
+
+      const main = [
+        { x: 22, y: -5 },
+        { x: 66, y: 19 },
+        { x: -2, y: 39 },
+        { x: 42, y: 63 },
+      ]
+
+      const secondary = [
+        { x: 59, y: 22 },
+        { x: 109, y: 22 },
+        { x: 59, y: 72 },
+        { x: 109, y: 72 },
+      ]
+      drawRectangle(main, "green")
+      drawRectangle(secondary, "blue")
+
+      const mainTopBorder = [main[0], main[1]]
+      const mainRightBorder = [main[1], main[3]]
+      const mainBottomBorder = [main[2], main[3]]
+      const mainLeftBorder = [main[3], main[0]]
+      const secondaryTopBorder = [secondary[0], secondary[1]]
+      const secondaryRightBorder = [secondary[1], secondary[2]]
+      const secondaryBottomBorder = [secondary[2], secondary[3]]
+      const secondaryLeftBorder = [secondary[3], secondary[0]]
+
+      const drawLine = ([start, end], color) => {
+        const canvas = document.querySelector("#canvas")
+        const ctx = canvas.getContext("2d")
+        ctx.beginPath()
+        ctx.moveTo(start.x, start.y)
+        ctx.lineTo(end.x, end.y)
+        ctx.strokeStyle = color
+        ctx.stroke()
+      }
+      drawLine(mainTopBorder, "green")
+      drawLine(mainRightBorder, "green")
+      drawLine(mainBottomBorder, "green")
+      drawLine(mainLeftBorder, "green")
+      drawLine(secondaryTopBorder, "blue")
+      drawLine(secondaryRightBorder, "blue")
+      drawLine(secondaryBottomBorder, "blue")
+      drawLine(secondaryLeftBorder, "blue")
+
+      if (lineCollidesWithLine(mainRightBorder, secondaryTopBorder)) {
+        document.querySelector("#result").innerHTML = "collides"
+      } else {
+        document.querySelector("#result").innerHTML = "no collision"
+      }
+    </script>
+  </body>
+</html>

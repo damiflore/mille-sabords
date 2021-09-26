@@ -21,9 +21,8 @@ await writeImportMapFiles({
     "./dev.importmap": {
       initialImportMap: {
         imports: {
-          "src/": "./src/",
-          "test/": "./test/",
-          "lab/": "./lab/",
+          "root/": "./",
+          "#env": "./env.dev.js",
         },
       },
       mappingsForNodeResolution: true,
@@ -34,9 +33,8 @@ await writeImportMapFiles({
     "./prod.importmap": {
       initialImportMap: {
         imports: {
-          "src/": "./src/",
-          "test/": "./test/",
-          "lab/": "./lab/",
+          "root/": "./",
+          "#env": "./env.prod.js",
         },
       },
       mappingsForNodeResolution: true,

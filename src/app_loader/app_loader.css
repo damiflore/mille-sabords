@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "ArrrMateyBb";
+  src: url("../fonts/arrr_matey_bb_wn3.ttf");
+  font-display: swap;
+}
+
+#splashscreen {
+  font-family: ArrrMateyBb;
+  font-size: 50px;
+}

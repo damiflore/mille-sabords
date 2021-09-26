@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <script type="importmap" src="../../../../dev.importmap"></script>
+    <style>
+      .slot {
+        width: 40px;
+        height: 40px;
+        opacity: 0.5;
+        background: grey !important;
+      }
+      .slot[data-closest] {
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="position: relative">
+      <h1>Closest rectangle</h1>
+      <div
+        style="
+          position: relative;
+          left: 80px;
+          top: 20px;
+          width: 120px;
+          height: 120px;
+          display: flex;
+          flex-wrap: wrap;
+        "
+      >
+        <div class="slot" style="background: red"></div>
+        <div class="slot" style="background: yellow"></div>
+        <div class="slot" style="background: violet"></div>
+        <div class="slot" style="background: blue"></div>
+        <div class="slot" style="background: green"></div>
+        <div class="slot" style="background: orange"></div>
+        <div class="slot" style="background: purple"></div>
+        <div class="slot" style="background: fuchsia"></div>
+        <div class="slot" style="background: gray"></div>
+      </div>
+      <div
+        id="draggable"
+        style="
+          cursor: move;
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          background: orange;
+          opacity: 0.5;
+        "
+      ></div>
+    </div>
+
+    <script type="module">
+      import { enableDragGesture } from "root/src/app/drag/drag.js"
+      import {
+        findDomNodeClosestToRectangle,
+        getDomNodeRectangle,
+      } from "root/src/app/dom/dom.position.js"
+
+      const draggableNode = document.getElementById("draggable")
+      enableDragGesture(draggableNode, {
+        // logLevel: "debug",
+        onDrag: ({ x, y }) => {
+          draggableNode.style.left = `${x}px`
+          draggableNode.style.top = `${y}px`
+
+          const draggableNodeRectangle = getDomNodeRectangle(draggableNode)
+          const nodeCandidates = Array.from(document.querySelectorAll(".slot"))
+          const rectangleCandidates = nodeCandidates.map((nodeCandidate) =>
+            getDomNodeRectangle(nodeCandidate),
+          )
+          const closestNode = findDomNodeClosestToRectangle(
+            draggableNodeRectangle,
+            rectangleCandidates,
+          )
+          Array.from(document.querySelectorAll(".slot")).forEach((node) => {
+            node.removeAttribute("data-closest")
+          })
+
+          console.log(`closest node`, closestNode)
+          closestNode.setAttribute("data-closest", "")
+        },
+        onRelease: () => {
+          Array.from(document.querySelectorAll(".slot")).forEach((node) => {
+            node.removeAttribute("data-closest")
+          })
+        },
+      })
+    </script>
+  </body>
+</html>
