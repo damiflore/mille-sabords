@@ -50,7 +50,6 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
     React.useState(false)
 
   // main must wait for loadscreen + request idle callback before starting
-  const [mainImportLoading, mainImportLoadingSetter] = React.useState(false)
   const [mainImportNamespace, mainImportNamespaceSetter] = React.useState(null)
   const [mainUrlTrackerReady, mainUrlTrackerReadySetter] = React.useState(false)
   const [mainUrlsLoaded, mainsUrlsLoadedSetter] = React.useState(false)
@@ -60,13 +59,13 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    if (mainImportLoading) {
+    if (mainUrlTrackerReady) {
       onLoadProgress({
         loadedCount: urlTrackerLoadedCount,
         total: urlTrackerTotalCount,
       })
     }
-  }, [mainImportLoading, urlTrackerLoadedCount, urlTrackerTotalCount])
+  }, [mainUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
 
   React.useEffect(() => {
     if (DEV) {
@@ -95,11 +94,9 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
       return
     }
 
-    mainImportLoadingSetter(true)
     ;(async () => {
       try {
         const namespace = await import("./App.jsx")
-        mainImportLoadingSetter(false)
         mainImportNamespaceSetter(namespace)
         await nextIDLEPromise()
         mainUrlTrackerReadySetter(true)
