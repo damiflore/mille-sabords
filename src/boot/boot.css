@@ -8,6 +8,10 @@
  * - Styles while the app is loading, it's the role of app_loader.css
  */
 
+body {
+  margin: 0;
+}
+
 noscript {
   display: block;
   text-align: center;
@@ -67,6 +71,7 @@ noscript {
 #splashscreen_brand {
   font-size: 2em;
   color: orange;
+  visibility: hidden; /* font would be incorrect */
 }
 #splashscreen_message {
   display: flex;

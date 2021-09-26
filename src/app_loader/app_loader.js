@@ -45,13 +45,18 @@ export const loadApp = async ({ updateSplashscreenText }) => {
   )
 
   await appLoaderCssPromise
-  updateSplashscreenText("toto")
   const app = await appPromise
   if (DEV) {
     performance.measure(`rendering app`)
   }
   await app.createMilleSabordGame({
     into: document.querySelector("#app"),
+    onLoadProgress: ({ loadedCount, total }) => {
+      updateSplashscreenText(`
+  Chargement du jeu...
+  <div>${loadedCount}/${total}</div>
+`)
+    },
   })
   await appCSSPromise
   // app.render() can be very expensive so we wait a bit
@@ -64,7 +69,7 @@ export const loadApp = async ({ updateSplashscreenText }) => {
 }
 
 const importApp = async ({ onJsReady = () => {} }) => {
-  const app = await import("../app.js")
+  const app = await import("../app/app.js")
   onJsReady()
   return app
 }
