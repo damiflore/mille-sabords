@@ -3,16 +3,14 @@
 #
 # For every push on a pull request, it
 # - creates or updates a comment about potential pr impact on several files size
-# - creates or updates comment about potential pr impact on lighthouse score
 # Read more in
 # - https://github.com/jsenv/file-size-impact
-# - https://github.com/jsenv/lighthouse-impact
 #
 # If you want to update this file it's recommended to use a YAML validator
 # https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
 # configured to validate with https://json.schemastore.org/github-workflow.json
 
-name: pr impact
+name: file size impact
 
 on: pull_request
 
@@ -38,9 +36,5 @@ jobs:
         run: npm install
       - name: Report file size impact
         run: node ./.github/workflows/pr_impact/report_file_size_impact.mjs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Report lighthouse impact
-        run: node ./.github/workflows/pr_impact/report_lighthouse_impact.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
