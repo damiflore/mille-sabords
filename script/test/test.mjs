@@ -6,7 +6,7 @@ import {
 
 import * as jsenvConfig from "../../jsenv.config.mjs"
 
-executeTestPlan({
+await executeTestPlan({
   ...jsenvConfig,
   testPlan: {
     "./src/**/*.test.html": {
@@ -22,6 +22,8 @@ executeTestPlan({
       },
     },
   },
+  coverage: process.argv.includes("--coverage"),
+  coverageJsonFileRelativeUrl: "coverage/coverage.json",
   coverageConfig: {
     ...jsenvCoverageConfig,
     "./src/**/*.jsx": true,

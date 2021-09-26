@@ -21,6 +21,7 @@ await writeImportMapFiles({
     "./dev.importmap": {
       initialImportMap: {
         imports: {
+          "root/": "./",
           "src/": "./src/",
           "test/": "./test/",
           "lab/": "./lab/",
@@ -34,6 +35,7 @@ await writeImportMapFiles({
     "./prod.importmap": {
       initialImportMap: {
         imports: {
+          "root/": "./",
           "src/": "./src/",
           "test/": "./test/",
           "lab/": "./lab/",

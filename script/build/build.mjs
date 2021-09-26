@@ -15,9 +15,8 @@ process.env.NODE_ENV = "production"
 
 await buildProject({
   ...jsenvConfig,
+  buildDirectoryRelativeUrl: "./dist/systemjs/",
   format: "systemjs",
-  systemJsUrl: "/node_modules/systemjs/dist/s.js",
-  buildDirectoryRelativeUrl: "./dist/systemjs",
   buildDirectoryClean: true,
   entryPointMap: {
     "./main.html": "./main.prod.html",
@@ -29,14 +28,12 @@ await buildProject({
     "./service_worker.js": "./service_worker.js",
   },
   serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
-  // disable preserveEntrySignatures otherwise an empty (and useless) file is generated
-  // as main js entry point
-  preserveEntrySignatures: false,
   minify: true,
   minifyHtmlOptions: {
     collapseWhitespace: true,
     removeComments: true,
   },
+  logLevel: process.env.LOG_LEVEL,
   assetManifestFile: true,
   assetManifestFileRelativeUrl: "asset-manifest.json",
 })

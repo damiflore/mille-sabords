@@ -5,7 +5,7 @@
  * - node ./script/lighthouse/generate_lighthouse_report.mjs --local
  * - npm run generate-lighthouse-report
  *
- * The automated process is a GitHub workflow: ".github/workflows/pr_impact.yml"
+ * The automated process is a GitHub workflow: ".github/workflows/lighthouse_impact.yml"
  * It will dynamically import this file and call generateLighthouseReport.
  *
  * See https://github.com/jsenv/lighthouse-impact
@@ -18,14 +18,19 @@ import {
 
 export const generateLighthouseReport = async ({
   runCount = 4,
-  serverLogLevel = "info",
+  buildLogLevel = "warn",
+  serverLogLevel = "warn",
+  skipBuild = false,
   jsonFile = false,
   htmlFile = false,
 } = {}) => {
   // this function is executed a second time after merging the pull request
   // without the ?cache_busting param, the second execution of the function
   // would not rebuild the project
-  await import(`../build/build.mjs?cache_busting=${Date.now()}`)
+  if (skipBuild) {
+    process.env.LOG_LEVEL = buildLogLevel
+    await import(`../build/build.mjs?cache_busting=${Date.now()}`)
+  }
   process.env.LOG_LEVEL = serverLogLevel
   const { server } = await import(
     `../start/start_prod_server.mjs?cache_busting=${Date.now()}`
@@ -54,6 +59,7 @@ const executeAndLog = process.argv.includes("--local")
 if (executeAndLog) {
   const lighthouseReport = await generateLighthouseReport({
     runCount: 1,
+    skipBuild: true,
     jsonFile: true,
     htmlFile: true,
     serverLogLevel: "warn",
