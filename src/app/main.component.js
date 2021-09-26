@@ -1,3 +1,8 @@
+/*
+ * Ideally this file should be renamed into something like loadscreen
+ * and should be decoupled from rendering the game
+ */
+
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
@@ -55,10 +60,12 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
   const urlTrackerLoadedCount = useUrlTrackerLoadedCount()
 
   React.useEffect(() => {
-    onLoadProgress({
-      loadedCount: urlTrackerLoadedCount,
-      total: urlTrackerTotalCount,
-    })
+    if (mainImportLoading) {
+      onLoadProgress({
+        loadedCount: urlTrackerLoadedCount,
+        total: urlTrackerTotalCount,
+      })
+    }
   }, [mainImportLoading, urlTrackerLoadedCount, urlTrackerTotalCount])
 
   React.useEffect(() => {
