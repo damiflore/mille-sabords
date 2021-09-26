@@ -103,12 +103,11 @@
   "assets/wood.jpg": "assets/wood-3c23f120.jpg",
   "assets/wood.png": "assets/wood-1edfbf4b.png",
   "assets/wood2.png": "assets/wood2-15862f37.png",
-  "app_loadapp_loader.js": "app_loadapp_loader-aff91056.js",
-  "app.js": "app-03a991c7.js",
-  "app2.js": "app2-36767d20.js",
+  "app_loadapp_loader.js": "app_loadapp_loader-9c1ef447.js",
+  "app.js": "app-33a9c59d.js",
   "main.121.js.map": "main.121-f43edf52.js.map",
   "main.prod.html": "main.prod.html",
-  "prod.importmap": "prod-fcc56136.importmap",
-  "root.js": "root-11ed6aeb.js",
-  "sboboot.js": "sboboot-88fdc743.js"
+  "prod.importmap": "prod-a8eeef8b.importmap",
+  "root.js": "root-239e610e.js",
+  "sboboot.js": "sboboot-0f11723f.js"
 }
