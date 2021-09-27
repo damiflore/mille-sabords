@@ -14,7 +14,7 @@
   "type": "module",
   "main": "./src/boot/boot.js",
   "engines": {
-    "node": "14.x"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "start": "node ./script/start/start_dev_server.mjs",
