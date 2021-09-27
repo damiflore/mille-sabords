@@ -103,10 +103,9 @@
   "assets/wood.jpg": "assets/wood-3c23f120.jpg",
   "assets/wood.png": "assets/wood-1edfbf4b.png",
   "assets/wood2.png": "assets/wood2-15862f37.png",
-  "app_loadapp_loader.js": "app_loadapp_loader-e52a4a75.js",
+  "app_loader.js": "app_loader-e52a4a75.js",
   "app.js": "app-cfa8c292.js",
   "main.121.js.map": "main.121-f43edf52.js.map",
   "main.prod.html": "main.prod.html",
-  "root.js": "root-0788a4e2.js",
-  "sboboot.js": "sboboot-0f11723f.js"
+  "root.js": "root-0788a4e2.js"
 }
