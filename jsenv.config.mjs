@@ -1,5 +1,5 @@
 import { createRequire } from "node:module"
-import { jsenvBabelPluginMap, convertCommonJsWithRollup } from "@jsenv/core"
+import { jsenvBabelPluginMap, commonJsToJavaScriptModule } from "@jsenv/core"
 
 const require = createRequire(import.meta.url)
 
@@ -22,9 +22,9 @@ export const babelPluginMap = {
   ],
 }
 
-export const convertMap = {
-  "./node_modules/react/index.js": convertCommonJsWithRollup,
+export const customCompilers = {
+  "./node_modules/react/index.js": commonJsToJavaScriptModule,
   "./node_modules/react-dom/index.js": async (options) => {
-    return convertCommonJsWithRollup({ ...options, external: ["react"] })
+    return commonJsToJavaScriptModule({ ...options, external: ["react"] })
   },
 }
