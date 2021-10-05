@@ -46,11 +46,11 @@
   "devDependencies": {
     "@babel/core": "7.15.5",
     "@babel/eslint-parser": "7.15.7",
-    "@babel/plugin-syntax-jsx": "7.14.5",
     "@babel/plugin-transform-react-jsx": "7.14.9",
+    "@babel/preset-env": "7.15.6",
     "@jsenv/assert": "2.3.1",
     "@jsenv/codecov-upload": "3.5.0",
-    "@jsenv/core": "21.0.0",
+    "@jsenv/core": "22.0.1",
     "@jsenv/eslint-config": "16.0.3",
     "@jsenv/file-size-impact": "10.0.4",
     "@jsenv/filesystem": "2.1.1",
