@@ -34,6 +34,8 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Setup npm
         run: npm install
+      - name: Setup playwright
+        run: npm run install-playwright
       - name: Setup certificate authority
         run: npm run install-certificate-authority
       - name: Report performance impact
