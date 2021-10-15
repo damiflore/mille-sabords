@@ -1,6 +1,6 @@
 import {
   executeTestPlan,
-  launchChromiumTab,
+  chromiumTabRuntime,
   jsenvCoverageConfig,
 } from "@jsenv/core"
 
@@ -11,13 +11,13 @@ await executeTestPlan({
   testPlan: {
     "./src/**/*.test.html": {
       browser: {
-        launch: launchChromiumTab,
+        runtime: chromiumTabRuntime,
         allocatedMs: 60 * 1000,
       },
     },
     "./test/**/*.test.html": {
       browser: {
-        launch: launchChromiumTab,
+        runtime: chromiumTabRuntime,
         allocatedMs: 60 * 1000,
       },
     },

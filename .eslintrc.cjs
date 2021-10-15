@@ -19,7 +19,9 @@ const eslintConfig = composeEslintConfig(
   // use "@babel/eslint-parser" until top level await is supported by ESLint default parser
   {
     parser: "@babel/eslint-parser",
-    parserOptions: {},
+    parserOptions: {
+      requireConfigFile: false,
+    },
   },
 
   // Files in this repository are meant to be executed in browser
@@ -108,6 +110,7 @@ const eslintConfig = composeEslintConfig(
           __filename: "off",
           __dirname: "off",
           require: "off",
+          exports: "off",
         },
         settings: {
           "import/resolver": {
@@ -134,6 +137,7 @@ const eslintConfig = composeEslintConfig(
           __filename: true,
           __dirname: true,
           require: true,
+          exports: true,
         },
         // inside *.cjs files, use commonjs module resolution
         settings: {
