@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../.jsenv/out-build/best/src/app/header/card-rules-dialog.css"
+    "../../../src/app/header/card-rules-dialog.css"
   ],
   "names": [],
   "mappings": "AAAA,8BAGE,aAAc,CADd,cAAe,CADf,WAGF,CACA,iCACE,aACF,CACA,iCAEE,aAAc,CADd,aAEF",

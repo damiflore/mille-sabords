@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../.jsenv/out-build/best/src/app/footer/footer.css"
+    "../../../src/app/footer/footer.css"
   ],
   "names": [],
   "mappings": "AAAA,SAEE,YAAa,CACb,kBAAmB,CACnB,6BAA8B,CAG9B,aAAc,CADd,eAAgB,CALhB,iBAAkB,CAOlB,iBAAkB,CAHlB,SAIF,CACA,gBAKE,kBAAmB,CAOnB,wBAAyB,CAGzB,wBAAmB,CACnB,qGACyC,CANzC,aAAc,CARd,YAAa,CACb,qBAAsB,CAItB,cAAe,CACf,eAAiB,CAPjB,WAAY,CAIZ,sBAAuB,CACvB,gBAAiB,CAGjB,wBAAyB,CATzB,UAiBF,CACA,yBAEE,wBAAyB,CACzB,oBAAqB,CAFrB,aAGF,CACA,kCAEE,cAAe,CADf,wBAEF,CAEA,gDAGE,MAAO,CACP,aACF,CACA,kBACE,aAAc,CAEd,cAAe,CADf,wBAEF,CACA,uBACE,cACF,CACA,cAOE,mDAAyD,CAFzD,aAAc,CADd,QAAS,CAFT,iBAAkB,CAClB,QAAS,CAGT,uBAAwB,CALxB,SAOF,CAEA,iBACE,GACE,SAAU,CACV,+BACF,CACA,GACE,gCACF,CACF",

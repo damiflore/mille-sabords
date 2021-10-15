@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../.jsenv/out-build/best/src/app/dice-ongoing/dice-ongoing.css"
+    "../../../src/app/dice-ongoing/dice-ongoing.css"
   ],
   "names": [],
   "mappings": "AAAA,cACE,iBAAkB,CAClB,UAEF,CACA,mBAIE,+CAAyC,CAGzC,uBAA2B,CAD3B,2BAA4B,CAD5B,uBAAwB,CAHxB,WAAY,CAMZ,iBAAkB,CALlB,mDAAsD,CAFtD,UAQF,CACA,oBAcE,WAAY,CAbZ,aAAc,CAUd,SAAU,CATV,iBAAkB,CAWlB,UAAW,CADX,QAAS,CAFT,SAMF,CACA,0BACE,iBACF,CACA,8BAME,cAAe,CAHf,WAAY,CADZ,SAAU,CADV,iBAAkB,CAGlB,KAAM,CACN,UAEF",

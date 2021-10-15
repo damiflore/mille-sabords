@@ -1,13 +1,12 @@
+/*
+ * This file configure the list of babel plugins enabled
+ * in this codebase
+ *
+ * Read more at https://github.com/jsenv/jsenv-core/tree/master/packages/jsenv-babel-preset
+ */
+
 module.exports = {
-  presets: [
-    [
-      "@babel/preset-env",
-      {
-        modules: false,
-        // no need to specify targets, it is handled by runtimeSupport in jsenv.config.mjs
-      },
-    ],
-  ],
+  presets: ["@jsenv/babel-preset"],
   plugins: [
     [
       "@babel/plugin-transform-react-jsx",
