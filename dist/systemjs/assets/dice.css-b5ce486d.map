@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "../../../.jsenv/out-build/best/src/app/dices/dice.css"
+    "../../../src/app/dices/dice.css"
   ],
   "names": [],
   "mappings": "AAAA,MAME,iBAAkB,CAFlB,8CAAmD,CADnD,gBAAiB,CAEjB,SAAU,CAJV,iBAAkB,CAClB,gBAKF,CACA,sBACE,8DACF,CACA,oBAEE,wDAA8D,CAD9D,kBAEF,CAEA,wBACE,GACE,kBACF,CACA,GACE,kBACF,CACF,CACA,sBACE,GACE,kBACF,CACA,GACE,kBACF,CACF",
