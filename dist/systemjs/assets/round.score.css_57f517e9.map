@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/app/round/round.score.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,wEAKE,mBAAoB,CAFpB,cAAe,CACf,iBAEF,CAEA,wBAEE,SAAW,CADX,cAEF,CAEA,0DAKE,SAAW,CACX,cAAe,CACf,cAAe,CACf,oBAAqB,CAJrB,cAAe,CADf,eAMF",
+  "file": "round.score_3bb43746.css",
+  "sourcesContent": [
+    ".score-particle--symbol,\n.score-particle--combo,\n.score-particle--perfect {\n  position: fixed;\n  visibility: hidden;\n  pointer-events: none;\n}\n\n.score-particle--symbol {\n  font-size: 20px;\n  fill: white;\n}\n\n.score-particle--combo text,\n.score-particle--perfect text {\n  /* font-family: skullsandcrossbones; */\n  font-weight: 700;\n  font-size: 35px;\n  fill: white;\n  stroke: #4a321f;\n  stroke-width: 1;\n  stroke-linecap: round;\n}\n"
+  ]
+}

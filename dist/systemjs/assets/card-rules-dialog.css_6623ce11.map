@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/app/header/card-rules-dialog.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,8BAGE,aAAc,CADd,cAAe,CADf,WAGF,CACA,iCACE,aACF,CACA,iCAEE,aAAc,CADd,aAEF",
+  "file": "card-rules-dialog_c2004457.css",
+  "sourcesContent": [
+    ".card-rules-dialog .text-rule {\n  margin: 15px;\n  font-size: 15px;\n  color: #6e2f1f;\n}\n.card-rules-dialog .dialog-label {\n  margin: 10px 0;\n}\n.card-rules-dialog .current-card {\n  margin: 0 auto;\n  display: block;\n}\n"
+  ]
+}
