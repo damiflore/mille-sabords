@@ -5,6 +5,7 @@ https://github.com/diegohaz/constate/blob/633f7f75a2e30f3ee036645d9e09f6026c734a
 */
 
 import React from "react"
+import { DEV } from "#env"
 
 const { createContext, useContext, useReducer, useEffect } = React
 
@@ -47,17 +48,21 @@ export const createStructuredStateStore = (
     DispatchProvider.displayName = `${name}.dispatch.Provider`
 
     // nested provider info: https://github.com/facebook/react/issues/14620
-    const element = <DispatchProvider value={dispatch}>{children}</DispatchProvider>
+    const element = (
+      <DispatchProvider value={dispatch}>{children}</DispatchProvider>
+    )
     return stateKeys.reduce((element, key) => {
       const KeyedStateProvider = StateContextMap[key].Provider
-      return <KeyedStateProvider value={state[key]}>{element}</KeyedStateProvider>
+      return (
+        <KeyedStateProvider value={state[key]}>{element}</KeyedStateProvider>
+      )
     }, element)
   }
 
   const useState = () => getState()
 
   const useKeyedState = (key) => {
-    if (import.meta.dev && !StateContextMap.hasOwnProperty(key)) {
+    if (DEV && !StateContextMap.hasOwnProperty(key)) {
       throw new Error(`There is no ${key} property in the state`)
     }
     return useContext(StateContextMap[key])

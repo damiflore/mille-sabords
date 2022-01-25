@@ -24,3 +24,5 @@ export const customCompilers = {
     return commonJsToJavaScriptModule({ ...options, external: ["react"] })
   },
 }
+
+export const classicServiceWorkers = ["./service_worker.js"]

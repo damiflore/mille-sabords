@@ -12,51 +12,11 @@
         "--experimental-json-modules",
         "--experimental-top-level-await"
       ],
-      "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
-      "sourceMaps": true,
-      "smartStep": true,
-      "skipFiles": [
-        // force-multiline
-        // "node_modules/**",
-        "node_modules/@babel/template/**",
-        "node_modules/@rollup/plugin-node-resolve/**",
-        "node_modules/lighthouse/**",
-        "<node_internals>/**/*.js"
-      ]
-    },
-    {
-      "name": "jsenv-node",
-      "type": "node",
-      "request": "launch",
-      "protocol": "inspector",
-      "program": "${workspaceFolder}/script/run-node/run-node.js",
-      "args": ["${relativeFile}"],
       "autoAttachChildProcesses": true,
       "sourceMaps": true,
       "smartStep": true,
-      "skipFiles": [
-        // force-multiline
-        "node_modules/**",
-        "<node_internals>/**/*.js"
-      ]
-    },
-    {
-      "name": "jsenv-chrome",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://127.0.0.1:3456/${relativeFile}",
-      "runtimeArgs": [
-        "--allow-file-access-from-files",
-        "--disable-web-security"
-      ],
-      "sourceMaps": true,
-      "smartStep": true,
-      "skipFiles": [
-        // force-multiline
-        "node_modules/**",
-        "<node_internals>/**/*.js"
-      ]
+      "skipFiles": ["node_modules/**", "<node_internals>/**"]
     }
   ]
 }

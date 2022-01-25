@@ -13,6 +13,5 @@ import {
 await reportLighthouseImpact({
   ...readGitHubWorkflowEnv(),
   logLevel: "debug",
-  moduleGeneratingLighthouseReportRelativeUrl:
-    "./script/lighthouse/generate_lighthouse_report.mjs",
+  lighthouseReportPath: "./script/lighthouse/lighthouse.mjs#lighthouseReport",
 })

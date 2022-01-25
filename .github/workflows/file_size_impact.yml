@@ -15,14 +15,11 @@ name: file size impact
 on: pull_request
 
 jobs:
-  pr-impact:
+  pr_impact:
     strategy:
       matrix:
-        # To make build more predictable:
-        # - explicit OS version ("ubuntu-20.04" instead of "ubuntu-latest")
-        # - Explicit node version ("16.6.1" instead of "lts")
         os: [ubuntu-20.04]
-        node: [16.6.1]
+        node: [16.13.0]
     runs-on: ${{ matrix.os }}
     name: pr impact
     steps:
@@ -32,8 +29,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Setup npm
+      - name: Install node modules
         run: npm install
+      - name: Generate importmap
+        run: npm run importmap
       - name: Report file size impact
         run: node ./.github/workflows/pr_impact/report_file_size_impact.mjs
         env:

@@ -16,7 +16,14 @@ const {
 const eslintConfig = composeEslintConfig(
   eslintConfigBase,
 
-  // use "@babel/eslint-parser" until top level await is supported by ESLint default parser
+  // enable top level await
+  {
+    parserOptions: {
+      ecmaVersion: 2022,
+    },
+  },
+
+  // use "@babel/eslint-parser" until import assertions is supported natively by ESLint
   {
     parser: "@babel/eslint-parser",
     parserOptions: {
@@ -52,7 +59,7 @@ const eslintConfig = composeEslintConfig(
         // Read more in https://github.com/jsenv/jsenv-node-module-import-map#Configure-vscode-and-eslint-for-importmap
         "@jsenv/importmap-eslint-resolver": {
           projectDirectoryUrl: __dirname,
-          importMapFileRelativeUrl: "./dev.importmap",
+          importMapFileRelativeUrl: "./eslint.importmap",
         },
       },
     },

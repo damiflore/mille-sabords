@@ -4,10 +4,11 @@ import {
   jsenvCoverageConfig,
 } from "@jsenv/core"
 
-import * as jsenvConfig from "../../jsenv.config.mjs"
+import { projectDirectoryUrl, customCompilers } from "../../jsenv.config.mjs"
 
 await executeTestPlan({
-  ...jsenvConfig,
+  projectDirectoryUrl,
+  customCompilers,
   testPlan: {
     "./src/**/*.test.html": {
       browser: {

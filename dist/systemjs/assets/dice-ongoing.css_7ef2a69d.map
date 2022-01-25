@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/app/dice-ongoing/dice-ongoing.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,cACE,iBAAkB,CAClB,UAEF,CACA,mBAIE,+CAAyC,CAGzC,uBAA2B,CAD3B,2BAA4B,CAD5B,uBAAwB,CAHxB,WAAY,CAMZ,iBAAkB,CALlB,mDAAsD,CAFtD,UAQF,CACA,oBAcE,WAAY,CAbZ,aAAc,CAUd,SAAU,CATV,iBAAkB,CAWlB,UAAW,CADX,QAAS,CAFT,SAMF,CACA,0BACE,iBACF,CACA,8BAME,cAAe,CAHf,WAAY,CADZ,SAAU,CADV,iBAAkB,CAGlB,KAAM,CACN,UAEF",
+  "file": "dice-ongoing_d8c9e313.css",
+  "sourcesContent": [
+    ".dice-ongoing {\n  position: relative;\n  width: 100%;\n  /* border: 1px solid red; */\n}\n.dice-ongoing .map {\n  width: 100%;\n  height: 100%;\n  transform: scale(1.3) translate(0, 30px) rotate(-4deg);\n  background-image: url(./treasure-map.png);\n  background-size: contain;\n  background-repeat: no-repeat;\n  background-position: center;\n  position: absolute;\n}\n.dice-ongoing .area {\n  display: block;\n  position: absolute;\n  /*\n  dices have z-index in the rolled area because it's easier than re-organizing dom nodes\n  order. By setting a z-index to the rolled area we can make dices z-index relative\n  to the rolled area.\n  To avoid this we could re-render dices depending on their z index instead of setting\n  a z-index.\n  */\n  z-index: 1;\n  left: 30px;\n  top: 20px;\n  right: 40px;\n  bottom: 10px;\n  /* border: 1px solid green; */\n}\n.dice-ongoing .area .dice {\n  position: absolute;\n}\n.dice-ongoing .offscreen-area {\n  position: absolute;\n  left: 100%;\n  height: 100%;\n  top: 0;\n  width: 100%;\n  background: red; /* to make it super visible so that we realize it should not be visible */\n}\n"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "../../../src/app/footer/footer.css"
+  ],
+  "names": [],
+  "mappings": "AAAA,SAEE,YAAa,CACb,kBAAmB,CACnB,6BAA8B,CAG9B,aAAc,CADd,eAAgB,CALhB,iBAAkB,CAOlB,iBAAkB,CAHlB,SAIF,CACA,gBAKE,kBAAmB,CAOnB,wBAAyB,CAGzB,wBAAmB,CACnB,qGACyC,CANzC,aAAc,CARd,YAAa,CACb,qBAAsB,CAItB,cAAe,CACf,eAAiB,CAPjB,WAAY,CAIZ,sBAAuB,CACvB,gBAAiB,CAGjB,wBAAyB,CATzB,UAiBF,CACA,yBAEE,wBAAyB,CACzB,oBAAqB,CAFrB,aAGF,CACA,kCAEE,cAAe,CADf,wBAEF,CAEA,gDAGE,MAAO,CACP,aACF,CACA,kBACE,aAAc,CAEd,cAAe,CADf,wBAEF,CACA,uBACE,cACF,CACA,cAOE,mDAAyD,CAFzD,aAAc,CADd,QAAS,CAFT,iBAAkB,CAClB,QAAS,CAGT,uBAAwB,CALxB,SAOF,CAEA,iBACE,GACE,SAAU,CACV,+BACF,CACA,GACE,gCACF,CACF",
+  "file": "footer_960b72bd.css",
+  "sourcesContent": [
+    ".actions {\n  position: relative;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  width: 90%;\n  min-height: 59px;\n  margin: 0 auto;\n  text-align: center;\n}\n.actions button {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 7px 13px;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n  color: #875735;\n  background-color: #ffe7be;\n  border-color: #a66a3a;\n  border-width: 5px;\n  border-style: solid;\n  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 3px 5px 2px 0px rgba(0, 0, 0, 0.33),\n    0px 3px 1px -2px rgba(65, 65, 65, 0.12);\n}\n.actions button:disabled {\n  color: #54453b;\n  background-color: #a5a19f;\n  border-color: #54453b;\n}\n.roll-action span.button-subtitle {\n  text-transform: lowercase;\n  font-size: 11px;\n}\n\n.roll-action,\n.collect-action,\n.next-round-action {\n  flex: 1;\n  padding: 0 5px;\n}\n.roll-action span {\n  display: block;\n  text-transform: lowercase;\n  font-size: 14px;\n}\n.collect-action .score {\n  font-size: 12px;\n}\n.skull-symbol {\n  width: 32%;\n  position: relative;\n  top: -70%;\n  left: 75%;\n  display: block;\n  transform: rotate(15deg);\n  animation: stamp 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;\n}\n\n@keyframes stamp {\n  from {\n    opacity: 0;\n    transform: rotate(0deg) scale(3);\n  }\n  to {\n    transform: rotate(15deg) scale(1);\n  }\n}\n"
+  ]
+}

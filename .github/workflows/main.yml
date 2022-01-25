@@ -26,25 +26,26 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        node: [14.17.0]
+        os: [ubuntu-20.04, macos-10.15]
+        node: [16.13.0]
     runs-on: ${{ matrix.os }}
     name: test on ${{ matrix.os }} and node ${{ matrix.node }}
-    env:
-      CI: true
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: npm install
+      - name: Install node modules
         run: npm install
-      - name: check lint
-        run: npm run eslint-check
-      - name: check tests
+      - name: Generate importmap
+        run: npm run importmap
+      - name: Run ESLint
+        run: npm run eslint
+      - name: Run tests
         run: npm run test-with-coverage
-      - name: upload coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        if: env.CODECOV_TOKEN != null
-        run: node ./script/test/upload_coverage.mjs
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/coverage.json
+          verbose: true
