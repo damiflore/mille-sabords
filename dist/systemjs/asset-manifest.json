@@ -105,13 +105,13 @@
   "assets/wood-box.jpg": "assets/wood-box_fcdd41cc.jpg",
   "assets/wood2.png": "assets/wood2_15862f37.png",
   "assets/wood3.png": "assets/wood3_1edfbf4b.png",
-  "app.js": "app_de8587cc.js",
-  "app.js.map": "app_de8587cc.js.map",
+  "app.js": "app_ac4b2377.js",
+  "app.js.map": "app_ac4b2377.js.map",
   "app_loader.js": "app_loader_6effbb01.js",
   "app_loader.js.map": "app_loader_6effbb01.js.map",
   "boot.js.map": "boot_fc74f246.js.map",
   "main.prod.html": "main.prod.html",
-  "root.js": "root_bf24e961.js",
-  "root.js.map": "root_bf24e961.js.map",
+  "root.js": "root_0a39b839.js",
+  "root.js.map": "root_0a39b839.js.map",
   "service_worker.js": "service_worker.js"
 }

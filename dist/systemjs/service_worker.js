@@ -238,7 +238,7 @@ self.generatedUrlsConfig = {
   "assets/wood3_1edfbf4b.png": {
     "versioned": true
   },
-  "app_de8587cc.js": {
+  "app_ac4b2377.js": {
     "versioned": true
   },
   "app_loader_6effbb01.js": {
@@ -246,9 +246,9 @@ self.generatedUrlsConfig = {
   },
   "main.prod.html": {
     "versioned": false,
-    "version": "fc4066b4"
+    "version": "f3e66f40"
   },
-  "root_bf24e961.js": {
+  "root_0a39b839.js": {
     "versioned": true
   }
 };

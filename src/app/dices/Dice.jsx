@@ -1,6 +1,7 @@
 /* eslint-disable import/max-dependencies */
 /* eslint-disable no-nested-ternary */
 import React from "react"
+import { DEV } from "#env"
 
 import { usePrevious } from "root/src/app/hooks.js"
 import { Portal } from "root/src/app/generic/Portal.jsx"
@@ -40,7 +41,7 @@ export const Dice = ({
   appear,
   traceUpdate = false,
 }) => {
-  if (import.meta.dev && traceUpdate) {
+  if (DEV && traceUpdate) {
     useTraceUpdate(
       {
         dice,
