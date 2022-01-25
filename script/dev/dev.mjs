@@ -1,22 +1,28 @@
 /*
  * This file uses "@jsenv/core" to start a development server.
- * https://github.com/jsenv/jsenv-core/blob/master/docs/exploring/readme.md#jsenv-dev-server
+ * https://github.com/jsenv/jsenv-core/tree/master/docs/dev_server#jsenv-dev-server
  */
 
-import { startExploring } from "@jsenv/core"
+import { startDevServer } from "@jsenv/core"
 import { requestCertificateForLocalhost } from "@jsenv/https-local"
 
-import * as jsenvConfig from "../../jsenv.config.mjs"
+import {
+  projectDirectoryUrl,
+  customCompilers,
+  classicServiceWorkers,
+} from "../../jsenv.config.mjs"
 
 const { serverCertificate, serverCertificatePrivateKey } =
   await requestCertificateForLocalhost()
 
-export const server = await startExploring({
-  ...jsenvConfig,
-  compileServerPort: 3472,
-  compileServerProtocol: "https",
-  compileServerCertificate: serverCertificate,
-  compileServerPrivateKey: serverCertificatePrivateKey,
+export const server = await startDevServer({
+  projectDirectoryUrl,
+  port: 3472,
+  protocol: "https",
+  certificate: serverCertificate,
+  privateKey: serverCertificatePrivateKey,
+  customCompilers,
+  classicServiceWorkers,
   explorableConfig: {
     "app": {
       "./main.html": true,
