@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 import { registerServiceWorker } from "@jsenv/pwa"
 
@@ -6,6 +5,8 @@ import { cardDefaultUrl, cardImageUrlMap } from "root/src/app/cards/cards.js"
 import { preloadImages } from "root/src/app/loading/preloadImages.js"
 
 import { useWaitABit } from "./loading.hooks.js"
+
+const serviceWorkerUrl = new URL("../../../service_worker.js", import.meta.url)
 
 const woodUrl = new URL("../wood.jpg", import.meta.url)
 const pirateHookUrl = new URL("../chest/pirate-hook.png", import.meta.url)
@@ -29,7 +30,7 @@ export const Preloader = () => {
 
   React.useEffect(() => {
     if (waited) {
-      registerServiceWorker("/service_worker.js")
+      registerServiceWorker(serviceWorkerUrl)
     }
   }, [waited])
 
