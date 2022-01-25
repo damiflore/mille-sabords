@@ -2,8 +2,8 @@
  * This file is designed to be executed locally or by an automated process.
  *
  * To run it locally, use one of
- * - node ./script/performance/generate_performance_report.mjs --local
- * - npm run measure-performances
+ * - node ./script/performance/performance.mjs --local
+ * - npm run performances
  *
  * The automated process is a GitHub workflow: ".github/workflows/performance_impact.yml"
  * It will dynamically import this file and call generatePerformanceReport.
@@ -17,19 +17,22 @@
  * See https://github.com/jsenv/performance-impact
  */
 
-export const generatePerformanceReport = async () => {
-  const { measureBoot } = await import("./boot/measure_boot.mjs")
+import { importMetricFromFiles } from "@jsenv/performance-impact"
 
-  const bootMetrics = await measureBoot()
-
-  return {
-    groups: {
-      "boot metrics": bootMetrics,
+const { bootMetrics } = await importMetricFromFiles({
+  directoryUrl: new URL("./", import.meta.url),
+  metricsDescriptions: {
+    bootMetrics: {
+      file: "./measure_boot.mjs#bootMetrics",
+      iterations: process.argv.includes("--once") ? 1 : 7,
+      msToWaitBetweenEachIteration: 500,
     },
-  }
-}
+  },
+  logLevel: process.argv.includes("--log") ? "info" : "warn",
+})
 
-const executeAndLog = process.argv.includes("--local")
-if (executeAndLog) {
-  await import("./boot/measure_boot.mjs")
+export const performanceReport = {
+  "boot metrics": {
+    ...bootMetrics,
+  },
 }
