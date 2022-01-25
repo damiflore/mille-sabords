@@ -1,17 +1,14 @@
 /*
  * This file is the service worker file of this pwa.
  *
- * self.config can be used to configure the service worker
- * behaviour implemented in "service-worker.main.js".
- *
  * Read more in https://github.com/jsenv/pwa/blob/master/docs/jsenv-service-worker.md#configuration
  */
 
 /* globals self */
 
-self.importScripts("./node_modules/@jsenv/pwa/src/service-worker.setup.js")
+self.importScripts("../node_modules/@jsenv/pwa/src/service_worker.js")
 
-self.config.cachePrefix = "mille-sabords"
-// self.config.logLevel = "debug"
-
-self.importScripts("./node_modules/@jsenv/pwa/src/service-worker.main.js")
+self.initJsenvServiceWorker({
+  cachePrefix: "mille-sabords",
+  // logLevel:  "debug"
+})

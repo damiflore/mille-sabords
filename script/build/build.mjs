@@ -11,6 +11,7 @@ import { copyFileSystemNode, resolveUrl } from "@jsenv/filesystem"
 import {
   projectDirectoryUrl,
   customCompilers,
+  classicServiceWorkers,
   runtimeSupport,
 } from "../../jsenv.config.mjs"
 
@@ -20,6 +21,7 @@ process.env.NODE_ENV = "production"
 await buildProject({
   projectDirectoryUrl,
   customCompilers,
+  classicServiceWorkers,
   runtimeSupport,
   buildDirectoryRelativeUrl: "./dist/systemjs/",
   format: "systemjs",
@@ -29,9 +31,6 @@ await buildProject({
   },
   urlMappings: {
     "./dev.importmap": "./prod.importmap",
-  },
-  serviceWorkers: {
-    "./service_worker.js": "./service_worker.js",
   },
   serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
   preserveEntrySignatures: false,
