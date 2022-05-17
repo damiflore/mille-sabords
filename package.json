@@ -21,7 +21,6 @@
     "eslint": "npx eslint . --ext=.js,.html,.mjs",
     "importmap": "node ./script/importmap/importmap.mjs",
     "build": "node ./script/build/build.mjs",
-    "build-serve": "node ./script/build/build_serve.mjs",
     "file-size": "node ./script/file_size/file_size.mjs --log",
     "lighthouse": "node ./script/lighthouse/lighthouse.mjs --local",
     "performance": "node ./script/performance/performance.mjs --log --once",
@@ -30,12 +29,10 @@
     "start": "npm run build && npm run build-serve",
     "prettier": "prettier --write .",
     "playwright-install": "npx playwright install-deps && npx playwright install",
-    "certificate-install": "node ./script/dev/install_certificate.mjs",
-    "heroku-postbuild": "npm run importmap && npm run build"
+    "certificate-install": "node ./script/dev/install_certificate.mjs"
   },
   "dependencies": {
     "@jsenv/logger": "4.0.1",
-    "@jsenv/server": "12.4.1",
     "@jsenv/pwa": "4.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
