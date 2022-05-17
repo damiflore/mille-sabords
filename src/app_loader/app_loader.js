@@ -1,75 +1,54 @@
-import { DEV } from "#env"
-import { loadCSSAndFonts, nextIDLEPromise } from "./app_loader_utils.js"
+import appLoaderStylesheet from "./app_loader.css" assert { type: "css" }
 
-export const loadApp = async ({ updateSplashscreenText }) => {
-  if (DEV) {
-    performance.measure(`loading app`)
-  }
+export const loadApp = async ({ appNode }) => {
+  performance.measure(`loading app`)
+  document.adoptedStyleSheets = [
+    ...document.adoptedStyleSheets,
+    appLoaderStylesheet,
+  ]
+  const appJsPromise = loadAppJs()
+  const appCssPromise = loadAppCss(new URL("/src/app/app.css", import.meta.url))
 
-  // try to load CSS + get the main fonts before displaying any text
-  // to avoid font swapping if possible
-  // give max 400ms for this
-  const appLoaderCssPromise = loadCSSAndFonts(
-    new URL("./app_loader.css", import.meta.url),
-    {
-      timeout: 400,
-      onCssReady: () => {
-        if (DEV) {
-          performance.measure(`app_loader.css ready`)
-        }
-      },
-      onFontsReady: () => {
-        if (DEV) {
-          performance.measure(`fonts ready`)
-        }
-      },
-    },
-  )
-  // start importing app right away
-  const appPromise = importApp({
-    onJsReady: () => {
-      if (DEV) {
-        performance.measure("app.js ready")
-      }
-    },
-  })
-  const appCSSPromise = loadCSSAndFonts(
-    new URL("../app/app.css", import.meta.url),
-    {
-      onCssReady: () => {
-        if (DEV) {
-          performance.measure(`app.css ready`)
-        }
-      },
-    },
-  )
-
-  await appLoaderCssPromise
-  const app = await appPromise
-  if (DEV) {
-    performance.measure(`rendering app`)
-  }
+  const app = await appJsPromise
+  performance.measure(`rendering app`)
   await app.createMilleSabordGame({
-    into: document.querySelector("#app"),
-    onLoadProgress: ({ loadedCount, total }) => {
-      updateSplashscreenText(`
-  Chargement du jeu...
-  <div>${loadedCount}/${total}</div>
-`)
-    },
+    into: appNode,
+    onLoadProgress: () => {},
   })
-  await appCSSPromise
-  // app.render() can be very expensive so we wait a bit
-  // to let navigator an opportunity to cooldown
-  // This should help to save battery power and RAM
-  await nextIDLEPromise()
-  if (DEV) {
-    performance.measure(`app rendered`)
-  }
+  performance.measure(`app rendered`)
+  await Promise.all([
+    // wait for CSS to be loaded before displaying the app
+    appCssPromise,
+    // app.render() can be very expensive so we wait a bit
+    // to let navigator an opportunity to cooldown
+    // This should help to save battery power and RAM
+    new Promise((resolve) => {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(resolve, { timeout: 60 })
+      } else {
+        window.requestAnimationFrame(resolve)
+      }
+    }),
+  ])
+  performance.measure(`app displayed`)
 }
 
-const importApp = async ({ onJsReady = () => {} }) => {
-  const app = await import("../app/app.jsx")
-  onJsReady()
+const loadAppJs = async () => {
+  const app = await import("/src/app/app.jsx")
+  performance.measure("app.js ready")
   return app
+}
+
+const loadAppCss = async (cssUrl, { crossOrigin } = {}) => {
+  const cssPromise = new Promise((resolve, reject) => {
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.onload = resolve
+    link.onerror = reject
+    link.href = cssUrl
+    link.crossOrigin = crossOrigin
+    document.head.appendChild(link)
+  })
+  await cssPromise
+  performance.measure(`app.css ready`)
 }
