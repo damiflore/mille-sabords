@@ -19,16 +19,16 @@ export const server = await startDevServer({
   privateKey: serverCertificatePrivateKey,
   explorerGroups: {
     "app": {
-      "./main.html": true,
-      "./lab.html": true,
+      "./src/main.html": true,
+      "./lab/lab.html": true,
     },
     "manual tests": {
-      "src/**/*.scenario.html": true,
-      "test-manual/**/*.scenario.html": true,
+      "./src/**/*.scenario.html": true,
+      "./test-manual/**/*.scenario.html": true,
     },
     "unit tests": {
-      "src/**/*.test.html": true,
-      "test/**/*.test.html": true,
+      "./src/**/*.test.html": true,
+      "./test/**/*.test.html": true,
     },
   },
   autorestart: {

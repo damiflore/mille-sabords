@@ -6,9 +6,10 @@
 
 /* globals self */
 
-self.importScripts("./node_modules/@jsenv/pwa/src/service_worker.js")
+import "@jsenv/pwa/src/jsenv_service_worker.js"
 
 self.initJsenvServiceWorker({
   cachePrefix: "mille-sabords",
-  // logLevel:  "debug"
+  // logLevel:  "debug",
+  urlsConfig: self.serviceWorkerUrls || {},
 })
