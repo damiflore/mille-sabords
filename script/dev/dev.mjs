@@ -6,24 +6,18 @@
 import { startDevServer } from "@jsenv/core"
 import { requestCertificateForLocalhost } from "@jsenv/https-local"
 
-import {
-  projectDirectoryUrl,
-  customCompilers,
-  classicServiceWorkers,
-} from "../../jsenv.config.mjs"
+import { rootDirectoryUrl } from "../../jsenv.config.mjs"
 
 const { serverCertificate, serverCertificatePrivateKey } =
   await requestCertificateForLocalhost()
 
 export const server = await startDevServer({
-  projectDirectoryUrl,
+  rootDirectoryUrl,
   port: 3472,
   protocol: "https",
   certificate: serverCertificate,
   privateKey: serverCertificatePrivateKey,
-  customCompilers,
-  classicServiceWorkers,
-  explorableConfig: {
+  explorerGroups: {
     "app": {
       "./main.html": true,
       "./lab.html": true,
@@ -36,5 +30,8 @@ export const server = await startDevServer({
       "src/**/*.test.html": true,
       "test/**/*.test.html": true,
     },
+  },
+  autorestart: {
+    url: import.meta.url,
   },
 })

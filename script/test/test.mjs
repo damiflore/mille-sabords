@@ -1,24 +1,19 @@
-import {
-  executeTestPlan,
-  chromiumTabRuntime,
-  jsenvCoverageConfig,
-} from "@jsenv/core"
+import { executeTestPlan, chromium, defaultCoverageConfig } from "@jsenv/core"
 
-import { projectDirectoryUrl, customCompilers } from "../../jsenv.config.mjs"
+import { rootDirectoryUrl } from "../../jsenv.config.mjs"
 
 await executeTestPlan({
-  projectDirectoryUrl,
-  customCompilers,
+  rootDirectoryUrl,
   testPlan: {
     "./src/**/*.test.html": {
       browser: {
-        runtime: chromiumTabRuntime,
+        runtime: chromium,
         allocatedMs: 60 * 1000,
       },
     },
     "./test/**/*.test.html": {
       browser: {
-        runtime: chromiumTabRuntime,
+        runtime: chromium,
         allocatedMs: 60 * 1000,
       },
     },
@@ -26,7 +21,7 @@ await executeTestPlan({
   coverage: process.argv.includes("--coverage"),
   coverageJsonFileRelativeUrl: "coverage/coverage.json",
   coverageConfig: {
-    ...jsenvCoverageConfig,
+    ...defaultCoverageConfig,
     "./src/**/*.jsx": true,
   },
 })

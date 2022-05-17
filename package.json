@@ -43,7 +43,7 @@
     "@babel/plugin-transform-react-jsx": "7.16.5",
     "@jsenv/assert": "2.4.1",
     "@jsenv/babel-preset": "1.1.2",
-    "@jsenv/core": "25.4.5",
+    "@jsenv/core": "27.0.0-alpha.36",
     "@jsenv/eslint-config": "16.0.9",
     "@jsenv/file-size-impact": "12.1.6",
     "@jsenv/filesystem": "2.7.1",

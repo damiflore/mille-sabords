@@ -5,46 +5,30 @@
  * Read more at https://github.com/jsenv/jsenv-core/blob/master/docs/building/readme.md#jsenv-build
  */
 
-import { buildProject, jsenvServiceWorkerFinalizer } from "@jsenv/core"
-import { copyFileSystemNode, resolveUrl } from "@jsenv/filesystem"
+import { build } from "@jsenv/core"
+import { copyEntry } from "@jsenv/filesystem"
 
-import {
-  projectDirectoryUrl,
-  customCompilers,
-  classicServiceWorkers,
-  runtimeSupport,
-} from "../../jsenv.config.mjs"
+import { rootDirectoryUrl, runtimeCompat } from "../../jsenv.config.mjs"
 
 // this is to get the production build of react
 process.env.NODE_ENV = "production"
 
-await buildProject({
-  projectDirectoryUrl,
-  customCompilers,
-  classicServiceWorkers,
-  runtimeSupport,
-  buildDirectoryRelativeUrl: "./dist/systemjs/",
-  format: "systemjs",
+await build({
+  logLevel: process.env.LOG_LEVEL,
+  rootDirectoryUrl,
+  buildDirectoryUrl: new URL("./dist/", rootDirectoryUrl),
   buildDirectoryClean: true,
   entryPoints: {
-    "./main.html": "main.prod.html",
+    "./main.html": "index.html",
   },
-  urlMappings: {
-    "./dev.importmap": "./prod.importmap",
-  },
-  serviceWorkerFinalizer: jsenvServiceWorkerFinalizer,
-  preserveEntrySignatures: false,
-  minify: true,
-  minifyHtmlOptions: {
-    collapseWhitespace: true,
-    removeComments: true,
-  },
-  logLevel: process.env.LOG_LEVEL,
+  baseUrl: process.argv.includes("--prod") ? "/mille-sabords/" : "/",
+  runtimeCompat,
+  sourcemaps: process.argv.includes("--lighthouse"),
   assetManifestFile: true,
   assetManifestFileRelativeUrl: "asset-manifest.json",
 })
 
-const robotsProjectFileUrl = resolveUrl("robots.txt", projectDirectoryUrl)
-const buildDirectoryUrl = resolveUrl("dist/systemjs/", projectDirectoryUrl)
-const robotsBuildFileUrl = resolveUrl("robots.txt", buildDirectoryUrl)
-await copyFileSystemNode({ from: robotsProjectFileUrl, to: robotsBuildFileUrl })
+await copyEntry({
+  from: new URL("src/robots.txt", rootDirectoryUrl),
+  to: new URL("dist/robots.txt", rootDirectoryUrl),
+})
