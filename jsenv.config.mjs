@@ -7,22 +7,11 @@
  * Read more at https://github.com/jsenv/jsenv-core#jsenvconfigmjs
  */
 
-import { commonJsToJavaScriptModule } from "@jsenv/core"
+export const rootDirectoryUrl = String(new URL("./", import.meta.url))
 
-export const projectDirectoryUrl = String(new URL("./", import.meta.url))
-
-export const runtimeSupport = {
+export const runtimeCompat = {
   chrome: "80",
   edge: "17",
   firefox: "80",
   safari: "17",
 }
-
-export const customCompilers = {
-  "./node_modules/react/index.js": commonJsToJavaScriptModule,
-  "./node_modules/react-dom/index.js": async (options) => {
-    return commonJsToJavaScriptModule({ ...options, external: ["react"] })
-  },
-}
-
-export const classicServiceWorkers = ["./service_worker.js"]
