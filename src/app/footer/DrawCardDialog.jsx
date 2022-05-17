@@ -1,27 +1,21 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import {
-  useCurrentCardId,
-  useAnimationsDisabled,
-} from "root/src/app/main.store.js"
-import { Image } from "root/src/app/generic/Image.jsx"
-import { useCardDeck } from "root/src/app/round/round.selectors.js"
-import {
-  useDrawCard,
-  useShuffleDeck,
-} from "root/src/app/cards/cards.actions.js"
-import { useActivateCurrentCard } from "root/src/app/round/round.actions.js"
+import { useCurrentCardId, useAnimationsDisabled } from "/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { useCardDeck } from "/src/app/round/round.selectors.js"
+import { useDrawCard, useShuffleDeck } from "/src/app/cards/cards.actions.js"
+import { useActivateCurrentCard } from "/src/app/round/round.actions.js"
 
-import { cardsRules } from "root/src/app/cards/cards-rules.js"
-import { Dialog } from "root/src/app/dialog/dialog.component.jsx"
+import { cardsRules } from "/src/app/cards/cards-rules.js"
+import { Dialog } from "/src/app/dialog/dialog.component.jsx"
 import {
   cardIdToCard,
   cardToImageUrl,
   cardDefaultUrl,
-} from "root/src/app/cards/cards.js"
-import { SmallCard } from "root/src/app/cards/SmallCard.jsx"
-import { getDomNodeRectangle } from "root/src/app/dom/dom.position.js"
+} from "/src/app/cards/cards.js"
+import { SmallCard } from "/src/app/cards/SmallCard.jsx"
+import { getDomNodeRectangle } from "/src/app/dom/dom.position.js"
 
 export const DrawCardDialog = ({
   dialogIsOpen,

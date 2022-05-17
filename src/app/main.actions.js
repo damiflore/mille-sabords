@@ -1,4 +1,4 @@
-import { createAction, defaultState } from "root/src/app/main.store.js"
+import { createAction, defaultState } from "/src/app/main.store.js"
 
 export const useDisableAnimations = createAction((state) => {
   return {

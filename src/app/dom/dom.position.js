@@ -3,7 +3,7 @@ import {
   rectangleRelativeTo,
   rectangleCollidesWithRectangle,
   findRectangleCloserToRectangle,
-} from "root/src/app/helper/rectangle.js"
+} from "/src/app/helper/rectangle.js"
 
 import { getDocumentScroll } from "./dom.util.js"
 

@@ -1,12 +1,8 @@
 import React from "react"
 
-import {
-  useCardIds,
-  useDispatch,
-  useCardUsedIds,
-} from "root/src/app/main.store.js"
-import { cardIdToCard, cardToSmallImageUrl } from "root/src/app/cards/cards.js"
-import { useEndPlayerRound } from "root/src/app/round/round.actions.js"
+import { useCardIds, useDispatch, useCardUsedIds } from "/src/app/main.store.js"
+import { cardIdToCard, cardToSmallImageUrl } from "/src/app/cards/cards.js"
+import { useEndPlayerRound } from "/src/app/round/round.actions.js"
 
 export const CardDrawingLab = () => {
   const cardIds = useCardIds()

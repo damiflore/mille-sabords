@@ -1,25 +1,25 @@
 import React from "react"
 
-import { useBecomes } from "root/src/app/hooks.js"
+import { useBecomes } from "/src/app/hooks.js"
 import {
   useCurrentCardId,
   useScoreMarked,
   useIsOnSkullIsland,
   useAnimationsDisabled,
-} from "root/src/app/main.store.js"
-import { cardIdToCard, isSwordChallengeCard } from "root/src/app/cards/cards.js"
+} from "/src/app/main.store.js"
+import { cardIdToCard, isSwordChallengeCard } from "/src/app/cards/cards.js"
 import {
   useIsFirstRoll,
   useThreeSkullsOrMoreInCursedArea,
   useDicesToCurse,
   useSkullCountInCursedArea,
   useRoundScore,
-} from "root/src/app/round/round.selectors.js"
+} from "/src/app/round/round.selectors.js"
 import {
   useMarkScore,
   useSendToSkullIsland,
-} from "root/src/app/round/round.actions.js"
-import { useCurseDice } from "root/src/app/dices/dices.actions.js"
+} from "/src/app/round/round.actions.js"
+import { useCurseDice } from "/src/app/dices/dices.actions.js"
 
 const { useEffect } = React
 

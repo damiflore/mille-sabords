@@ -7,15 +7,15 @@
 import React from "react"
 
 import { DEV } from "#env"
-import { nextIDLEPromise } from "root/src/app/helper/asap.js"
-import { catchError } from "root/src/app/error/error.main.jsx"
+import { nextIDLEPromise } from "/src/app/helper/asap.js"
+import { catchError } from "/src/app/error/error.main.jsx"
 import {
   UrlLoadingProvider,
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
-} from "root/src/app/loading/loading.main.jsx"
-import { useWaitABit } from "root/src/app/loading/loading.hooks.js"
-import { Preloader } from "root/src/app/loading/Preloader.jsx"
+} from "/src/app/loading/loading.main.jsx"
+import { useWaitABit } from "/src/app/loading/loading.hooks.js"
+import { Preloader } from "/src/app/loading/Preloader.jsx"
 
 const MainRaw = ({ error, onError, ...props }) => {
   if (error) {

@@ -17,7 +17,7 @@ import React from "react"
 import {
   addLoadedListener,
   useUrlLoadingNotifier,
-} from "root/src/app/loading/loading.main.jsx"
+} from "/src/app/loading/loading.main.jsx"
 
 export const Stylesheet = ({ href, onLoad = () => {} }) => {
   const [fetchStart, fetchEnd] = useUrlLoadingNotifier(href)

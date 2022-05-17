@@ -3,13 +3,13 @@ import React from "react"
 import {
   useCurrentCardId,
   useCurrentCardActivated,
-} from "root/src/app/main.store.js"
-import { Image } from "root/src/app/generic/Image.jsx"
-import { useCurrentPlayer } from "root/src/app/round/round.selectors.js"
-import { cardDefaultUrl, cardIdToCard } from "root/src/app/cards/cards.js"
-import { CardRulesDialog } from "root/src/app/header/CardRulesDialog.jsx"
-import { SmallCard } from "root/src/app/cards/SmallCard.jsx"
-import { useAnimateTransitionUsingJs } from "root/src/app/animation/useAnimateTransition.js"
+} from "/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { useCurrentPlayer } from "/src/app/round/round.selectors.js"
+import { cardDefaultUrl, cardIdToCard } from "/src/app/cards/cards.js"
+import { CardRulesDialog } from "/src/app/header/CardRulesDialog.jsx"
+import { SmallCard } from "/src/app/cards/SmallCard.jsx"
+import { useAnimateTransitionUsingJs } from "/src/app/animation/useAnimateTransition.js"
 
 import { SwordChallengeIndicator } from "./SwordChallengeIndicator.jsx"
 

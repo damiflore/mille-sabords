@@ -1,8 +1,8 @@
 import React from "react"
 import { registerServiceWorker } from "@jsenv/pwa"
 
-import { cardDefaultUrl, cardImageUrlMap } from "root/src/app/cards/cards.js"
-import { preloadImages } from "root/src/app/loading/preloadImages.js"
+import { cardDefaultUrl, cardImageUrlMap } from "/src/app/cards/cards.js"
+import { preloadImages } from "/src/app/loading/preloadImages.js"
 
 import { useWaitABit } from "./loading.hooks.js"
 

@@ -1,11 +1,11 @@
 import React from "react"
 
-import { useGameCreated } from "root/src/app/main.store.js"
-import { useMainDomNodeSetter } from "root/src/app/dom/dom.main.jsx"
-import { Home } from "root/src/app/home/Home.jsx"
-import { Game } from "root/src/app/game/Game.jsx"
-import { Stylesheet } from "root/src/app/generic/Stylesheet.jsx"
-import { Settings } from "root/src/app/settings/settings.component.jsx"
+import { useGameCreated } from "/src/app/main.store.js"
+import { useMainDomNodeSetter } from "/src/app/dom/dom.main.jsx"
+import { Home } from "/src/app/home/Home.jsx"
+import { Game } from "/src/app/game/Game.jsx"
+import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
+import { Settings } from "/src/app/settings/settings.component.jsx"
 
 const appCssUrl = new URL("./app.css", import.meta.url)
 

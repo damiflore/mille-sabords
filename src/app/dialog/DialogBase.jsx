@@ -19,8 +19,8 @@ In the end the click interaction both close and open the dialog in the same even
 import React from "react"
 import ReactDOM from "react-dom"
 
-import { useBecomes } from "root/src/app/hooks.js"
-import { Stylesheet } from "root/src/app/generic/Stylesheet.jsx"
+import { useBecomes } from "/src/app/hooks.js"
+import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
 import {
   firstFocusableDescendantOrSelf,
   trapFocusInside,

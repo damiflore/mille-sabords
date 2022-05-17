@@ -1,14 +1,14 @@
 import React from "react"
 
-import { Image } from "root/src/app/generic/Image.jsx"
-import { useCurrentCardId } from "root/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { useCurrentCardId } from "/src/app/main.store.js"
 import {
   useSymbolsInChest,
   useSwordQuantityRequired,
-} from "root/src/app/round/round.selectors.js"
-import { cardIdToCard, isSwordChallengeCard } from "root/src/app/cards/cards.js"
-import { SYMBOL_SWORD, symbolSwordUrl } from "root/src/app/symbols/symbols.js"
-import { countSymbol } from "root/src/app/round/computeRoundScore.js"
+} from "/src/app/round/round.selectors.js"
+import { cardIdToCard, isSwordChallengeCard } from "/src/app/cards/cards.js"
+import { SYMBOL_SWORD, symbolSwordUrl } from "/src/app/symbols/symbols.js"
+import { countSymbol } from "/src/app/round/computeRoundScore.js"
 
 const swordsDisabledImageUrl = new URL("./swords-disabled.png", import.meta.url)
 

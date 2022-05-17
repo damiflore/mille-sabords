@@ -6,16 +6,16 @@ import {
   useGameStarted,
   useCurrentCardId,
   useCurrentCardActivated,
-} from "root/src/app/main.store.js"
-import { useSignal } from "root/src/app/helper/signal.js"
-import { ContextProvider } from "root/src/app/main.context.jsx"
-// import { createSkullFromDice } from "root/src/app/test/test.material.js"
-import { Stylesheet } from "root/src/app/generic/Stylesheet.jsx"
-import { Main } from "root/src/app/main.component.jsx"
-import { ScoreBoardLab } from "root/lab/ScoreBoardLab.jsx"
-import { CardDrawingLab } from "root/lab/CardDrawingLab.jsx"
-import { CardActivationLab } from "root/lab/CardActivationLab.jsx"
-import { GameBoardLab } from "root/lab/GameBoardLab.jsx"
+} from "/src/app/main.store.js"
+import { useSignal } from "/src/app/helper/signal.js"
+import { ContextProvider } from "/src/app/main.context.jsx"
+// import { createSkullFromDice } from "/src/app/test/test.material.js"
+import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
+import { Main } from "/src/app/main.component.jsx"
+import { ScoreBoardLab } from "/lab/ScoreBoardLab.jsx"
+import { CardDrawingLab } from "/lab/CardDrawingLab.jsx"
+import { CardActivationLab } from "/lab/CardActivationLab.jsx"
+import { GameBoardLab } from "/lab/GameBoardLab.jsx"
 
 const labCssUrl = new URL("./lab.css", import.meta.url)
 

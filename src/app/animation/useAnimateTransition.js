@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { usePrevious } from "root/src/app/hooks.js"
+import { usePrevious } from "/src/app/hooks.js"
 import { startJavaScriptAnimation } from "./startJavaScriptAnimation.js"
 
 export const useAnimateTransitionUsingJs = (

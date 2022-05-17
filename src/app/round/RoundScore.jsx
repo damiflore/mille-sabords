@@ -1,35 +1,35 @@
 /* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useBecomes } from "root/src/app/hooks.js"
-import { useSignal, useSignalState } from "root/src/app/helper/signal.js"
+import { useBecomes } from "/src/app/hooks.js"
+import { useSignal, useSignalState } from "/src/app/helper/signal.js"
 import {
   useCurrentCardId,
   useCurrentCardActivated,
   useScoreMarked,
   useAnimationsDisabled,
-} from "root/src/app/main.store.js"
+} from "/src/app/main.store.js"
 import {
   useRoundScore,
   useSymbolsInChest,
   useSwordQuantityRequired,
-} from "root/src/app/round/round.selectors.js"
-import { ValueWithAnimatedTransition } from "root/src/app/animation/ValueWithAnimatedTransition.jsx"
+} from "/src/app/round/round.selectors.js"
+import { ValueWithAnimatedTransition } from "/src/app/animation/ValueWithAnimatedTransition.jsx"
 
 import {
   cardIdToCard,
   isPirateCard,
   isSwordChallengeCard,
-} from "root/src/app/cards/cards.js"
-import { useDialogState } from "root/src/app/dialog/dialog.component.jsx"
+} from "/src/app/cards/cards.js"
+import { useDialogState } from "/src/app/dialog/dialog.component.jsx"
 
-import { SYMBOL_SWORD } from "root/src/app/symbols/symbols.js"
-import { countSymbol } from "root/src/app/round/computeRoundScore.js"
-import { StarRain } from "root/src/app/game-design/StarRain.jsx"
-import { RoundScoreRulesDialog } from "root/src/app/round/RoundScoreRulesDialog.jsx"
-import { useScoreParticles } from "root/src/app/score/useScoreParticles.js"
-import { RoundScoreParticle } from "root/src/app/round/RoundScoreParticle.jsx"
-import { useRoundScoreParticleEffects } from "root/src/app/round/useRoundScoreParticleEffects.js"
+import { SYMBOL_SWORD } from "/src/app/symbols/symbols.js"
+import { countSymbol } from "/src/app/round/computeRoundScore.js"
+import { StarRain } from "/src/app/game-design/StarRain.jsx"
+import { RoundScoreRulesDialog } from "/src/app/round/RoundScoreRulesDialog.jsx"
+import { useScoreParticles } from "/src/app/score/useScoreParticles.js"
+import { RoundScoreParticle } from "/src/app/round/RoundScoreParticle.jsx"
+import { useRoundScoreParticleEffects } from "/src/app/round/useRoundScoreParticleEffects.js"
 
 const { useState, useEffect } = React
 
