@@ -17,13 +17,7 @@
       boot.css is part of the ressources inlined in this HTML during build
       by [data-jsenv-force-inline] attribute
     --->
-    <link rel="stylesheet" href="./src/boot/boot.css" data-jsenv-force-inline />
-    <!--
-      This HTML uses "dev.importmap" to control how js import are resolved.
-      It is used to have code specific to dev or prod.
-      See https://github.com/jsenv/jsenv-template-pwa/blob/main/docs/production_mode/readme.md#production-mode
-    -->
-    <script type="importmap" src="./dev.importmap"></script>
+    <link rel="stylesheet" href="./src/boot/boot.css" />
     <!--
       Tell browser to start fetching theses ressources right now:
       - The font
@@ -32,15 +26,15 @@
     -->
     <link
       rel="preload"
-      href="./src/fonts/arrr_matey_bb_wn3.ttf"
+      href="./fonts/arrr_matey_bb_wn3.ttf"
       as="font"
       type="font/ttf"
       crossorigin
     />
-    <link rel="preload" href="./src/app_loader/app_loader.css" as="style" />
-    <link rel="modulepreload" href="./src/app_loader/app_loader.js" />
-    <link rel="preload" href="./src/app/app.css" as="style" />
-    <link rel="modulepreload" href="./src/app/app.jsx" />
+    <link rel="preload" href="./app_loader/app_loader.css" as="style" />
+    <link rel="modulepreload" href="./app_loader/app_loader.js" />
+    <link rel="preload" href="./app/app.css" as="style" />
+    <link rel="modulepreload" href="./app/app.jsx" />
   </head>
 
   <body>
@@ -60,10 +54,7 @@
       <h1>Browser not supported</h1>
       <p>Please update your internet browser or try with an other one</p>
     </div>
-    <script
-      src="./src/boot/browser_support_detection.js"
-      data-jsenv-force-inline
-    ></script>
+    <script src="./boot/browser_support_detection.js"></script>
     <!--
       Booting the application
       - <div id="app"> is hidden until [data-booting] is removed by app_loader.js
@@ -78,7 +69,7 @@
     <div id="splashscreen">
       <div id="splashscreen_logo">
         <img
-          src="./src/app/dices/dice_skull.png"
+          src="./app/dices/dice_skull.png"
           width="128"
           height="128"
           alt="Mille sabords logo"
@@ -90,7 +81,7 @@
         <div id="booting_start"></div>
         <div id="booting_is_slow">
           <img
-            src="./src/app/dices/dice_monkey.png"
+            src="./app/dices/dice_monkey.png"
             alt="Booting..."
             width="50"
             height="50"
@@ -107,11 +98,7 @@
         </div>
       </div>
     </div>
-    <script
-      type="module"
-      src="./src/boot/boot.js"
-      data-jsenv-force-inline
-    ></script>
+    <script type="module" src="./boot/boot.js" data-jsenv-force-inline></script>
     <!--
       Installing an early "beforeinstallprompt" event listener
       - We must listen to "beforeinstallprompt" as soon as possible or it could be missed.
