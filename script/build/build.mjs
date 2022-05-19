@@ -8,7 +8,11 @@
 import { build } from "@jsenv/core"
 import { copyEntry } from "@jsenv/filesystem"
 
-import { rootDirectoryUrl, runtimeCompat } from "../../jsenv.config.mjs"
+import {
+  rootDirectoryUrl,
+  runtimeCompat,
+  plugins,
+} from "../../jsenv.config.mjs"
 
 // this is to get the production build of react
 process.env.NODE_ENV = "production"
@@ -16,13 +20,16 @@ process.env.NODE_ENV = "production"
 await build({
   logLevel: process.env.LOG_LEVEL,
   rootDirectoryUrl,
+  plugins,
   buildDirectoryUrl: new URL("./dist/", rootDirectoryUrl),
   buildDirectoryClean: true,
   entryPoints: {
-    "./main.html": "index.html",
+    "./src/main.html": "index.html",
   },
   baseUrl: process.argv.includes("--prod") ? "/mille-sabords/" : "/",
   runtimeCompat,
+  // minification: false,
+  // versioning: false,
   sourcemaps: process.argv.includes("--lighthouse"),
   assetManifestFile: true,
   assetManifestFileRelativeUrl: "asset-manifest.json",
