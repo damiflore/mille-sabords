@@ -131,6 +131,7 @@
         document.getElementById("browser_not_supported").style.display = "block"
       }
     </script>
+
     <!--
       Booting the application
       - <div id="app"> is hidden until [data-booting] is removed by app_loader.js
@@ -139,6 +140,63 @@
       - <div id="booting_error_screen"> is displayed when there is an error
         while error while fetching, parsing or executing "app_loader.js"
     -->
+    <style>
+      #booting_screen,
+      #booting_error_screen {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #booting_screen {
+        justify-content: center;
+      }
+      #booting_screen svg {
+        height: 64px;
+      }
+      #booting_error_screen {
+        text-align: center;
+        width: 100%;
+        background-color: #030713;
+        color: #a9a8a8;
+      }
+      #booting_error_screen p {
+        margin-top: 20px;
+        display: inline-block;
+        color: #ba3939;
+        background: #ffe0e0;
+        border: 1px solid #a33a3a;
+        padding: 16px 48px;
+      }
+
+      #app {
+        overflow: hidden;
+        font-family: Retina, sans-serif;
+        font-weight: 300;
+        text-align: center;
+      }
+      #app p {
+        padding: 16px 48px;
+      }
+      #app[data-fadein] {
+        animation-duration: 0.3s;
+        animation-name: app_fade_in;
+        animation-fill-mode: forwards;
+      }
+      @keyframes app_fade_in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
     <div id="booting_screen" data-hidden>
       <svg viewBox="0 0 100 100">
         <circle
