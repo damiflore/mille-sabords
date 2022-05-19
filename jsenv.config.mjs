@@ -7,6 +7,8 @@
  * Read more at https://github.com/jsenv/jsenv-core#jsenvconfigmjs
  */
 
+import { jsenvPluginReact } from "@jsenv/plugin-react"
+
 export const rootDirectoryUrl = String(new URL("./", import.meta.url))
 
 export const runtimeCompat = {
@@ -15,3 +17,5 @@ export const runtimeCompat = {
   firefox: "80",
   safari: "17",
 }
+
+export const plugins = [jsenvPluginReact()]

@@ -1,10 +1,9 @@
 import React from "react"
-import { canUseServiceWorkers, createServiceWorkerScript } from "@jsenv/pwa"
 
-const serviceWorkerScript = createServiceWorkerScript()
+import { serviceWorkerScript } from "/src/service_worker_script.js"
 
 export const UpdateApplication = ({ settingsDialogIsOpen }) => {
-  if (!canUseServiceWorkers) {
+  if (!serviceWorkerScript) {
     return null
   }
   return <ServiceWorkerView settingsDialogIsOpen={settingsDialogIsOpen} />

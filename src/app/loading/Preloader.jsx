@@ -1,12 +1,10 @@
 import React from "react"
-import { registerServiceWorker } from "@jsenv/pwa"
 
+import { serviceWorkerScript } from "/src/service_worker_script.js"
 import { cardDefaultUrl, cardImageUrlMap } from "/src/app/cards/cards.js"
 import { preloadImages } from "/src/app/loading/preloadImages.js"
 
 import { useWaitABit } from "./loading.hooks.js"
-
-const serviceWorkerUrl = new URL("../../../service_worker.js", import.meta.url)
 
 const woodUrl = new URL("../wood.jpg", import.meta.url)
 const pirateHookUrl = new URL("../chest/pirate-hook.png", import.meta.url)
@@ -29,8 +27,15 @@ export const Preloader = () => {
   const waited = useWaitABit()
 
   React.useEffect(() => {
-    if (waited) {
-      registerServiceWorker(serviceWorkerUrl)
+    if (waited && serviceWorkerScript) {
+      serviceWorkerScript.setRegistrationPromise(
+        window.navigator.serviceWorker.register(
+          new URL("/src/service_worker.js", import.meta.url),
+          {
+            type: "module",
+          },
+        ),
+      )
     }
   }, [waited])
 

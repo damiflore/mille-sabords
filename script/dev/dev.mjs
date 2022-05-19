@@ -6,13 +6,14 @@
 import { startDevServer } from "@jsenv/core"
 import { requestCertificateForLocalhost } from "@jsenv/https-local"
 
-import { rootDirectoryUrl } from "../../jsenv.config.mjs"
+import { rootDirectoryUrl, plugins } from "../../jsenv.config.mjs"
 
 const { serverCertificate, serverCertificatePrivateKey } =
   await requestCertificateForLocalhost()
 
 export const server = await startDevServer({
   rootDirectoryUrl,
+  plugins,
   port: 3472,
   protocol: "https",
   certificate: serverCertificate,

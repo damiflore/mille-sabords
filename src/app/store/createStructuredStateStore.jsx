@@ -5,7 +5,6 @@ https://github.com/diegohaz/constate/blob/633f7f75a2e30f3ee036645d9e09f6026c734a
 */
 
 import React from "react"
-import { DEV } from "#env"
 
 const { createContext, useContext, useReducer, useEffect } = React
 
@@ -62,7 +61,7 @@ export const createStructuredStateStore = (
   const useState = () => getState()
 
   const useKeyedState = (key) => {
-    if (DEV && !StateContextMap.hasOwnProperty(key)) {
+    if (import.meta.dev && !StateContextMap.hasOwnProperty(key)) {
       throw new Error(`There is no ${key} property in the state`)
     }
     return useContext(StateContextMap[key])

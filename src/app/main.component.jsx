@@ -3,10 +3,8 @@
  * and should be decoupled from rendering the game
  */
 
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { DEV } from "#env"
 import { nextIDLEPromise } from "/src/app/helper/asap.js"
 import { catchError } from "/src/app/error/error.main.jsx"
 import {
@@ -68,9 +66,7 @@ const LoadScreen = ({ rootNode, onLoadProgress, onReady, ...props }) => {
   }, [mainUrlTrackerReady, urlTrackerLoadedCount, urlTrackerTotalCount])
 
   React.useEffect(() => {
-    if (DEV) {
-      performance.measure(`loading screen displayed`)
-    }
+    performance.measure(`loading screen displayed`)
     rootNode.querySelector(`#main-container`).setAttribute("data-loading", "")
   }, [])
 
