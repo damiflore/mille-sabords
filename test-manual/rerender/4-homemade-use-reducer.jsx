@@ -11,7 +11,9 @@ const createContextForReducer = (reducer, initialValue) => {
     const [state, dispatch] = useReducer(reducer, initialValue)
     return (
       <StateContext.Provider value={state}>
-        <DispatchContext.Provider value={dispatch}>{props.children}</DispatchContext.Provider>
+        <DispatchContext.Provider value={dispatch}>
+          {props.children}
+        </DispatchContext.Provider>
       </StateContext.Provider>
     )
   }

@@ -2,7 +2,11 @@
 
 import React from "react"
 
-export const useIntersect = ({ root = null, rootMargin, threshold = 0 } = {}) => {
+export const useIntersect = ({
+  root = null,
+  rootMargin,
+  threshold = 0,
+} = {}) => {
   const [entry, entrySetter] = React.useState({})
   const [node, nodeSetter] = React.useState(null)
 

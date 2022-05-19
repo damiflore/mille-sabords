@@ -36,7 +36,12 @@ export const findLastDescendant = (rootNode, fn) => {
   return null
 }
 
-export const findAfter = ({ from, root = null, predicate, skipChildren = false }) => {
+export const findAfter = ({
+  from,
+  root = null,
+  predicate,
+  skipChildren = false,
+}) => {
   const iterator = createAfterNodeIterator(from, root, skipChildren)
   let { done, value: node } = iterator.next()
   while (done === false) {
@@ -48,7 +53,8 @@ export const findAfter = ({ from, root = null, predicate, skipChildren = false }
   return null
 }
 
-export const findAfterSkippingChildren = (param) => findAfter({ ...param, skipChildren: true })
+export const findAfterSkippingChildren = (param) =>
+  findAfter({ ...param, skipChildren: true })
 
 export const findBefore = ({ from, root = null, predicate }) => {
   const iterator = createPreviousNodeIterator(from, root)
@@ -100,7 +106,11 @@ const createAfterNodeIterator = (fromNode, rootNode, skipChildren = false) => {
   let current = fromNode
   let childrenSkipped = false
   const next = () => {
-    const nextNode = getNextNode(current, rootNode, skipChildren && childrenSkipped === false)
+    const nextNode = getNextNode(
+      current,
+      rootNode,
+      skipChildren && childrenSkipped === false,
+    )
     childrenSkipped = true
     current = nextNode
     return {
