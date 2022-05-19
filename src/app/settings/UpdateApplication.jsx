@@ -10,9 +10,7 @@ export const UpdateApplication = ({ settingsDialogIsOpen }) => {
 }
 
 const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
-  const [update, updateSetter] = React.useState(
-    serviceWorkerScript.getUpdateInfo(),
-  )
+  const [update, updateSetter] = React.useState(serviceWorkerScript.getUpdate())
   React.useEffect(() => {
     return serviceWorkerScript.listenUpdateChange((updateInfo) => {
       updateSetter(updateInfo)
@@ -21,7 +19,7 @@ const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
 
   React.useEffect(() => {
     if (checkOnOpen && settingsDialogIsOpen) {
-      serviceWorkerScript.checkUpdate()
+      serviceWorkerScript.checkForUpdate()
     }
   }, [checkOnOpen, settingsDialogIsOpen])
 
