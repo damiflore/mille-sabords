@@ -1,11 +1,9 @@
 <!--
 
-This scenario is to test
+This scenario is to show an example with a dialog having
 
-- a dialog content can overflow. In that case it behaves like
-a regular document (scrollbar).
-- When scrolling dialog content and reaching the bottom, the document must not scroll.
-(overscrollBehavior)
+a fixed header
+a scrollable body
 
 -->
 
@@ -17,8 +15,8 @@ a regular document (scrollbar).
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
     <style>
-      .dialog {
-        background: white;
+      * {
+        box-sizing: border-box;
       }
     </style>
   </head>
@@ -28,7 +26,7 @@ a regular document (scrollbar).
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { DialogBase } from "../DialogBase.jsx"
+      import { DialogBase } from "/src/app/dialog/DialogBase.jsx"
 
       const App = () => {
         const [bigDialogIsOpen, bigDialogIsOpenSetter] = React.useState(false)
@@ -48,15 +46,7 @@ a regular document (scrollbar).
           smallDialogIsOpenSetter(false)
         }
         return (
-          <div
-            id="app-wrapper"
-            style={{
-              background: "violet",
-              position: "relative",
-              width: "400px",
-              height: "800px",
-            }}
-          >
+          <>
             <button
               onClick={() => {
                 openBigDialog()
@@ -101,14 +91,36 @@ a regular document (scrollbar).
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
             <DialogBase
-              container={document.querySelector("#app-wrapper")}
               className="dialog-spacing-10 dialog-spacing-fluid"
+              style={{
+                padding: 0,
+                // overflow: "hidden"
+              }}
+              insertTop={
+                <div
+                  style={{
+                    height: "60px",
+                    background: "red",
+                  }}
+                >
+                  Header
+                </div>
+              }
+              insertBottom={
+                <div
+                  style={{
+                    height: "200px",
+                    background: "orange",
+                  }}
+                >
+                  Footer
+                </div>
+              }
               isOpen={bigDialogIsOpen}
               onRequestClose={closeBigDialog}
               trapFocus={false}
               requestCloseOnClickOutside={true}
             >
-              Big dialog content
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -140,16 +152,43 @@ a regular document (scrollbar).
               </p>
             </DialogBase>
             <DialogBase
-              container={document.querySelector("#app-wrapper")}
               className="dialog-spacing-10 dialog-spacing-fluid"
+              insertTop={
+                <div
+                  style={{
+                    height: "60px",
+                    background: "red",
+                  }}
+                >
+                  Header
+                </div>
+              }
+              // insertBottom={
+              //   <div
+              //     style={{
+              //       height: "30px",
+              //       background: "orange",
+              //     }}
+              //   >
+              //     Footer
+              //   </div>
+              // }
               isOpen={smallDialogIsOpen}
               onRequestClose={closeSmallDialog}
               trapFocus={false}
               requestCloseOnClickOutside={true}
             >
-              Small dialog content
+              Small message{" "}
+              <button
+                onClick={() => {
+                  // eslint-disable-next-line no-alert
+                  window.alert("click")
+                }}
+              >
+                Click
+              </button>
             </DialogBase>
-          </div>
+          </>
         )
       }
 

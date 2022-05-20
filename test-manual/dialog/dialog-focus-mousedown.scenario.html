@@ -2,7 +2,8 @@
 
 This scenario is to test
 
-- a dialog can be opened by default
+- mousedown outside when dialog has focus keeps focus inside dialog
+- mousedown outside when dialog has not focus transfer focus to the dialog
 
 -->
 
@@ -25,10 +26,10 @@ This scenario is to test
     <script type="module">
       import React from "react"
       import ReactDOM from "react-dom"
-      import { DialogBase } from "../DialogBase.jsx"
+      import { DialogBase } from "/src/app/dialog/DialogBase.jsx"
 
       const App = () => {
-        const [dialogIsOpen, setDialogIsOpen] = React.useState(true)
+        const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
 
         const openDialog = () => {
           setDialogIsOpen(true)
@@ -48,11 +49,10 @@ This scenario is to test
               Open dialog
             </button>
             <DialogBase
-              className="dialog-spacing-10"
+              className="dialog-spacing-10 dialog-spacing-fluid dialog-border"
               isOpen={dialogIsOpen}
               onRequestClose={closeDialog}
               trapFocus={false}
-              requestCloseOnClickOutside={true}
             >
               Hello world
               <button onClick={closeDialog}>Close</button>
