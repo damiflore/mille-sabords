@@ -1,9 +1,10 @@
 import { executeTestPlan, chromium, defaultCoverageConfig } from "@jsenv/core"
 
-import { rootDirectoryUrl } from "../../jsenv.config.mjs"
+import { rootDirectoryUrl, plugins } from "../../jsenv.config.mjs"
 
 await executeTestPlan({
   rootDirectoryUrl,
+  plugins,
   testPlan: {
     "./src/**/*.test.html": {
       browser: {

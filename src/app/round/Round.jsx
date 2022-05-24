@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { RoundEffects } from "/src/app/round/round.effects.js"

@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useUpdateEffect } from "/src/app/hooks.js"

@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useCurrentCardId, useAnimationsDisabled } from "/src/app/main.store.js"

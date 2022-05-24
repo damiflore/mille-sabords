@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { useSignalState } from "/src/app/helper/signal.js"

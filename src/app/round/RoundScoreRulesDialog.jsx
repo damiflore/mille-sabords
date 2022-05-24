@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import { Image } from "/src/app/generic/Image.jsx"

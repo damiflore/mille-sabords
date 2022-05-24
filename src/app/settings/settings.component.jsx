@@ -1,5 +1,3 @@
-/* eslint-disable import/max-dependencies */
-/* eslint-disable no-nested-ternary */
 import React from "react"
 
 import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
