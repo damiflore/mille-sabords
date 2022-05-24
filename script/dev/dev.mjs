@@ -22,6 +22,7 @@ export const server = await startDevServer({
     "app": {
       "./src/main.html": true,
       "./lab/lab.html": true,
+      "./client/main.html": true,
     },
     "manual tests": {
       "./src/**/*.scenario.html": true,
@@ -32,8 +33,7 @@ export const server = await startDevServer({
       "./test/**/*.test.html": true,
     },
   },
-  // autoreload: false,
-  autorestart: {
-    url: import.meta.url,
-  },
+  // autoreload: false
+  devServerMainFile: import.meta.url,
+  devServerAutoreload: true,
 })
