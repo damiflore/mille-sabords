@@ -25,9 +25,8 @@ const revertTrackingGroup = (trackingGroup) => {
 
 const booting = {
   "./dist/index.html": true,
-  "./dist/app_loader_*.js": true,
-  "./dist/assets/app_loader_*.css": true,
-  "./dist/assets/arrr_matey_bb_wn3*.woff": true,
+  "./dist/js/app_loader.es5.js": true,
+  "./dist/other/arrr_matey_bb_wn3.woff": true,
 }
 const app = {
   "./dist/**/*": true,
