@@ -8,6 +8,8 @@
 # -> do not track coverage files (feel free to track them if you want).
 .coverage/
 
+dist/
+
 # TODO: explanation
 /script/lighthouse/*_report.html
 /script/lighthouse/*_report.json
