@@ -2,4 +2,4 @@
 
 Web version of mille sabords.
 
-Visible at TODO: update link
+Visible at https://damiflore.github.io/mille-sabords/.
