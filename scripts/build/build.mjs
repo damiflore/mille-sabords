@@ -33,6 +33,7 @@ await build({
   sourcemaps: process.argv.includes("--lighthouse"),
   assetManifestFile: true,
   assetManifestFileRelativeUrl: "asset-manifest.json",
+  watch: process.argv.includes("--watch"),
 })
 
 await copyEntry({

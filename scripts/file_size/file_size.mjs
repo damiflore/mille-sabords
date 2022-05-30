@@ -23,7 +23,7 @@ const revertTrackingGroup = (trackingGroup) => {
   return opposite
 }
 
-const booting = {
+const app_loader = {
   "./dist/index.html": true,
   "./dist/js/app_loader.es5.js": true,
   "./dist/other/arrr_matey_bb_wn3.woff": true,
@@ -31,14 +31,14 @@ const booting = {
 const app = {
   "./dist/**/*": true,
   "./dist/**/*.map": false,
-  ...revertTrackingGroup(booting),
+  ...revertTrackingGroup(app_loader),
 }
 
 export const fileSizeReport = await generateFileSizeReport({
   log: process.argv.includes("--log"),
   rootDirectoryUrl,
   transformations: { raw, gzip },
-  trackingConfig: { booting, app },
+  trackingConfig: { app_loader, app },
   manifestConfig: {
     "./dist/**/asset-manifest.json": true,
   },
