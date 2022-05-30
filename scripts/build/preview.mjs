@@ -1,3 +1,4 @@
+import { parentPort } from "node:worker_threads"
 import { startBuildServer } from "@jsenv/core"
 import { requestCertificateForLocalhost } from "@jsenv/https-local"
 
@@ -15,5 +16,6 @@ export const server = await startBuildServer({
   buildDirectoryUrl: new URL("./dist/", rootDirectoryUrl),
   mainBuildFile: "/index.html",
   buildServerMainFile: import.meta.url,
-  buildServerAutoreload: true,
+  // disable autoreload when inside worker thread (happen when launched by performance.mjs)
+  buildServerAutoreload: !parentPort,
 })
