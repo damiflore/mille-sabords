@@ -45,7 +45,7 @@
     "@babel/plugin-syntax-import-assertions": "7.16.7",
     "@babel/plugin-transform-react-jsx": "7.16.5",
     "@jsenv/assert": "2.5.4",
-    "@jsenv/core": "27.0.0-alpha.54",
+    "@jsenv/core": "27.0.0-alpha.57",
     "@jsenv/eslint-config": "16.0.9",
     "@jsenv/eslint-import-resolver": "0.1.7",
     "@jsenv/file-size-impact": "12.1.12",

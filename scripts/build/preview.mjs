@@ -17,7 +17,6 @@ export const server = await startBuildServer({
   rootDirectoryUrl,
   buildDirectoryUrl: new URL("./dist/", rootDirectoryUrl),
   mainBuildFile: "/index.html",
-  autorestart: {
-    url: import.meta.url,
-  },
+  buildServerMainFile: import.meta.url,
+  buildServerAutoreload: true,
 })
