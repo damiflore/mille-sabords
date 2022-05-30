@@ -4,16 +4,16 @@ import {
   createAction,
   useDiceRolledIds,
   useCurrentCardId,
-} from "root/src/app/main.store.js"
-import { Image } from "root/src/app/generic/Image.jsx"
+} from "/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
 import {
   useRollDiceAllowed,
   useHasNeverRolled,
   useThreeSkullsOrMoreInCursedArea,
-} from "root/src/app/round/round.selectors.js"
-import { rollDices } from "root/src/app/dices/rollDices.js"
-import { cardIdToCard, isChestCard } from "root/src/app/cards/cards.js"
-import { symbolSkullUrl } from "root/src/app/symbols/symbols.js"
+} from "/src/app/round/round.selectors.js"
+import { rollDices } from "/src/app/dices/rollDices.js"
+import { cardIdToCard, isChestCard } from "/src/app/cards/cards.js"
+import { symbolSkullUrl } from "/src/app/symbols/symbols.js"
 
 export const ButtonRoll = ({ rolledAreaRef }) => {
   const rollDiceAllowed = useRollDiceAllowed()

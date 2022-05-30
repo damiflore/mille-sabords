@@ -1,25 +1,22 @@
-/* eslint-disable import/max-dependencies */
-/* eslint-disable no-nested-ternary */
 import React from "react"
-import { DEV } from "#env"
 
-import { usePrevious } from "root/src/app/hooks.js"
-import { Portal } from "root/src/app/generic/Portal.jsx"
+import { usePrevious } from "/src/app/hooks.js"
+import { Portal } from "/src/app/generic/Portal.jsx"
 import {
   rectangleToRectangleInsideDomNode,
   printPointInDocument,
-} from "root/src/app/dom/dom.position.js"
-import { stringifyTransformations } from "root/src/app/helper/render.js"
+} from "/src/app/dom/dom.position.js"
+import { stringifyTransformations } from "/src/app/helper/render.js"
 import {
   useDiceDomNode,
   useDiceDomNodeSetter,
   useMainDomNode,
-} from "root/src/app/dom/dom.main.jsx"
-import { diceSize } from "root/src/app/dices/dicePosition.js"
-import { diceIsOnSkull, diceToVisibleSymbol } from "root/src/app/dices/dices.js"
-import { enableDragGesture } from "root/src/app/drag/drag.js"
-import { symbolToImageUrl } from "root/src/app/symbols/symbols.js"
-import { useDiceKeptIds } from "root/src/app/round/round.selectors.js"
+} from "/src/app/dom/dom.main.jsx"
+import { diceSize } from "/src/app/dices/dicePosition.js"
+import { diceIsOnSkull, diceToVisibleSymbol } from "/src/app/dices/dices.js"
+import { enableDragGesture } from "/src/app/drag/drag.js"
+import { symbolToImageUrl } from "/src/app/symbols/symbols.js"
+import { useDiceKeptIds } from "/src/app/round/round.selectors.js"
 
 const { useEffect, useState } = React
 
@@ -41,7 +38,7 @@ export const Dice = ({
   appear,
   traceUpdate = false,
 }) => {
-  if (DEV && traceUpdate) {
+  if (import.meta.dev && traceUpdate) {
     useTraceUpdate(
       {
         dice,

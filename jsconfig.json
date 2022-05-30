@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "/*": ["./*"],
+      "mille-sabords/*": ["./*"]
+    }
+  }
+}

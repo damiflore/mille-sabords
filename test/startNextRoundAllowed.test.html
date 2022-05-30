@@ -5,14 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
-    <script type="importmap" src="./test.importmap"></script>
   </head>
 
   <body>
     <script type="module">
       import { assert } from "@jsenv/assert"
 
-      import { useStartNextRoundAllowed } from "root/src/app/round/round.selectors.js"
+      import { useStartNextRoundAllowed } from "/src/app/round/round.selectors.js"
 
       // round ongoing because can roll dice
       {

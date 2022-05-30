@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
 import {
@@ -7,9 +6,9 @@ import {
   useDiceCursedIds,
   useChestSlots,
   createAction,
-} from "root/src/app/main.store.js"
-import { Image } from "root/src/app/generic/Image.jsx"
-import { useDiceDomNode } from "root/src/app/dom/dom.main.jsx"
+} from "/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { useDiceDomNode } from "/src/app/dom/dom.main.jsx"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -17,13 +16,13 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "root/src/app/symbols/symbols.js"
-import { faces } from "root/src/app/dices/dices.js"
+} from "/src/app/symbols/symbols.js"
+import { faces } from "/src/app/dices/dices.js"
 import {
   useResetRound,
   useEndPlayerRound,
-} from "root/src/app/round/round.actions.js"
-import { useUncurseDice } from "root/src/app/dices/dices.actions.js"
+} from "/src/app/round/round.actions.js"
+import { useUncurseDice } from "/src/app/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()

@@ -1,60 +1,47 @@
-/* eslint-disable no-nested-ternary */
 import React from "react"
 
-import {
-  useServiceWorkerIsAvailable,
-  useServiceWorkerUpdate,
-  useCheckServiceWorkerUpdate,
-  useActivateServiceWorkerUpdate,
-} from "./service-worker.hooks.js"
+import { serviceWorkerScript } from "/src/service_worker_script.js"
 
 export const UpdateApplication = ({ settingsDialogIsOpen }) => {
-  const serviceWorkerIsAvailable = useServiceWorkerIsAvailable()
-
-  if (!serviceWorkerIsAvailable) {
+  if (!serviceWorkerScript) {
     return null
   }
-
   return <ServiceWorkerView settingsDialogIsOpen={settingsDialogIsOpen} />
 }
 
 const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
-  const checkServiceWorkerUpdate = useCheckServiceWorkerUpdate()
-  const serviceWorkerUpdate = useServiceWorkerUpdate()
+  const [update, updateSetter] = React.useState(serviceWorkerScript.getUpdate())
+  React.useEffect(() => {
+    return serviceWorkerScript.listenUpdateChange((updateInfo) => {
+      updateSetter(updateInfo)
+    })
+  }, [])
 
   React.useEffect(() => {
     if (checkOnOpen && settingsDialogIsOpen) {
-      checkServiceWorkerUpdate()
+      serviceWorkerScript.checkForUpdate()
     }
   }, [checkOnOpen, settingsDialogIsOpen])
 
   return (
     <fieldset style={{ minHeight: "4em" }}>
       <legend>Mise a jour</legend>
-      {serviceWorkerUpdate ? (
-        <UpdateAvailable serviceWorkerUpdate={serviceWorkerUpdate} />
-      ) : (
-        <UpdateNotAvailable />
-      )}
+      {update ? <UpdateAvailable /> : <UpdateNotAvailable />}
     </fieldset>
   )
 }
 
-const UpdateAvailable = ({ serviceWorkerUpdate }) => {
-  const { shouldBecomeNavigatorController, navigatorWillReload } =
-    serviceWorkerUpdate
-  const activateServiceWorkerUpdate = useActivateServiceWorkerUpdate()
-
+const UpdateAvailable = () => {
+  const serviceWorkerUpdate = serviceWorkerScript.getUpdate()
   const [updatingStatus, updatingStatusSetter] = React.useState("")
-
-  const update = async () => {
+  const update = React.useCallback(async () => {
     updatingStatusSetter("updating")
-    await activateServiceWorkerUpdate({
+    await serviceWorkerUpdate.activate({
       onActivating: () => updatingStatusSetter("activating"),
       onActivated: () => updatingStatusSetter("activated"),
       onBecomesNavigatorController: () => updatingStatusSetter(""),
     })
-  }
+  }, [])
 
   return (
     <>
@@ -63,35 +50,37 @@ const UpdateAvailable = ({ serviceWorkerUpdate }) => {
         {updatingStatus === "updating" || updatingStatus === "activating"
           ? "Mise a jour..."
           : null}
-        {updatingStatus === "activated" && navigatorWillReload
+        {updatingStatus === "activated" &&
+        serviceWorkerUpdate.navigatorWillReload
           ? `Mise a jour activée, la page va se recharger`
           : null}
         {updatingStatus === "activated" &&
-        !navigatorWillReload &&
-        shouldBecomeNavigatorController
+        !serviceWorkerUpdate.navigatorWillReload &&
+        serviceWorkerUpdate.shouldBecomeNavigatorController
           ? `Mise a jour activée, recharger la page pour installer`
           : null}
         {updatingStatus === "activated" &&
-        !navigatorWillReload &&
-        !shouldBecomeNavigatorController
+        !serviceWorkerUpdate.navigatorWillReload &&
+        !serviceWorkerUpdate.shouldBecomeNavigatorController
           ? `Mise a jour activée`
           : null}
       </p>
       <button disabled={Boolean(updatingStatus)} onClick={update}>
-        {navigatorWillReload ? `Recharger pour mettre a jour` : `Mettre a jour`}
+        {serviceWorkerUpdate.navigatorWillReload
+          ? `Recharger pour mettre a jour`
+          : `Mettre a jour`}
       </button>
     </>
   )
 }
 
 const UpdateNotAvailable = () => {
-  const checkServiceWorkerUpdate = useCheckServiceWorkerUpdate()
   const [updateAttemptStatus, updateAttemptStatusSetter] = React.useState("")
 
-  const check = async () => {
+  const check = React.useCallback(async () => {
     updateAttemptStatusSetter("fetching")
     try {
-      const found = await checkServiceWorkerUpdate()
+      const found = await serviceWorkerScript.checkForUpdate()
       if (found) {
         // no need to handle that case because
         // an update is now available
@@ -103,7 +92,7 @@ const UpdateNotAvailable = () => {
       updateAttemptStatusSetter("failed")
       console.error(e)
     }
-  }
+  }, [])
 
   return (
     <>

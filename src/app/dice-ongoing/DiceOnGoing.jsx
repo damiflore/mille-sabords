@@ -1,6 +1,6 @@
 import React from "react"
 
-import { useSignalState } from "root/src/app/helper/signal.js"
+import { useSignalState } from "/src/app/helper/signal.js"
 
 export const DiceOnGoing = ({
   rolledAreaRef,

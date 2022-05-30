@@ -1,8 +1,8 @@
-import { getDomNodeRectangle } from "root/src/app/dom/dom.position.js"
+import { getDomNodeRectangle } from "/src/app/dom/dom.position.js"
 import {
   rotateRectangle,
   rotatedRectangleCollidesWithRotatedRectangle,
-} from "root/src/app/helper/geometry.js"
+} from "/src/app/helper/geometry.js"
 
 import { diceSize } from "./dicePosition.js"
 

@@ -1,26 +1,18 @@
-/* eslint-disable import/max-dependencies */
-/* eslint-disable no-nested-ternary */
 import React from "react"
 
-import { Stylesheet } from "root/src/app/generic/Stylesheet.jsx"
-import {
-  Dialog,
-  useDialogState,
-} from "root/src/app/dialog/dialog.component.jsx"
-import {
-  useAnimationsDisabled,
-  useSoundDisabled,
-} from "root/src/app/main.store.js"
+import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
+import { Dialog, useDialogState } from "/src/app/dialog/dialog.component.jsx"
+import { useAnimationsDisabled, useSoundDisabled } from "/src/app/main.store.js"
 import {
   useDisableAnimations,
   useEnableAnimations,
   useDisableSound,
   useEnableSound,
   useCancelGame,
-} from "root/src/app/main.actions.js"
-import { CloseIcon } from "root/src/app/dialog/CloseIcon.jsx"
-import { symbolMonkeyUrl } from "root/src/app/symbols/symbols.js"
-import { Image } from "root/src/app/generic/Image.jsx"
+} from "/src/app/main.actions.js"
+import { CloseIcon } from "/src/app/dialog/CloseIcon.jsx"
+import { symbolMonkeyUrl } from "/src/app/symbols/symbols.js"
+import { Image } from "/src/app/generic/Image.jsx"
 
 import { useAddToHomescreen } from "./add-to-home-screen.hooks.js"
 import { UpdateApplication } from "./UpdateApplication.jsx"

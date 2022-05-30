@@ -1,4 +1,3 @@
-/* eslint-disable import/max-dependencies */
 const cardOneSkullSmallUrl = new URL("./card_small-1skull.png", import.meta.url)
 const cardTwoSkullsSmallUrl = new URL(
   "./card_small-2skulls.png",

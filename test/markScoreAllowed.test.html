@@ -5,18 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.png" />
-    <script type="importmap" src="./test.importmap"></script>
   </head>
 
   <body>
     <script type="module">
       import { assert } from "@jsenv/assert"
 
-      import { useMarkScoreAllowed } from "root/src/app/round/round.selectors.js"
+      import { useMarkScoreAllowed } from "/src/app/round/round.selectors.js"
       import {
         getFirstAnimalsCardFromDeck,
         getFirstChestCardFromDeck,
-      } from "root/test/test.material.js"
+      } from "/test/test.material.js"
 
       // with 3 skulls
       {

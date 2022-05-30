@@ -1,7 +1,7 @@
 import React from "react"
 
-import { Image } from "root/src/app/generic/Image.jsx"
-import { cardToSmallImageUrl } from "root/src/app/cards/cards.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { cardToSmallImageUrl } from "/src/app/cards/cards.js"
 
 const SmallCardForward = ({ card, ...props }, ref) => {
   return (

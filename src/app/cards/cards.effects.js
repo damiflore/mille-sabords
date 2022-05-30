@@ -3,17 +3,17 @@ import React from "react"
 import {
   useCurrentCardId,
   useCurrentCardActivated,
-} from "root/src/app/main.store.js"
-import { useBecomes } from "root/src/app/hooks.js"
+} from "/src/app/main.store.js"
+import { useBecomes } from "/src/app/hooks.js"
 import {
   cardIdToCard,
   isCoinCard,
   isDiamondCard,
-} from "root/src/app/cards/cards.js"
+} from "/src/app/cards/cards.js"
 import {
   useAddExtraCoin,
   useAddExtraDiamond,
-} from "root/src/app/cards/cards.actions.js"
+} from "/src/app/cards/cards.actions.js"
 
 export const CardsEffects = () => {
   useCoinCardEffect()

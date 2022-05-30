@@ -95,7 +95,7 @@
   height: 70px;
   transform: translate(-30px, -50px);
   offset-distance: 100%;
-  offset-rotate: 0deg;  
+  offset-rotate: 0deg;
 }
 
 /* AVATAR */
@@ -193,7 +193,7 @@
 }
 .animation-3skulls .skull-3 {
   opacity: 0;
-  animation: fallToRight 0.7s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;  
+  animation: fallToRight 0.7s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 @keyframes fallToRight {
   0% {
@@ -259,7 +259,7 @@
   justify-content: center;
   transform: translate(-14px, -38px);
   offset-distance: 100%;
-  offset-rotate: 0deg;  
+  offset-rotate: 0deg;
 }
 .animation-symbols .symbol {
   position: absolute;
@@ -267,14 +267,30 @@
   height: 40px;
   opacity: 0;
 }
-.animation-symbols .symbol-1 { animation: popRight 0.7s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-2 { animation: popLeft 0.6s 0.1s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-3 { animation: popRight 0.6s 0.3s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-4 { animation: popLeft 0.7s 0.4s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-5 { animation: popRight 0.7s 0.6s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-6 { animation: popLeft 0.6s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-7 { animation: popRight 0.5s 0.9s cubic-bezier(0.4, 0, 1, 1) forwards; }
-.animation-symbols .symbol-8 { animation: popLeft 0.6s 1.2s cubic-bezier(0.4, 0, 1, 1) forwards; }
+.animation-symbols .symbol-1 {
+  animation: popRight 0.7s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-2 {
+  animation: popLeft 0.6s 0.1s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-3 {
+  animation: popRight 0.6s 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-4 {
+  animation: popLeft 0.7s 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-5 {
+  animation: popRight 0.7s 0.6s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-6 {
+  animation: popLeft 0.6s 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-7 {
+  animation: popRight 0.5s 0.9s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.animation-symbols .symbol-8 {
+  animation: popLeft 0.6s 1.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
 
 @keyframes popRight {
   0% {

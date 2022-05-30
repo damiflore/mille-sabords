@@ -1,6 +1,6 @@
 import React from "react"
 
-import { requestAsapCallback } from "root/src/app/helper/asap.js"
+import { requestAsapCallback } from "/src/app/helper/asap.js"
 
 export const useWaitABit = () => {
   const [waited, waitedSetter] = React.useState(false)

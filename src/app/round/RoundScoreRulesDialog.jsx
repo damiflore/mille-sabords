@@ -1,13 +1,9 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { Image } from "root/src/app/generic/Image.jsx"
+import { Image } from "/src/app/generic/Image.jsx"
 
-import { DialogWood } from "root/src/app/dialog/dialog.wood.jsx"
-import {
-  symbolCoinUrl,
-  symbolDiamondUrl,
-} from "root/src/app/symbols/symbols.js"
+import { DialogWood } from "/src/app/dialog/dialog.wood.jsx"
+import { symbolCoinUrl, symbolDiamondUrl } from "/src/app/symbols/symbols.js"
 
 export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
   return (

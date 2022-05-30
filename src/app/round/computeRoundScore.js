@@ -4,14 +4,14 @@ import {
   SYMBOL_PARROT,
   SYMBOL_MONKEY,
   SYMBOL_SWORD,
-} from "root/src/app/symbols/symbols.js"
+} from "/src/app/symbols/symbols.js"
 import {
   isAnimalsCard,
   isPirateCard,
   isCoinCard,
   isDiamondCard,
   isSwordChallengeCard,
-} from "root/src/app/cards/cards.js"
+} from "/src/app/cards/cards.js"
 
 export const computeRoundScore = ({
   card,

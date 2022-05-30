@@ -1,0 +1,60 @@
+<!--
+
+This scenario is to test
+- escape can be used to close dialog even when it does not have
+focusable elements
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mille sabords</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import React from "react"
+      import ReactDOM from "react-dom"
+      import { DialogBase } from "/src/app/dialog/DialogBase.jsx"
+
+      const App = () => {
+        const [dialogIsOpen, setDialogIsOpen] = React.useState(false)
+
+        const openDialog = () => {
+          setDialogIsOpen(true)
+        }
+
+        const closeDialog = () => {
+          setDialogIsOpen(false)
+        }
+
+        return (
+          <>
+            <button
+              onClick={() => {
+                openDialog()
+              }}
+            >
+              Open dialog
+            </button>
+            <DialogBase
+              className="dialog-spacing-10 dialog-border dialog-spacing-fluid dialog-spacing-top-fixed"
+              isOpen={dialogIsOpen}
+              onRequestClose={closeDialog}
+              trapFocus={true}
+            >
+              Hello world
+            </DialogBase>
+          </>
+        )
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"))
+    </script>
+  </body>
+</html>

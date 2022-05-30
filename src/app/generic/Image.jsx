@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useUrlLoadingNotifier } from "root/src/app/loading/loading.main.jsx"
-import { useImage } from "root/src/app/loading/useImage.js"
+import { useUrlLoadingNotifier } from "/src/app/loading/loading.main.jsx"
+import { useImage } from "/src/app/loading/useImage.js"
 
 import { usePrevious } from "../hooks.js"
 import { useIntersecting } from "./useIntersecting.js"

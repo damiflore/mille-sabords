@@ -1,9 +1,9 @@
 import React from "react"
 
-import { Image } from "root/src/app/generic/Image.jsx"
-import { cardsRules } from "root/src/app/cards/cards-rules.js"
-import { DialogWood } from "root/src/app/dialog/dialog.wood.jsx"
-import { cardToImageUrl } from "root/src/app/cards/cards.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { cardsRules } from "/src/app/cards/cards-rules.js"
+import { DialogWood } from "/src/app/dialog/dialog.wood.jsx"
+import { cardToImageUrl } from "/src/app/cards/cards.js"
 
 export const CardRulesDialog = ({ dialogIsOpen, closeDialog, card }) => {
   const cardRules = cardsRules[card.type]

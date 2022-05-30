@@ -1,18 +1,12 @@
 import React from "react"
 
-import { Image } from "root/src/app/generic/Image.jsx"
-import { usePlayers, useRoundStarted } from "root/src/app/main.store.js"
-import { useCurrentPlayer } from "root/src/app/round/round.selectors.js"
-import { StartPlayerRoundDialog } from "root/src/app/score-board/StartPlayerRoundDialog.jsx"
-import {
-  symbolSkullUrl,
-  symbolToImageUrl,
-} from "root/src/app/symbols/symbols.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { usePlayers, useRoundStarted } from "/src/app/main.store.js"
+import { useCurrentPlayer } from "/src/app/round/round.selectors.js"
+import { StartPlayerRoundDialog } from "/src/app/score-board/StartPlayerRoundDialog.jsx"
+import { symbolSkullUrl, symbolToImageUrl } from "/src/app/symbols/symbols.js"
 
-const winTreasureUrl = new URL(
-  "./win-treasure.png",
-  import.meta.url,
-)
+const winTreasureUrl = new URL("./win-treasure.png", import.meta.url)
 const boarUrl = new URL("./boat.png", import.meta.url)
 const SCORE_MAX = 6000
 

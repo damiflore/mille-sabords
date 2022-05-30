@@ -9,28 +9,28 @@ import {
   useWitchCardEffectUsed,
   useScoreMarked,
   useCurrentCardId,
-} from "root/src/app/main.store.js"
-import { cardIdToCard, isWitchCard } from "root/src/app/cards/cards.js"
+} from "/src/app/main.store.js"
+import { cardIdToCard, isWitchCard } from "/src/app/cards/cards.js"
 import {
   rectangleRelativeToDomNode,
   findDomNodeClosestToRectangle,
   rectangleAbsoluteToDomNode,
   getDomNodeRectangle,
   domNodeCollidesWithRectangle,
-} from "root/src/app/dom/dom.position.js"
+} from "/src/app/dom/dom.position.js"
 import {
   useThreeSkullsOrMore,
   useHasDicesToCurse,
-} from "root/src/app/round/round.selectors.js"
-import { Dice } from "root/src/app/dices/Dice.jsx"
-import { diceIsOnSkull } from "root/src/app/dices/dices.js"
+} from "/src/app/round/round.selectors.js"
+import { Dice } from "/src/app/dices/Dice.jsx"
+import { diceIsOnSkull } from "/src/app/dices/dices.js"
 import {
   useSetDiceRolledAreaPosition,
   useKeepDice,
   useUnkeepDice,
   useSetDiceChestSlot,
   useUncurseDice,
-} from "root/src/app/dices/dices.actions.js"
+} from "/src/app/dices/dices.actions.js"
 
 export const DiceContainer = ({
   offscreenDomNode,

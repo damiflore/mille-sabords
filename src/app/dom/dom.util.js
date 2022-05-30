@@ -30,7 +30,10 @@ export const isFocusable = (node) => {
     return isVisible(node)
   }
 
-  if (["button", "select", "datalist", "iframe", "textarea"].indexOf(nodeName) > -1) {
+  if (
+    ["button", "select", "datalist", "iframe", "textarea"].indexOf(nodeName) >
+    -1
+  ) {
     return isVisible(node)
   }
 
@@ -82,11 +85,14 @@ export const isVisible = (node) => {
 }
 
 // https://github.com/davidtheclark/tabbable/blob/master/index.js
-export const isDocumentElement = (node) => node === node.ownerDocument.documentElement
+export const isDocumentElement = (node) =>
+  node === node.ownerDocument.documentElement
 
-export const getStyle = (element) => elementToOwnerWindow(element).getComputedStyle(element)
+export const getStyle = (element) =>
+  elementToOwnerWindow(element).getComputedStyle(element)
 
-export const getStyleValue = (element, name) => getStyle(element).getPropertyValue(name)
+export const getStyleValue = (element, name) =>
+  getStyle(element).getPropertyValue(name)
 
 /**
  * elementToOwnerWindow returns the window owning the element.
@@ -142,7 +148,9 @@ export const elementToOwnerIframe = (element) => {
 
   const parentDocument = elementOwnerWindow.parent.document
   return Array.from(parentDocument.querySelectorAll("iframe")).find(
-    (iframe) => iframeIsFriendly(iframe) && iframe.contentWindow.document.contains(element),
+    (iframe) =>
+      iframeIsFriendly(iframe) &&
+      iframe.contentWindow.document.contains(element),
   )
 }
 

@@ -1,17 +1,16 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { RoundEffects } from "root/src/app/round/round.effects.js"
-import { CardsEffects } from "root/src/app/cards/cards.effects.js"
-import { DiceOnGoing } from "root/src/app/dice-ongoing/DiceOnGoing.jsx"
-import { Chest } from "root/src/app/chest/chest.component.jsx"
-import { Header } from "root/src/app/header/Header.jsx"
-import { Footer } from "root/src/app/footer/Footer.jsx"
-import { SkullIsland } from "root/src/app/skull-island/SkullIsland.jsx"
-import { DiceContainer } from "root/src/app/dices/DiceContainer.jsx"
-import { useSignal } from "root/src/app/helper/signal.js"
-import { DrawCardDialog } from "root/src/app/footer/DrawCardDialog.jsx"
-import { useCurrentCardActivated } from "root/src/app/main.store.js"
+import { RoundEffects } from "/src/app/round/round.effects.js"
+import { CardsEffects } from "/src/app/cards/cards.effects.js"
+import { DiceOnGoing } from "/src/app/dice-ongoing/DiceOnGoing.jsx"
+import { Chest } from "/src/app/chest/chest.component.jsx"
+import { Header } from "/src/app/header/Header.jsx"
+import { Footer } from "/src/app/footer/Footer.jsx"
+import { SkullIsland } from "/src/app/skull-island/SkullIsland.jsx"
+import { DiceContainer } from "/src/app/dices/DiceContainer.jsx"
+import { useSignal } from "/src/app/helper/signal.js"
+import { DrawCardDialog } from "/src/app/footer/DrawCardDialog.jsx"
+import { useCurrentCardActivated } from "/src/app/main.store.js"
 
 export const Round = ({ openScoreboard, onRoundStart, onRoundOver }) => {
   const currentCardActivated = useCurrentCardActivated()

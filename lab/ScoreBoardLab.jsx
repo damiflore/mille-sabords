@@ -4,7 +4,7 @@ import {
   createAction,
   usePlayers,
   useCurrentPlayerId,
-} from "root/src/app/main.store.js"
+} from "/src/app/main.store.js"
 
 export const ScoreBoardLab = ({ playerAnimationEmitter }) => {
   const players = usePlayers()

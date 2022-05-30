@@ -1,14 +1,13 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useUpdateEffect } from "root/src/app/hooks.js"
+import { useUpdateEffect } from "/src/app/hooks.js"
 import {
   useChestSlots,
   useDices,
   useCurrentCardId,
-} from "root/src/app/main.store.js"
-import { chestSlotContentToSymbol } from "root/src/app/chest/chest.util.js"
-import { cardIdToCard, isAnimalsCard } from "root/src/app/cards/cards.js"
+} from "/src/app/main.store.js"
+import { chestSlotContentToSymbol } from "/src/app/chest/chest.util.js"
+import { cardIdToCard, isAnimalsCard } from "/src/app/cards/cards.js"
 import {
   symbolIsCoin,
   symbolIsDiamond,
@@ -17,9 +16,9 @@ import {
   SYMBOLS,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
-} from "root/src/app/symbols/symbols.js"
-import { getScoreAndPerfectBonus } from "root/src/app/round/computeRoundScore.js"
-import { useSwordChallengeOnGoing } from "root/src/app/round/round.selectors.js"
+} from "/src/app/symbols/symbols.js"
+import { getScoreAndPerfectBonus } from "/src/app/round/computeRoundScore.js"
+import { useSwordChallengeOnGoing } from "/src/app/round/round.selectors.js"
 
 export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
   useCoinEffect({ addScoreParticle })

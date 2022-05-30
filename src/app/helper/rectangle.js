@@ -2,7 +2,10 @@
 
 import { getDistanceBetweenTwoPoints } from "./geometry.js"
 
-export const rectangleCollidesWithRectangle = (firstRectangle, secondRectangle) => {
+export const rectangleCollidesWithRectangle = (
+  firstRectangle,
+  secondRectangle,
+) => {
   // first left of second
   if (firstRectangle.right <= secondRectangle.left) return false
   // first right of second
@@ -63,8 +66,14 @@ export const rectangleRelativeTo = (rectangle, parentRectangle) => {
   }
 }
 
-export const findRectangleCloserToRectangle = (rectangleCandidates, rectangle) => {
-  let smallestDistance = getDistanceBetweenRectangles(rectangle, rectangleCandidates[0])
+export const findRectangleCloserToRectangle = (
+  rectangleCandidates,
+  rectangle,
+) => {
+  let smallestDistance = getDistanceBetweenRectangles(
+    rectangle,
+    rectangleCandidates[0],
+  )
   return rectangleCandidates.reduce((prev, rectangleCandidate) => {
     const distance = getDistanceBetweenRectangles(rectangle, rectangleCandidate)
     if (distance < smallestDistance) {
@@ -91,21 +100,36 @@ export const getRectangleCenterPoint = ({ left, right, top, bottom }) => {
 const getDistanceBetweenRectangles = (firstRectangle, secondRectangle) => {
   const firstRectangleCenterPoint = getRectangleCenterPoint(firstRectangle)
   const secondRectangleCenterPoint = getRectangleCenterPoint(secondRectangle)
-  return getDistanceBetweenTwoPoints(firstRectangleCenterPoint, secondRectangleCenterPoint)
+  return getDistanceBetweenTwoPoints(
+    firstRectangleCenterPoint,
+    secondRectangleCenterPoint,
+  )
 }
 
-export const getRectangleIntersectionRatio = (firstRectangle, secondRectangle) => {
+export const getRectangleIntersectionRatio = (
+  firstRectangle,
+  secondRectangle,
+) => {
   const firstRectangleArea = getRectangleArea(firstRectangle)
-  const overlapArea = getRectangleArea(rectangleOverlapping(firstRectangle, secondRectangle))
+  const overlapArea = getRectangleArea(
+    rectangleOverlapping(firstRectangle, secondRectangle),
+  )
   return firstRectangleArea / overlapArea
 }
 
-export const rectangleOverlapping = ({ left, right, top, bottom }, intersectingRectangle) => {
+export const rectangleOverlapping = (
+  { left, right, top, bottom },
+  intersectingRectangle,
+) => {
   const overlapRectangle = {
     left: left < intersectingRectangle.left ? intersectingRectangle.left : left,
-    right: right < intersectingRectangle.right ? right : intersectingRectangle.right,
+    right:
+      right < intersectingRectangle.right ? right : intersectingRectangle.right,
     top: top < intersectingRectangle.top ? intersectingRectangle.top : top,
-    bottom: bottom < intersectingRectangle.bottom ? bottom : intersectingRectangle.bottom,
+    bottom:
+      bottom < intersectingRectangle.bottom
+        ? bottom
+        : intersectingRectangle.bottom,
   }
   return overlapRectangle
 }

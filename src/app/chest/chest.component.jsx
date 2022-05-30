@@ -1,15 +1,14 @@
-/* eslint-disable import/max-dependencies */
 import React from "react"
 
-import { useSignalState } from "root/src/app/helper/signal.js"
-import { useCurrentCardId, useChestSlots } from "root/src/app/main.store.js"
-import { Image } from "root/src/app/generic/Image.jsx"
-import { useThreeSkullsOrMoreInCursedArea } from "root/src/app/round/round.selectors.js"
+import { useSignalState } from "/src/app/helper/signal.js"
+import { useCurrentCardId, useChestSlots } from "/src/app/main.store.js"
+import { Image } from "/src/app/generic/Image.jsx"
+import { useThreeSkullsOrMoreInCursedArea } from "/src/app/round/round.selectors.js"
 
-import { symbolToImageUrl } from "root/src/app/symbols/symbols.js"
-import { cardIdToCard, isChestCard } from "root/src/app/cards/cards.js"
-import { RoundScore } from "root/src/app/round/RoundScore.jsx"
-import { diceSize } from "root/src/app/dices/dicePosition.js"
+import { symbolToImageUrl } from "/src/app/symbols/symbols.js"
+import { cardIdToCard, isChestCard } from "/src/app/cards/cards.js"
+import { RoundScore } from "/src/app/round/RoundScore.jsx"
+import { diceSize } from "/src/app/dices/dicePosition.js"
 
 const cursedGridImageUrl = new URL("./cursed-grid.png", import.meta.url)
 

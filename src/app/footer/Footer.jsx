@@ -3,8 +3,8 @@ import React from "react"
 import {
   useMarkScore,
   useEndPlayerRound,
-} from "root/src/app/round/round.actions.js"
-import { Image } from "root/src/app/generic/Image.jsx"
+} from "/src/app/round/round.actions.js"
+import { Image } from "/src/app/generic/Image.jsx"
 import {
   useMarkScoreAllowed,
   useMarkScoreButtonVisible,
@@ -13,8 +13,8 @@ import {
   useThreeSkullsOrMoreInCursedArea,
   useSwordChallengeOnGoing,
   useSymbolsInChest,
-} from "root/src/app/round/round.selectors.js"
-import { symbolSkullUrl } from "root/src/app/symbols/symbols.js"
+} from "/src/app/round/round.selectors.js"
+import { symbolSkullUrl } from "/src/app/symbols/symbols.js"
 
 import { ButtonRoll } from "./ButtonRoll.jsx"
 
