@@ -54,7 +54,7 @@
     "@jsenv/https-local": "1.0.8",
     "@jsenv/lighthouse-impact": "2.1.11",
     "@jsenv/performance-impact": "2.2.11",
-    "@jsenv/plugin-react": "0.0.9",
+    "@jsenv/plugin-react": "0.3.9",
     "eslint": "8.16.0",
     "eslint-plugin-html": "6.2.0",
     "eslint-plugin-import": "2.26.0",
