@@ -1,1 +1,128 @@
-.dialog--root{outline:0;flex-direction:column;display:flex;position:absolute;top:0;bottom:0;left:0;right:0}.dialog--backdrop{background-color:#00000075;position:fixed;top:0;bottom:0;left:0;right:0}.dialog--document{min-height:0;flex-direction:column;flex-grow:1;margin:0;display:flex;position:relative}.dialog--insert-top,.dialog--insert-left,.dialog--main,.dialog--insert-right,.dialog--insert-bottom{position:relative}.dialog--insert-left,.dialog--insert-right{overflow:hidden}.dialog--main{min-height:0;flex-direction:row;flex-grow:1;display:flex}.dialog--scrollable-content{color:#000;overscroll-behavior:contain;background:#fff;flex-grow:1;padding:1em;overflow:auto}.dialog-spacing-10.dialog--root{top:10%;bottom:10%;left:10%;right:10%}.dialog-spacing-20.dialog--root{top:20%;bottom:20%;left:20%;right:20%}.dialog-spacing-fluid .dialog--document{flex-grow:0;margin:auto}.dialog-spacing-left-fluid .dialog--document{margin-left:auto}.dialog-spacing-right-fluid .dialog--document{margin-right:auto}.dialog-spacing-top-fluid .dialog--document{margin-top:auto}.dialog-spacing-bottom-fluid .dialog--document{flex-grow:0;margin-bottom:auto}.dialog-spacing-left-fixed .dialog--document{margin-left:0}.dialog-spacing-right-fixed .dialog--document{margin-right:0}.dialog-spacing-top-fixed .dialog--document{margin-top:0}.dialog-spacing-bottom-fixed .dialog--document{flex-grow:1;margin-bottom:0}.dialog-border .dialog--insert-top,.dialog-border .dialog--scrollable-content,.dialog-border .dialog--insert-bottom{border:3px solid #000;border-radius:.3em}.dialog-border .dialog--insert-top{border-bottom-width:0;border-bottom-left-radius:0;border-bottom-right-radius:0}.dialog-border .dialog--scrollable-content{border-top-width:0;border-bottom-width:0;border-radius:0}.dialog-border .dialog--insert-bottom{border-top-width:0;border-top-left-radius:0;border-top-right-radius:0}
+.dialog--root {
+  outline: none;
+  flex-direction: column;
+  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.dialog--backdrop {
+  background-color: #00000075;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.dialog--document {
+  min-height: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 0;
+  display: flex;
+  position: relative;
+}
+
+.dialog--insert-top, .dialog--insert-left, .dialog--main, .dialog--insert-right, .dialog--insert-bottom {
+  position: relative;
+}
+
+.dialog--insert-left, .dialog--insert-right {
+  overflow: hidden;
+}
+
+.dialog--main {
+  min-height: 0;
+  flex-direction: row;
+  flex-grow: 1;
+  display: flex;
+}
+
+.dialog--scrollable-content {
+  color: #000;
+  overscroll-behavior: contain;
+  background: #fff;
+  flex-grow: 1;
+  padding: 1em;
+  overflow: auto;
+}
+
+.dialog-spacing-10.dialog--root {
+  top: 10%;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+}
+
+.dialog-spacing-20.dialog--root {
+  top: 20%;
+  bottom: 20%;
+  left: 20%;
+  right: 20%;
+}
+
+.dialog-spacing-fluid .dialog--document {
+  flex-grow: 0;
+  margin: auto;
+}
+
+.dialog-spacing-left-fluid .dialog--document {
+  margin-left: auto;
+}
+
+.dialog-spacing-right-fluid .dialog--document {
+  margin-right: auto;
+}
+
+.dialog-spacing-top-fluid .dialog--document {
+  margin-top: auto;
+}
+
+.dialog-spacing-bottom-fluid .dialog--document {
+  flex-grow: 0;
+  margin-bottom: auto;
+}
+
+.dialog-spacing-left-fixed .dialog--document {
+  margin-left: 0;
+}
+
+.dialog-spacing-right-fixed .dialog--document {
+  margin-right: 0;
+}
+
+.dialog-spacing-top-fixed .dialog--document {
+  margin-top: 0;
+}
+
+.dialog-spacing-bottom-fixed .dialog--document {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+.dialog-border .dialog--insert-top, .dialog-border .dialog--scrollable-content, .dialog-border .dialog--insert-bottom {
+  border: 3px solid #000;
+  border-radius: .3em;
+}
+
+.dialog-border .dialog--insert-top {
+  border-bottom-width: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dialog-border .dialog--scrollable-content {
+  border-top-width: 0;
+  border-bottom-width: 0;
+  border-radius: 0;
+}
+
+.dialog-border .dialog--insert-bottom {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
