@@ -7,7 +7,7 @@ export const loadApp = async ({ appNode }) => {
     appLoaderStylesheet,
   ]
   const appJsPromise = loadAppJs()
-  const appCssPromise = loadAppCss(new URL("/src/app/app.css", import.meta.url))
+  const appCssPromise = loadAppCss(new URL("/app/app.css", import.meta.url))
 
   const app = await appJsPromise
   performance.measure(`rendering app`)
@@ -34,7 +34,7 @@ export const loadApp = async ({ appNode }) => {
 }
 
 const loadAppJs = async () => {
-  const app = await import("/src/app/app.jsx")
+  const app = await import("/app/app.jsx")
   performance.measure("app.js ready")
   return app
 }

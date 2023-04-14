@@ -1,28 +1,18 @@
-import { executeTestPlan, chromium, defaultCoverageConfig } from "@jsenv/core"
-
-import { rootDirectoryUrl, plugins } from "../../jsenv.config.mjs"
+import { executeTestPlan, chromium } from "@jsenv/core"
 
 await executeTestPlan({
-  rootDirectoryUrl,
-  plugins,
+  rootDirectoryUrl: new URL("../", import.meta.url),
   testPlan: {
     "./src/**/*.test.html": {
-      browser: {
+      chromium: {
         runtime: chromium,
-        allocatedMs: 60 * 1000,
-      },
-    },
-    "./test/**/*.test.html": {
-      browser: {
-        runtime: chromium,
-        allocatedMs: 60 * 1000,
+        allocatedMs: 60_000,
       },
     },
   },
-  coverage: process.argv.includes("--coverage"),
-  coverageJsonFileRelativeUrl: "coverage/coverage.json",
-  coverageConfig: {
-    ...defaultCoverageConfig,
-    "./src/**/*.jsx": true,
+  webServer: {
+    origin: "http://localhost:3472",
+    moduleUrl: new URL("./dev.mjs", import.meta.url),
   },
+  coverageEnabled: process.argv.includes("--coverage"),
 })
