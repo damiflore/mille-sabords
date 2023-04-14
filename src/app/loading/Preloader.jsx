@@ -1,8 +1,8 @@
 import React from "react"
 
-import { serviceWorkerScript } from "/src/service_worker_script.js"
-import { cardDefaultUrl, cardImageUrlMap } from "/src/app/cards/cards.js"
-import { preloadImages } from "/src/app/loading/preloadImages.js"
+import { swFacade } from "/service_worker_facade.js"
+import { cardDefaultUrl, cardImageUrlMap } from "/app/cards/cards.js"
+import { preloadImages } from "/app/loading/preloadImages.js"
 
 import { useWaitABit } from "./loading.hooks.js"
 
@@ -27,13 +27,10 @@ export const Preloader = () => {
   const waited = useWaitABit()
 
   React.useEffect(() => {
-    if (waited && serviceWorkerScript) {
-      serviceWorkerScript.setRegistrationPromise(
+    if (waited && swFacade) {
+      swFacade.setRegistrationPromise(
         window.navigator.serviceWorker.register(
-          new URL("/src/service_worker.js", import.meta.url),
-          {
-            type: "module",
-          },
+          new URL("/service_worker.js", import.meta.url),
         ),
       )
     }

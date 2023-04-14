@@ -4,12 +4,15 @@
  * Read more in https://github.com/jsenv/pwa/blob/master/docs/jsenv-service-worker.md#configuration
  */
 
-/* globals self */
+/* eslint-env serviceworker */
+/* globals __BASE__ */
 
-import "@jsenv/pwa/src/jsenv_service_worker.js"
+self.importScripts("@jsenv/service-worker/src/jsenv_service_worker.js")
 
-self.initJsenvServiceWorker({
-  cachePrefix: "mille-sabords",
-  // logLevel:  "debug",
-  urlsConfig: self.serviceWorkerUrls || {},
+self.__sw__.init({
+  name: "mille-sabords",
+  resources: {
+    [__BASE__]: {},
+    ...(self.resourcesFromJsenvBuild || {}),
+  },
 })
