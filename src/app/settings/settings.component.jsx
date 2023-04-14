@@ -14,7 +14,7 @@ import { CloseIcon } from "/app/dialog/CloseIcon.jsx"
 import { symbolMonkeyUrl } from "/app/symbols/symbols.js"
 import { Image } from "/app/generic/Image.jsx"
 
-import { useAddToHomescreen } from "./add-to-home-screen.hooks.js"
+import { useAddToHomescreen } from "./add_to_home_screen_hooks.js"
 import { UpdateApplication } from "./UpdateApplication.jsx"
 
 const settingsCssUrl = new URL("./settings.css", import.meta.url)

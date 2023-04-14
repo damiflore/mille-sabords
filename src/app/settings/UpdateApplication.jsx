@@ -26,7 +26,11 @@ const ServiceWorkerView = ({ checkOnOpen = true, settingsDialogIsOpen }) => {
   return (
     <fieldset style={{ minHeight: "4em" }}>
       <legend>Mise a jour</legend>
-      {update ? <UpdateAvailable update={update} /> : <UpdateNotAvailable />}
+      {update.readyState ? (
+        <UpdateAvailable update={update} />
+      ) : (
+        <UpdateNotAvailable />
+      )}
     </fieldset>
   )
 }

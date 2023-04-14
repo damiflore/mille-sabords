@@ -9,11 +9,11 @@ export const useAddToHomescreen = () => {
 
 const useAddToHomescreenAvailable = () => {
   const [addToHomescreenAvailable, addToHomescreenAvailableSetter] =
-    React.useState()
+    React.useState(addToHomescreen.availableRef.current)
 
   React.useEffect(() => {
-    return addToHomescreen.listenAvailabilityChange(() => {
-      addToHomescreenAvailableSetter(addToHomescreen.isAvailable())
+    return addToHomescreen.availableRef.subscribe(() => {
+      addToHomescreenAvailableSetter(addToHomescreen.availableRef.current)
     })
   }, [])
 

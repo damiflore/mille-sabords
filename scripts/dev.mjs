@@ -3,6 +3,7 @@
  * https://github.com/jsenv/jsenv-core/tree/master/docs/dev_server#jsenv-dev-server
  */
 
+import openUrl from "open"
 import { startDevServer } from "@jsenv/core"
 import { requestCertificate } from "@jsenv/https-local"
 import { jsenvPluginReact } from "@jsenv/plugin-react"
@@ -29,3 +30,7 @@ export const devServer = await startDevServer({
     },
   },
 })
+
+if (process.argv.includes("--open")) {
+  openUrl(`${devServer.origin}/main.html`)
+}

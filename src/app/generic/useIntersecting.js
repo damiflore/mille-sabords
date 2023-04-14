@@ -7,10 +7,10 @@ export const useIntersecting = ({ root, rootMargin, threshold = 0 }) => {
   React.useEffect(() => {
     const domNode = domNodeRef.current
     if (!domNode) {
-      return null
+      return undefined
     }
     if (isIntersecting) {
-      return null
+      return undefined
     }
 
     // https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API

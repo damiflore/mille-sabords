@@ -12,7 +12,7 @@ self.importScripts("@jsenv/service-worker/src/jsenv_service_worker.js")
 self.__sw__.init({
   name: "mille-sabords",
   resources: {
-    [__BASE__]: {},
+    [typeof __BASE__ === "string" ? __BASE__ : "/main.html"]: {},
     ...(self.resourcesFromJsenvBuild || {}),
   },
 })

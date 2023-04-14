@@ -1,12 +1,13 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 import { ContextProvider } from "/app/main.context.jsx"
 import { Main } from "/app/main.component.jsx"
 
 export const createMilleSabordGame = ({ into, onLoadProgress }) => {
   return new Promise((resolve, reject) => {
-    ReactDOM.render(
+    const root = createRoot(into)
+    root.render(
       <ContextProvider>
         <Main
           rootNode={into}
@@ -15,7 +16,6 @@ export const createMilleSabordGame = ({ into, onLoadProgress }) => {
           onReady={resolve}
         />
       </ContextProvider>,
-      into,
     )
   })
 }
