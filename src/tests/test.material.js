@@ -5,7 +5,7 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "/src/app/symbols/symbols.js"
+} from "/app/symbols/symbols.js"
 import {
   cardIds,
   cardIdToCard,
@@ -14,7 +14,7 @@ import {
   isCoinCard,
   isPirateCard,
   isTwoSwordsChallengeCard,
-} from "/src/app/cards/cards.js"
+} from "/app/cards/cards.js"
 
 export const getFirstAnimalsCardFromDeck = () =>
   getFirstCardFromDeckMatching(isAnimalsCard)

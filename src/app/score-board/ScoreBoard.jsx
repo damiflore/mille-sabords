@@ -1,10 +1,10 @@
 import React from "react"
 
-import { Image } from "/src/app/generic/Image.jsx"
-import { usePlayers, useRoundStarted } from "/src/app/main.store.js"
-import { useCurrentPlayer } from "/src/app/round/round.selectors.js"
-import { StartPlayerRoundDialog } from "/src/app/score-board/StartPlayerRoundDialog.jsx"
-import { symbolSkullUrl, symbolToImageUrl } from "/src/app/symbols/symbols.js"
+import { Image } from "/app/generic/Image.jsx"
+import { usePlayers, useRoundStarted } from "/app/main.store.js"
+import { useCurrentPlayer } from "/app/round/round.selectors.js"
+import { StartPlayerRoundDialog } from "/app/score-board/StartPlayerRoundDialog.jsx"
+import { symbolSkullUrl, symbolToImageUrl } from "/app/symbols/symbols.js"
 
 const winTreasureUrl = new URL("./win-treasure.png", import.meta.url)
 const boarUrl = new URL("./boat.png", import.meta.url)

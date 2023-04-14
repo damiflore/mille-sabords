@@ -5,15 +5,15 @@
 
 import React from "react"
 
-import { nextIDLEPromise } from "/src/app/helper/asap.js"
-import { catchError } from "/src/app/error/error.main.jsx"
+import { nextIDLEPromise } from "/app/helper/asap.js"
+import { catchError } from "/app/error/error.main.jsx"
 import {
   UrlLoadingProvider,
   useUrlTrackerTotalCount,
   useUrlTrackerLoadedCount,
-} from "/src/app/loading/loading.main.jsx"
-import { useWaitABit } from "/src/app/loading/loading.hooks.js"
-import { Preloader } from "/src/app/loading/Preloader.jsx"
+} from "/app/loading/loading.main.jsx"
+import { useWaitABit } from "/app/loading/loading.hooks.js"
+import { Preloader } from "/app/loading/Preloader.jsx"
 
 const MainRaw = ({ error, onError, ...props }) => {
   if (error) {

@@ -1,18 +1,15 @@
 import React from "react"
 
-import { Image } from "/src/app/generic/Image.jsx"
-import {
-  useCurrentCardId,
-  useCurrentCardActivated,
-} from "/src/app/main.store.js"
+import { Image } from "/app/generic/Image.jsx"
+import { useCurrentCardId, useCurrentCardActivated } from "/app/main.store.js"
 import {
   cardIdToCard,
   isOneSkullCard,
   isTwoSkullsCard,
   isWitchCard,
-} from "/src/app/cards/cards.js"
-import { diceSize } from "/src/app/dices/dicePosition.js"
-import { symbolSkullUrl } from "/src/app/symbols/symbols.js"
+} from "/app/cards/cards.js"
+import { diceSize } from "/app/dices/dicePosition.js"
+import { symbolSkullUrl } from "/app/symbols/symbols.js"
 
 const wichLabelImageUrl = new URL("./witch-label.png", import.meta.url)
 

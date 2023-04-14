@@ -1,4 +1,4 @@
-import { diceToVisibleSymbol } from "/src/app/dices/dices.js"
+import { diceToVisibleSymbol } from "/app/dices/dices.js"
 
 export const chestSlotContentToSymbol = (chestSlotContent, dices) => {
   if (chestSlotContent && chestSlotContent.type === "symbol") {

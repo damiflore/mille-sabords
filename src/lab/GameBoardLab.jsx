@@ -6,9 +6,9 @@ import {
   useDiceCursedIds,
   useChestSlots,
   createAction,
-} from "/src/app/main.store.js"
-import { Image } from "/src/app/generic/Image.jsx"
-import { useDiceDomNode } from "/src/app/dom/dom.main.jsx"
+} from "/app/main.store.js"
+import { Image } from "/app/generic/Image.jsx"
+import { useDiceDomNode } from "/app/dom/dom.main.jsx"
 import {
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
@@ -16,13 +16,10 @@ import {
   SYMBOL_PARROT,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "/src/app/symbols/symbols.js"
-import { faces } from "/src/app/dices/dices.js"
-import {
-  useResetRound,
-  useEndPlayerRound,
-} from "/src/app/round/round.actions.js"
-import { useUncurseDice } from "/src/app/dices/dices.actions.js"
+} from "/app/symbols/symbols.js"
+import { faces } from "/app/dices/dices.js"
+import { useResetRound, useEndPlayerRound } from "/app/round/round.actions.js"
+import { useUncurseDice } from "/app/dices/dices.actions.js"
 
 export const GameBoardLab = () => {
   const dices = useDices()

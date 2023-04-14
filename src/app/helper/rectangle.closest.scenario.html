@@ -56,11 +56,11 @@
     </div>
 
     <script type="module">
-      import { enableDragGesture } from "/src/app/drag/drag.js"
+      import { enableDragGesture } from "/app/drag/drag.js"
       import {
         findDomNodeClosestToRectangle,
         getDomNodeRectangle,
-      } from "/src/app/dom/dom.position.js"
+      } from "/app/dom/dom.position.js"
 
       const draggableNode = document.getElementById("draggable")
       enableDragGesture(draggableNode, {

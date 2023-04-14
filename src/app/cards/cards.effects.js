@@ -1,19 +1,12 @@
 import React from "react"
 
-import {
-  useCurrentCardId,
-  useCurrentCardActivated,
-} from "/src/app/main.store.js"
-import { useBecomes } from "/src/app/hooks.js"
-import {
-  cardIdToCard,
-  isCoinCard,
-  isDiamondCard,
-} from "/src/app/cards/cards.js"
+import { useCurrentCardId, useCurrentCardActivated } from "/app/main.store.js"
+import { useBecomes } from "/app/hooks.js"
+import { cardIdToCard, isCoinCard, isDiamondCard } from "/app/cards/cards.js"
 import {
   useAddExtraCoin,
   useAddExtraDiamond,
-} from "/src/app/cards/cards.actions.js"
+} from "/app/cards/cards.actions.js"
 
 export const CardsEffects = () => {
   useCoinCardEffect()

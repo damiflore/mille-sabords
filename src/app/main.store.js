@@ -1,8 +1,8 @@
 import { createLogger } from "@jsenv/logger"
 
-import { createStructuredStateStore } from "/src/app/store/createStructuredStateStore.jsx"
-import { cardIds } from "/src/app/cards/cards.js"
-import { DICES } from "/src/app/dices/dices.js"
+import { createStructuredStateStore } from "/app/store/createStructuredStateStore.jsx"
+import { cardIds } from "/app/cards/cards.js"
+import { DICES } from "/app/dices/dices.js"
 
 export const defaultState = {
   animationsDisabled: false,

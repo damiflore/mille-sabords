@@ -1,6 +1,6 @@
 import React from "react"
 
-import { addDomEventListener } from "/src/app/dom/dom.util.js"
+import { addDomEventListener } from "/app/dom/dom.util.js"
 
 const UrlLoadingContext = React.createContext()
 const reducer = (state, action) => action(state)

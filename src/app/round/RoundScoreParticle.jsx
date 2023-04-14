@@ -1,8 +1,8 @@
 import React from "react"
 
-import { getDomNodeRectangle } from "/src/app/dom/dom.position.js"
-import { getRectangleCenterPoint } from "/src/app/helper/rectangle.js"
-import { symbolToImageUrl } from "/src/app/symbols/symbols.js"
+import { getDomNodeRectangle } from "/app/dom/dom.position.js"
+import { getRectangleCenterPoint } from "/app/helper/rectangle.js"
+import { symbolToImageUrl } from "/app/symbols/symbols.js"
 
 export const RoundScoreParticle = ({
   totalScoreDomNodeRef,

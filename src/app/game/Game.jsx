@@ -5,11 +5,11 @@ import {
   useGameStarted,
   useRoundStarted,
   useCurrentPlayerId,
-} from "/src/app/main.store.js"
-import { Round } from "/src/app/round/Round.jsx"
-import { ScoreBoard } from "/src/app/score-board/ScoreBoard.jsx"
-import { GameConfiguration } from "/src/app/game/GameConfiguration.jsx"
-import { CharacterSelection } from "/src/app/game/CharacterSelection.jsx"
+} from "/app/main.store.js"
+import { Round } from "/app/round/Round.jsx"
+import { ScoreBoard } from "/app/score-board/ScoreBoard.jsx"
+import { GameConfiguration } from "/app/game/GameConfiguration.jsx"
+import { CharacterSelection } from "/app/game/CharacterSelection.jsx"
 
 export const Game = ({ playerAnimationListener }) => {
   const players = usePlayers()

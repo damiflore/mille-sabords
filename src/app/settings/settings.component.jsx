@@ -1,18 +1,18 @@
 import React from "react"
 
-import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
-import { Dialog, useDialogState } from "/src/app/dialog/dialog.component.jsx"
-import { useAnimationsDisabled, useSoundDisabled } from "/src/app/main.store.js"
+import { Stylesheet } from "/app/generic/Stylesheet.jsx"
+import { Dialog, useDialogState } from "/app/dialog/dialog.component.jsx"
+import { useAnimationsDisabled, useSoundDisabled } from "/app/main.store.js"
 import {
   useDisableAnimations,
   useEnableAnimations,
   useDisableSound,
   useEnableSound,
   useCancelGame,
-} from "/src/app/main.actions.js"
-import { CloseIcon } from "/src/app/dialog/CloseIcon.jsx"
-import { symbolMonkeyUrl } from "/src/app/symbols/symbols.js"
-import { Image } from "/src/app/generic/Image.jsx"
+} from "/app/main.actions.js"
+import { CloseIcon } from "/app/dialog/CloseIcon.jsx"
+import { symbolMonkeyUrl } from "/app/symbols/symbols.js"
+import { Image } from "/app/generic/Image.jsx"
 
 import { useAddToHomescreen } from "./add-to-home-screen.hooks.js"
 import { UpdateApplication } from "./UpdateApplication.jsx"

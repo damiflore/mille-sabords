@@ -1,9 +1,9 @@
 import React from "react"
 
-import { Image } from "/src/app/generic/Image.jsx"
+import { Image } from "/app/generic/Image.jsx"
 
-import { DialogWood } from "/src/app/dialog/dialog.wood.jsx"
-import { symbolCoinUrl, symbolDiamondUrl } from "/src/app/symbols/symbols.js"
+import { DialogWood } from "/app/dialog/dialog.wood.jsx"
+import { symbolCoinUrl, symbolDiamondUrl } from "/app/symbols/symbols.js"
 
 export const RoundScoreRulesDialog = ({ dialogIsOpen, closeDialog }) => {
   return (

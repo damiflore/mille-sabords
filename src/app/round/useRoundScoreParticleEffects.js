@@ -1,13 +1,9 @@
 import React from "react"
 
-import { useUpdateEffect } from "/src/app/hooks.js"
-import {
-  useChestSlots,
-  useDices,
-  useCurrentCardId,
-} from "/src/app/main.store.js"
-import { chestSlotContentToSymbol } from "/src/app/chest/chest.util.js"
-import { cardIdToCard, isAnimalsCard } from "/src/app/cards/cards.js"
+import { useUpdateEffect } from "/app/hooks.js"
+import { useChestSlots, useDices, useCurrentCardId } from "/app/main.store.js"
+import { chestSlotContentToSymbol } from "/app/chest/chest.util.js"
+import { cardIdToCard, isAnimalsCard } from "/app/cards/cards.js"
 import {
   symbolIsCoin,
   symbolIsDiamond,
@@ -16,9 +12,9 @@ import {
   SYMBOLS,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
-} from "/src/app/symbols/symbols.js"
-import { getScoreAndPerfectBonus } from "/src/app/round/computeRoundScore.js"
-import { useSwordChallengeOnGoing } from "/src/app/round/round.selectors.js"
+} from "/app/symbols/symbols.js"
+import { getScoreAndPerfectBonus } from "/app/round/computeRoundScore.js"
+import { useSwordChallengeOnGoing } from "/app/round/round.selectors.js"
 
 export const useRoundScoreParticleEffects = ({ addScoreParticle }) => {
   useCoinEffect({ addScoreParticle })

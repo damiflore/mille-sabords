@@ -1,22 +1,22 @@
 import React from "react"
 
-import { usePrevious } from "/src/app/hooks.js"
-import { Portal } from "/src/app/generic/Portal.jsx"
+import { usePrevious } from "/app/hooks.js"
+import { Portal } from "/app/generic/Portal.jsx"
 import {
   rectangleToRectangleInsideDomNode,
   printPointInDocument,
-} from "/src/app/dom/dom.position.js"
-import { stringifyTransformations } from "/src/app/helper/render.js"
+} from "/app/dom/dom.position.js"
+import { stringifyTransformations } from "/app/helper/render.js"
 import {
   useDiceDomNode,
   useDiceDomNodeSetter,
   useMainDomNode,
-} from "/src/app/dom/dom.main.jsx"
-import { diceSize } from "/src/app/dices/dicePosition.js"
-import { diceIsOnSkull, diceToVisibleSymbol } from "/src/app/dices/dices.js"
-import { enableDragGesture } from "/src/app/drag/drag.js"
-import { symbolToImageUrl } from "/src/app/symbols/symbols.js"
-import { useDiceKeptIds } from "/src/app/round/round.selectors.js"
+} from "/app/dom/dom.main.jsx"
+import { diceSize } from "/app/dices/dicePosition.js"
+import { diceIsOnSkull, diceToVisibleSymbol } from "/app/dices/dices.js"
+import { enableDragGesture } from "/app/drag/drag.js"
+import { symbolToImageUrl } from "/app/symbols/symbols.js"
+import { useDiceKeptIds } from "/app/round/round.selectors.js"
 
 const { useEffect, useState } = React
 

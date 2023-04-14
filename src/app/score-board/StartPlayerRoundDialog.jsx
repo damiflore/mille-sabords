@@ -1,9 +1,9 @@
 import React from "react"
 
-import { Image } from "/src/app/generic/Image.jsx"
-import { useStartPlayerRound } from "/src/app/round/round.actions.js"
-import { Dialog } from "/src/app/dialog/dialog.component.jsx"
-import { CloseIcon } from "/src/app/dialog/CloseIcon.jsx"
+import { Image } from "/app/generic/Image.jsx"
+import { useStartPlayerRound } from "/app/round/round.actions.js"
+import { Dialog } from "/app/dialog/dialog.component.jsx"
+import { CloseIcon } from "/app/dialog/CloseIcon.jsx"
 
 export const StartPlayerRoundDialog = ({
   closeDialog,

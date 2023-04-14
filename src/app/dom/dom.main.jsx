@@ -1,6 +1,6 @@
 import React from "react"
 
-import { DICES } from "/src/app/dices/dices.js"
+import { DICES } from "/app/dices/dices.js"
 
 const { createContext, useContext, useState } = React
 

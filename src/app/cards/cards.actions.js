@@ -1,6 +1,6 @@
-import { createAction } from "/src/app/main.store.js"
-import { mixDeck } from "/src/app/cards/cards.js"
-import { SYMBOL_COIN, SYMBOL_DIAMOND } from "/src/app/symbols/symbols.js"
+import { createAction } from "/app/main.store.js"
+import { mixDeck } from "/app/cards/cards.js"
+import { SYMBOL_COIN, SYMBOL_DIAMOND } from "/app/symbols/symbols.js"
 
 export const useDrawCard = createAction((state) => {
   const { cardIds, cardUsedIds } = state

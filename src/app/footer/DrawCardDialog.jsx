@@ -1,20 +1,20 @@
 import React from "react"
 
-import { useCurrentCardId, useAnimationsDisabled } from "/src/app/main.store.js"
-import { Image } from "/src/app/generic/Image.jsx"
-import { useCardDeck } from "/src/app/round/round.selectors.js"
-import { useDrawCard, useShuffleDeck } from "/src/app/cards/cards.actions.js"
-import { useActivateCurrentCard } from "/src/app/round/round.actions.js"
+import { useCurrentCardId, useAnimationsDisabled } from "/app/main.store.js"
+import { Image } from "/app/generic/Image.jsx"
+import { useCardDeck } from "/app/round/round.selectors.js"
+import { useDrawCard, useShuffleDeck } from "/app/cards/cards.actions.js"
+import { useActivateCurrentCard } from "/app/round/round.actions.js"
 
-import { cardsRules } from "/src/app/cards/cards-rules.js"
-import { Dialog } from "/src/app/dialog/dialog.component.jsx"
+import { cardsRules } from "/app/cards/cards-rules.js"
+import { Dialog } from "/app/dialog/dialog.component.jsx"
 import {
   cardIdToCard,
   cardToImageUrl,
   cardDefaultUrl,
-} from "/src/app/cards/cards.js"
-import { SmallCard } from "/src/app/cards/SmallCard.jsx"
-import { getDomNodeRectangle } from "/src/app/dom/dom.position.js"
+} from "/app/cards/cards.js"
+import { SmallCard } from "/app/cards/SmallCard.jsx"
+import { getDomNodeRectangle } from "/app/dom/dom.position.js"
 
 export const DrawCardDialog = ({
   dialogIsOpen,

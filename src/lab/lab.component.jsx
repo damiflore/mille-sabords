@@ -5,12 +5,12 @@ import {
   useGameStarted,
   useCurrentCardId,
   useCurrentCardActivated,
-} from "/src/app/main.store.js"
-import { useSignal } from "/src/app/helper/signal.js"
-import { ContextProvider } from "/src/app/main.context.jsx"
-// import { createSkullFromDice } from "/src/app/test/test.material.js"
-import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
-import { Main } from "/src/app/main.component.jsx"
+} from "/app/main.store.js"
+import { useSignal } from "/app/helper/signal.js"
+import { ContextProvider } from "/app/main.context.jsx"
+// import { createSkullFromDice } from "/app/test/test.material.js"
+import { Stylesheet } from "/app/generic/Stylesheet.jsx"
+import { Main } from "/app/main.component.jsx"
 import { ScoreBoardLab } from "/lab/ScoreBoardLab.jsx"
 import { CardDrawingLab } from "/lab/CardDrawingLab.jsx"
 import { CardActivationLab } from "/lab/CardActivationLab.jsx"

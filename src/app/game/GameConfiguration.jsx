@@ -1,6 +1,6 @@
 import React from "react"
 
-import { createAction } from "/src/app/main.store.js"
+import { createAction } from "/app/main.store.js"
 
 export const GameConfiguration = () => {
   const setPlayerCount = useSetPlayerCount()

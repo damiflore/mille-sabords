@@ -1,4 +1,4 @@
-import { getStyleValue, isDocumentElement } from "/src/app/dom/dom.util.js"
+import { getStyleValue, isDocumentElement } from "/app/dom/dom.util.js"
 
 export const trapScrollInside = (element) => {
   const elementsToScrollLock = []

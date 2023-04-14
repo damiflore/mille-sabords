@@ -1,14 +1,14 @@
 import React from "react"
 
-import { CHARACTERS } from "/src/app/players/players.main.js"
-import { Image } from "/src/app/generic/Image.jsx"
-import { usePlayers, createAction } from "/src/app/main.store.js"
+import { CHARACTERS } from "/app/players/players.main.js"
+import { Image } from "/app/generic/Image.jsx"
+import { usePlayers, createAction } from "/app/main.store.js"
 import {
   mixDeck,
   cardToSmallImageUrl,
   CARD_TWO_SWORDS_CHALLENGE,
-} from "/src/app/cards/cards.js"
-import { startJavaScriptAnimation } from "/src/app/animation/startJavaScriptAnimation.js"
+} from "/app/cards/cards.js"
+import { startJavaScriptAnimation } from "/app/animation/startJavaScriptAnimation.js"
 
 export const CharacterSelection = ({ players }) => {
   const setPlayerCharacter = useSetPlayerCharacter()

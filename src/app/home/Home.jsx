@@ -1,8 +1,8 @@
 import React from "react"
 
-import { Image } from "/src/app/generic/Image.jsx"
-import { createAction } from "/src/app/main.store.js"
-import { symbolSwordUrl } from "/src/app/symbols/symbols.js"
+import { Image } from "/app/generic/Image.jsx"
+import { createAction } from "/app/main.store.js"
+import { symbolSwordUrl } from "/app/symbols/symbols.js"
 
 export const Home = () => {
   return <ButtonNewGame />

@@ -12,8 +12,8 @@ import {
   useCurrentPlayerId,
   usePlayers,
   useDices,
-} from "/src/app/main.store.js"
-import { diceIsOnSkull } from "/src/app/dices/dices.js"
+} from "/app/main.store.js"
+import { diceIsOnSkull } from "/app/dices/dices.js"
 import {
   cardIdToCard,
   isChestCard,
@@ -22,20 +22,17 @@ import {
   isOneSkullCard,
   isTwoSkullsCard,
   isSwordChallengeCard,
-} from "/src/app/cards/cards.js"
-import { chestSlotContentToSymbol } from "/src/app/chest/chest.util.js"
+} from "/app/cards/cards.js"
+import { chestSlotContentToSymbol } from "/app/chest/chest.util.js"
 
-import {
-  computeRoundScore,
-  countSymbol,
-} from "/src/app/round/computeRoundScore.js"
+import { computeRoundScore, countSymbol } from "/app/round/computeRoundScore.js"
 import {
   symbolIsSkull,
   SYMBOL_COIN,
   SYMBOL_DIAMOND,
   SYMBOL_SKULL,
   SYMBOL_SWORD,
-} from "/src/app/symbols/symbols.js"
+} from "/app/symbols/symbols.js"
 
 const { useMemo } = React
 

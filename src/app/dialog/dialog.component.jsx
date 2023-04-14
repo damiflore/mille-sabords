@@ -1,7 +1,7 @@
 import React from "react"
 
-import { useMainDomNode } from "/src/app/dom/dom.main.jsx"
-import { Stylesheet } from "/src/app/generic/Stylesheet.jsx"
+import { useMainDomNode } from "/app/dom/dom.main.jsx"
+import { Stylesheet } from "/app/generic/Stylesheet.jsx"
 
 import { DialogBase } from "./DialogBase.jsx"
 
