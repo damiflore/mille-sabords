@@ -13,8 +13,6 @@
 
 import { generateFileSizeReport, raw, gzip } from "@jsenv/file-size-impact"
 
-import { rootDirectoryUrl } from "../../jsenv.config.mjs"
-
 const revertTrackingGroup = (trackingGroup) => {
   const opposite = {}
   Object.keys(trackingGroup).forEach((pattern) => {
@@ -36,7 +34,7 @@ const app = {
 
 export const fileSizeReport = await generateFileSizeReport({
   log: process.argv.includes("--log"),
-  rootDirectoryUrl,
+  rootDirectoryUrl: new URL("../", import.meta.url),
   transformations: { raw, gzip },
   trackingConfig: { app_loader, app },
   manifestConfig: {

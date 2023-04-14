@@ -2,15 +2,15 @@
 # see https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 #
 # For every push on a pull request, it
-# - creates or updates a comment about potential pr impact on lighthouse score
+# - creates or updates a comment about potential pr impact on performance metrics
 # Read more in
-# - https://github.com/jsenv/lighthouse-impact
+# - https://github.com/jsenv/performance-impact
 #
 # If you want to update this file it's recommended to use a YAML validator
 # https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
 # configured to validate with https://json.schemastore.org/github-workflow.json
 
-name: lighthouse impact
+name: performance_impact
 
 on: pull_request
 
@@ -19,21 +19,23 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        node: [16.13.0]
+        node: [18.12.1]
     runs-on: ${{ matrix.os }}
-    name: pr impact
+    name: performance impact
     steps:
       - name: Setup git
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node ${{ matrix.node }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
       - name: Install node modules
         run: npm install
-      - name: Install certificate
-        run: npm run certificate-install
-      - name: Report lighthouse impact
-        run: node ./.github/workflows/pr_impact/report_lighthouse_impact.mjs
+      - name: Setup playwright
+        run: npm run playwright:install
+      - name: Setup certificate
+        run: npm run certificate:install
+      - name: Report performance impact
         env:
-          GITHUB_TOKEN: ${{ secrets.LIGHTHOUSE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node ./.github/workflows/pr_impact_on_performances.mjs

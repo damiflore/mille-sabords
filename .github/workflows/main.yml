@@ -25,26 +25,24 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, macos-10.15]
-        node: [16.13.0]
+        node: [18.12.1]
     runs-on: ${{ matrix.os }}
     name: test on ${{ matrix.os }} and node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
       - name: Install node modules
         run: npm install
+      - name: Playwright installation
+        run: npm run playwright:install
+      - name: Install certificate
+        run: npm run certificate:install
       - name: Run ESLint
         run: npm run eslint
       - name: Run tests
-        run: npm run test-with-coverage
-      - name: Upload coverage
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage.json
-          verbose: true
+        run: npm run test
 
   build_and_deploy:
     needs: [test]
@@ -55,13 +53,13 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v3
       - name: Setup node 🔧
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "16.13.0"
+          node-version: "18.12.1"
       - name: Install node modules ⬇️
         run: npm install
       - name: Build 🚧
-        run: node ./scripts/build/build.mjs --prod
+        run: npm run build:prod
       - name: Deploy 🚀
         # https://github.com/JamesIves/github-pages-deploy-action
         uses: JamesIves/github-pages-deploy-action@v4.3.3
