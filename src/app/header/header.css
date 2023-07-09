@@ -43,7 +43,8 @@
   padding: 3px;
   background: #cb6828;
   margin: 3px;
-  box-shadow: 3px 5px 2px 0px rgba(0, 0, 0, 0.33),
+  box-shadow:
+    3px 5px 2px 0px rgba(0, 0, 0, 0.33),
     0px 3px 1px -2px rgba(65, 65, 65, 0.12);
   width: 30px;
   height: 30px;
@@ -51,7 +52,8 @@
 .sword-challenge-indicators .sword-icon.disabled {
   background: #dadada;
   filter: grayscale(100%);
-  box-shadow: 3px 5px 2px 0px rgba(0, 0, 0, 0.33),
+  box-shadow:
+    3px 5px 2px 0px rgba(0, 0, 0, 0.33),
     0px 3px 1px -2px rgba(65, 65, 65, 0.12);
 }
 .sword-challenge-indicators img {

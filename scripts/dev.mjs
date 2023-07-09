@@ -7,6 +7,7 @@ import openUrl from "open"
 import { startDevServer } from "@jsenv/core"
 import { requestCertificate } from "@jsenv/https-local"
 import { jsenvPluginReact } from "@jsenv/plugin-react"
+import { jsenvPluginExplorer } from "@jsenv/plugin-explorer"
 
 const { certificate, privateKey } = await requestCertificate()
 
@@ -14,21 +15,23 @@ export const devServer = await startDevServer({
   sourceDirectoryUrl: new URL("../src/", import.meta.url),
   https: { certificate, privateKey },
   port: 3472,
-  plugins: [jsenvPluginReact()],
-  explorer: {
-    groups: {
-      "app": {
-        "./main.html": true,
-        "./lab/lab.html": true,
+  plugins: [
+    jsenvPluginReact(),
+    jsenvPluginExplorer({
+      groups: {
+        "app": {
+          "./main.html": true,
+          "./lab/lab.html": true,
+        },
+        "manual tests": {
+          "./**/*.scenario.html": true,
+        },
+        "unit tests": {
+          "./**/*.test.html": true,
+        },
       },
-      "manual tests": {
-        "./**/*.scenario.html": true,
-      },
-      "unit tests": {
-        "./**/*.test.html": true,
-      },
-    },
-  },
+    }),
+  ],
 })
 
 if (process.argv.includes("--open")) {

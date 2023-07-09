@@ -1,11 +1,11 @@
-import { executeTestPlan, chromium } from "@jsenv/core"
+import { executeTestPlan, chromium } from "@jsenv/test"
 
 await executeTestPlan({
   rootDirectoryUrl: new URL("../", import.meta.url),
   testPlan: {
     "./src/**/*.test.html": {
       chromium: {
-        runtime: chromium,
+        runtime: chromium(),
         allocatedMs: 60_000,
       },
     },

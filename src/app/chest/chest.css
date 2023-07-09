@@ -30,7 +30,8 @@
     box-shadow: inset 0px 0px 0px 20px rgb(40 10 0 / 52%);
   }
   100% {
-    box-shadow: inset 0px 0px 0px 20px rgb(40 10 0 / 52%),
+    box-shadow:
+      inset 0px 0px 0px 20px rgb(40 10 0 / 52%),
       0px 0px 23px 0px #f9c428;
   }
 }
