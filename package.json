@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@jsenv/logger": "4.1.1",
-    "@jsenv/pwa": "6.0.1",
+    "@jsenv/pwa": "6.0.2",
     "@jsenv/service-worker": "1.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -56,7 +56,7 @@
     "@jsenv/https-local": "3.0.7",
     "@jsenv/lighthouse-impact": "4.0.4",
     "@jsenv/performance-impact": "4.1.1",
-    "@jsenv/plugin-bundling": "2.3.0",
+    "@jsenv/plugin-bundling": "2.4.0",
     "@jsenv/plugin-explorer": "1.0.1",
     "@jsenv/plugin-minification": "1.4.0",
     "@jsenv/plugin-placeholders": "1.1.4",

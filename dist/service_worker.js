@@ -1,7 +1,7 @@
 
 self.resourcesFromJsenvBuild = {
   "/index.html": {
-    "version": "2b127c38"
+    "version": "a4207d4e"
   },
   "/other/favicon.png": {
     "version": "467b6542",
@@ -19,8 +19,8 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/css/app.css?v=e643a2d3"
   },
   "/js/app_loader.nomodule.js": {
-    "version": "ee1c3036",
-    "versionedUrl": "/js/app_loader.nomodule.js?v=ee1c3036"
+    "version": "a9ffac15",
+    "versionedUrl": "/js/app_loader.nomodule.js?v=a9ffac15"
   },
   "/other/pwa_icon_512.png": {
     "version": "62510d95",
@@ -31,12 +31,12 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/other/maskable_icon_192.png?v=33ca6666"
   },
   "/js/app.nomodule.js": {
-    "version": "fa82f19f",
-    "versionedUrl": "/js/app.nomodule.js?v=fa82f19f"
+    "version": "e2e1e4f6",
+    "versionedUrl": "/js/app.nomodule.js?v=e2e1e4f6"
   },
   "/js/vendors.nomodule.js": {
-    "version": "06477e38",
-    "versionedUrl": "/js/vendors.nomodule.js?v=06477e38"
+    "version": "42172c14",
+    "versionedUrl": "/js/vendors.nomodule.js?v=42172c14"
   },
   "/other/arrr_matey_bb_wn3.ttf": {
     "version": "e930bd5f",
@@ -81,10 +81,6 @@ self.resourcesFromJsenvBuild = {
   "/other/wood.jpg": {
     "version": "35be8587",
     "versionedUrl": "/other/wood.jpg?v=35be8587"
-  },
-  "/js/app2.nomodule.js": {
-    "version": "28c2c14f",
-    "versionedUrl": "/js/app2.nomodule.js?v=28c2c14f"
   },
   "/other/card_small-1skull.png": {
     "version": "f8f5b1d5",
@@ -199,8 +195,8 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/other/witch-label.png?v=8eef983a"
   },
   "/js/root.nomodule.js": {
-    "version": "b4b356ee",
-    "versionedUrl": "/js/root.nomodule.js?v=b4b356ee"
+    "version": "f61a871a",
+    "versionedUrl": "/js/root.nomodule.js?v=f61a871a"
   },
   "/js/jsenv_service_worker.js": {
     "version": "77b6a3f2",
@@ -275,12 +271,11 @@ self.resourcesFromJsenvBuild = {
 
 ;(function() {
   var __versionMappings__ = {
-    "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=ee1c3036",
+    "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=a9ffac15",
     "/css/app.css": "/css/app.css?v=e643a2d3",
-    "/js/app.nomodule.js": "/js/app.nomodule.js?v=fa82f19f",
-    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=06477e38",
+    "/js/app.nomodule.js": "/js/app.nomodule.js?v=e2e1e4f6",
+    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=42172c14",
     "/other/arrr_matey_bb_wn3.ttf": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f",
-    "/js/app2.nomodule.js": "/js/app2.nomodule.js?v=28c2c14f",
     "/other/card_small-1skull.png": "/other/card_small-1skull.png?v=f8f5b1d5",
     "/other/card_small-2skulls.png": "/other/card_small-2skulls.png?v=c62f71a1",
     "/other/card_small-sword-challenge.png": "/other/card_small-sword-challenge.png?v=54fb56a0",
@@ -315,7 +310,7 @@ self.resourcesFromJsenvBuild = {
     "/other/treasure-map.png": "/other/treasure-map.png?v=0660ab15",
     "/other/witch-label.png": "/other/witch-label.png?v=8eef983a",
     "/other/skull-bottle.png": "/other/skull-bottle.png?v=778b726d",
-    "/js/root.nomodule.js": "/js/root.nomodule.js?v=b4b356ee",
+    "/js/root.nomodule.js": "/js/root.nomodule.js?v=f61a871a",
     "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=77b6a3f2",
     "/css/dialog.base.css": "/css/dialog.base.css?v=6a8a7c8d",
     "/css/dialog.css": "/css/dialog.css?v=767f8b94",

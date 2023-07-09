@@ -14883,9 +14883,9 @@ ${LOG_LEVEL_DEBUG}`);
         return [`%cjsenv%cpwa`, `background: orange; color: rgb(55, 7, 7); padding: 1px 3px; margin: 0 1px`, `background: ${logBackgroundColor}; color: ${logColor}; padding: 1px 3px; margin: 0 1px`, ...args];
       };
       l$3 = {
-        __e: function __e(n, l, u, i) {
-          for (var t, r, o; l = l.__;) if ((t = l.__c) && !t.__) try {
-            if ((r = t.constructor) && null != r.getDerivedStateFromError && (t.setState(r.getDerivedStateFromError(n)), o = t.__d), null != t.componentDidCatch && (t.componentDidCatch(n, i || {}), o = t.__d), o) return t.__E = t;
+        __e: function __e(n, l, u, t) {
+          for (var i, o, r; l = l.__;) if ((i = l.__c) && !i.__) try {
+            if ((o = i.constructor) && null != o.getDerivedStateFromError && (i.setState(o.getDerivedStateFromError(n)), r = i.__d), null != i.componentDidCatch && (i.componentDidCatch(n, t || {}), r = i.__d), r) return i.__E = i;
           } catch (l) {
             n = l;
           }
@@ -14907,7 +14907,7 @@ ${LOG_LEVEL_DEBUG}`);
         var i = (r$1 = n.__c).__H;
         i && (u$1 === r$1 ? (i.__h = [], r$1.__h = [], i.__.forEach(function (n) {
           n.__N && (n.__ = n.__N), n.__V = c$1, n.__N = n.i = void 0;
-        })) : (i.__h.forEach(k), i.__h.forEach(w$1), i.__h = [])), u$1 = r$1;
+        })) : (i.__h.forEach(k), i.__h.forEach(w$1), i.__h = [], t$1 = 0)), u$1 = r$1;
       }, l$3.diffed = function (t) {
         v$3 && v$3(t);
         var o = t.__c;
@@ -15236,7 +15236,7 @@ ${LOG_LEVEL_DEBUG}`);
         n(r);
       });
       s("__h", function (n, r, i, t) {
-        if (t < 3) r.__$f |= 2;
+        if (t < 3 || 9 === t) r.__$f |= 2;
         n(r, i, t);
       });
       isDev = typeof process === "object" && process.execArgv.includes("--conditions=development");
