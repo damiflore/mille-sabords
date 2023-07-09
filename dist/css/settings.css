@@ -1,7 +1,5 @@
 #settings {
   color: brown;
-  width: 32px;
-  height: 32px;
   z-index: 2;
   cursor: pointer;
   background: #fff0d2;
@@ -11,6 +9,8 @@
   border-bottom-left-radius: 50%;
   justify-content: center;
   align-items: center;
+  width: 32px;
+  height: 32px;
   display: flex;
   position: absolute;
   top: 80px;
@@ -61,11 +61,11 @@
 .settings-dialog-content input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
   background: #fff;
   border: 2px solid brown;
   border-radius: 2px;
+  width: 15px;
+  height: 15px;
   margin: 0 5px -2px 0;
 }
 
@@ -125,14 +125,14 @@
 }
 
 .confirm-cancel-game-dialog .settings-dialog-content button {
-  width: 100%;
-  height: 100%;
   color: brown;
   background-color: #fff0d2;
   border: 2px solid brown;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
   margin-top: 30px;
   padding: 7px 13px;
   font-size: 18px;

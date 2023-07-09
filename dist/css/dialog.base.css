@@ -19,9 +19,9 @@
 }
 
 .dialog--document {
-  min-height: 0;
   flex-direction: column;
   flex-grow: 1;
+  min-height: 0;
   margin: 0;
   display: flex;
   position: relative;
@@ -36,9 +36,9 @@
 }
 
 .dialog--main {
-  min-height: 0;
   flex-direction: row;
   flex-grow: 1;
+  min-height: 0;
   display: flex;
 }
 

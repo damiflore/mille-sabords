@@ -14,12 +14,12 @@
 
 .new-game button {
   z-index: 1;
-  width: 70%;
   text-transform: uppercase;
   color: #082988;
   background-color: #8ec9fc;
   border: 3px solid #082988;
   justify-content: center;
+  width: 70%;
   margin: 0 auto;
   padding: 13px;
   font-size: 16px;
@@ -40,7 +40,7 @@
 .chest .dice-area {
   background-blend-mode: soft-light;
   background-color: #684e38;
-  background-image: url(/other/wood-box.jpg?v=fcdd41cc);
+  background-image: url(/other/wood-box.jpg?v=7fa1967b);
   background-size: 100%;
   border: 3px solid #000;
   padding: 19px;
@@ -67,26 +67,26 @@
 }
 
 .chest .dice-area .box {
-  width: 180px;
-  height: 180px;
   border: 2px solid #000;
   flex-wrap: wrap;
+  width: 180px;
+  height: 180px;
   display: flex;
 }
 
 .chest .slot {
-  width: 60px;
-  height: 60px;
   justify-content: center;
   align-items: center;
+  width: 60px;
+  height: 60px;
   display: flex;
   position: relative;
 }
 
 .chest .top-left-corner {
-  width: 28px;
   transform-origin: 0 0;
   border-bottom: 2px solid #000;
+  width: 28px;
   position: absolute;
   top: 0;
   left: 0;
@@ -94,9 +94,9 @@
 }
 
 .chest .top-right-corner {
-  width: 28px;
   transform-origin: 100% 0;
   border-bottom: 2px solid #000;
+  width: 28px;
   position: absolute;
   top: 0;
   right: 0;
@@ -104,9 +104,9 @@
 }
 
 .chest .bottom-left-corner {
-  width: 28px;
   transform-origin: 0 100%;
   border-bottom: 2px solid #000;
+  width: 28px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -114,9 +114,9 @@
 }
 
 .chest .bottom-right-corner {
-  width: 28px;
   transform-origin: 100% 100%;
   border-bottom: 2px solid #000;
+  width: 28px;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -154,12 +154,12 @@
 }
 
 .dice-ongoing .map {
-  width: 100%;
-  height: 100%;
-  background-image: url(/other/treasure-map.png?v=6ec97baa);
+  background-image: url(/other/treasure-map.png?v=0660ab15);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  width: 100%;
+  height: 100%;
   position: absolute;
   transform: scale(1.3)translate(0, 30px)rotate(-4deg);
 }
@@ -179,9 +179,9 @@
 }
 
 .dice-ongoing .offscreen-area {
-  height: 100%;
-  width: 100%;
   background: red;
+  width: 100%;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 100%;
@@ -227,19 +227,17 @@
 }
 
 .actions {
-  width: 90%;
-  min-height: 59px;
   text-align: center;
   flex-direction: row;
   justify-content: space-between;
+  width: 90%;
+  min-height: 59px;
   margin: 0 auto;
   display: flex;
   position: relative;
 }
 
 .actions button {
-  width: 100%;
-  height: 100%;
   text-transform: uppercase;
   color: #875735;
   background-color: #ffe7be;
@@ -247,6 +245,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
   padding: 7px 13px;
   font-size: 18px;
   font-weight: bold;
@@ -306,9 +306,9 @@
 }
 
 .draw-card-dialog .dialog-content {
-  height: 100%;
-  width: 100%;
   background: none;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -372,7 +372,6 @@
 }
 
 .draw-card-dialog .dialog-actions button {
-  height: 100%;
   text-transform: uppercase;
   color: #082988;
   background-color: #8ec9fc;
@@ -380,6 +379,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
   margin: 0 auto;
   padding: 13px;
   font-size: 18px;
@@ -396,18 +396,18 @@
 }
 
 .card-area .card {
-  width: 100%;
   text-align: center;
   background: #fff;
   border-radius: 4px;
+  width: 100%;
   margin: 0 auto;
   display: block;
 }
 
 .card-area .current-card {
   transform-origin: center;
-  width: 100%;
   background: none;
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -440,12 +440,12 @@
 
 .card-area .remaining-cards-number {
   color: #fff;
-  width: 15px;
-  height: 15px;
   text-align: center;
   background: #005e97;
   border: 2px solid #9e9e9e;
   border-radius: 100%;
+  width: 15px;
+  height: 15px;
   padding: 5px;
   font-size: 13px;
   position: absolute;
@@ -459,9 +459,9 @@
 }
 
 .flip-card-inner {
-  width: 100%;
   text-align: center;
   transform-style: preserve-3d;
+  width: 100%;
   margin: 0;
   animation: .6s cubic-bezier(.4, 0, 1, 1) forwards flipCard;
   position: relative;
@@ -474,9 +474,9 @@
 }
 
 .flip-card-front, .flip-card-back {
+  backface-visibility: hidden;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
   position: absolute;
 }
 
@@ -553,11 +553,11 @@
 
 .small-card .card {
   text-align: center;
-  width: 55px;
-  height: 55px;
   background: #fff;
   border: 3px solid #9e9e9e;
   border-radius: 10px;
+  width: 55px;
+  height: 55px;
   box-shadow: 3px 5px 6px #000000c2;
 }
 
@@ -572,10 +572,10 @@
 }
 
 .sword-challenge-indicators .sword-icon {
-  width: 30px;
-  height: 30px;
   background: #cb6828;
   border-radius: 100%;
+  width: 30px;
+  height: 30px;
   margin: 3px;
   padding: 3px;
   box-shadow: 3px 5px 2px #00000054, 0 3px 1px -2px #4141411f;
@@ -593,11 +593,11 @@
 }
 
 .avatar {
-  width: 55px;
-  height: 55px;
   background-color: #ffe7be;
   border: 3px solid #000;
   border-radius: 100%;
+  width: 55px;
+  height: 55px;
   position: absolute;
   right: 15px;
 }
@@ -658,8 +658,8 @@
 
 .score-area {
   text-align: center;
-  height: 40px;
   z-index: 1;
+  height: 40px;
   position: relative;
   top: -10px;
 }
@@ -689,11 +689,11 @@
 }
 
 .score-area .round-score {
-  min-width: 38px;
   color: #f7a23c;
   background-color: #961b1e;
   border: 2px solid #f7a23c;
   border-radius: 5px;
+  min-width: 38px;
   margin-top: 5px;
   padding: 4px 15px;
   font-weight: 600;
@@ -715,10 +715,10 @@
   z-index: 1;
   color: #e0e0e0;
   text-shadow: 2px 1px 2px #585858;
-  width: 30%;
   background-color: #dcc599;
-  background-image: url(/other/metal.jpg?v=36435573);
+  background-image: url(/other/metal.jpg?v=133d4092);
   border-radius: 2px;
+  width: 30%;
   margin: 0 auto;
   padding: 10px;
   font-weight: 600;
@@ -753,8 +753,8 @@
 }
 
 .score-area .ropes {
-  width: 33%;
   justify-content: space-around;
+  width: 33%;
   margin: 0 auto;
   display: flex;
   position: relative;
@@ -766,9 +766,9 @@
 }
 
 .score-area .rope {
-  height: 35px;
-  width: 4px;
   background: repeating-linear-gradient(45deg, #f4b392, #f4b392 5px, #cb6828 5px 10px);
+  width: 4px;
+  height: 35px;
   margin: 0 auto;
 }
 
@@ -794,11 +794,11 @@
 
 .score-area .rope:after {
   content: "";
-  width: 7px;
-  height: 7px;
   z-index: 2;
   background-color: #2c1d00;
   border-radius: 100%;
+  width: 7px;
+  height: 7px;
   display: inline-block;
   position: relative;
   top: -12px;
@@ -831,29 +831,29 @@
 }
 
 .score-area .sword-slice .triangle-left {
-  width: 0;
-  height: 0;
   border-top: 5px solid #0000;
   border-bottom: 5px solid #0000;
   border-right: 50px solid #fffce4;
+  width: 0;
+  height: 0;
 }
 
 .score-area .sword-slice .triangle-right {
-  width: 0;
-  height: 0;
   border-top: 5px solid #0000;
   border-bottom: 5px solid #0000;
   border-left: 15px solid #fffce4;
+  width: 0;
+  height: 0;
 }
 
 .score-area .pirate-hook {
-  width: 37px;
-  height: 56px;
   transform-origin: top;
   z-index: 2;
   opacity: 0;
-  background-image: url(/other/pirate-hook.png?v=02fba0b6);
+  background-image: url(/other/pirate-hook.png?v=ea887fb0);
   background-size: contain;
+  width: 37px;
+  height: 56px;
   animation: .6s cubic-bezier(.69, .69, .29, 1.31) .4s forwards balance;
   display: inline-block;
   position: absolute;
@@ -863,49 +863,49 @@
 @keyframes balance {
   0% {
     opacity: 0;
-    background-image: url(/other/pirate-hook.png?v=02fba0b6);
+    background-image: url(/other/pirate-hook.png?v=ea887fb0);
     transform: translate(-14px, -17px)rotate(62deg);
   }
 
   1% {
     opacity: 1;
-    background-image: url(/other/pirate-hook.png?v=02fba0b6);
+    background-image: url(/other/pirate-hook.png?v=ea887fb0);
     transform: translate(-14px, -17px)rotate(62deg);
   }
 
   24% {
     opacity: 1;
-    background-image: url(/other/pirate-hook.png?v=02fba0b6);
+    background-image: url(/other/pirate-hook.png?v=ea887fb0);
     transform: translate(-3px, 14px)rotate(-36deg);
   }
 
   25% {
     opacity: 1;
-    background-image: url(/other/pirate-hook-02.png?v=3db1b696);
+    background-image: url(/other/pirate-hook-02.png?v=c808ffa5);
     transform: translate(-3px, 14px)rotate(-36deg);
   }
 
   50% {
     opacity: 1;
-    background-image: url(/other/pirate-hook-02.png?v=3db1b696);
+    background-image: url(/other/pirate-hook-02.png?v=c808ffa5);
     transform: translate(-3px, 14px)rotate(42deg);
   }
 
   75% {
     opacity: 1;
-    background-image: url(/other/pirate-hook-02.png?v=3db1b696);
+    background-image: url(/other/pirate-hook-02.png?v=c808ffa5);
     transform: translate(-3px, 14px)rotate(-18deg);
   }
 
   85% {
     opacity: 1;
-    background-image: url(/other/pirate-hook-02.png?v=3db1b696);
+    background-image: url(/other/pirate-hook-02.png?v=c808ffa5);
     transform: translate(-3px, 14px)rotate(20deg);
   }
 
   100% {
     opacity: 1;
-    background-image: url(/other/pirate-hook-02.png?v=3db1b696);
+    background-image: url(/other/pirate-hook-02.png?v=c808ffa5);
     transform: translate(-3px, 14px)rotate(12deg);
   }
 }
@@ -958,11 +958,11 @@
 }
 
 .score-rules-dialog img {
-  width: 32px;
-  height: 32px;
   background: #ffcd5d;
   border: 2px solid #c77c00;
   border-radius: 3px;
+  width: 32px;
+  height: 32px;
   margin: 3px auto;
   display: block;
   box-shadow: inset 0 0 4px #4949498c;
@@ -973,21 +973,21 @@
 }
 
 .skull-island .bottle {
-  width: 83px;
-  height: 244px;
-  background-image: url(/other/skull-bottle.png?v=7c833fb2);
+  background-image: url(/other/skull-bottle.png?v=778b726d);
   background-repeat: no-repeat;
   background-size: contain;
   flex-direction: column-reverse;
+  width: 83px;
+  height: 244px;
   display: flex;
   position: relative;
 }
 
 .skull-island .area {
-  width: 55px;
-  height: 160px;
   flex-direction: column-reverse;
   align-items: center;
+  width: 55px;
+  height: 160px;
   display: flex;
   position: absolute;
   bottom: 17px;
@@ -1005,8 +1005,8 @@
 }
 
 .witch-label img {
-  width: 100%;
   opacity: 0;
+  width: 100%;
   animation: .2s cubic-bezier(.4, 0, 1, 1) 1.9s forwards appear;
   position: absolute;
 }
@@ -1060,10 +1060,10 @@
 }
 
 .star-rain-container {
-  width: 100%;
-  height: 60px;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 60px;
   display: flex;
   position: absolute;
 }
@@ -1132,11 +1132,11 @@
 }
 
 .score-board-container {
-  height: 100%;
   background-blend-mode: soft-light;
   background-color: #b8deff;
-  background-image: url(/other/sea.jpg?v=096e0699);
+  background-image: url(/other/sea.jpg?v=92c17db7);
   background-size: 400px;
+  height: 100%;
 }
 
 .score-board-container .cross {
@@ -1147,23 +1147,23 @@
 }
 
 .score-board-container .action-container {
-  height: 100%;
-  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
   display: flex;
   position: absolute;
 }
 
 .score-board-container .score-board-action {
   z-index: 1;
-  width: 70%;
   text-transform: uppercase;
   color: #f7a23c;
   background-color: #ffe7be;
   border: 3px solid #f7a23c;
   justify-content: center;
+  width: 70%;
   margin: 0 auto;
   padding: 13px;
   font-size: 16px;
@@ -1174,8 +1174,8 @@
 
 .score-board-container .win-treasure-img {
   width: 50%;
-  height: auto;
   max-width: 230px;
+  height: auto;
   margin: 0 auto;
   padding-top: 10px;
   display: none;
@@ -1228,10 +1228,10 @@
 }
 
 .score-board-container .boat {
-  width: 70px;
-  height: 70px;
   offset-distance: 100%;
   offset-rotate: 0deg;
+  width: 70px;
+  height: 70px;
   transform: translate(-30px, -50px);
 }
 
@@ -1252,19 +1252,19 @@
 }
 
 .score-board-container .player-name {
-  width: 70px;
   text-align: center;
+  width: 70px;
   margin-top: 17px;
   font-size: 14px;
   position: absolute;
 }
 
 .score-board-container .player-img {
+  background-color: #ffe7be;
+  border-radius: 100%;
   width: 100%;
   max-width: 90px;
   height: auto;
-  background-color: #ffe7be;
-  border-radius: 100%;
   margin-bottom: 15px;
 }
 
@@ -1291,10 +1291,10 @@
 }
 
 .score-board-container .speech-bubble {
-  width: 100%;
   text-align: center;
   background: #c7401b;
   border-radius: .4em;
+  width: 100%;
   margin: 20px auto 0;
   padding: 7px 0;
   font-size: 12px;
@@ -1303,11 +1303,11 @@
 
 .score-board-container .speech-bubble:after {
   content: "";
-  width: 0;
-  height: 0;
   border: 6px solid #0000;
   border-top-color: #c7401b;
   border-bottom: 0;
+  width: 0;
+  height: 0;
   margin-bottom: -6px;
   margin-left: -6px;
   position: absolute;
@@ -1420,9 +1420,9 @@
 }
 
 .animation-symbols .symbol {
+  opacity: 0;
   width: 40px;
   height: 40px;
-  opacity: 0;
   position: absolute;
 }
 
@@ -1528,11 +1528,11 @@
 }
 
 .score-board-dialog .dialog-body {
-  height: 100%;
   color: #082988;
   text-align: center;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
   margin: 40px 18px 15px;
   display: flex;
 }
@@ -1543,10 +1543,10 @@
 }
 
 .score-board-dialog .player-img {
-  height: auto;
-  width: 100px;
   background-color: #ffe7be;
   border-radius: 100%;
+  width: 100px;
+  height: auto;
   margin: 20px 0;
 }
 
@@ -1556,8 +1556,6 @@
 }
 
 .score-board-dialog .dialog-actions button {
-  width: 90%;
-  height: 100%;
   text-transform: uppercase;
   color: #082988;
   background-color: #8ec9fc;
@@ -1565,6 +1563,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 90%;
+  height: 100%;
   margin: 0 auto;
   padding: 7px 13px;
   font-size: 18px;
@@ -1573,11 +1573,11 @@
 }
 
 .character-selection-page {
-  max-width: 100vw;
-  height: 100%;
   color: #082988;
   background-color: #bee1ff;
   flex-direction: column;
+  max-width: 100vw;
+  height: 100%;
   display: flex;
 }
 
@@ -1598,24 +1598,24 @@
 }
 
 .crew .crew-member-img {
-  width: 60px;
-  height: auto;
   background-color: #ffe7be;
   border-radius: 100%;
+  width: 60px;
+  height: auto;
 }
 
 .crew .placeholder-img {
-  width: 60px;
-  height: 60px;
   background-color: #8e877c;
   border: 4px solid #445589;
   border-radius: 100%;
+  width: 60px;
+  height: 60px;
 }
 
 .crew li span {
+  text-align: center;
   max-width: 68px;
   min-height: 51.8px;
-  text-align: center;
   margin: 0 auto;
   padding-top: 15px;
   font-size: 16px;
@@ -1628,9 +1628,9 @@
 }
 
 .crew.large-crew .placeholder-img {
+  border-width: 3px;
   width: 40px;
   height: 40px;
-  border-width: 3px;
 }
 
 .crew.large-crew li {
@@ -1659,15 +1659,15 @@
 }
 
 .character-selection-page .characters-container {
-  width: calc(100% - 38px);
   border: 4px solid #082988;
   border-radius: 10px;
+  width: calc(100% - 38px);
   margin: 0 15px;
 }
 
 .character-selection-page .characters {
-  width: 100%;
   justify-content: start;
+  width: 100%;
   transition: transform .4s ease-in;
   display: flex;
   overflow-x: scroll;
@@ -1694,8 +1694,8 @@
 }
 
 .character-selection-page .character span {
-  max-width: 75px;
   text-align: center;
+  max-width: 75px;
   margin: 0 auto;
   padding-top: 15px;
   font-size: 18px;
@@ -1703,10 +1703,10 @@
 }
 
 .character-selection-page .character-img {
-  width: 75px;
-  height: auto;
   background-color: #ffe7be;
   border-radius: 100%;
+  width: 75px;
+  height: auto;
 }
 
 .paddles {
@@ -1715,11 +1715,11 @@
 }
 
 .paddles .paddle {
-  width: 3em;
   color: #5f82c1;
   background: #bee1ff;
   border: 2px solid #5f82c1;
   border-radius: 8px;
+  width: 3em;
   padding: 8px;
   font-size: 12px;
   position: absolute;
@@ -1769,12 +1769,12 @@
 
 .character-selection-page button {
   z-index: 1;
-  width: 70%;
   text-transform: uppercase;
   color: #082988;
   background-color: #8ec9fc;
   border: 3px solid #082988;
   justify-content: center;
+  width: 70%;
   margin: 0 auto;
   padding: 13px;
   font-size: 16px;
@@ -1783,27 +1783,27 @@
 }
 
 .game-configuration {
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .game-configuration .background-image {
-  height: 100%;
-  width: 100%;
   opacity: .1;
   background-blend-mode: luminosity;
   background-color: #8ec9fc;
-  background-image: url(/other/treasure-map.png?v=6ec97baa);
+  background-image: url(/other/treasure-map.png?v=0660ab15);
   background-position: center;
   background-size: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .game-configuration .content {
-  height: 100%;
-  width: calc(100% - 40px);
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: calc(100% - 40px);
+  height: 100%;
   padding: 0 20px;
   display: flex;
   position: absolute;
@@ -1832,11 +1832,11 @@
 
 .game-configuration button {
   color: #082988;
-  width: 50px;
-  height: 50px;
   background: #77bbf6;
   border: 2px solid #082988;
   border-radius: 100%;
+  width: 50px;
+  height: 50px;
   margin: 5px;
   padding: 10px;
   font-weight: bold;
@@ -1844,12 +1844,12 @@
 
 @font-face {
   font-family: skullsandcrossbones;
-  src: url(/other/skullsandcrossbones.ttf?v=70af14b1);
+  src: url(/other/skullsandcrossbones.ttf?v=5bd8fd52);
 }
 
 @font-face {
   font-family: pirateTreasure;
-  src: url(/other/pirate_treasure_demo_4b3mb.otf?v=febb1694);
+  src: url(/other/pirate_treasure_demo_4b3mb.otf?v=f41b9d39);
 }
 
 body {
@@ -1888,8 +1888,8 @@ button:disabled:hover {
 }
 
 html {
-  min-height: 100%;
   flex: 1;
+  min-height: 100%;
   display: flex;
 }
 
@@ -1915,11 +1915,11 @@ body {
 
 #main {
   box-sizing: border-box;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
   max-width: 680px;
   max-height: 900px;
-  flex-direction: column;
-  flex: 1;
   display: flex;
   position: relative;
 }
@@ -1943,8 +1943,8 @@ body {
 }
 
 #main .dice-ongoing {
-  min-height: 100px;
   flex: 1;
+  min-height: 100px;
 }
 
 #main .actions {
@@ -1954,11 +1954,11 @@ body {
 
 #main .round-container {
   box-sizing: border-box;
+  background-image: url(/other/wood.jpg?v=35be8587);
+  flex-direction: column;
+  flex: 1;
   width: 100%;
   max-width: 680px;
   max-height: 900px;
-  background-image: url(/other/wood.jpg?v=3c23f120);
-  flex-direction: column;
-  flex: 1;
   display: flex;
 }

@@ -1,13 +1,11 @@
 System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context) {
   "use strict";
 
-  var InlineContent, inlineContent, stylesheet, loadApp, loadAppJs, loadAppCss;
+  var inlineContent, stylesheet, loadApp, loadAppJs, loadAppCss;
   return {
-    setters: [function (_vendorsJs) {
-      InlineContent = _vendorsJs.InlineContent;
-    }],
+    setters: [function (_vendorsJs) {}],
     execute: function () {
-      inlineContent = new InlineContent('@font-face {\n  font-family: ArrrMateyBb;\n  src: url('+__v__("/other/arrr_matey_bb_wn3.ttf")+');\n  font-display: swap;\n}\n\n#splashscreen {\n  font-family: ArrrMateyBb;\n  font-size: 50px;\n}\n', {
+      inlineContent = new __InlineContent__('@font-face {\n  font-family: ArrrMateyBb;\n  src: url('+__v__("/other/arrr_matey_bb_wn3.ttf")+');\n  font-display: swap;\n}\n\n#splashscreen {\n  font-family: ArrrMateyBb;\n  font-size: 50px;\n}\n', {
         type: "text/css"
       });
       stylesheet = new CSSStyleSheet();
@@ -45,7 +43,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         performance.measure(`app displayed`);
       });
       loadAppJs = async () => {
-        const app = await _context.import(__v__("/js/app.nomodule.js")).then(n => n.app);
+        const app = await _context.import(__v__("/js/app.nomodule.js"));
         performance.measure("app.js ready");
         return app;
       };

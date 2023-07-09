@@ -1,14 +1,7 @@
 System.register([], function (_export, _context) {
   "use strict";
 
-  var react$1, react_production_min$1, l$5, n$3, p$5, q$2, r$3, t$3, u$3, v$6, w$3, x$1, y$2, z$4, B$3, C$3, D$3, H$3, I$3, J$1, K$3, L$3, P$3, U$3, V$3, W$3, reactExports$1, __jsenv_default_import__$1, reactDom$1, reactDom_production_min$1, scheduler$1, scheduler_production_min$1, schedulerExports$1, aa$1, ca$1, da$1, ea$1, ia$1, ja$1, ka$1, la$1, ma$1, z$3, ra$1, ua$1, va$1, wa$1, ya$1, za$1, Aa$1, Ba$1, Ca$1, Da$1, Ea$1, Fa$1, Ga$1, Ha$1, Ia$1, Ja$1, A$2, La$1, Na$1, eb$1, mb$1, nb$1, pb$1, qb$1, tb$1, wb$1, yb$1, zb$1, Ab$1, Ib$1, Lb$1, Mb$1, Ob$1, Pb$1, Qb$1, Rb$1, Sb$1, ac$1, bc$1, cc$1, dc$1, B$2, ec$1, fc$1, gc$1, hc$1, ic$1, jc$1, kc$1, lc$1, oc$1, pc$1, qc$1, rc$1, sc$1, C$2, Ec$1, Fc$1, Gc$1, Hc$1, Ic$1, Jc$1, Kc$1, Lc$1, Mc$1, Nc$1, Oc$1, Pc$1, Qc$1, Rc$1, cd$1, dd$1, id$1, kd$1, ld$1, md$1, sd$1, td$1, ud$1, vd$1, wd$1, xd$1, yd$1, Ad$1, Bd$1, Cd$1, Dd$1, Ed$1, Fd$1, Gd$1, Hd$1, Id$1, Jd$1, Kd$1, Ld$1, Md$1, Nd$1, Od$1, Qd$1, Rd$1, Sd$1, Td$1, Ud$1, Vd$1, Wd$1, Xd$1, Yd$1, Zd$1, $d$1, ae$1, be$1, ce$1, de$1, ee$1, fe$1, ie$1, le$1, pe$1, qe$1, we$1, xe$1, ye$1, ze$1, He$1, Pe$1, Qe$1, Re$1, Se$1, Te$1, We$1, Xe$1, Ye$1, $e$1, af$1, bf$1, cf$1, df$1, ef$1, gf$1, hf$1, jf$1, kf$1, lf$1, mf$1, rf$1, xf$1, yf$1, Cf$1, Df$1, Ff$1, Gf$1, Hf$1, Jf$1, Nf$1, Of$1, Pf$1, uf$1, of$1, Qf$1, Rf$1, Sf$1, Tf$1, Vf$1, H$2, Wf$1, Xf$1, eg$1, fg$1, gg$1, kg$1, lg$1, mg$1, ng$1, og$1, pg$1, qg$1, rg$1, sg$1, xg$1, yg$1, I$2, zg$1, Kg$1, Mg$1, Ng$1, Og$1, Pg$1, Wg$1, $g$1, jh$1, nh$1, Bh$1, Ch$1, Dh$1, Eh$1, Fh$1, Gh$1, M$2, Nh$1, Ph$1, Qh$1, Rh$1, N$2, O$2, P$2, Sh$1, Th$1, Uh$1, Vh$1, ai$1, Yh$1, Zh$1, $h$1, Ni$1, Xi$1, Ug$1, nj$1, Aj$1, Bj$1, Cj$1, Dj$1, Kj$1, U$2, Lj$1, V$2, Oj$1, X$1, Yj$1, mk$1, nk$1, ok$1, pk$1, K$2, R$2, Y$1, Z$1, gj$1, fj$1, T$2, qk$1, hh$1, rk$1, sk$1, tk$1, uk$1, gk$1, Hj$1, vk$1, Pi$1, Qi$1, Si$1, wk$1, xk$1, yk$1, zk$1, Ak$1, Bk$1, Ck$1, Wk$1, ll$1, tl$1, ul$1, vl$1, wl$1, reactDomExports$1, createRoot, m$2, LOG_LEVEL_OFF, LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARN, LOG_LEVEL_ERROR, createLogger, debug, debugDisabled, info, infoDisabled, warn, warnDisabled, error, errorDisabled, defineProperty, jsxRuntime, reactJsxRuntime_production_min, react, react_production_min, l$1$1, n$1, p$1$1, q$1, r$2, t$2, u$2, v$4, w$2, x, y$1, z$2, B$1, C$1, D$1, H$1, I$1, J, K$1, L$1, P$1, U$1, V$1, W$1, reactExports, f$2, k$1, l$4, m$1, n$2, p$3, jsxRuntimeExports, Fragment, jsx, jsxs, objectWithoutPropertiesLoose, _objectWithoutProperties, logLevel, logBackgroundColor, logColor, pwaLogger, injectLogStyles, l$3, t$1, r$1, u$1, i$1, o$1, f$1, c$1, e$1, a$1, v$3, l$2, m, g$1, r, n, h, s$1, f, v$1, isDev, sigi, mutateValues, PLACEHOLDER, createStateProxy, getPreciseType, toString, isObject, sigref, serviceWorkerAPI, inspectServiceWorker, requestSkipWaitingOnServiceWorker, requestClaimOnServiceWorker, postMessageToServiceWorker, navigatorControllerRef, navigatorControllerSetter, applyControllerEffect, createServiceWorkerHotReplacer, createServiceWorkerFacade, ensureIsControllingNavigator, reloading, reloadPage, listenEvent, listenAppInstalled, get, displayModeStandaloneRef, displayModeStandaloneSetter, media, appInstalledEvent, listenBeforeInstallPrompt, isAvailable, availableRef, availableSetter, checkAvailabilityChange, addToHomescreen, reactDom, reactDom_production_min, scheduler, scheduler_production_min, schedulerExports, aa, ca, da, ea, ia, ja, ka, la, ma, z, ra, ua, va, wa, ya, za, Aa, Ba, Ca, Da, Ea, Fa, Ga, Ha, Ia, Ja, A, La, Na, eb, mb, nb, pb, qb, tb, wb, yb, zb, Ab, Ib, Lb, Mb, Ob, Pb, Qb, Rb, Sb, ac, bc, cc, dc, B, ec, fc, gc, hc, ic, jc, kc, lc, oc, pc, qc, rc, sc, C, Ec, Fc, Gc, Hc, Ic, Jc, Kc, Lc, Mc, Nc, Oc, Pc, Qc, Rc, cd, dd, id, kd, ld, md, sd, td, ud, vd, wd, xd, yd, Ad, Bd, Cd, Dd, Ed, Fd, Gd, Hd, Id, Jd, Kd, Ld, Md, Nd, Od, Qd, Rd, Sd, Td, Ud, Vd, Wd, Xd, Yd, Zd, $d, ae, be, ce, de, ee, fe, ie, le, pe, qe, we, xe, ye, ze, He, Pe, Qe, Re, Se, Te, We, Xe, Ye, $e, af, bf, cf, df, ef, gf, hf, jf, kf, lf, mf, rf, xf, yf, Cf, Df, Ff, Gf, Hf, Jf, Nf, Of, Pf, uf, of, Qf, Rf, Sf, Tf, Vf, H, Wf, Xf, eg, fg, gg, kg, lg, mg, ng, og, pg, qg, rg, sg, xg, yg, I, zg, Kg, Mg, Ng, Og, Pg, Wg, $g, jh, nh, Bh, Ch, Dh, Eh, Fh, Gh, M, Nh, Ph, Qh, Rh, N, O, P, Sh, Th, Uh, Vh, ai, Yh, Zh, $h, Ni, Xi, Ug, nj, Aj, Bj, Cj, Dj, Kj, U, Lj, V, Oj, X, Yj, mk, nk, ok, pk, K, R, Y, Z, gj, fj, T, qk, hh, rk, sk, tk, uk, gk, Hj, vk, Pi, Qi, Si, wk, xk, yk, zk, Ak, Bk, Ck, Wk, ll, tl, ul, vl, wl, reactDomExports, __jsenv_default_import__;
-  function InlineContent(content, _ref) {
-    let {
-      type = "text/plain"
-    } = _ref;
-    this.text = content;
-    this.type = type;
-  }
+  var globalObject, react$1, react_production_min$1, l$5, n$3, p$5, q$2, r$3, t$3, u$3, v$6, w$3, x$1, y$2, z$4, B$3, C$3, D$3, H$3, I$3, J$1, K$3, L$3, P$3, U$3, V$3, W$3, reactExports$1, __jsenv_default_import__$1, reactDom$1, reactDom_production_min$1, scheduler$1, scheduler_production_min$1, schedulerExports$1, aa$1, ca$1, da$1, ea$1, ia$1, ja$1, ka$1, la$1, ma$1, z$3, ra$1, ua$1, va$1, wa$1, ya$1, za$1, Aa$1, Ba$1, Ca$1, Da$1, Ea$1, Fa$1, Ga$1, Ha$1, Ia$1, Ja$1, A$2, La$1, Na$1, eb$1, mb$1, nb$1, pb$1, qb$1, tb$1, wb$1, yb$1, zb$1, Ab$1, Ib$1, Lb$1, Mb$1, Ob$1, Pb$1, Qb$1, Rb$1, Sb$1, ac$1, bc$1, cc$1, dc$1, B$2, ec$1, fc$1, gc$1, hc$1, ic$1, jc$1, kc$1, lc$1, oc$1, pc$1, qc$1, rc$1, sc$1, C$2, Ec$1, Fc$1, Gc$1, Hc$1, Ic$1, Jc$1, Kc$1, Lc$1, Mc$1, Nc$1, Oc$1, Pc$1, Qc$1, Rc$1, cd$1, dd$1, id$1, kd$1, ld$1, md$1, sd$1, td$1, ud$1, vd$1, wd$1, xd$1, yd$1, Ad$1, Bd$1, Cd$1, Dd$1, Ed$1, Fd$1, Gd$1, Hd$1, Id$1, Jd$1, Kd$1, Ld$1, Md$1, Nd$1, Od$1, Qd$1, Rd$1, Sd$1, Td$1, Ud$1, Vd$1, Wd$1, Xd$1, Yd$1, Zd$1, $d$1, ae$1, be$1, ce$1, de$1, ee$1, fe$1, ie$1, le$1, pe$1, qe$1, we$1, xe$1, ye$1, ze$1, He$1, Pe$1, Qe$1, Re$1, Se$1, Te$1, We$1, Xe$1, Ye$1, $e$1, af$1, bf$1, cf$1, df$1, ef$1, gf$1, hf$1, jf$1, kf$1, lf$1, mf$1, rf$1, xf$1, yf$1, Cf$1, Df$1, Ff$1, Gf$1, Hf$1, Jf$1, Nf$1, Of$1, Pf$1, uf$1, of$1, Qf$1, Rf$1, Sf$1, Tf$1, Vf$1, H$2, Wf$1, Xf$1, eg$1, fg$1, gg$1, kg$1, lg$1, mg$1, ng$1, og$1, pg$1, qg$1, rg$1, sg$1, xg$1, yg$1, I$2, zg$1, Kg$1, Mg$1, Ng$1, Og$1, Pg$1, Wg$1, $g$1, jh$1, nh$1, Bh$1, Ch$1, Dh$1, Eh$1, Fh$1, Gh$1, M$2, Nh$1, Ph$1, Qh$1, Rh$1, N$2, O$2, P$2, Sh$1, Th$1, Uh$1, Vh$1, ai$1, Yh$1, Zh$1, $h$1, Ni$1, Xi$1, Ug$1, nj$1, Aj$1, Bj$1, Cj$1, Dj$1, Kj$1, U$2, Lj$1, V$2, Oj$1, X$1, Yj$1, mk$1, nk$1, ok$1, pk$1, K$2, R$2, Y$1, Z$1, gj$1, fj$1, T$2, qk$1, hh$1, rk$1, sk$1, tk$1, uk$1, gk$1, Hj$1, vk$1, Pi$1, Qi$1, Si$1, wk$1, xk$1, yk$1, zk$1, Ak$1, Bk$1, Ck$1, Wk$1, ll$1, tl$1, ul$1, vl$1, wl$1, reactDomExports$1, createRoot, m$2, LOG_LEVEL_OFF, LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARN, LOG_LEVEL_ERROR, createLogger, debug, debugDisabled, info, infoDisabled, warn, warnDisabled, error, errorDisabled, defineProperty, jsxRuntime, reactJsxRuntime_production_min, react, react_production_min, l$1$1, n$1, p$1$1, q$1, r$2, t$2, u$2, v$4, w$2, x, y$1, z$2, B$1, C$1, D$1, H$1, I$1, J, K$1, L$1, P$1, U$1, V$1, W$1, reactExports, f$2, k$1, l$4, m$1, n$2, p$3, jsxRuntimeExports, Fragment, jsx, jsxs, objectWithoutPropertiesLoose, _objectWithoutProperties, logLevel, logBackgroundColor, logColor, pwaLogger, injectLogStyles, l$3, t$1, r$1, u$1, i$1, o$1, f$1, c$1, e$1, a$1, v$3, l$2, m, g$1, r, n, h, s$1, f, v$1, isDev, sigi, mutateValues, PLACEHOLDER, createStateProxy, getPreciseType, toString, isObject, sigref, serviceWorkerAPI, inspectServiceWorker, requestSkipWaitingOnServiceWorker, requestClaimOnServiceWorker, postMessageToServiceWorker, navigatorControllerRef, navigatorControllerSetter, applyControllerEffect, createServiceWorkerHotReplacer, createServiceWorkerFacade, ensureIsControllingNavigator, reloading, reloadPage, listenEvent, listenAppInstalled, get, displayModeStandaloneRef, displayModeStandaloneSetter, media, appInstalledEvent, listenBeforeInstallPrompt, isAvailable, availableRef, availableSetter, checkAvailabilityChange, addToHomescreen, reactDom, reactDom_production_min, scheduler, scheduler_production_min, schedulerExports, aa, ca, da, ea, ia, ja, ka, la, ma, z, ra, ua, va, wa, ya, za, Aa, Ba, Ca, Da, Ea, Fa, Ga, Ha, Ia, Ja, A, La, Na, eb, mb, nb, pb, qb, tb, wb, yb, zb, Ab, Ib, Lb, Mb, Ob, Pb, Qb, Rb, Sb, ac, bc, cc, dc, B, ec, fc, gc, hc, ic, jc, kc, lc, oc, pc, qc, rc, sc, C, Ec, Fc, Gc, Hc, Ic, Jc, Kc, Lc, Mc, Nc, Oc, Pc, Qc, Rc, cd, dd, id, kd, ld, md, sd, td, ud, vd, wd, xd, yd, Ad, Bd, Cd, Dd, Ed, Fd, Gd, Hd, Id, Jd, Kd, Ld, Md, Nd, Od, Qd, Rd, Sd, Td, Ud, Vd, Wd, Xd, Yd, Zd, $d, ae, be, ce, de, ee, fe, ie, le, pe, qe, we, xe, ye, ze, He, Pe, Qe, Re, Se, Te, We, Xe, Ye, $e, af, bf, cf, df, ef, gf, hf, jf, kf, lf, mf, rf, xf, yf, Cf, Df, Ff, Gf, Hf, Jf, Nf, Of, Pf, uf, of, Qf, Rf, Sf, Tf, Vf, H, Wf, Xf, eg, fg, gg, kg, lg, mg, ng, og, pg, qg, rg, sg, xg, yg, I, zg, Kg, Mg, Ng, Og, Pg, Wg, $g, jh, nh, Bh, Ch, Dh, Eh, Fh, Gh, M, Nh, Ph, Qh, Rh, N, O, P, Sh, Th, Uh, Vh, ai, Yh, Zh, $h, Ni, Xi, Ug, nj, Aj, Bj, Cj, Dj, Kj, U, Lj, V, Oj, X, Yj, mk, nk, ok, pk, K, R, Y, Z, gj, fj, T, qk, hh, rk, sk, tk, uk, gk, Hj, vk, Pi, Qi, Si, wk, xk, yk, zk, Ak, Bk, Ck, Wk, ll, tl, ul, vl, wl, reactDomExports, __jsenv_default_import__;
   function getDefaultExportFromCjs$1(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
   }
@@ -12207,7 +12200,6 @@ System.register([], function (_export, _context) {
     }
   }
   _export({
-    InlineContent: InlineContent,
     _objectSpread2: _objectSpread2,
     createRoot: void 0
   });
@@ -12215,6 +12207,9 @@ System.register([], function (_export, _context) {
     setters: [],
     execute: function () {
       /* eslint-disable */
+      // construct-style-sheets-polyfill@3.1.0
+      // to keep in sync with https://github.com/calebdwilliams/construct-style-sheets
+      // copy pasted into jsenv codebase to inject this code with more ease
       (function () {
         if (typeof document === "undefined" || "adoptedStyleSheets" in document) {
           return;
@@ -12531,6 +12526,26 @@ System.register([], function (_export, _context) {
           document.addEventListener("DOMContentLoaded", documentLocation.connect.bind(documentLocation));
         }
       })();
+
+      /* eslint-env browser,node */
+
+      /*
+       * This file does not use export const InlineContent = function() {} on purpose:
+       * - An export would be renamed by rollup,
+       *   making it harder to statically detect new InlineContent() calls
+       * - An export would be renamed by terser
+       *   here again it becomes hard to detect new InlineContent() calls
+       * Instead it sets "__InlineContent__" on the global object and terser is configured by jsenv
+       * to preserve the __InlineContent__ global variable name
+       */
+      globalObject = typeof self === "object" ? self : process;
+      globalObject.__InlineContent__ = function (content, _ref) {
+        let {
+          type = "text/plain"
+        } = _ref;
+        this.text = content;
+        this.type = type;
+      };
       react$1 = {
         exports: {}
       };
