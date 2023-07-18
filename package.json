@@ -43,12 +43,12 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.22.8",
-    "@babel/eslint-parser": "7.22.7",
+    "@babel/core": "7.22.9",
+    "@babel/eslint-parser": "7.22.9",
     "@babel/plugin-syntax-import-assertions": "7.22.5",
     "@babel/plugin-transform-react-jsx": "7.22.5",
     "@jsenv/assert": "2.9.0",
-    "@jsenv/core": "37.0.5",
+    "@jsenv/core": "37.1.4",
     "@jsenv/eslint-config": "16.4.0",
     "@jsenv/eslint-import-resolver": "8.0.0",
     "@jsenv/file-size-impact": "14.1.1",
@@ -60,14 +60,14 @@
     "@jsenv/plugin-explorer": "1.0.1",
     "@jsenv/plugin-minification": "1.4.0",
     "@jsenv/plugin-placeholders": "1.1.4",
-    "@jsenv/plugin-react": "1.4.2",
+    "@jsenv/plugin-react": "1.4.6",
     "@jsenv/test": "1.4.0",
-    "eslint": "8.44.0",
+    "eslint": "8.45.0",
     "eslint-plugin-html": "7.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-react": "7.32.2",
     "open": "9.1.0",
-    "playwright": "1.35.1",
+    "playwright": "1.36.1",
     "prettier": "3.0.0"
   }
 }

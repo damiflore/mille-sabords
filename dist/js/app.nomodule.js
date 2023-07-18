@@ -4,15 +4,15 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
   var __jsenv_default_import__, _objectSpread2, jsx, createLogger, createServiceWorkerFacade, _objectWithoutProperties, jsxs, Fragment, createRoot, createContext$1, useContext$1, useReducer, useEffect, createStructuredStateStore, cardOneSkullSmallUrl, cardTwoSkullsSmallUrl, cardSwordChallengeSmallUrl, cardAnimalsSmallUrl, cardChestSmallUrl, cardCoinSmallUrl, cardDiamondSmallUrl, cardPirateSmallUrl, cardWitchSmallUrl, cardOneSkullUrl, cardTwoSkullsUrl, cardTwoSwordChallengeUrl, cardThreeSwordChallengeUrl, cardFourSwordChallengeUrl, cardAnimalsUrl, cardChestUrl, cardCoinUrl, cardDefaultUrl, cardDiamondUrl, cardPirateUrl, cardWitchUrl, CARD_ANIMALS, CARD_CHEST, CARD_COIN, CARD_DIAMOND, CARD_PIRATE, CARD_WITCH, CARD_ONE_SKULL, CARD_TWO_SKULLS, CARD_TWO_SWORDS_CHALLENGE, CARD_THREE_SWORDS_CHALLENGE, CARD_FOUR_SWORDS_CHALLENGE, cardImageUrlMap, cardToImageUrl, cardSmallImageUrlMap, cardToSmallImageUrl, cardData, createDeck, CARDS, mixDeck, swapTwoCards, randomIndex, cardIds, cardIdToCard, isPirateCard, isWitchCard, isChestCard, isAnimalsCard, isDiamondCard, isCoinCard, isOneSkullCard, isTwoSkullsCard, isTwoSwordsChallengeCard, isThreeSwordsChallengeCard, isFourSwordsChallengeCard, isSwordChallengeCard, symbolCoinUrl, symbolDiamondUrl, symbolMonkeyUrl, symbolParrotUrl, symbolSkullUrl, symbolSwordUrl, SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_MONKEY, SYMBOL_PARROT, SYMBOL_SKULL, SYMBOL_SWORD, symbolIsSkull, symbolIsCoin, symbolIsDiamond, symbolIsMonkey, symbolIsParrot, SYMBOLS, symbolUrlMap, symbolToImageUrl, faces, diceId, createDice, DICES, diceIsOnSkull, diceToVisibleSymbol, defaultState, logger, stateStorageKey, store, createAction, useGameCreated, useGameStarted, usePlayers, useCurrentPlayerId, useCardIds, useDices, useRoundStarted, useCurrentCardId, useCurrentCardActivated, useRollCount, useScoreMarked, useIsOnSkullIsland, useWitchUncursedDiceId, useWitchCardEffectUsed, useDiceRolledIds, useDiceCursedIds, useChestSlots, useAnimationsDisabled, useSoundDisabled, createContext, useContext, useState, MainDomNodeContext, useMainDomNode, useMainDomNodeSetter, diceDomNodeContexts, diceDomNodeProviders, DiceDomNodesProvider, useDiceDomNode, useDiceDomNodeSetter, DomNodesProvider, ContextProvider, requestAsapCallback, nextIDLEPromise, catchError, addDomEventListener, elementIsWindow, elementIsDocument, isFocusable, isVisible, isDocumentElement, getStyle, getStyleValue, elementToOwnerWindow, elementToOwnerDocument, getDocumentScroll, UrlLoadingContext, reducer, initialState, UrlLoadingProvider, useUrlTrackerTotalCount, useUrlTrackerLoadedCount, useUrlLoadingNotifier, useUrlLoadingState, addLoadedListener, useWaitABit, swFacade, loadImage, unbindEvents, preloadImages, woodUrl, pirateHookUrl, pirateHook2Url, woodBoxUrl, treasureMapUrl, witchLabelUrl, skullBottleUrl, Preloader, ImagePreloader, _excluded, _excluded2, MainRaw, ErrorScreen, LoadScreen, Main, createMilleSabordGame, app;
   return {
     setters: [function (_vendorsJs) {
-      __jsenv_default_import__ = _vendorsJs.__jsenv_default_import__;
-      _objectSpread2 = _vendorsJs._objectSpread2;
-      jsx = _vendorsJs.jsx;
-      createLogger = _vendorsJs.createLogger;
-      createServiceWorkerFacade = _vendorsJs.createServiceWorkerFacade;
-      _objectWithoutProperties = _vendorsJs._objectWithoutProperties;
-      jsxs = _vendorsJs.jsxs;
-      Fragment = _vendorsJs.Fragment;
-      createRoot = _vendorsJs.createRoot;
+      __jsenv_default_import__ = _vendorsJs._;
+      _objectSpread2 = _vendorsJs.a;
+      jsx = _vendorsJs.j;
+      createLogger = _vendorsJs.c;
+      createServiceWorkerFacade = _vendorsJs.b;
+      _objectWithoutProperties = _vendorsJs.d;
+      jsxs = _vendorsJs.e;
+      Fragment = _vendorsJs.F;
+      createRoot = _vendorsJs.f;
     }],
     execute: function () {
       ({
@@ -114,7 +114,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
       cardAnimalsUrl = new URL(__v__("/other/card_animals.png"), _context.meta.url);
       cardChestUrl = new URL(__v__("/other/card_chest.png"), _context.meta.url);
       cardCoinUrl = new URL(__v__("/other/card_coin.png"), _context.meta.url);
-      _export("cardDefaultUrl", cardDefaultUrl = new URL(__v__("/other/card_default.png"), _context.meta.url));
+      _export("$", cardDefaultUrl = new URL(__v__("/other/card_default.png"), _context.meta.url));
       cardDiamondUrl = new URL(__v__("/other/card_diamond.png"), _context.meta.url);
       cardPirateUrl = new URL(__v__("/other/card_pirate.png"), _context.meta.url);
       cardWitchUrl = new URL(__v__("/other/card_witch.png"), _context.meta.url);
@@ -126,7 +126,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
       CARD_WITCH = "witch";
       CARD_ONE_SKULL = "1skull";
       CARD_TWO_SKULLS = "2skulls";
-      _export("CARD_TWO_SWORDS_CHALLENGE", CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge");
+      _export("a7", CARD_TWO_SWORDS_CHALLENGE = "2sword-challenge");
       CARD_THREE_SWORDS_CHALLENGE = "3sword-challenge";
       CARD_FOUR_SWORDS_CHALLENGE = "4sword-challenge";
       cardImageUrlMap = {
@@ -142,7 +142,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         [CARD_PIRATE]: cardPirateUrl,
         [CARD_WITCH]: cardWitchUrl
       };
-      _export("cardToImageUrl", cardToImageUrl = card => cardImageUrlMap[card.type]);
+      _export("Z", cardToImageUrl = card => cardImageUrlMap[card.type]);
       cardSmallImageUrlMap = {
         [CARD_ONE_SKULL]: cardOneSkullSmallUrl,
         [CARD_TWO_SKULLS]: cardTwoSkullsSmallUrl,
@@ -156,7 +156,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         [CARD_PIRATE]: cardPirateSmallUrl,
         [CARD_WITCH]: cardWitchSmallUrl
       };
-      _export("cardToSmallImageUrl", cardToSmallImageUrl = card => cardSmallImageUrlMap[card.type]);
+      _export("_", cardToSmallImageUrl = card => cardSmallImageUrlMap[card.type]);
       cardData = {
         [CARD_ANIMALS]: {
           type: CARD_ANIMALS,
@@ -246,7 +246,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         [CARD_THREE_SWORDS_CHALLENGE]: 3,
         [CARD_FOUR_SWORDS_CHALLENGE]: 4
       });
-      _export("mixDeck", mixDeck = deck => {
+      _export("I", mixDeck = deck => {
         const deckMixed = [...deck];
         for (var i = 0; i < 100; i++) swapTwoCards(deckMixed);
         return deckMixed;
@@ -263,37 +263,37 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
       };
       randomIndex = arrayLength => Math.floor(Math.random() * arrayLength);
       cardIds = CARDS.map(card => card.id);
-      _export("cardIdToCard", cardIdToCard = cardId => CARDS.find(cardCandidate => cardCandidate.id === cardId));
-      _export("isPirateCard", isPirateCard = card => card.type === CARD_PIRATE);
-      _export("isWitchCard", isWitchCard = card => card.type === CARD_WITCH);
-      _export("isChestCard", isChestCard = card => card.type === CARD_CHEST);
-      _export("isAnimalsCard", isAnimalsCard = card => card.type === CARD_ANIMALS);
-      _export("isDiamondCard", isDiamondCard = card => card.type === CARD_DIAMOND);
-      _export("isCoinCard", isCoinCard = card => card.type === CARD_COIN);
-      _export("isOneSkullCard", isOneSkullCard = card => card.type === CARD_ONE_SKULL);
-      _export("isTwoSkullsCard", isTwoSkullsCard = card => card.type === CARD_TWO_SKULLS);
+      _export("p", cardIdToCard = cardId => CARDS.find(cardCandidate => cardCandidate.id === cardId));
+      _export("e", isPirateCard = card => card.type === CARD_PIRATE);
+      _export("a1", isWitchCard = card => card.type === CARD_WITCH);
+      _export("F", isChestCard = card => card.type === CARD_CHEST);
+      _export("a", isAnimalsCard = card => card.type === CARD_ANIMALS);
+      _export("g", isDiamondCard = card => card.type === CARD_DIAMOND);
+      _export("f", isCoinCard = card => card.type === CARD_COIN);
+      _export("B", isOneSkullCard = card => card.type === CARD_ONE_SKULL);
+      _export("D", isTwoSkullsCard = card => card.type === CARD_TWO_SKULLS);
       isTwoSwordsChallengeCard = card => card.type === CARD_TWO_SWORDS_CHALLENGE;
       isThreeSwordsChallengeCard = card => card.type === CARD_THREE_SWORDS_CHALLENGE;
       isFourSwordsChallengeCard = card => card.type === CARD_FOUR_SWORDS_CHALLENGE;
-      _export("isSwordChallengeCard", isSwordChallengeCard = card => isTwoSwordsChallengeCard(card) || isThreeSwordsChallengeCard(card) || isFourSwordsChallengeCard(card));
-      _export("symbolCoinUrl", symbolCoinUrl = new URL(__v__("/other/dice_coin.png"), _context.meta.url));
-      _export("symbolDiamondUrl", symbolDiamondUrl = new URL(__v__("/other/dice_diamond.png"), _context.meta.url));
-      _export("symbolMonkeyUrl", symbolMonkeyUrl = new URL(__v__("/other/dice_monkey.png"), _context.meta.url));
+      _export("i", isSwordChallengeCard = card => isTwoSwordsChallengeCard(card) || isThreeSwordsChallengeCard(card) || isFourSwordsChallengeCard(card));
+      _export("P", symbolCoinUrl = new URL(__v__("/other/dice_coin.png"), _context.meta.url));
+      _export("Q", symbolDiamondUrl = new URL(__v__("/other/dice_diamond.png"), _context.meta.url));
+      _export("ac", symbolMonkeyUrl = new URL(__v__("/other/dice_monkey.png"), _context.meta.url));
       symbolParrotUrl = new URL(__v__("/other/dice_parrot.png"), _context.meta.url);
-      _export("symbolSkullUrl", symbolSkullUrl = new URL(__v__("/other/dice_skull.png"), _context.meta.url));
-      _export("symbolSwordUrl", symbolSwordUrl = new URL(__v__("/other/dice_sword.png"), _context.meta.url));
-      _export("SYMBOL_COIN", SYMBOL_COIN = "coin");
-      _export("SYMBOL_DIAMOND", SYMBOL_DIAMOND = "diamond");
-      _export("SYMBOL_MONKEY", SYMBOL_MONKEY = "monkey");
-      _export("SYMBOL_PARROT", SYMBOL_PARROT = "parrot");
-      _export("SYMBOL_SKULL", SYMBOL_SKULL = "skull");
-      _export("SYMBOL_SWORD", SYMBOL_SWORD = "sword");
-      _export("symbolIsSkull", symbolIsSkull = symbol => symbol === SYMBOL_SKULL);
-      _export("symbolIsCoin", symbolIsCoin = symbol => symbol === SYMBOL_COIN);
-      _export("symbolIsDiamond", symbolIsDiamond = symbol => symbol === SYMBOL_DIAMOND);
-      _export("symbolIsMonkey", symbolIsMonkey = symbol => symbol === SYMBOL_MONKEY);
-      _export("symbolIsParrot", symbolIsParrot = symbol => symbol === SYMBOL_PARROT);
-      _export("SYMBOLS", SYMBOLS = [SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_MONKEY, SYMBOL_PARROT, SYMBOL_SKULL, SYMBOL_SWORD]);
+      _export("a0", symbolSkullUrl = new URL(__v__("/other/dice_skull.png"), _context.meta.url));
+      _export("s", symbolSwordUrl = new URL(__v__("/other/dice_sword.png"), _context.meta.url));
+      _export("j", SYMBOL_COIN = "coin");
+      _export("h", SYMBOL_DIAMOND = "diamond");
+      _export("b", SYMBOL_MONKEY = "monkey");
+      _export("S", SYMBOL_PARROT = "parrot");
+      _export("C", SYMBOL_SKULL = "skull");
+      _export("k", SYMBOL_SWORD = "sword");
+      _export("z", symbolIsSkull = symbol => symbol === SYMBOL_SKULL);
+      _export("X", symbolIsCoin = symbol => symbol === SYMBOL_COIN);
+      _export("Y", symbolIsDiamond = symbol => symbol === SYMBOL_DIAMOND);
+      _export("V", symbolIsMonkey = symbol => symbol === SYMBOL_MONKEY);
+      _export("W", symbolIsParrot = symbol => symbol === SYMBOL_PARROT);
+      _export("U", SYMBOLS = [SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_MONKEY, SYMBOL_PARROT, SYMBOL_SKULL, SYMBOL_SWORD]);
       symbolUrlMap = {
         [SYMBOL_COIN]: symbolCoinUrl,
         [SYMBOL_DIAMOND]: symbolDiamondUrl,
@@ -302,7 +302,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         [SYMBOL_SKULL]: symbolSkullUrl,
         [SYMBOL_SWORD]: symbolSwordUrl
       };
-      _export("symbolToImageUrl", symbolToImageUrl = symbol => symbolUrlMap[symbol]);
+      _export("T", symbolToImageUrl = symbol => symbolUrlMap[symbol]);
       faces = [SYMBOL_COIN, SYMBOL_DIAMOND, SYMBOL_MONKEY, SYMBOL_PARROT, SYMBOL_SKULL, SYMBOL_SWORD]; // Don't use an id: 0
       // Otherwise if(witchUncursedDiceId) would return false and we would have to check
       // if (typeof witchUncursedDiceId === 'number')
@@ -319,15 +319,15 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         const dice = createDice();
         DICES[dice.id] = dice;
       });
-      _export("diceIsOnSkull", diceIsOnSkull = dice => diceToVisibleSymbol(dice) === SYMBOL_SKULL);
-      _export("diceToVisibleSymbol", diceToVisibleSymbol = _ref => {
+      _export("x", diceIsOnSkull = dice => diceToVisibleSymbol(dice) === SYMBOL_SKULL);
+      _export("d", diceToVisibleSymbol = _ref => {
         let {
           faces,
           visibleFaceIndex
         } = _ref;
         return faces[visibleFaceIndex];
       });
-      _export("defaultState", defaultState = {
+      _export("a9", defaultState = {
         animationsDisabled: false,
         soundDisabled: false,
         gameCreated: false,
@@ -398,34 +398,34 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         }
       });
       store.Provider.displayName = "storeProvider";
-      _export("createAction", createAction = store.createAction);
-      _export("useGameCreated", useGameCreated = () => store.useKeyedState("gameCreated"));
-      _export("useGameStarted", useGameStarted = () => store.useKeyedState("gameStarted"));
-      _export("usePlayers", usePlayers = () => store.useKeyedState("players"));
-      _export("useCurrentPlayerId", useCurrentPlayerId = () => store.useKeyedState("currentPlayerId"));
-      _export("useCardIds", useCardIds = () => store.useKeyedState("cardIds"));
-      _export("useDices", useDices = () => store.useKeyedState("dices"));
-      _export("useRoundStarted", useRoundStarted = () => store.useKeyedState("roundStarted"));
-      _export("useCurrentCardId", useCurrentCardId = () => store.useKeyedState("currentCardId"));
-      _export("useCurrentCardActivated", useCurrentCardActivated = () => store.useKeyedState("currentCardActivated"));
-      _export("useRollCount", useRollCount = () => store.useKeyedState("rollCount"));
-      _export("useScoreMarked", useScoreMarked = () => store.useKeyedState("scoreMarked"));
-      _export("useIsOnSkullIsland", useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland"));
-      _export("useWitchUncursedDiceId", useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId"));
-      _export("useWitchCardEffectUsed", useWitchCardEffectUsed = () => store.useKeyedState("witchCardEffectUsed"));
-      _export("useDiceRolledIds", useDiceRolledIds = () => store.useKeyedState("diceRolledIds"));
-      _export("useDiceCursedIds", useDiceCursedIds = () => store.useKeyedState("diceCursedIds"));
-      _export("useChestSlots", useChestSlots = () => store.useKeyedState("chestSlots"));
-      _export("useAnimationsDisabled", useAnimationsDisabled = () => store.useKeyedState("animationsDisabled"));
-      _export("useSoundDisabled", useSoundDisabled = () => store.useKeyedState("soundDisabled"));
+      _export("c", createAction = store.createAction);
+      _export("ae", useGameCreated = () => store.useKeyedState("gameCreated"));
+      _export("a8", useGameStarted = () => store.useKeyedState("gameStarted"));
+      _export("n", usePlayers = () => store.useKeyedState("players"));
+      _export("m", useCurrentPlayerId = () => store.useKeyedState("currentPlayerId"));
+      _export("o", useCardIds = () => store.useKeyedState("cardIds"));
+      _export("r", useDices = () => store.useKeyedState("dices"));
+      _export("a6", useRoundStarted = () => store.useKeyedState("roundStarted"));
+      _export("A", useCurrentCardId = () => store.useKeyedState("currentCardId"));
+      _export("J", useCurrentCardActivated = () => store.useKeyedState("currentCardActivated"));
+      _export("q", useRollCount = () => store.useKeyedState("rollCount"));
+      _export("E", useScoreMarked = () => store.useKeyedState("scoreMarked"));
+      _export("H", useIsOnSkullIsland = () => store.useKeyedState("isOnSkullIsland"));
+      _export("w", useWitchUncursedDiceId = () => store.useKeyedState("witchUncursedDiceId"));
+      _export("a5", useWitchCardEffectUsed = () => store.useKeyedState("witchCardEffectUsed"));
+      _export("v", useDiceRolledIds = () => store.useKeyedState("diceRolledIds"));
+      _export("y", useDiceCursedIds = () => store.useKeyedState("diceCursedIds"));
+      _export("t", useChestSlots = () => store.useKeyedState("chestSlots"));
+      _export("G", useAnimationsDisabled = () => store.useKeyedState("animationsDisabled"));
+      _export("ab", useSoundDisabled = () => store.useKeyedState("soundDisabled"));
       ({
         createContext,
         useContext,
         useState
       } = __jsenv_default_import__);
       MainDomNodeContext = createContext();
-      _export("useMainDomNode", useMainDomNode = () => useContext(MainDomNodeContext)[0]);
-      _export("useMainDomNodeSetter", useMainDomNodeSetter = () => useContext(MainDomNodeContext)[1]);
+      _export("O", useMainDomNode = () => useContext(MainDomNodeContext)[0]);
+      _export("ad", useMainDomNodeSetter = () => useContext(MainDomNodeContext)[1]);
       diceDomNodeContexts = {};
       Object.keys(DICES).forEach(diceId => {
         diceDomNodeContexts[diceId] = createContext();
@@ -442,8 +442,8 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
           });
         }, children);
       };
-      _export("useDiceDomNode", useDiceDomNode = id => useContext(diceDomNodeContexts[id])[0]);
-      _export("useDiceDomNodeSetter", useDiceDomNodeSetter = id => useContext(diceDomNodeContexts[id])[1]);
+      _export("a3", useDiceDomNode = id => useContext(diceDomNodeContexts[id])[0]);
+      _export("a4", useDiceDomNodeSetter = id => useContext(diceDomNodeContexts[id])[1]);
       DomNodesProvider = _ref2 => {
         let {
           children
@@ -521,7 +521,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         return ErrorBoundary;
       };
       /* eslint-disable valid-jsdoc */
-      _export("addDomEventListener", addDomEventListener = (domNode, eventName, callback, options) => {
+      _export("a2", addDomEventListener = (domNode, eventName, callback, options) => {
         domNode.addEventListener(eventName, callback, options);
         return () => {
           domNode.removeEventListener(eventName, callback, options);
@@ -531,7 +531,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
       // but it's safer to use approach below
       elementIsWindow = a => a.window === a;
       elementIsDocument = a => a.nodeType === 9;
-      _export("isFocusable", isFocusable = node => {
+      _export("L", isFocusable = node => {
         // only element node can be focused, document, textNodes etc cannot
         if (node.nodeType !== 1) {
           return false;
@@ -585,9 +585,9 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         }
         return true;
       }; // https://github.com/davidtheclark/tabbable/blob/master/index.js
-      _export("isDocumentElement", isDocumentElement = node => node === node.ownerDocument.documentElement);
+      _export("N", isDocumentElement = node => node === node.ownerDocument.documentElement);
       getStyle = element => elementToOwnerWindow(element).getComputedStyle(element);
-      _export("getStyleValue", getStyleValue = (element, name) => getStyle(element).getPropertyValue(name));
+      _export("M", getStyleValue = (element, name) => getStyle(element).getPropertyValue(name));
       /**
        * elementToOwnerWindow returns the window owning the element.
        * Usually an element window will just be window.
@@ -614,7 +614,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         if (elementIsDocument(element)) return element;
         return element.ownerDocument;
       };
-      _export("getDocumentScroll", getDocumentScroll = element => {
+      _export("R", getDocumentScroll = element => {
         const elementWindow = elementToOwnerWindow(element);
         const elementDocument = elementToOwnerDocument(element);
         return {
@@ -644,7 +644,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         const loadedCount = Object.keys(urlLoadingState).filter(url => urlLoadingState[url].status === "loaded").length;
         return loadedCount;
       };
-      _export("useUrlLoadingNotifier", useUrlLoadingNotifier = url => {
+      _export("u", useUrlLoadingNotifier = url => {
         url = String(url);
         const contextValue = __jsenv_default_import__.useContext(UrlLoadingContext);
         const dispatch = contextValue ? contextValue[1] : undefined;
@@ -715,7 +715,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         }
         return contextValue[0];
       };
-      _export("addLoadedListener", addLoadedListener = (domNode, callback) => {
+      _export("K", addLoadedListener = (domNode, callback) => {
         const removeLoadListener = addDomEventListener(domNode, "load", () => {
           removeErrorListener();
           callback();
@@ -738,8 +738,8 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         }, []);
         return waited;
       };
-      _export("swFacade", swFacade = createServiceWorkerFacade()); // https://vincenttaverna.com/posts/react-image-hook/
-      _export("loadImage", loadImage = (url, crossOrigin) => {
+      _export("aa", swFacade = createServiceWorkerFacade()); // https://vincenttaverna.com/posts/react-image-hook/
+      _export("l", loadImage = (url, crossOrigin) => {
         const image = new Image();
         if (crossOrigin) {
           image.crossOrigin = crossOrigin;
@@ -986,7 +986,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
           }));
         });
       });
-      _export("app", app = /*#__PURE__*/Object.freeze( /*#__PURE__*/Object.defineProperty({
+      _export("af", app = /*#__PURE__*/Object.freeze( /*#__PURE__*/Object.defineProperty({
         __proto__: null,
         createMilleSabordGame
       }, Symbol.toStringTag, {

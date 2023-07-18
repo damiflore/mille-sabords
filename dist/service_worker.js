@@ -14,14 +14,6 @@ self.resourcesFromJsenvBuild = {
     "version": "eece115e",
     "versionedUrl": "/other/pwa_icon_192.png?v=eece115e"
   },
-  "/css/app.css": {
-    "version": "e643a2d3",
-    "versionedUrl": "/css/app.css?v=e643a2d3"
-  },
-  "/js/app_loader.nomodule.js": {
-    "version": "a9ffac15",
-    "versionedUrl": "/js/app_loader.nomodule.js?v=a9ffac15"
-  },
   "/other/pwa_icon_512.png": {
     "version": "62510d95",
     "versionedUrl": "/other/pwa_icon_512.png?v=62510d95"
@@ -30,17 +22,17 @@ self.resourcesFromJsenvBuild = {
     "version": "33ca6666",
     "versionedUrl": "/other/maskable_icon_192.png?v=33ca6666"
   },
-  "/js/app.nomodule.js": {
-    "version": "e2e1e4f6",
-    "versionedUrl": "/js/app.nomodule.js?v=e2e1e4f6"
-  },
-  "/js/vendors.nomodule.js": {
-    "version": "42172c14",
-    "versionedUrl": "/js/vendors.nomodule.js?v=42172c14"
+  "/js/app_loader.nomodule.js": {
+    "version": "116c617e",
+    "versionedUrl": "/js/app_loader.nomodule.js?v=116c617e"
   },
   "/other/arrr_matey_bb_wn3.ttf": {
     "version": "e930bd5f",
     "versionedUrl": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f"
+  },
+  "/css/app.css": {
+    "version": "e643a2d3",
+    "versionedUrl": "/css/app.css?v=e643a2d3"
   },
   "/other/wood-box.jpg": {
     "version": "7fa1967b",
@@ -81,6 +73,10 @@ self.resourcesFromJsenvBuild = {
   "/other/wood.jpg": {
     "version": "35be8587",
     "versionedUrl": "/other/wood.jpg?v=35be8587"
+  },
+  "/js/app.nomodule.js": {
+    "version": "79237840",
+    "versionedUrl": "/js/app.nomodule.js?v=79237840"
   },
   "/other/card_small-1skull.png": {
     "version": "f8f5b1d5",
@@ -194,13 +190,13 @@ self.resourcesFromJsenvBuild = {
     "version": "8eef983a",
     "versionedUrl": "/other/witch-label.png?v=8eef983a"
   },
-  "/js/root.nomodule.js": {
-    "version": "f61a871a",
-    "versionedUrl": "/js/root.nomodule.js?v=f61a871a"
-  },
   "/js/jsenv_service_worker.js": {
     "version": "77b6a3f2",
     "versionedUrl": "/js/jsenv_service_worker.js?v=77b6a3f2"
+  },
+  "/js/root.nomodule.js": {
+    "version": "ec3b309b",
+    "versionedUrl": "/js/root.nomodule.js?v=ec3b309b"
   },
   "/css/dialog.base.css": {
     "version": "6a8a7c8d",
@@ -209,6 +205,18 @@ self.resourcesFromJsenvBuild = {
   "/css/dialog.css": {
     "version": "767f8b94",
     "versionedUrl": "/css/dialog.css?v=767f8b94"
+  },
+  "/other/wood2.png": {
+    "version": "58e599fc",
+    "versionedUrl": "/other/wood2.png?v=58e599fc"
+  },
+  "/other/wood.png": {
+    "version": "45faad90",
+    "versionedUrl": "/other/wood.png?v=45faad90"
+  },
+  "/other/stone.png": {
+    "version": "a5cf170d",
+    "versionedUrl": "/other/stone.png?v=a5cf170d"
   },
   "/other/cursed-grid.png": {
     "version": "eb5564b7",
@@ -254,27 +262,19 @@ self.resourcesFromJsenvBuild = {
     "version": "1df00603",
     "versionedUrl": "/css/settings.css?v=1df00603"
   },
-  "/other/wood2.png": {
-    "version": "58e599fc",
-    "versionedUrl": "/other/wood2.png?v=58e599fc"
-  },
-  "/other/wood.png": {
-    "version": "45faad90",
-    "versionedUrl": "/other/wood.png?v=45faad90"
-  },
-  "/other/stone.png": {
-    "version": "a5cf170d",
-    "versionedUrl": "/other/stone.png?v=a5cf170d"
+  "/js/vendors.nomodule.js": {
+    "version": "787b5995",
+    "versionedUrl": "/js/vendors.nomodule.js?v=787b5995"
   }
 };
 
 
 ;(function() {
   var __versionMappings__ = {
-    "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=a9ffac15",
+    "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=116c617e",
     "/css/app.css": "/css/app.css?v=e643a2d3",
-    "/js/app.nomodule.js": "/js/app.nomodule.js?v=e2e1e4f6",
-    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=42172c14",
+    "/js/app.nomodule.js": "/js/app.nomodule.js?v=79237840",
+    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=787b5995",
     "/other/arrr_matey_bb_wn3.ttf": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f",
     "/other/card_small-1skull.png": "/other/card_small-1skull.png?v=f8f5b1d5",
     "/other/card_small-2skulls.png": "/other/card_small-2skulls.png?v=c62f71a1",
@@ -310,7 +310,7 @@ self.resourcesFromJsenvBuild = {
     "/other/treasure-map.png": "/other/treasure-map.png?v=0660ab15",
     "/other/witch-label.png": "/other/witch-label.png?v=8eef983a",
     "/other/skull-bottle.png": "/other/skull-bottle.png?v=778b726d",
-    "/js/root.nomodule.js": "/js/root.nomodule.js?v=f61a871a",
+    "/js/root.nomodule.js": "/js/root.nomodule.js?v=ec3b309b",
     "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=77b6a3f2",
     "/css/dialog.base.css": "/css/dialog.base.css?v=6a8a7c8d",
     "/css/dialog.css": "/css/dialog.css?v=767f8b94",
