@@ -56,7 +56,7 @@
     <div id="app"></div>
     <script type="module">
       import React from "react"
-      import ReactDOM from "react-dom"
+      import { createRoot } from "react-dom/client"
 
       import { getDomNodeRectangle } from "/app/dom/dom.position.js"
       import { getRectangleCenterPoint } from "/app/helper/rectangle.js"
@@ -285,7 +285,7 @@
         return animatedValue ? animatedValue.value : value
       }
 
-      ReactDOM.render(<Main />, document.querySelector("#app"))
+      createRoot(document.querySelector("#app")).render(<Main />)
     </script>
   </body>
 </html>

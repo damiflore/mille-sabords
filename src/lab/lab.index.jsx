@@ -1,6 +1,6 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 import { Lab } from "/lab/lab.component.jsx"
 
-ReactDOM.render(<Lab />, document.querySelector("#app"))
+createRoot(document.querySelector("#app")).render(<Lab />)

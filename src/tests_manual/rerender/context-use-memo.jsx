@@ -1,5 +1,5 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 const { createContext, useContext, useState, useMemo } = React
 
@@ -88,4 +88,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.querySelector("#app"))
+createRoot(document.querySelector("#app")).render(<App />)

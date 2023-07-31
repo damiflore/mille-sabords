@@ -1,5 +1,5 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 const { useReducer, createContext, useContext } = React
 
@@ -55,4 +55,4 @@ const Button = ({ action, children }) => {
   return <button onClick={action}>{children}</button>
 }
 
-ReactDOM.render(<App />, document.body)
+createRoot(document.body).render(<App />)

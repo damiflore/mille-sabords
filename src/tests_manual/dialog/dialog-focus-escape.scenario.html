@@ -19,7 +19,7 @@ focusable elements
     <div id="app"></div>
     <script type="module">
       import React from "react"
-      import ReactDOM from "react-dom"
+      import { createRoot } from "react-dom/client"
       import { DialogBase } from "/app/dialog/DialogBase.jsx"
 
       const App = () => {
@@ -54,7 +54,7 @@ focusable elements
         )
       }
 
-      ReactDOM.render(<App />, document.querySelector("#app"))
+      createRoot(document.querySelector("#app")).render(<App />)
     </script>
   </body>
 </html>

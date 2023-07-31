@@ -1,5 +1,5 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 const { useReducer, createContext, useContext } = React
 
@@ -42,4 +42,4 @@ const Counter = () => {
   )
 }
 
-ReactDOM.render(<App />, document.body)
+createRoot(document.body).render(<App />)

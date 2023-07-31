@@ -1,5 +1,5 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 const { useReducer } = React
 
@@ -27,4 +27,4 @@ function Counter() {
   )
 }
 
-ReactDOM.render(<Counter />, document.body)
+createRoot(document.body).render(<Counter />)

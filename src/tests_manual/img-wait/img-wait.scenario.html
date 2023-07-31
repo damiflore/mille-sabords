@@ -11,7 +11,7 @@
     <div id="app"></div>
     <script type="module">
       import React from "react"
-      import ReactDOM from "react-dom"
+      import { createRoot } from "react-dom/client"
 
       import { Image } from "/app/generic/Image.jsx"
 
@@ -108,7 +108,7 @@
         )
       }
 
-      ReactDOM.render(<App />, document.querySelector("#app"))
+      createRoot(document.querySelector("#app")).render(<App />)
     </script>
   </body>
 </html>
