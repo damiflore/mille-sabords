@@ -7,7 +7,7 @@
     <meta name="description" content="Version web du jeu mille sabords">
     <meta name="theme-color" content="#d3d3d3">
     <link rel="icon" href="/other/favicon.png?v=467b6542">
-    <link rel="manifest" href="/other/mille-sabords.webmanifest?v=fe6d64a6">
+    <link rel="manifest" href="/other/mille-sabords.webmanifest">
     <link rel="apple-touch-icon" href="/other/pwa_icon_192.png?v=eece115e">
     <!--
       Tell browser to start fetching theses ressources right now:
@@ -16,18 +16,18 @@
       - CSS and JS of the app
     -->
     <link rel="preload" href="/other/arrr_matey_bb_wn3.ttf?v=e930bd5f" as="font" type="font/ttf" crossorigin="">
-    <link rel="preload" href="/js/app_loader.nomodule.js?v=116c617e" as="script">
-    <link rel="preload" href="/css/app.css?v=e643a2d3" as="style">
-    <link rel="preload" href="/js/app.nomodule.js?v=79237840" as="script">
-    <link href="/js/vendors.nomodule.js?v=787b5995" rel="preload" as="script">
+    <link rel="preload" href="/js/app_loader.nomodule.js?v=a9ffac15" as="script">
+    <link rel="preload" href="/css/app.css?v=be345ff3" as="style">
+    <link rel="preload" href="/js/app.nomodule.js?v=8862351f" as="script">
+    <link rel="preload" href="/js/vendors.nomodule.js?v=a2c09650" as="script">
     <script>
       ;(function() {
         var __versionMappings__ = {
-          "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=116c617e",
-          "/css/app.css": "/css/app.css?v=e643a2d3",
-          "/js/app.nomodule.js": "/js/app.nomodule.js?v=79237840",
-          "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=787b5995",
+          "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=a9ffac15",
+          "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=a2c09650",
           "/other/arrr_matey_bb_wn3.ttf": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f",
+          "/css/app.css": "/css/app.css?v=be345ff3",
+          "/js/app.nomodule.js": "/js/app.nomodule.js?v=8862351f",
           "/other/card_small-1skull.png": "/other/card_small-1skull.png?v=f8f5b1d5",
           "/other/card_small-2skulls.png": "/other/card_small-2skulls.png?v=c62f71a1",
           "/other/card_small-sword-challenge.png": "/other/card_small-sword-challenge.png?v=54fb56a0",
@@ -62,10 +62,10 @@
           "/other/treasure-map.png": "/other/treasure-map.png?v=0660ab15",
           "/other/witch-label.png": "/other/witch-label.png?v=8eef983a",
           "/other/skull-bottle.png": "/other/skull-bottle.png?v=778b726d",
-          "/js/root.nomodule.js": "/js/root.nomodule.js?v=ec3b309b",
           "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=77b6a3f2",
+          "/js/root.nomodule.js": "/js/root.nomodule.js?v=ce674d01",
           "/css/dialog.base.css": "/css/dialog.base.css?v=6a8a7c8d",
-          "/css/dialog.css": "/css/dialog.css?v=767f8b94",
+          "/css/dialog.css": "/css/dialog.css?v=8269b843",
           "/other/cursed-grid.png": "/other/cursed-grid.png?v=eb5564b7",
           "/other/swords-disabled.png": "/other/swords-disabled.png?v=6923b685",
           "/other/win-treasure.png": "/other/win-treasure.png?v=9c914100",
@@ -83,39 +83,6 @@
         };
       })();
     </script><script>
-      function _typeof2(obj) {
-        "@babel/helpers - typeof";
-      
-        return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-          return typeof obj;
-        } : function (obj) {
-          return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-        }, _typeof2(obj);
-      }
-      // https://mathiasbynens.be/notes/globalthis
-      
-      /* eslint-disable no-redeclare */
-      /* global globalThis */
-      var globalObject;
-      if ((typeof globalThis === "undefined" ? "undefined" : _typeof2(globalThis)) === "object") {
-        globalObject = globalThis;
-      } else {
-        if (_typeof2(this) === "object") {
-          globalObject = this;
-        } else {
-          // eslint-disable-next-line no-extend-native
-          Object.defineProperty(Object.prototype, "__global__", {
-            get: function get() {
-              return this;
-            },
-            configurable: true
-          });
-          // eslint-disable-next-line no-undef
-          globalObject = __global__;
-          delete Object.prototype.__global__;
-        }
-        globalObject.globalThis = globalObject;
-      }
       (function (global, factory) {
         if (typeof define === "function" && define.amd) {
           define([], factory);
@@ -130,104 +97,6 @@
         }
       })(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function () {
         "use strict";
-      
-        // eslint-disable-next-line consistent-return
-        var arrayWithHoles = function arrayWithHoles(arr) {
-          if (Array.isArray(arr)) return arr;
-        };
-      
-        /* @minVersion 7.0.0-beta.0 */
-      
-        function _iterableToArrayLimit(arr, i) {
-          // this is an expanded form of \`for...of\` that properly supports abrupt completions of
-          // iterators etc. variable names have been minimised to reduce the size of this massive
-          // helper. sometimes spec compliance is annoying :(
-          //
-          // _n = _iteratorNormalCompletion
-          // _d = _didIteratorError
-          // _e = _iteratorError
-          // _i = _iterator
-          // _s = _step
-          // _x = _next
-          // _r = _return
-      
-          var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-          if (_i == null) return;
-          var _arr = [];
-          var _n = true;
-          var _d = false;
-          var _s, _e, _x, _r;
-          try {
-            _x = (_i = _i.call(arr)).next;
-            if (i === 0) {
-              if (Object(_i) !== _i) return;
-              _n = false;
-            } else {
-              for (; !(_n = (_s = _x.call(_i)).done); _n = true) {
-                _arr.push(_s.value);
-                if (_arr.length === i) break;
-              }
-            }
-          } catch (err) {
-            _d = true;
-            _e = err;
-          } finally {
-            try {
-              if (!_n && _i["return"] != null) {
-                _r = _i["return"]();
-                // eslint-disable-next-line no-unsafe-finally
-                if (Object(_r) !== _r) return;
-              }
-            } finally {
-              // eslint-disable-next-line no-unsafe-finally
-              if (_d) throw _e;
-            }
-          }
-          return _arr;
-        }
-      
-        /* eslint-disable no-eq-null, eqeqeq */
-        function arrayLikeToArray(arr, len) {
-          if (len == null || len > arr.length) len = arr.length;
-          var arr2 = new Array(len);
-          for (var i = 0; i < len; i++) arr2[i] = arr[i];
-          return arr2;
-        }
-      
-        /* eslint-disable consistent-return */
-        function unsupportedIterableToArray(o, minLen) {
-          if (!o) return;
-          if (typeof o === "string") return arrayLikeToArray(o, minLen);
-          var n = Object.prototype.toString.call(o).slice(8, -1);
-          if (n === "Object" && o.constructor) n = o.constructor.name;
-          if (n === "Map" || n === "Set") return Array.from(o);
-          if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-        }
-        var nonIterableRest = function nonIterableRest() {
-          throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-        };
-        var _slicedToArray = function _slicedToArray(arr, i) {
-          return arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
-        };
-        var nativeTypeOf = function nativeTypeOf(obj) {
-          return _typeof2(obj);
-        };
-        var customTypeOf = function customTypeOf(obj) {
-          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-        };
-        var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? nativeTypeOf : customTypeOf;
-      
-        /*
-         * This file is a modified version of https://github.com/systemjs/systemjs/blob/main/dist/s.js
-         * with the following changes:
-         *
-         * - Code can use aync/await, const, etc because this file is compiled (see dist/s.js)
-         * - Can use document.currentScript because we don't support IE
-         * - auto import inline System.register
-         * - auto import first System.register in web workers
-         * - queing events in web workers
-         * - no support for importmap because jsenv don't need it
-         */
       
         function _await(value, then, direct) {
           if (direct) {
@@ -274,6 +143,76 @@
           }
           return result;
         }
+        function _slicedToArray(arr, i) {
+          return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+        }
+        function _nonIterableRest() {
+          throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+        }
+        function _unsupportedIterableToArray(o, minLen) {
+          if (!o) return;
+          if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+          var n = Object.prototype.toString.call(o).slice(8, -1);
+          if (n === "Object" && o.constructor) n = o.constructor.name;
+          if (n === "Map" || n === "Set") return Array.from(o);
+          if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+        }
+        function _arrayLikeToArray(arr, len) {
+          if (len == null || len > arr.length) len = arr.length;
+          for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+          return arr2;
+        }
+        function _iterableToArrayLimit(arr, i) {
+          var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+          if (null != _i) {
+            var _s,
+              _e,
+              _x,
+              _r,
+              _arr = [],
+              _n = !0,
+              _d = !1;
+            try {
+              if (_x = (_i = _i.call(arr)).next, 0 === i) {
+                if (Object(_i) !== _i) return;
+                _n = !1;
+              } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+            } catch (err) {
+              _d = !0, _e = err;
+            } finally {
+              try {
+                if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return;
+              } finally {
+                if (_d) throw _e;
+              }
+            }
+            return _arr;
+          }
+        }
+        function _arrayWithHoles(arr) {
+          if (Array.isArray(arr)) return arr;
+        }
+        function _typeof(obj) {
+          "@babel/helpers - typeof";
+      
+          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+            return typeof obj;
+          } : function (obj) {
+            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+          }, _typeof(obj);
+        }
+        /*
+         * This file is a modified version of https://github.com/systemjs/systemjs/blob/main/dist/s.js
+         * with the following changes:
+         *
+         * - Code can use aync/await, const, etc because this file is compiled (see dist/s.js)
+         * - Can use document.currentScript because we don't support IE
+         * - auto import inline System.register
+         * - auto import first System.register in web workers
+         * - queing events in web workers
+         * - no support for importmap because jsenv don't need it
+         */
+      
         (function () {
           /* eslint-env browser */
       

@@ -43,7 +43,7 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
         performance.measure(`app displayed`);
       });
       loadAppJs = async () => {
-        const app = await _context.import(__v__("/js/app.nomodule.js")).then(n => n.af);
+        const app = await _context.import(__v__("/js/app.nomodule.js")).then(n => n.app);
         performance.measure("app.js ready");
         return app;
       };

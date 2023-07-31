@@ -8,8 +8,6 @@
 import { build } from "@jsenv/core"
 import { copyEntry } from "@jsenv/filesystem"
 import { jsenvPluginReact } from "@jsenv/plugin-react"
-import { jsenvPluginBundling } from "@jsenv/plugin-bundling"
-import { jsenvPluginMinification } from "@jsenv/plugin-minification"
 import { jsenvPluginPlaceholders } from "@jsenv/plugin-placeholders"
 
 // this is to get the production build of react
@@ -22,6 +20,7 @@ await build({
   entryPoints: {
     "./main.html": "index.html",
   },
+  base: process.argv.includes("--prod") ? "/mille-sabords/" : "/",
   plugins: [
     jsenvPluginPlaceholders({
       "./service_worker.js": () => {
@@ -33,22 +32,21 @@ await build({
       },
     }),
     jsenvPluginReact(),
-    jsenvPluginBundling({
-      js_module: {
-        chunks: {
-          vendors: { "file:///**/node_modules/": true },
-        },
-      },
-    }),
-    ...(process.argv.includes("--prod") ? [jsenvPluginMinification()] : []),
   ],
-  base: process.argv.includes("--prod") ? "/mille-sabords/" : "/",
   runtimeCompat: {
     chrome: "80",
     edge: "17",
     firefox: "80",
     safari: "17",
   },
+  bundling: {
+    js_module: {
+      chunks: {
+        vendors: { "file:///**/node_modules/": true },
+      },
+    },
+  },
+  minification: process.argv.includes("--prod"),
   watch: process.argv.includes("--watch"),
 })
 
