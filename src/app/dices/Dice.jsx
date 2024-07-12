@@ -184,15 +184,15 @@ export const Dice = ({
     diceAnimation && diceAnimation.from
       ? diceAnimation.from.x
       : dragGesture
-      ? dragGesture.x
-      : x
+        ? dragGesture.x
+        : x
 
   const diceY =
     diceAnimation && diceAnimation.from
       ? diceAnimation.from.y
       : dragGesture
-      ? dragGesture.y
-      : y
+        ? dragGesture.y
+        : y
 
   const diceZIndex = dragGesture || diceAnimation ? 1000 : zIndex
 
@@ -233,8 +233,8 @@ export const Dice = ({
             disapear
               ? "dice-cursed-disapear"
               : appear
-              ? "dice-cursed-appear"
-              : ""
+                ? "dice-cursed-appear"
+                : ""
           }
           style={{
             transform: stringifyTransformations({
