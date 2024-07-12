@@ -23,8 +23,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 0
-  assert({ actual, expected })
+  const expect = 0
+  assert({ actual, expect })
 }
 
 // with 3 coin
@@ -42,8 +42,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 800
-  assert({ actual, expected })
+  const expect = 800
+  assert({ actual, expect })
 }
 
 // with 3 coin + 5 sword
@@ -68,6 +68,6 @@ import {
   // 500 from "perfect" rule
   // x2 from pirate
   // -> 2800
-  const expected = 2800
-  assert({ actual, expected })
+  const expect = 2800
+  assert({ actual, expect })
 }

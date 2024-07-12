@@ -25,8 +25,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = -300
-  assert({ actual, expected })
+  const expect = -300
+  assert({ actual, expect })
 }
 
 // 2 sword completed with 2 sword
@@ -43,8 +43,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 300
-  assert({ actual, expected })
+  const expect = 300
+  assert({ actual, expect })
 }
 
 // 2 sword completed with 3 sword
@@ -61,8 +61,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 400
-  assert({ actual, expected })
+  const expect = 400
+  assert({ actual, expect })
 }
 
 // cannot mark score (because 3skulls)
@@ -78,6 +78,6 @@ import {
     ],
     markScoreAllowed: false,
   })
-  const expected = -300
-  assert({ actual, expected })
+  const expect = -300
+  assert({ actual, expect })
 }

@@ -24,8 +24,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 0
-  assert({ actual, expected })
+  const expect = 0
+  assert({ actual, expect })
 }
 
 // with 3 parrot
@@ -43,8 +43,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 100
-  assert({ actual, expected })
+  const expect = 100
+  assert({ actual, expect })
 }
 
 // with 4 parrot
@@ -63,8 +63,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 200
-  assert({ actual, expected })
+  const expect = 200
+  assert({ actual, expect })
 }
 
 // with 5 parrot
@@ -82,8 +82,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 500
-  assert({ actual, expected })
+  const expect = 500
+  assert({ actual, expect })
 }
 
 // with 6 parrot
@@ -102,8 +102,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 1000
-  assert({ actual, expected })
+  const expect = 1000
+  assert({ actual, expect })
 }
 
 // with 7 parrot
@@ -122,8 +122,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 2000
-  assert({ actual, expected })
+  const expect = 2000
+  assert({ actual, expect })
 }
 
 // with 8 parrot
@@ -145,8 +145,8 @@ import {
   // 4000 from "8 identic symbols"
   // 500 from "perfect" rule
   // -> 4500
-  const expected = 4500
-  assert({ actual, expected })
+  const expect = 4500
+  assert({ actual, expect })
 }
 
 // with 1 coin
@@ -164,8 +164,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 100
-  assert({ actual, expected })
+  const expect = 100
+  assert({ actual, expect })
 }
 
 // with 1 diamond
@@ -183,8 +183,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 100
-  assert({ actual, expected })
+  const expect = 100
+  assert({ actual, expect })
 }
 
 // with 3 coin
@@ -205,8 +205,8 @@ import {
   // 100 from 3 identic coin
   // 300 from 3 coin
   // -> 400
-  const expected = 400
-  assert({ actual, expected })
+  const expect = 400
+  assert({ actual, expect })
 }
 
 // with 3 parrot and 3 diamond
@@ -229,8 +229,8 @@ import {
   // 100 from 3 identic diamond
   // 300 from 3 diamond
   // -> 500
-  const expected = 500
-  assert({ actual, expected })
+  const expect = 500
+  assert({ actual, expect })
 }
 
 // with 3 parrot and 3 monkey and 2 coin
@@ -254,6 +254,6 @@ import {
   // 200 from 2 coin
   // 500 from "perfect" rule
   // -> 900
-  const expected = 900
-  assert({ actual, expected })
+  const expect = 900
+  assert({ actual, expect })
 }

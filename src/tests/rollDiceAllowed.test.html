@@ -23,8 +23,8 @@
           hasDicesToCurse: false,
           threeSkullsOrMoreInCursedArea: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // dice never rolled
@@ -36,8 +36,8 @@
           hasDicesToCurse: false,
           threeSkullsOrMoreInCursedArea: false,
         })
-        const expected = true
-        assert({ actual, expected })
+        const expect = true
+        assert({ actual, expect })
       }
 
       // skulls in rolled area
@@ -49,8 +49,8 @@
           hasDicesToCurse: true,
           threeSkullsOrMoreInCursedArea: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // too many skulls
@@ -62,8 +62,8 @@
           hasDicesToCurse: false,
           threeSkullsOrMoreInCursedArea: true,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
     </script>
   </body>

@@ -24,8 +24,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 200
-  assert({ actual, expected })
+  const expect = 200
+  assert({ actual, expect })
 }
 
 // with 3 monkey and 2 parrot
@@ -42,6 +42,6 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 500
-  assert({ actual, expected })
+  const expect = 500
+  assert({ actual, expect })
 }

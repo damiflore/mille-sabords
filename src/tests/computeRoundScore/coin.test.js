@@ -26,8 +26,8 @@ import {
     ],
     markScoreAllowed: true,
   })
-  const expected = 100
-  assert({ actual, expected })
+  const expect = 100
+  assert({ actual, expect })
 }
 
 // with 7 coin + 1 parrot
@@ -51,6 +51,6 @@ import {
   // 4000 from "8 identic symbols"
   // 800 from "coin = 100"
   // -> 4800
-  const expected = 4800
-  assert({ actual, expected })
+  const expect = 4800
+  assert({ actual, expect })
 }

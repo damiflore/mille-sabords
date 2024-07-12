@@ -20,8 +20,8 @@
           markScoreAllowed: false,
           hasDicesToCurse: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // round ongoing because can mark score
@@ -31,8 +31,8 @@
           markScoreAllowed: true,
           hasDicesToCurse: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // round on going because dices are being cursed
@@ -42,8 +42,8 @@
           markScoreAllowed: false,
           hasDicesToCurse: true,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // round finished (cannot mark score or roll dices)
@@ -53,8 +53,8 @@
           markScoreAllowed: false,
           hasDicesToCurse: false,
         })
-        const expected = true
-        assert({ actual, expected })
+        const expect = true
+        assert({ actual, expect })
       }
     </script>
   </body>

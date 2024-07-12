@@ -26,8 +26,8 @@
           threeSkullsOrMoreInCursedArea: true,
           hasDicesToCurse: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // no skull and user clicked on "Mark score"
@@ -39,8 +39,8 @@
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: false,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
 
       // with 3 skulls + chest
@@ -51,8 +51,8 @@
           threeSkullsOrMoreInCursedArea: true,
           hasDicesToCurse: false,
         })
-        const expected = true
-        assert({ actual, expected })
+        const expect = true
+        assert({ actual, expect })
       }
 
       // less than 3 skulls, not clicked on mark score
@@ -64,8 +64,8 @@
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: false,
         })
-        const expected = true
-        assert({ actual, expected })
+        const expect = true
+        assert({ actual, expect })
       }
 
       // skull in rolled area (= cursed animation ongoing)
@@ -77,8 +77,8 @@
           threeSkullsOrMoreInCursedArea: false,
           hasDicesToCurse: true,
         })
-        const expected = false
-        assert({ actual, expected })
+        const expect = false
+        assert({ actual, expect })
       }
     </script>
   </body>
