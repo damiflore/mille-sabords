@@ -1,6 +1,6 @@
 self.resourcesFromJsenvBuild = {
   "/index.html": {
-    "version": "200ca0c0"
+    "version": "af41662b"
   },
   "/other/favicon.png": {
     "version": "467b6542",
@@ -74,8 +74,8 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/other/wood.jpg?v=35be8587"
   },
   "/js/app.nomodule.js": {
-    "version": "8862351f",
-    "versionedUrl": "/js/app.nomodule.js?v=8862351f"
+    "version": "fd1947f8",
+    "versionedUrl": "/js/app.nomodule.js?v=fd1947f8"
   },
   "/other/card_small-1skull.png": {
     "version": "f8f5b1d5",
@@ -190,12 +190,12 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/other/witch-label.png?v=8eef983a"
   },
   "/js/jsenv_service_worker.js": {
-    "version": "77b6a3f2",
-    "versionedUrl": "/js/jsenv_service_worker.js?v=77b6a3f2"
+    "version": "86ea9ce2",
+    "versionedUrl": "/js/jsenv_service_worker.js?v=86ea9ce2"
   },
   "/js/root.nomodule.js": {
-    "version": "ce674d01",
-    "versionedUrl": "/js/root.nomodule.js?v=ce674d01"
+    "version": "7f4d0ed2",
+    "versionedUrl": "/js/root.nomodule.js?v=7f4d0ed2"
   },
   "/css/dialog.base.css": {
     "version": "6a8a7c8d",
@@ -262,8 +262,8 @@ self.resourcesFromJsenvBuild = {
     "versionedUrl": "/css/settings.css?v=1df00603"
   },
   "/js/vendors.nomodule.js": {
-    "version": "a2c09650",
-    "versionedUrl": "/js/vendors.nomodule.js?v=a2c09650"
+    "version": "d9e399a7",
+    "versionedUrl": "/js/vendors.nomodule.js?v=d9e399a7"
   }
 };
 
@@ -271,10 +271,10 @@ self.resourcesFromJsenvBuild = {
 ;(function() {
   var __versionMappings__ = {
     "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=a9ffac15",
-    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=a2c09650",
+    "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=d9e399a7",
     "/other/arrr_matey_bb_wn3.ttf": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f",
     "/css/app.css": "/css/app.css?v=be345ff3",
-    "/js/app.nomodule.js": "/js/app.nomodule.js?v=8862351f",
+    "/js/app.nomodule.js": "/js/app.nomodule.js?v=fd1947f8",
     "/other/card_small-1skull.png": "/other/card_small-1skull.png?v=f8f5b1d5",
     "/other/card_small-2skulls.png": "/other/card_small-2skulls.png?v=c62f71a1",
     "/other/card_small-sword-challenge.png": "/other/card_small-sword-challenge.png?v=54fb56a0",
@@ -309,8 +309,8 @@ self.resourcesFromJsenvBuild = {
     "/other/treasure-map.png": "/other/treasure-map.png?v=0660ab15",
     "/other/witch-label.png": "/other/witch-label.png?v=8eef983a",
     "/other/skull-bottle.png": "/other/skull-bottle.png?v=778b726d",
-    "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=77b6a3f2",
-    "/js/root.nomodule.js": "/js/root.nomodule.js?v=ce674d01",
+    "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=86ea9ce2",
+    "/js/root.nomodule.js": "/js/root.nomodule.js?v=7f4d0ed2",
     "/css/dialog.base.css": "/css/dialog.base.css?v=6a8a7c8d",
     "/css/dialog.css": "/css/dialog.css?v=8269b843",
     "/other/cursed-grid.png": "/other/cursed-grid.png?v=eb5564b7",
@@ -330,11 +330,11 @@ self.resourcesFromJsenvBuild = {
   };
 })();
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 /*
  * This file is the service worker file of this pwa.
  *

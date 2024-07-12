@@ -741,9 +741,6 @@ System.register([__v__("/js/vendors.nomodule.js")], function (_export, _context)
       _export("swFacade", swFacade = createServiceWorkerFacade()); // https://vincenttaverna.com/posts/react-image-hook/
       _export("loadImage", loadImage = (url, crossOrigin) => {
         const image = new Image();
-        if (crossOrigin) {
-          image.crossOrigin = crossOrigin;
-        }
         return new Promise((resolve, reject) => {
           // Load Handler
           const loaded = event => {

@@ -18,16 +18,16 @@
     <link rel="preload" href="/other/arrr_matey_bb_wn3.ttf?v=e930bd5f" as="font" type="font/ttf" crossorigin="">
     <link rel="preload" href="/js/app_loader.nomodule.js?v=a9ffac15" as="script">
     <link rel="preload" href="/css/app.css?v=be345ff3" as="style">
-    <link rel="preload" href="/js/app.nomodule.js?v=8862351f" as="script">
-    <link rel="preload" href="/js/vendors.nomodule.js?v=a2c09650" as="script">
+    <link rel="preload" href="/js/app.nomodule.js?v=fd1947f8" as="script">
+    <link rel="preload" href="/js/vendors.nomodule.js?v=d9e399a7" as="script">
     <script>
       ;(function() {
         var __versionMappings__ = {
           "/js/app_loader.nomodule.js": "/js/app_loader.nomodule.js?v=a9ffac15",
-          "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=a2c09650",
+          "/js/vendors.nomodule.js": "/js/vendors.nomodule.js?v=d9e399a7",
           "/other/arrr_matey_bb_wn3.ttf": "/other/arrr_matey_bb_wn3.ttf?v=e930bd5f",
           "/css/app.css": "/css/app.css?v=be345ff3",
-          "/js/app.nomodule.js": "/js/app.nomodule.js?v=8862351f",
+          "/js/app.nomodule.js": "/js/app.nomodule.js?v=fd1947f8",
           "/other/card_small-1skull.png": "/other/card_small-1skull.png?v=f8f5b1d5",
           "/other/card_small-2skulls.png": "/other/card_small-2skulls.png?v=c62f71a1",
           "/other/card_small-sword-challenge.png": "/other/card_small-sword-challenge.png?v=54fb56a0",
@@ -62,8 +62,8 @@
           "/other/treasure-map.png": "/other/treasure-map.png?v=0660ab15",
           "/other/witch-label.png": "/other/witch-label.png?v=8eef983a",
           "/other/skull-bottle.png": "/other/skull-bottle.png?v=778b726d",
-          "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=77b6a3f2",
-          "/js/root.nomodule.js": "/js/root.nomodule.js?v=ce674d01",
+          "/js/jsenv_service_worker.js": "/js/jsenv_service_worker.js?v=86ea9ce2",
+          "/js/root.nomodule.js": "/js/root.nomodule.js?v=7f4d0ed2",
           "/css/dialog.base.css": "/css/dialog.base.css?v=6a8a7c8d",
           "/css/dialog.css": "/css/dialog.css?v=8269b843",
           "/other/cursed-grid.png": "/other/cursed-grid.png?v=eb5564b7",
@@ -82,7 +82,8 @@
           return __versionMappings__[specifier] || specifier
         };
       })();
-    </script><script>
+    </script>
+    <script>
       (function (global, factory) {
         if (typeof define === "function" && define.amd) {
           define([], factory);
@@ -99,9 +100,6 @@
         "use strict";
       
         function _await(value, then, direct) {
-          if (direct) {
-            return then ? then(value) : value;
-          }
           if (!value || !value.then) {
             value = Promise.resolve(value);
           }
@@ -121,7 +119,7 @@
         }
         function _empty() {}
         function _awaitIgnored(value, direct) {
-          if (!direct) {
+          {
             return value && value.then ? value.then(_empty) : Promise.resolve();
           }
         }
@@ -143,63 +141,59 @@
           }
           return result;
         }
-        function _slicedToArray(arr, i) {
-          return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+        function _slicedToArray(r, e) {
+          return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
         }
         function _nonIterableRest() {
           throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
         }
-        function _unsupportedIterableToArray(o, minLen) {
-          if (!o) return;
-          if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-          var n = Object.prototype.toString.call(o).slice(8, -1);
-          if (n === "Object" && o.constructor) n = o.constructor.name;
-          if (n === "Map" || n === "Set") return Array.from(o);
-          if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-        }
-        function _arrayLikeToArray(arr, len) {
-          if (len == null || len > arr.length) len = arr.length;
-          for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-          return arr2;
-        }
-        function _iterableToArrayLimit(arr, i) {
-          var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-          if (null != _i) {
-            var _s,
-              _e,
-              _x,
-              _r,
-              _arr = [],
-              _n = !0,
-              _d = !1;
-            try {
-              if (_x = (_i = _i.call(arr)).next, 0 === i) {
-                if (Object(_i) !== _i) return;
-                _n = !1;
-              } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
-            } catch (err) {
-              _d = !0, _e = err;
-            } finally {
-              try {
-                if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return;
-              } finally {
-                if (_d) throw _e;
-              }
-            }
-            return _arr;
+        function _unsupportedIterableToArray(r, a) {
+          if (r) {
+            if ("string" == typeof r) return _arrayLikeToArray(r, a);
+            var t = {}.toString.call(r).slice(8, -1);
+            return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
           }
         }
-        function _arrayWithHoles(arr) {
-          if (Array.isArray(arr)) return arr;
+        function _arrayLikeToArray(r, a) {
+          (null == a || a > r.length) && (a = r.length);
+          for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+          return n;
         }
-        function _typeof(obj) {
+        function _iterableToArrayLimit(r, l) {
+          var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+          if (null != t) {
+            var e,
+              n,
+              i,
+              u,
+              a = [],
+              f = !0,
+              o = !1;
+            try {
+              if (i = (t = t.call(r)).next, 0 === l) ;else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+            } catch (r) {
+              o = !0, n = r;
+            } finally {
+              try {
+                if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+              } finally {
+                if (o) throw n;
+              }
+            }
+            return a;
+          }
+        }
+        function _arrayWithHoles(r) {
+          if (Array.isArray(r)) return r;
+        }
+        function _typeof(o) {
           "@babel/helpers - typeof";
       
-          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-            return typeof obj;
-          } : function (obj) {
-            return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-          }, _typeof(obj);
+          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+            return typeof o;
+          } : function (o) {
+            return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+          }, _typeof(o);
         }
         /*
          * This file is a modified version of https://github.com/systemjs/systemjs/blob/main/dist/s.js

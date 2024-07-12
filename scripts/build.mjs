@@ -8,7 +8,6 @@
 import { build } from "@jsenv/core"
 import { copyEntry } from "@jsenv/filesystem"
 import { jsenvPluginReact } from "@jsenv/plugin-react"
-import { jsenvPluginPlaceholders } from "@jsenv/plugin-placeholders"
 
 // this is to get the production build of react
 process.env.NODE_ENV = "production"
@@ -21,18 +20,16 @@ await build({
     "./main.html": "index.html",
   },
   base: process.argv.includes("--prod") ? "/mille-sabords/" : "/",
-  plugins: [
-    jsenvPluginPlaceholders({
-      "./service_worker.js": () => {
-        return {
-          __BASE__: process.argv.includes("--prod")
-            ? "/jsenv-template-pwa/"
-            : "/",
-        }
-      },
-    }),
-    jsenvPluginReact(),
-  ],
+  injections: {
+    "./service_worker.js": () => {
+      return {
+        __BASE__: process.argv.includes("--prod")
+          ? "/jsenv-template-pwa/"
+          : "/",
+      }
+    },
+  },
+  plugins: [jsenvPluginReact()],
   runtimeCompat: {
     chrome: "80",
     edge: "17",

@@ -3320,7 +3320,6 @@ System.register([__v__("/js/vendors.nomodule.js"), __v__("/js/app.nomodule.js")]
           rule: "Grâce à l'aide du capitaine, tous les points comptabilisés pendant ce tour sont doublés !"
           //   more: "Si le joueur doit se rendre sur l'île de la tête de mort, ses adversaires perdent 200 points pour chaque tête de mort révélée."
         },
-
         "witch": {
           name: "Sorcière",
           rule: "Avec ses potions magiques, la sorcière permet exceptionnellement au joueur de relancer, une fois, un dé avec une tête de mort."
@@ -3339,14 +3338,12 @@ System.register([__v__("/js/vendors.nomodule.js"), __v__("/js/app.nomodule.js")]
           more: "Le score total ne peut pas descende en dessous de zéro. Ainsi si par exemple le joueur perds le défi au premier tour il restera à 0 points."
           // more: "Celui qui découvre un bateau pirate ne peut pas aller sur l'île de la tête de mort: un joueur qui obtiendrait 4 têtes de mort ou plus lors de son premier lancer perdrait donc immédiatement son tour."
         },
-
         "3sword-challenge": {
           name: "Bateau pirate",
           rule: "Le joueur doit obtenir au minimum 3 symbols sabres. Si il y parvient, il gagne +500 points, en plus de son résultat aux dés. Si il échoue, le joueur marque -500 points pour ce tour, quelque soit son résultat aux dés.",
           more: "Le score total ne peut pas descende en dessous de zéro. Ainsi si par exemple le joueur perds le défi au premier tour il restera à 0 points."
           // more: "Celui qui découvre un bateau pirate ne peut pas aller sur l'île de la tête de mort: un joueur qui obtiendrait 4 têtes de mort ou plus lors de son premier lancer perdrait donc immédiatement son tour."
         },
-
         "4sword-challenge": {
           name: "Bateau pirate",
           rule: "Le joueur doit obtenir au minimum 4 symbols sabres. Si il y parvient, il gagne +1000 points, en plus de son résultat aux dés. Si il échoue, le joueur marque -1000 points pour ce tour, quelque soit son résultat aux dés.",

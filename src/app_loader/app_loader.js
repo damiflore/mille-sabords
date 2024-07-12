@@ -1,4 +1,4 @@
-import appLoaderStylesheet from "./app_loader.css" assert { type: "css" }
+import appLoaderStylesheet from "./app_loader.css" with { type: "css" }
 
 export const loadApp = async ({ appNode }) => {
   performance.measure(`loading app`)
